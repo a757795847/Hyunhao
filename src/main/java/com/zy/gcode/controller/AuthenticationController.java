@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @Controller
 public class AuthenticationController {
-    public  static String ComponentVerifyTicket ="ticket@@@EJNDys_DnJ1Q_fXOF4VsIGS57UgfNj3izZjNZTNda4ZKcZ_IjNNL60cEk3z0_TfcAiN2LRJ7L04KZozF-zwavw";
+    public  static String ComponentVerifyTicket ="ticket@@@GR3DiYn44RDjBFLd-dGVjf7IzOp-n56HfNrLqAeQ5HC3GzDf3HCiLtSjbje4xDBW9Qg-3au1Dj6nbWnoujYJyQ";
     public static  Map serverToken = new HashMap();
 
     @Autowired

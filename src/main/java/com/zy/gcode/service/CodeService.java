@@ -77,8 +77,8 @@ public class CodeService implements ICodeService {
         }
         GeCode geCode = persistenceService.get(GeCode.class,state);
         if(info.getUpdateTime().before(new Date(System.currentTimeMillis()-((info.getExpiresIn()-50)*1000)))){
-            StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/component/refresh_token?appid=")
-                    .append(appid).append("&grant_type=refresh_token&component_appid=wxa8febcce6444f95f").append("&component_access_token=");
+            StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token=");
+
                     //.append(info.getAuthorizerAccessToken())；
             if(AuthenticationController.serverToken.containsKey("inserDate")){
                 Date insertDate = (Date) AuthenticationController.serverToken.get("inserDate");
@@ -101,8 +101,11 @@ public class CodeService implements ICodeService {
             }
             builder.append( AuthenticationController.serverToken.get("component_access_token"));
 
-                    builder.append("&refresh_token=").append(info.getAuthorizerRefreshToken());
-           Map<String,Object> map = HttpClientUtils.mapSSLGetSend(builder.toString());
+           Map<String,Object> map = HttpClientUtils.mapSSLPostSend(builder.toString(),"{" +
+                   "\"component_appid\":\"wxa8febcce6444f95f\"," +
+                   "\"authorizer_appid\":\""+info.getAuthorizerAppid()+"\"," +
+                   "\"authorizer_refresh_token\":\""+info.getAuthorizerRefreshToken()+"\"" +
+                   "}");
            info.setAuthorizerRefreshToken(map.get("authorizer_refresh_token").toString());
            info.setAuthorizerAccessToken(map.get("authorizer_access_token").toString());
            info.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
