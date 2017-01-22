@@ -58,7 +58,7 @@ public class DateUtils {
     }
 
     public static boolean isOutOfDate(Timestamp date, long expirs){
-       Date date1 = new Date(System.currentTimeMillis()-(expirs-10)*1000)
+       Date date1 = new Date(System.currentTimeMillis()-(expirs-10)*1000);
         return date.before(date1);
     }
 
