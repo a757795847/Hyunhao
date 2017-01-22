@@ -29,7 +29,7 @@ public class CodeController {
     ICodeService iCodeService;
 
     @RequestMapping("userinfo")
-    public String callback(String code, String state,String appid){
+    public String callback(String code, String state,String appid ){
         if(StringUtils.isEmpty(code)){
             return "redirect:error.html?message=code is empty";
         }

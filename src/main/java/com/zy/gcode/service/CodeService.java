@@ -75,7 +75,7 @@ public class CodeService implements ICodeService {
     public CodeRe token(String code, String state,String appid) {//state gecodeM
         CodeRe codeRe = new CodeRe();
       // AppInterface appInterface = persistenceService.load(AppInterface.class,state);
-        AuthorizationInfo info = persistenceService.load(AuthorizationInfo.class,"wxa8febcce6444f95f");
+        AuthorizationInfo info = persistenceService.load(AuthorizationInfo.class,"wx653d39223641bea7");
         if(info==null){
            return CodeRe.error("authorization is empety!");
         }
