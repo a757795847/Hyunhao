@@ -69,7 +69,7 @@ public class AuthenticationService implements IAuthenticationService {
             componetToken.setComponetAppid("wxa8febcce6444f95f");
         }
 
-        if(componetToken.getUpdateTime()==null&&DateUtils.isOutOfDate(componetToken.getUpdateTime(),componetToken.getExpiresIn())){
+        if(componetToken.getUpdateTime()==null||DateUtils.isOutOfDate(componetToken.getUpdateTime(),componetToken.getExpiresIn())){
                if(ComponentVerifyTicket==null){
                     return CodeRe.error("ComponentVerifyTicket is null");
                }
