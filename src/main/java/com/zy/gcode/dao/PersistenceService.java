@@ -1,0 +1,21 @@
+package com.zy.gcode.dao;
+
+import com.zy.gcode.utils.Page;
+import org.hibernate.criterion.DetachedCriteria;
+
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * Created by admin5 on 17/1/16.
+ */
+public interface PersistenceService {
+    <T> T get(Class<T> clazz,Serializable id);
+    <T> T load(Class<T> clazz,Serializable id);
+    <T> List<T> getByPage(Class<T> clazz,Page page);
+    <T> List<T> getByPage(Class<T> clazz,DetachedCriteria criteria,Page page);
+    void remove(Object id);
+    void update(Object object);
+    void add(Object object);
+    void updateOrSave(Object object);
+}

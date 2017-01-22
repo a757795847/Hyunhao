@@ -1,0 +1,67 @@
+package com.zy.gcode.service.pay;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.springframework.util.StringUtils;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by admin5 on 17/1/20.
+ */
+public class WxXmlParser {
+    public static String getWxXml(Object obj){
+       Field[] fields = obj.getClass().getDeclaredFields();
+        Document document = DocumentHelper.createDocument();
+       Element root = document.addElement("xml");
+       for(Field field:fields){
+           field.setAccessible(true);
+            String name = field.getName();
+           try {
+             Object value=  field.get(obj);
+             if(value==null||value.toString().equals("")){
+                continue;
+             }
+             root.addElement(name).addCDATA(value.toString());
+           } catch (IllegalAccessException e) {
+               e.printStackTrace();
+           }
+       }
+       return document.asXML();
+    }
+    public static Map getWxMap(Object obj){
+       Field[] fields = obj.getClass().getDeclaredFields();
+        Map<String,String> map = new HashMap();
+       for(Field field:fields){
+           field.setAccessible(true);
+            String name = field.getName();
+           try {
+             Object value=  field.get(obj);
+             if(value==null||value.toString().equals("")){
+                continue;
+             }
+             map.put(name,value.toString());
+           } catch (IllegalAccessException e) {
+               e.printStackTrace();
+           }
+       }
+       return map;
+    }
+    public static String elementString(String data,String name){
+        Document document =null;
+        try {
+            document = DocumentHelper.parseText(data);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+            return null;
+        }
+       Element root = document.getRootElement();
+       return root.elementText(name);
+
+    }
+
+}
