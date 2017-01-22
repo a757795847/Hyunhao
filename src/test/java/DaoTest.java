@@ -1,5 +1,6 @@
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.AppInterface;
+import com.zy.gcode.pojo.AuthorizationInfo;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.IPayService;
@@ -45,7 +46,8 @@ public class DaoTest {
     @Test
     public void test(){
 
-        persistenceService.load(AppInterface.class,"ge111");
+        AuthorizationInfo info = persistenceService.load(AuthorizationInfo.class,"wx653d39223641bea7");
+        System.out.println(info.getAuthorizerAccessToken());
     }
     @Test
     public void dome(){

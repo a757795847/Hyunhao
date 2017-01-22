@@ -71,7 +71,6 @@ public class CodeService implements ICodeService {
         return codeRe;
     }
 
-//https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
     public CodeRe token(String code, String state,String appid) {//state gecodeM
         CodeRe codeRe = new CodeRe();
       // AppInterface appInterface = persistenceService.load(AppInterface.class,state);
