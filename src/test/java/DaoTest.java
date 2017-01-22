@@ -3,6 +3,7 @@ import com.zy.gcode.pojo.AppInterface;
 import com.zy.gcode.pojo.AuthorizationInfo;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.AuthenticationService;
+import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.IPayService;
 import com.zy.gcode.service.pay.RedPayInfo;
 import com.zy.gcode.service.pay.WxXmlParser;
@@ -41,12 +42,15 @@ public class DaoTest {
     IPayService payService;
 
     @Autowired
+    CodeService codeService;
+
+    @Autowired
     AuthenticationService authenticationService;
 
 
     @Test
     public void test(){
-
+        codeService.token(null,null,"wx653d39223641bea7");
         AuthorizationInfo info = persistenceService.get(AuthorizationInfo.class,"wx653d39223641bea7");
         System.out.println(info.getAuthorizerAccessToken());
     }

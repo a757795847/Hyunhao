@@ -14,10 +14,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.net.URLEncoder;
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.sql.*;
 import java.util.Date;
 import java.util.Map;
 
@@ -90,6 +87,7 @@ public class CodeService implements ICodeService {
            info.setAuthorizerRefreshToken(map.get("authorizer_refresh_token").toString());
            info.setAuthorizerAccessToken(map.get("authorizer_access_token").toString());
            info.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
+           info.setUpdateTime(new Timestamp(System.currentTimeMillis()));
            persistenceService.updateOrSave(info);
         }
 
