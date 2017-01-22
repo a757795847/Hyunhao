@@ -57,7 +57,7 @@ public class AuthenticationController {
                                 "\"component_appsecret\": \"5299dc17f84a708b995c85d6587e5b02\", " +
                                 "\"component_verify_ticket\":\""+ComponentVerifyTicket +
                                 "\"}");
-                serverToken.put("insert",new Date());
+                serverToken.put("insertDate",new Date());
             }
         }else {
             serverToken = HttpClientUtils.mapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
@@ -65,7 +65,7 @@ public class AuthenticationController {
                             "\"component_appsecret\": \"5299dc17f84a708b995c85d6587e5b02\", " +
                             "\"component_verify_ticket\":\""+ComponentVerifyTicket +
                             "\"}");
-            serverToken.put("insert",new Date());
+            serverToken.put("insertDate",new Date());
         }
 
         String url = "https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token="+serverToken.get("component_access_token");

@@ -80,14 +80,24 @@ public class CodeService implements ICodeService {
             StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/component/refresh_token?appid=")
                     .append(appid).append("&grant_type=refresh_token&component_appid=wxa8febcce6444f95f").append("&component_access_token=");
                     //.append(info.getAuthorizerAccessToken())；
-           Date date = (Date)AuthenticationController.serverToken.get("insert");
-            if(date.before(new Date(System.currentTimeMillis()-700000))){
-                Map map = HttpClientUtils.mapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
+            if(AuthenticationController.serverToken.containsKey("inserDate")){
+                Date insertDate = (Date) AuthenticationController.serverToken.get("inserDate");
+                long expirs = (long)AuthenticationController.serverToken.get("expires_in");
+                if(insertDate.before(new Date(System.currentTimeMillis()-expirs*1000))){
+                    AuthenticationController.serverToken = HttpClientUtils.mapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
+                            ,"{ \"component_appid\":\"wxa8febcce6444f95f\" ," +
+                                    "\"component_appsecret\": \"5299dc17f84a708b995c85d6587e5b02\", " +
+                                    "\"component_verify_ticket\":\""+AuthenticationController.ComponentVerifyTicket +
+                                    "\"}");
+                    AuthenticationController.serverToken.put("insertDate",new Date());
+                }
+            }else {
+                AuthenticationController.serverToken = HttpClientUtils.mapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
                         ,"{ \"component_appid\":\"wxa8febcce6444f95f\" ," +
                                 "\"component_appsecret\": \"5299dc17f84a708b995c85d6587e5b02\", " +
                                 "\"component_verify_ticket\":\""+AuthenticationController.ComponentVerifyTicket +
                                 "\"}");
-                AuthenticationController.serverToken.putAll(map);
+                AuthenticationController.serverToken.put("insertDate",new Date());
             }
             builder.append( AuthenticationController.serverToken.get("component_access_token"));
 
