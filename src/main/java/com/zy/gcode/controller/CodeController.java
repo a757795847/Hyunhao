@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
@@ -30,9 +29,8 @@ public class CodeController {
     ICodeService iCodeService;
 
     @RequestMapping("userinfo")
-    public String callback(HttpServletRequest request){
-        System.out.println(request.getParameterMap());
-       /* if(StringUtils.isEmpty(code)){
+    public String callback(String code, String state,String appid){
+        if(StringUtils.isEmpty(code)){
             return "redirect:error.html?message=code is empty";
         }
         System.out.println("code:"+code);
@@ -41,9 +39,8 @@ public class CodeController {
        if(codeRe.isError()){
            return "redirect:error.html?message="+codeRe.getErrorMessage();
        }
-*/
-        //return "redirect:"+codeRe.getMessage();
-        return "redirect:111";
+
+        return "redirect:"+codeRe.getMessage();
     }
 
     @RequestMapping("wxcode/{geappid}/{callback}")
