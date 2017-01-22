@@ -7,8 +7,14 @@ import com.zy.gcode.utils.HttpClientUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Created by admin5 on 17/1/19.
@@ -30,9 +36,19 @@ public class DaoTest {
 
     @Test
     public void test(){
-        codeService.token(null,null,"wx653d39223641bea7");
-        AuthorizationInfo info = persistenceService.get(AuthorizationInfo.class,"wx653d39223641bea7");
-        System.out.println(info.getAuthorizerAccessToken());
+        Resource resource = new ClassPathResource("config.properties");
+        Properties properties = new Properties();
+        try {
+            properties.load(resource.getInputStream());
+            FileOutputStream outputStream = new FileOutputStream(resource.getFile());
+            properties.setProperty("san","wanwu");
+            properties.store(outputStream,"11=222");
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
     @Test
     public void dome(){

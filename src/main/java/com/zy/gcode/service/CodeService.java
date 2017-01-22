@@ -1,6 +1,7 @@
 package com.zy.gcode.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zy.gcode.controller.AuthenticationController;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.*;
@@ -77,8 +78,20 @@ public class CodeService implements ICodeService {
         GeCode geCode = persistenceService.get(GeCode.class,state);
         if(info.getUpdateTime().before(new Date(System.currentTimeMillis()-((info.getExpiresIn()-50)*1000)))){
             StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/component/refresh_token?appid=")
-                    .append(appid).append("&grant_type=refresh_token&component_appid=wxa8febcce6444f95f").append("&component_access_token=")
-                    .append(info.getAuthorizerAccessToken()).append("&refresh_token=").append(info.getAuthorizerRefreshToken());
+                    .append(appid).append("&grant_type=refresh_token&component_appid=wxa8febcce6444f95f").append("&component_access_token=");
+                    //.append(info.getAuthorizerAccessToken())；
+           Date date = (Date)AuthenticationController.serverToken.get("insert");
+            if(date.before(new Date(System.currentTimeMillis()-700000))){
+                Map map = HttpClientUtils.mapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
+                        ,"{ \"component_appid\":\"wxa8febcce6444f95f\" ," +
+                                "\"component_appsecret\": \"5299dc17f84a708b995c85d6587e5b02\", " +
+                                "\"component_verify_ticket\":\""+AuthenticationController.ComponentVerifyTicket +
+                                "\"}");
+                AuthenticationController.serverToken.putAll(map);
+            }
+            builder.append( AuthenticationController.serverToken.get("component_access_token"));
+
+                    builder.append("&refresh_token=").append(info.getAuthorizerRefreshToken());
            Map<String,Object> map = HttpClientUtils.mapSSLGetSend(builder.toString());
            info.setAuthorizerRefreshToken(map.get("authorizer_refresh_token").toString());
            info.setAuthorizerAccessToken(map.get("authorizer_access_token").toString());

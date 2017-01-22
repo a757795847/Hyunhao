@@ -25,8 +25,8 @@ import java.util.Map;
  */
 @Controller
 public class AuthenticationController {
-    private  static String ComponentVerifyTicket =null;
-    private  Map serverToken = new HashMap();
+    public  static String ComponentVerifyTicket =null;
+    public static  Map serverToken = new HashMap();
 
     @Autowired
     IAuthenticationService authenticationService;
@@ -57,6 +57,7 @@ public class AuthenticationController {
                                 "\"component_appsecret\": \"5299dc17f84a708b995c85d6587e5b02\", " +
                                 "\"component_verify_ticket\":\""+ComponentVerifyTicket +
                                 "\"}");
+                serverToken.put("inser",new Date());
             }
         }else {
             serverToken = HttpClientUtils.mapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
