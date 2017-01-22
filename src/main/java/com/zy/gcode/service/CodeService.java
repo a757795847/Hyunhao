@@ -79,11 +79,9 @@ public class CodeService implements ICodeService {
         if(info.getUpdateTime().before(new Date(System.currentTimeMillis()-((info.getExpiresIn()-50)*1000)))){
             StringBuilder builder = new StringBuilder("http://mp.weixin.qq.com/wiki/2/88b2bf1265a707c031e51f26ca5e6512.html")
                     .append("?component_access_token=").append(info.getAuthorizerAccessToken());
-           Map<String,Object> map = HttpClientUtils.MapSSLPostSend(builder.toString(),"{\n" +
-                    "\"component_appid\":\"wxa8febcce6444f95f\",\n" +
+           Map<String,Object> map = HttpClientUtils.MapSSLPostSend(builder.toString(),"{\"component_appid\":\"wxa8febcce6444f95f\",\n" +
                     "\"authorizer_appid\":\""+appid+"\",\n" +
-                    "\"authorizer_refresh_token\":\""+info.getAuthorizerRefreshToken()+"\",\n" +
-                    "}");
+                    "\"authorizer_refresh_token\":\""+info.getAuthorizerRefreshToken()+"\"}");
            info.setAuthorizerRefreshToken(map.get("authorizer_refresh_token").toString());
            info.setAuthorizerAccessToken(map.get("authorizer_access_token").toString());
            info.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
