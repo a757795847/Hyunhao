@@ -1,5 +1,6 @@
 package com.zy.gcode.utils;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,7 +10,7 @@ import java.util.Map;
 /**
  * Created by admin5 on 17/1/20.
  */
-public class DateFormatUtils {
+public class DateUtils {
     /** 锁对象 */
     private static final Object lockObj = new Object();
 
@@ -55,4 +56,9 @@ public class DateFormatUtils {
     public static Date parse(String dateStr, String pattern) throws ParseException {
         return getSdf(pattern).parse(dateStr);
     }
+
+    public static boolean isOutOfDate(Timestamp date, long expirs){
+        return date.before(new Date(System.currentTimeMillis()-(expirs-10)*1000));
+    }
+
 }

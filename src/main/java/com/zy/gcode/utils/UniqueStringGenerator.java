@@ -51,7 +51,7 @@ public class UniqueStringGenerator {
         if(i>=999){
             integer.set(100);
         }
-        return MCH_ID +DateFormatUtils.format(new Date(),"yyyyMMdd")+beg+i;
+        return MCH_ID + DateUtils.format(new Date(),"yyyyMMdd")+beg+i;
     }
 
     public static String getMd5(String plainText) {

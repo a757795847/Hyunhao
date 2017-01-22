@@ -5,6 +5,7 @@ import com.zy.gcode.controller.AuthenticationController;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.*;
+import com.zy.gcode.utils.DateUtils;
 import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.UniqueStringGenerator;
 import org.apache.http.HttpResponse;
@@ -37,6 +38,9 @@ public class CodeService implements ICodeService {
 
     @Autowired
     PersistenceService persistenceService;
+
+    @Autowired
+    AuthenticationService authenticationService;
 
     public CodeRe code(String geappid, String url) {
         CodeRe codeRe = new CodeRe();
@@ -76,30 +80,14 @@ public class CodeService implements ICodeService {
            return CodeRe.error("authorization is empety!");
         }
         GeCode geCode = persistenceService.get(GeCode.class,state);
-        if(info.getUpdateTime().before(new Date(System.currentTimeMillis()-((info.getExpiresIn()-50)*1000)))){
+        if(DateUtils.isOutOfDate(info.getUpdateTime(),info.getExpiresIn())){
             StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token?component_access_token=");
+              CodeRe<ComponetToken> componetTokenCodeRe =  authenticationService.componetToekn();
+              if(componetTokenCodeRe.isError()){
+                return  componetTokenCodeRe;
+              }
 
-                    //.append(info.getAuthorizerAccessToken())；
-            if(AuthenticationController.serverToken.containsKey("inserDate")){
-                Date insertDate = (Date) AuthenticationController.serverToken.get("inserDate");
-                long expirs = (long)AuthenticationController.serverToken.get("expires_in");
-                if(insertDate.before(new Date(System.currentTimeMillis()-expirs*1000))){
-                    AuthenticationController.serverToken = HttpClientUtils.mapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
-                            ,"{ \"component_appid\":\"wxa8febcce6444f95f\" ," +
-                                    "\"component_appsecret\": \"5299dc17f84a708b995c85d6587e5b02\", " +
-                                    "\"component_verify_ticket\":\""+AuthenticationController.ComponentVerifyTicket +
-                                    "\"}");
-                    AuthenticationController.serverToken.put("insertDate",new Date());
-                }
-            }else {
-                AuthenticationController.serverToken = HttpClientUtils.mapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
-                        ,"{ \"component_appid\":\"wxa8febcce6444f95f\" ," +
-                                "\"component_appsecret\": \"5299dc17f84a708b995c85d6587e5b02\", " +
-                                "\"component_verify_ticket\":\""+AuthenticationController.ComponentVerifyTicket +
-                                "\"}");
-                AuthenticationController.serverToken.put("insertDate",new Date());
-            }
-            builder.append( AuthenticationController.serverToken.get("component_access_token"));
+            builder.append(componetTokenCodeRe.getMessage().getComponentAccessToken());
 
            Map<String,Object> map = HttpClientUtils.mapSSLPostSend(builder.toString(),"{" +
                    "\"component_appid\":\"wxa8febcce6444f95f\"," +

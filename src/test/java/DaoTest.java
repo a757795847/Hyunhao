@@ -76,34 +76,6 @@ public class DaoTest {
 
     @Test
     public void payService(){
-        System.out.println(HttpClientUtils.class.getClassLoader().getResource("").getFile());
-
-       /* try {
-            KeyStore keyStore  = KeyStore.getInstance("pem");
-            FileInputStream instream = new FileInputStream(this.getClass().getClassLoader().getResourceAsStream("rootca.pem"));
-            try {
-                keyStore.load(instream, "10016225".toCharArray());
-            } finally {
-                instream.close();
-            }
-
-            // Trust own CA and all self-signed certs
-            SSLContext sslcontext = SSLContexts.custom()
-                    .loadKeyMaterial(keyStore, "1426499802".toCharArray())
-                    .build();
-            // Allow TLSv1 protocol only
-            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
-                    sslcontext,
-                    new String[] { "TLSv1" },
-                    null,
-                    SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
-          HttpClient httpClient = HttpClients.custom()
-                    .setSSLSocketFactory(sslsf)
-                    .build();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+        authenticationService.componetToekn().getMessage();
     }
 }
