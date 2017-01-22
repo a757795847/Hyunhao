@@ -1,34 +1,14 @@
 import com.zy.gcode.dao.PersistenceService;
-import com.zy.gcode.pojo.AppInterface;
 import com.zy.gcode.pojo.AuthorizationInfo;
-import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.IPayService;
-import com.zy.gcode.service.pay.RedPayInfo;
-import com.zy.gcode.service.pay.WxXmlParser;
 import com.zy.gcode.utils.HttpClientUtils;
-import com.zy.gcode.utils.Page;
-import org.apache.http.client.HttpClient;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.ssl.SSLContexts;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.net.ssl.SSLContext;
-import java.io.FileInputStream;
-import java.nio.charset.Charset;
-import java.security.KeyStore;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by admin5 on 17/1/19.
@@ -60,7 +40,7 @@ public class DaoTest {
         String body = "{\"component_appid\":\"wxa8febcce6444f95f\"," +
                 "\"authorizer_appid\":\"wx653d39223641bea7\"," +
                 "\"authorizer_refresh_token\":\"refreshtoken@@@abWK9VW_xjLWXecdIcWw8fyfA-iUIen-reaDPjL6r3E\"}";
-        HttpClientUtils.MapSSLPostSend(url,body);
+        HttpClientUtils.mapSSLPostSend(url,body);
 
     }
     @Test

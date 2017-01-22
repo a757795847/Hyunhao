@@ -52,14 +52,14 @@ public class AuthenticationController {
             Date insertDate = (Date) serverToken.get("inserDate");
             long expirs = (long)serverToken.get("expires_in");
             if(insertDate.before(new Date(System.currentTimeMillis()-expirs*1000))){
-                serverToken = HttpClientUtils.MapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
+                serverToken = HttpClientUtils.mapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
                         ,"{ \"component_appid\":\"wxa8febcce6444f95f\" ," +
                                 "\"component_appsecret\": \"5299dc17f84a708b995c85d6587e5b02\", " +
                                 "\"component_verify_ticket\":\""+ComponentVerifyTicket +
                                 "\"}");
             }
         }else {
-            serverToken = HttpClientUtils.MapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
+            serverToken = HttpClientUtils.mapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
                     ,"{ \"component_appid\":\"wxa8febcce6444f95f\" ," +
                             "\"component_appsecret\": \"5299dc17f84a708b995c85d6587e5b02\", " +
                             "\"component_verify_ticket\":\""+ComponentVerifyTicket +
@@ -67,7 +67,7 @@ public class AuthenticationController {
         }
 
         String url = "https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token="+serverToken.get("component_access_token");
-        Map<String,String> map=  HttpClientUtils.MapSSLPostSend(url,"{\"component_appid\":\"wxa8febcce6444f95f\"}");
+        Map<String,String> map=  HttpClientUtils.mapSSLPostSend(url,"{\"component_appid\":\"wxa8febcce6444f95f\"}");
        return "redirect:https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=" +
                "wxa8febcce6444f95f&pre_auth_code="+map.get("pre_auth_code")+"&redirect_uri=http://open.izhuiyou.com/server/code";
 

@@ -64,8 +64,21 @@ public class HttpClientUtils {
         return  null;
     }
 
-    public static Map MapSSLPostSend(String url, String body) {
+    public static Map mapSSLPostSend(String url, String body) {
        HttpResponse response =  SSLPostSend(url,body);
+       if(response ==null){
+           return  null;
+       }
+        try {
+           Map map = CodeService.objectMapper.readValue(response.getEntity().getContent(),Map.class);
+           return  map;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static Map mapSSLGetSend(String url) {
+       HttpResponse response =  SSLGetSend(url);
        if(response ==null){
            return  null;
        }

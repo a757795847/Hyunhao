@@ -7,7 +7,6 @@ import com.zy.gcode.pojo.*;
 import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.UniqueStringGenerator;
 import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -77,11 +76,10 @@ public class CodeService implements ICodeService {
         }
         GeCode geCode = persistenceService.get(GeCode.class,state);
         if(info.getUpdateTime().before(new Date(System.currentTimeMillis()-((info.getExpiresIn()-50)*1000)))){
-            StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/component/refresh_token")
-                    .append("?component_access_token=").append(info.getAuthorizerAccessToken());
-           Map<String,Object> map = HttpClientUtils.MapSSLPostSend(builder.toString(),"{\"component_appid\":\"wxa8febcce6444f95f\",\n" +
-                    "\"authorizer_appid\":\""+appid+"\",\n" +
-                    "\"authorizer_refresh_token\":\""+info.getAuthorizerRefreshToken()+"\"}");
+            StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/component/refresh_token?appid=")
+                    .append(appid).append("&grant_type=refresh_token&component_appid=wxa8febcce6444f95f").append("&component_access_token=")
+                    .append(info.getAuthorizerAccessToken()).append("&refresh_token=").append(info.getAuthorizerRefreshToken());
+           Map<String,Object> map = HttpClientUtils.mapSSLGetSend(builder.toString());
            info.setAuthorizerRefreshToken(map.get("authorizer_refresh_token").toString());
            info.setAuthorizerAccessToken(map.get("authorizer_access_token").toString());
            info.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
