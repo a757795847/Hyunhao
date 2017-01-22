@@ -77,7 +77,7 @@ public class CodeService implements ICodeService {
         }
         GeCode geCode = persistenceService.get(GeCode.class,state);
         if(info.getUpdateTime().before(new Date(System.currentTimeMillis()-((info.getExpiresIn()-50)*1000)))){
-            StringBuilder builder = new StringBuilder("http://mp.weixin.qq.com/wiki/2/88b2bf1265a707c031e51f26ca5e6512.html")
+            StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/component/refresh_token")
                     .append("?component_access_token=").append(info.getAuthorizerAccessToken());
            Map<String,Object> map = HttpClientUtils.MapSSLPostSend(builder.toString(),"{\"component_appid\":\"wxa8febcce6444f95f\",\n" +
                     "\"authorizer_appid\":\""+appid+"\",\n" +

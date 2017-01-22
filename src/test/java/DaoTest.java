@@ -56,10 +56,11 @@ public class DaoTest {
     }
     @Test
     public void dome(){
-        Document document = DocumentHelper.createDocument();
-        Element root = document.addElement("xml");
-        root.addElement("");
-        System.out.println(String.valueOf(System.currentTimeMillis()).substring(6).length());
+        String url = "http://mp.weixin.qq.com/wiki/2/88b2bf1265a707c031e51f26ca5e6512.html?component_access_token=nH9FksTs4eWAM4EGJrTfTMsSGyJfuzN_5atu4aQpx0rbF624OWrtDYlNpeaf78E7pa9EIlDFHpO2VksaOW1Gfs9iFbqYFOHAd2eHLPOib0IpAGVswZ_X1Sh4bQcztjM2YCGfAGDUYC";
+        String body = "{\"component_appid\":\"wxa8febcce6444f95f\"," +
+                "\"authorizer_appid\":\"wx653d39223641bea7\"," +
+                "\"authorizer_refresh_token\":\"refreshtoken@@@abWK9VW_xjLWXecdIcWw8fyfA-iUIen-reaDPjL6r3E\"}";
+        HttpClientUtils.MapSSLPostSend(url,body);
 
     }
     @Test
