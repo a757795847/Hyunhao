@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Component
 public class AuthenticationService implements IAuthenticationService {
-    public  static String ComponentVerifyTicket ="ticket@@@GR3DiYn44RDjBFLd-dGVjf7IzOp-n56HfNrLqAeQ5HC3GzDf3HCiLtSjbje4xDBW9Qg-3au1Dj6nbWnoujYJyQ";
+    public  static String ComponentVerifyTicket ="ticket@@@s_oliXVLJNRyxhWPbinmMdg9MrTivf5QZmD3vyEhTlEr1XpottJR9F5Zke6tvfBnms-fjCX3jN0m_Q0Lyv6hYw";
 
     @Autowired
     PersistenceService persistenceService;
