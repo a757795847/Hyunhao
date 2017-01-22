@@ -10,7 +10,7 @@
         <property name="expiresIn" column="expires_in"/>
         <property name="authorizerRefreshToken" column="authorizer_refresh_token"/>
         <property name="funcInfo" column="func_info"/>
-        <property name="insertTime" column="insert_time"/>
-        <property name="updateTime" column="update_time"/>
+        <property insert="false" name="insertTime" column="insert_time"/>
+        <property  name="updateTime" column="update_time"/>
     </class>
 </hibernate-mapping>

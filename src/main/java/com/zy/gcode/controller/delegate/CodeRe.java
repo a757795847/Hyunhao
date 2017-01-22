@@ -16,6 +16,25 @@ public class CodeRe<T> {
         return isError;
     }
 
+    public static<A> CodeRe<A> correct(A t){
+        return new CodeRe(t);
+    }
+
+    public static CodeRe error(String message){
+        return new CodeRe(message);
+    }
+
+
+    public CodeRe() {
+    }
+
+    public CodeRe(String error) {
+        this.error = error;
+    }
+
+    public CodeRe(T message) {
+        this.message = message;
+    }
 
     public String getErrorMessage() {
         return error;

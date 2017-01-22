@@ -1,11 +1,13 @@
 package com.zy.gcode.controller;
 
 
+import com.zy.gcode.service.IAuthenticationService;
 import com.zy.gcode.service.pay.WxXmlParser;
 import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.wx.AesException;
 import com.zy.gcode.utils.wx.WXBizMsgCrypt;
 import org.apache.http.HttpResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +27,10 @@ import java.util.Map;
 public class AuthenticationController {
     private  static String ComponentVerifyTicket =null;
     private  Map serverToken = new HashMap();
+
+    @Autowired
+    IAuthenticationService authenticationService;
+
     @RequestMapping("auth/receive")
     public @ResponseBody String getGeCode(String msg_signature,String timestamp,String nonce,@RequestBody(required = false) String str){
         try {
@@ -68,9 +74,9 @@ public class AuthenticationController {
     }
 
     @RequestMapping("server/code")
-    public @ResponseBody String serverCode(String auth_code,String expires_in){
+    public @ResponseBody  String serverCode(String auth_code,String expires_in){
       HttpResponse response = HttpClientUtils.SSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token="+serverToken.get("component_access_token"),
-                "{\"component_appid\":\"wxa8febcce6444f95f\" ,\"authorization_code\": \""+auth_code+"\"∂}");
+                "{\"component_appid\":\"wxa8febcce6444f95f\" ,\"authorization_code\": \""+auth_code+"\"}");
       StringBuilder content = new StringBuilder();
       try(BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"utf-8"))){
             String line;
@@ -81,8 +87,8 @@ public class AuthenticationController {
             e.printStackTrace();
       }
 
-
-      return content.toString();
+        authenticationService.saveServerToken(content.toString());
+      return "authorization success";
 
     }
 

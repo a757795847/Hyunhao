@@ -65,27 +65,42 @@ public class CodeService implements ICodeService {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        builder.append("&component_appid=wxa8febcce6444f95f");
         builder.append("#wechat_redirect");
         codeRe.setMessage(builder.toString());
         return codeRe;
     }
 
 //https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
-    public CodeRe token(String code, String state) {//state gecodeM
+    public CodeRe token(String code, String state,String appid) {//state gecodeM
         CodeRe codeRe = new CodeRe();
       // AppInterface appInterface = persistenceService.load(AppInterface.class,state);
+        AuthorizationInfo info = persistenceService.load(AuthorizationInfo.class,"wxa8febcce6444f95f");
+        if(info==null){
+           return CodeRe.error("authorization is empety!");
+        }
         GeCode geCode = persistenceService.get(GeCode.class,state);
-         AppInterface appInterface = persistenceService.get(AppInterface.class,geCode.getGeAppid());
-        if(appInterface==null){
-            codeRe.setError(NULL_APP);
-           return codeRe;
-       }
+        if(info.getUpdateTime().before(new Date(System.currentTimeMillis()-(info.getExpiresIn()*1000)))){
+            StringBuilder builder = new StringBuilder("http://mp.weixin.qq.com/wiki/2/88b2bf1265a707c031e51f26ca5e6512.html")
+                    .append("?component_access_token=").append(info.getAuthorizerAccessToken());
+           Map<String,Object> map = HttpClientUtils.MapSSLPostSend(builder.toString(),"{\n" +
+                    "\"component_appid\":\"wxa8febcce6444f95f\",\n" +
+                    "\"authorizer_appid\":\""+appid+"\",\n" +
+                    "\"authorizer_refresh_token\":\""+info.getAuthorizerRefreshToken()+"\",\n" +
+                    "}");
+           info.setAuthorizerRefreshToken(map.get("authorizer_refresh_token").toString());
+           info.setAuthorizerAccessToken(map.get("authorizer_access_token").toString());
+           info.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
+           persistenceService.updateOrSave(info);
+        }
 
-        StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/access_token");
-        builder.append("?appid=").append(appInterface.getWxAppid());
-        builder.append("&secret=").append(appInterface.getSecret());
+
+        StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/component/access_token");
+        builder.append("?appid=").append(appid);
         builder.append("&code=").append(code);
-        builder.append("&grant_type=authorization_code");
+        builder.append("&grant_type=authorization_code")
+                .append("&component_appid=wxa8febcce6444f95f");
+        builder.append("&component_access_token=").append(info.getAuthorizerAccessToken());
 
         HttpResponse httpResponse = HttpClientUtils.SSLGetSend(builder.toString());
        if(httpResponse.getStatusLine().getStatusCode()!=200){

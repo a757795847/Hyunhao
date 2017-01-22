@@ -459,3 +459,6 @@ Caused by: java.lang.ClassNotFoundException: com.qq.weixin.mp.aes.AesException
 	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
 	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
 	... 58 more
+
+2017-01-22 09:49:57
+[ERROR]-[Thread: main]-[org.hibernate.engine.jdbc.spi.SqlExceptionHelper.logExceptions()]: Data truncation: Data too long for column 'authorizer_access_token' at row 1

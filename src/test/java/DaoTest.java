@@ -1,6 +1,7 @@
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.AppInterface;
 import com.zy.gcode.pojo.User;
+import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.IPayService;
 import com.zy.gcode.service.pay.RedPayInfo;
 import com.zy.gcode.service.pay.WxXmlParser;
@@ -37,6 +38,10 @@ public class DaoTest {
     @Autowired
     IPayService payService;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
+
     @Test
     public void test(){
 
@@ -52,10 +57,17 @@ public class DaoTest {
     }
     @Test
     public void utils(){
-        RedPayInfo redPayInfo = new RedPayInfo();
+       /* RedPayInfo redPayInfo = new RedPayInfo();
         redPayInfo.setAct_name("哥哥");
         redPayInfo.setTotal_num(22);
-        System.out.println(WxXmlParser.getWxXml(redPayInfo));
+        System.out.println(WxXmlParser.getWxXml(redPayInfo));*/
+       authenticationService.saveServerToken("{\"authorization_info\":{\"authorizer_appid\":\"wx653d39223641bea7\",\n" +
+               "                \"authorizer_access_token\":\"nH9FksTs4eWAM4EGJrTfTMsSGyJfuzN_5atu4aQpx0rbF624OWrtDYlNpeaf78E7pa9EIlDFHpO2VksaOW1Gfs9iFbqYFOHAd2eHLPOib0IpAGVswZ_X1Sh4bQcztjM2YCGfAGDUYC\",\n" +
+               "                \"expires_in\":7200,\n" +
+               "                \"authorizer_refresh_token\":\"refreshtoken@@@abWK9VW_xjLWXecdIcWw8fyfA-iUIen-reaDPjL6r3E\",\n" +
+               "                \"func_info\":[{\"funcscope_category\":{\"id\":1}},\n" +
+               "            {\"funcscope_category\":{\"id\":15}},{\"funcscope_category\":{\"id\":4}},\n" +
+               "            {\"funcscope_category\":{\"id\":2}},{\"funcscope_category\":{\"id\":9}}]}}");
     }
 
     @Test

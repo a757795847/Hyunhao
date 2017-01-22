@@ -8,7 +8,7 @@ import com.zy.gcode.pojo.User;
  */
 public interface ICodeService {
     CodeRe code(String appid, String url);
-    CodeRe token(String code, String state);
+    CodeRe token(String code, String state,String appid);
     CodeRe<String> geToken(String geCode);
     CodeRe<User> getUser(String token);
 }
