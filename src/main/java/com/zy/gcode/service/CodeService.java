@@ -80,7 +80,7 @@ public class CodeService implements ICodeService {
            return CodeRe.error("authorization is empety!");
         }
         GeCode geCode = persistenceService.get(GeCode.class,state);
-        if(info.getUpdateTime().before(new Date(System.currentTimeMillis()-(info.getExpiresIn()*1000)))){
+        if(info.getUpdateTime().before(new Date(System.currentTimeMillis()-((info.getExpiresIn()-50)*1000)))){
             StringBuilder builder = new StringBuilder("http://mp.weixin.qq.com/wiki/2/88b2bf1265a707c031e51f26ca5e6512.html")
                     .append("?component_access_token=").append(info.getAuthorizerAccessToken());
            Map<String,Object> map = HttpClientUtils.MapSSLPostSend(builder.toString(),"{\n" +

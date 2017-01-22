@@ -35,7 +35,7 @@ public class CodeController {
         }
         System.out.println("code:"+code);
         System.out.println("state:"+state);
-       CodeRe<String> codeRe =  iCodeService.token(code,state);
+       CodeRe<String> codeRe =  iCodeService.token(code,state,appid);
        if(codeRe.isError()){
            return "redirect:error.html?message="+codeRe.getErrorMessage();
        }
