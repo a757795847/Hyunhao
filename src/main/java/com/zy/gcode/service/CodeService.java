@@ -77,7 +77,7 @@ public class CodeService implements ICodeService {
         }
         GeCode geCode = persistenceService.get(GeCode.class,state);
         if(info.getUpdateTime().before(new Date(System.currentTimeMillis()-((info.getExpiresIn()-50)*1000)))){
-            StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token=");
+            StringBuilder builder = new StringBuilder("https:// api.weixin.qq.com /cgi-bin/component/api_authorizer_token?component_access_token=");
 
                     //.append(info.getAuthorizerAccessToken())；
             if(AuthenticationController.serverToken.containsKey("inserDate")){
