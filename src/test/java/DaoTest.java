@@ -4,6 +4,7 @@ import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.IPayService;
+import com.zy.gcode.service.pay.WxXmlParser;
 import com.zy.gcode.utils.HttpClientUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -77,8 +78,9 @@ public class DaoTest {
 
     @Test
     public void payService(){
-      User user =  persistenceService.get(User.class,"ooBfdwNcoMaol2CF0zlcRUYkYE_Q1");
-      user.getOpenId();
-      //user.getUpdateTime();
+        System.out.println(
+        WxXmlParser.Xml2Map(
+                "<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[发放成功]]></return_msg><result_code><![CDATA[SUCCESS]]></result_code><err_code><![CDATA[SUCCESS]]></err_code><err_code_des><![CDATA[发放成功]]></err_code_des><mch_billno><![CDATA[1426499802201701233199406103]]></mch_billno><mch_id><![CDATA[1426499802]]></mch_id><wxappid><![CDATA[wx653d39223641bea7]]></wxappid><re_openid><![CDATA[ooBfdwNcoMaol2CF0zlcRUYkYE_Q]]></re_openid><total_amount>100</total_amount><send_listid><![CDATA[1000041701201701233000059759067]]></send_listid></xml>")
+        );
     }
 }

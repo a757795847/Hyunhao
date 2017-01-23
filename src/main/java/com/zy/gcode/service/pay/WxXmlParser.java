@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,7 +53,7 @@ public class WxXmlParser {
        return map;
     }
     public static String elementString(String data,String name){
-        Document document =null;
+        Document document;
         try {
             document = DocumentHelper.parseText(data);
         } catch (DocumentException e) {
@@ -62,6 +63,23 @@ public class WxXmlParser {
        Element root = document.getRootElement();
        return root.elementText(name);
 
+    }
+
+    public static Map Xml2Map(String date){
+        Document document;
+        try {
+            document = DocumentHelper.parseText(date);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+            return null;
+        }
+      Element root =  document.getRootElement();
+       List<Element> childs =  root.elements();
+       Map<String,String> map = new HashMap<>();
+       for(Element child :childs){
+            map.put(child.getName(),child.getText());
+       }
+       return  map;
     }
 
 }

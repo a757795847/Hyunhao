@@ -1,5 +1,7 @@
 package com.zy.gcode.controller;
 
+import com.zy.gcode.controller.delegate.CodeRe;
+import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.service.IPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,5 +26,15 @@ public class PayController {
     public @ResponseBody Object send(){
         return payService.pay("ooBfdwNcoMaol2CF0zlcRUYkYE_Q",100).getMessage();
     }
+
+    @RequestMapping("redinfo")
+    public @ResponseBody Object redinfo(String billno){
+      CodeRe<RedStatus> redStatusCodeRe = payService.payInfo(billno);
+      if (redStatusCodeRe.isError()){
+        return redStatusCodeRe.getErrorMessage();
+      }
+      return  redStatusCodeRe.getMessage();
+    }
+
 
 }
