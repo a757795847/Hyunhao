@@ -101,7 +101,7 @@ public class CodeService implements ICodeService {
            persistenceService.updateOrSave(info);
         }
 
-
+        //https://api.weixin.qq.com/sns/oauth2/component/access_token?appid=APPID&code=CODE&grant_type=authorization_code&component_appid=COMPONENT_APPID&component_access_token=COMPONENT_ACCESS_TOKEN
         StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/component/access_token");
         builder.append("?appid=").append(appid);
         builder.append("&code=").append(code);

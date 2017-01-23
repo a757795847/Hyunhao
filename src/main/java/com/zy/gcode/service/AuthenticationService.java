@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Component
 public class AuthenticationService implements IAuthenticationService {
-    public  static String ComponentVerifyTicket ="ticket@@@JFNZ5BJxbfCveZ4XoUw-SUxYNC7B1ZasHWXI9nVKSrCBWsXozPamwHOklKWYyOrtyj9jN0_ORL9Z7lOWBpXH3g";
+    public  static String ComponentVerifyTicket ="ticket@@@KyW9OIa35O5KVXl3BgiKGXhU8zu1No2ozX3hbsnqMkCzmpdhghtkGdgNDxJMvM-nMloq7WUHIcXhK2zONupIHQ";
 
     @Autowired
     PersistenceService persistenceService;
@@ -78,6 +78,9 @@ public class AuthenticationService implements IAuthenticationService {
                                 "\"component_appsecret\": \"5299dc17f84a708b995c85d6587e5b02\", " +
                                 "\"component_verify_ticket\":\""+ComponentVerifyTicket +
                                 "\"}");
+               if(map.containsKey("errmsg")){
+                   return CodeRe.error((String)map.get("errmsg"));
+               }
                componetToken.setComponentAccessToken(map.get("component_access_token").toString());
                componetToken.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
 
