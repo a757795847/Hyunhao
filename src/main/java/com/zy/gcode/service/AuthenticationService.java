@@ -83,9 +83,10 @@ public class AuthenticationService implements IAuthenticationService {
                }
                componetToken.setComponentAccessToken(map.get("component_access_token").toString());
                componetToken.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
+            persistenceService.updateOrSave(componetToken);
 
             }
-        persistenceService.updateOrSave(componetToken);
+
         return CodeRe.correct(componetToken);
     }
 

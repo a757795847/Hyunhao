@@ -100,14 +100,14 @@ public class CodeService implements ICodeService {
            info.setUpdateTime(new Timestamp(System.currentTimeMillis()));
            persistenceService.updateOrSave(info);
         }
-
+        CodeRe<ComponetToken> componetTokenCodeRe =  authenticationService.componetToekn();
         //https://api.weixin.qq.com/sns/oauth2/component/access_token?appid=APPID&code=CODE&grant_type=authorization_code&component_appid=COMPONENT_APPID&component_access_token=COMPONENT_ACCESS_TOKEN
         StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/component/access_token");
         builder.append("?appid=").append(appid);
         builder.append("&code=").append(code);
         builder.append("&grant_type=authorization_code")
                 .append("&component_appid=wxa8febcce6444f95f");
-        builder.append("&component_access_token=").append(info.getAuthorizerAccessToken());
+        builder.append("&component_access_token=").append(componetTokenCodeRe.getMessage().getComponentAccessToken());
 
         HttpResponse httpResponse = HttpClientUtils.SSLGetSend(builder.toString());
        if(httpResponse.getStatusLine().getStatusCode()!=200){
