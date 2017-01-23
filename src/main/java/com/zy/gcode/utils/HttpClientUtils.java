@@ -1,6 +1,5 @@
 package com.zy.gcode.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zy.gcode.service.CodeService;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -23,16 +22,17 @@ import java.util.Map;
  */
 public class HttpClientUtils {
     private static HttpClient httpClient;
+
     static {
         try {
-            KeyStore keyStore  = KeyStore.getInstance("PKCS12");
+            KeyStore keyStore = KeyStore.getInstance("PKCS12");
             Resource resource = new ClassPathResource("apiclient_cert.p12");
             keyStore.load(resource.getInputStream(), "1426499802".toCharArray());
             SSLContext sslcontext = SSLContexts.custom()
                     .loadKeyMaterial(keyStore, "1426499802".toCharArray())
                     .build();
             httpClient = HttpClientBuilder.create().setSSLContext(sslcontext).build();
-     } catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
@@ -45,52 +45,61 @@ public class HttpClientUtils {
     public static HttpResponse SSLGetSend(String url) {
         HttpGet get = new HttpGet(url);
         try {
-           return httpClient.execute(get);
+            return httpClient.execute(get);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return  null;
+        return null;
     }
-    public static HttpResponse SSLPostSend(String url,String body) {
+
+    public static HttpResponse SSLPostSend(String url, String body) {
         HttpPost httpPost = new HttpPost(url);
-        StringEntity entity = new StringEntity(body,"utf-8");//解决中文乱码问题
+        StringEntity entity = new StringEntity(body, "utf-8");//解决中文乱码问题
         entity.setContentEncoding("UTF-8");
         httpPost.setEntity(entity);
-        try{
+        try {
             return httpClient.execute(httpPost);
-        }catch (IOException e){
-                    e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return  null;
+        return null;
     }
 
     public static Map mapSSLPostSend(String url, String body) {
-       HttpResponse response =  SSLPostSend(url,body);
-       if(response ==null){
-           return  null;
-       }
-        try {
-           Map map = CodeService.objectMapper.readValue(response.getEntity().getContent(),Map.class);
-           return  map;
-        } catch (IOException e) {
-            e.printStackTrace();
+        HttpResponse response = SSLPostSend(url, body);
+        if (response == null) {
+            return null;
         }
-        return null;
-    }
-    public static Map mapSSLGetSend(String url) {
-       HttpResponse response =  SSLGetSend(url);
-       if(response ==null){
-           return  null;
-       }
+        if (response.getStatusLine().getStatusCode() != 200) {
+            return null;
+        }
+
         try {
-           Map map = CodeService.objectMapper.readValue(response.getEntity().getContent(),Map.class);
-           return  map;
+            Map map = CodeService.objectMapper.readValue(response.getEntity().getContent(), Map.class);
+            return map;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
+    public static Map mapSSLGetSend(String url) {
+        HttpResponse response = SSLGetSend(url);
+        if (response == null) {
+            return null;
+        }
+        if (response.getStatusLine().getStatusCode() != 200) {
+            return null;
+        }
+
+        try {
+            Map map = CodeService.objectMapper.readValue(response.getEntity().getContent(), Map.class);
+            return map;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 }

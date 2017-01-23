@@ -27,14 +27,7 @@ public class CodeService implements ICodeService {
     public final static long CODE_EXPIRS=100;
     public final static String CALL_BACK_URL="http://open.izhuiyou.com/code/userinfo";
     public final static String GE_CODE="https://open.weixin.qq.com/connect/oauth2/authorize";
-    //public final static String GE_CODE="https://localhost:8443/zy/authentication/geCode";
-
     public static ObjectMapper objectMapper = new ObjectMapper();
-
-    public final static String NULL_APP="null_app";
-    public final static String ILLEGAL_STATUS="illegal_status";
-    public final static String INVALID_GECODE="invalid_gecode";
-    public final static String TIME_OUT_GECODE="time_out_gecode";
 
     @Autowired
     PersistenceService persistenceService;
@@ -45,10 +38,15 @@ public class CodeService implements ICodeService {
     public CodeRe code(String geappid, String url) {
         CodeRe codeRe = new CodeRe();
         AppInterface appInterface = persistenceService.get(AppInterface.class, geappid);
-        if(appInterface==null){
-            codeRe.setError(NULL_APP);
-            return codeRe;
+
+        String wxappid;
+        try {
+            wxappid = appInterface.getWxAppid();
+        } catch (NullPointerException e) {
+            return CodeRe.error("appInterface is empty!");
         }
+
+
         GeCode geCode = new GeCode();
         String code = UniqueStringGenerator.getUniqueCode();
         geCode.setExpires(CODE_EXPIRS);
@@ -59,7 +57,7 @@ public class CodeService implements ICodeService {
 
 
         StringBuilder builder = new StringBuilder(GE_CODE).append("?");
-        builder.append("appid=").append(appInterface.getWxAppid());
+        builder.append("appid=").append(wxappid);
         try {
             builder.append("&redirect_uri=").append(URLEncoder.encode(CALL_BACK_URL,"utf-8"));
             builder.append("&response_type=code&scope=").append(appInterface.getScope()).append("&state=").append(geCode.getGeCodeM());
@@ -73,35 +71,19 @@ public class CodeService implements ICodeService {
     }
 
     public CodeRe token(String code, String state,String appid) {//state gecodeM
-        CodeRe codeRe = new CodeRe();
-      // AppInterface appInterface = persistenceService.load(AppInterface.class,state);
-        AuthorizationInfo info = persistenceService.get(AuthorizationInfo.class,appid);
-        if(info==null){
-           return CodeRe.error("authorization is empety!");
-        }
         GeCode geCode = persistenceService.get(GeCode.class,state);
-        if(DateUtils.isOutOfDate(info.getUpdateTime(),info.getExpiresIn())){
-            StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token?component_access_token=");
-              CodeRe<ComponetToken> componetTokenCodeRe =  authenticationService.componetToekn();
-              if(componetTokenCodeRe.isError()){
-                return  componetTokenCodeRe;
-              }
 
-            builder.append(componetTokenCodeRe.getMessage().getComponentAccessToken());
-
-           Map<String,Object> map = HttpClientUtils.mapSSLPostSend(builder.toString(),"{" +
-                   "\"component_appid\":\"wxa8febcce6444f95f\"," +
-                   "\"authorizer_appid\":\""+info.getAuthorizerAppid()+"\"," +
-                   "\"authorizer_refresh_token\":\""+info.getAuthorizerRefreshToken()+"\"" +
-                   "}");
-           info.setAuthorizerRefreshToken(map.get("authorizer_refresh_token").toString());
-           info.setAuthorizerAccessToken(map.get("authorizer_access_token").toString());
-           info.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
-           info.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-           persistenceService.updateOrSave(info);
+        try {
+            geCode.getGeCodeM();
+        } catch (NullPointerException e) {
+            CodeRe.error("geCodeM is invalid");
         }
+
         CodeRe<ComponetToken> componetTokenCodeRe =  authenticationService.componetToekn();
-        //https://api.weixin.qq.com/sns/oauth2/component/access_token?appid=APPID&code=CODE&grant_type=authorization_code&component_appid=COMPONENT_APPID&component_access_token=COMPONENT_ACCESS_TOKEN
+        if(componetTokenCodeRe.isError()){
+            return  componetTokenCodeRe;
+        }
+
         StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/component/access_token");
         builder.append("?appid=").append(appid);
         builder.append("&code=").append(code);
@@ -109,28 +91,14 @@ public class CodeService implements ICodeService {
                 .append("&component_appid=wxa8febcce6444f95f");
         builder.append("&component_access_token=").append(componetTokenCodeRe.getMessage().getComponentAccessToken());
 
-        HttpResponse httpResponse = HttpClientUtils.SSLGetSend(builder.toString());
-       if(httpResponse.getStatusLine().getStatusCode()!=200){
-            codeRe.setError(ILLEGAL_STATUS);
-            return codeRe;
+        Map map = HttpClientUtils.mapSSLGetSend(builder.toString());
+        if(map == null){
+            return CodeRe.error("status error!");
         }
 
-    /*    { "access_token":"ACCESS_TOKEN",
-                "expires_in":7200,
-                "refresh_token":"REFRESH_TOKEN",
-                "openid":"OPENID",
-                "scope":"SCOPE" }*/
-        Map<String,Object> map = null;
-        try{
-            map = objectMapper.readValue(httpResponse.getEntity().getContent(), Map.class);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         if(map.containsKey("errcode")){
-            codeRe.setError(map.get("errcode").toString());
-            return codeRe;
+            return CodeRe.error(map.get("errmsg").toString());
         }
         WxToken wxToken = new WxToken();
  /*       &&map.containsKey("expires_in")&&map.containsKey("refresh_token")&&
@@ -158,46 +126,25 @@ public class CodeService implements ICodeService {
         geCode.setWxToken(wxToken.getWxToken());
         persistenceService.updateOrSave(geCode);
         if(StringUtils.isEmpty(wxToken.getWxToken())&&StringUtils.isEmpty(wxToken.getUserOpenId())){
-            codeRe.setError("token or openid is empty");
-            return  codeRe;
+            return  CodeRe.error("token or openid is empty");
         }
 
        User user = user(wxToken.getWxToken(),wxToken.getUserOpenId());
 
         if(user ==null){
-            codeRe.setError("to get user from weixin is fail");
-            return codeRe;
+            return CodeRe.error("to get user from weixin is fail");
         }
-
-        codeRe.setMessage(geCode.getCallbackUrl()+"?code="+geCode.getGeCodeM());
-        return codeRe;
+        return CodeRe.correct(geCode.getCallbackUrl()+"?code="+geCode.getGeCodeM());
     }
 
     private User user(String token, String openid){
         StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/userinfo?access_token=")
         .append(token).append("&openid=").append(openid).append("&lang=zh_CN");
-        HttpResponse httpResponse = HttpClientUtils.SSLGetSend(builder.toString());
-        Map<String,Object> map = null;
-        try {
-            map = objectMapper.readValue(httpResponse.getEntity().getContent(),Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
+        Map map = HttpClientUtils.mapSSLGetSend(builder.toString());
+        if(map == null){
+            return  null;
         }
 
-        if(map.containsKey("errcode")){
-            return null;
-        }
-      /*  {    "openid":" OPENID",
-                " nickname": NICKNAME,
-                "sex":"1",
-                "province":"PROVINCE"
-            "city":"CITY",
-                "country":"COUNTRY",
-                "headimgurl":    "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ
-            4eMsv84eavHiaiceqxibJxCfHe/46",
-            "privilege":[ "PRIVILEGE1" "PRIVILEGE2"     ],
-            "unionid": "o6_bmasdasdsad6_2sgVt7hMZOPfL"
-        }*/
         User user = new User();
         user.setOpenId(openid);
 
@@ -234,15 +181,17 @@ public class CodeService implements ICodeService {
 
     @Override
     public CodeRe<String> geToken(String geCodeM) {
-        CodeRe<String> codeRe = new CodeRe<>();
         GeCode geCode =persistenceService.get(GeCode.class,geCodeM);
-        if(geCode==null){
-            codeRe.setError(INVALID_GECODE);
-            return codeRe;
+
+        Timestamp updatetime;
+        try {
+            updatetime = geCode.getUpdateTime();
+        } catch (NullPointerException e) {
+           return CodeRe.error("invalid geCodeM");
         }
-        if(geCode.getUpdateTime().before(new Date(System.currentTimeMillis()-geCode.getExpires()*1000))){
-            codeRe.setError(TIME_OUT_GECODE);
-            return codeRe;
+
+        if(DateUtils.isOutOfDate(updatetime,geCode.getExpires())){
+            return CodeRe.error("time out gecode");
         }
 
         String geTokenM =  UniqueStringGenerator.getUniqueToken();
@@ -252,34 +201,36 @@ public class CodeService implements ICodeService {
         geToken.setWxToken(geCode.getWxToken());
         geToken.setOpenid(geCode.getOpenid());
         persistenceService.updateOrSave(geToken);
-        codeRe.setMessage(geTokenM);
-        return codeRe;
+        return CodeRe.correct(geTokenM);
     }
 
     @Override
     public CodeRe<User> getUser(String token) {
-        CodeRe<User> codeRe = new CodeRe<>();
        GeToken geToken = persistenceService.get(GeToken.class,token);
+        Timestamp updatetime;
+
+        try {
+            updatetime = geToken.getUpdateTime();
+        } catch (NullPointerException e) {
+           return CodeRe.error("token is invalid");
+        }
 
 
-       if(geToken == null){
-            codeRe.setError("token is invalid!");
-            return  codeRe;
-       }
-       if(new Date(geToken.getUpdateTime().getTime()).after(new Date(System.currentTimeMillis()+7000*1000))){
-            codeRe.setError("token_out_time");
-            return codeRe;
+        if(DateUtils.isOutOfDate(updatetime,7000L)){
+           return CodeRe.error("token out time");
        }
 
        String openid = geToken.getOpenid();
-       if(StringUtils.isEmpty(openid)) {
-           codeRe.setError("openid is empty");
-           return codeRe;
-       }
 
      User user = persistenceService.get(User.class,openid);
-        codeRe.setMessage(user);
-        return codeRe;
+
+        try {
+            user.getUpdateTime();
+        } catch (NullPointerException e) {
+          return CodeRe.error("openid is invalid");
+        }
+
+        return CodeRe.correct(user);
     }
 
 }

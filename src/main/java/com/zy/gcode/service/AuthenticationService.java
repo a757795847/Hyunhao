@@ -61,7 +61,6 @@ public class AuthenticationService implements IAuthenticationService {
     @Override
     public CodeRe<ComponetToken> componetToekn() {
       ComponetToken componetToken =  persistenceService.get(ComponetToken.class,"wxa8febcce6444f95f");
-
         try {
             componetToken.getExpiresIn();
         } catch (NullPointerException e) {

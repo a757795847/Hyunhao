@@ -1,5 +1,6 @@
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.AuthorizationInfo;
+import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.IPayService;
@@ -76,6 +77,8 @@ public class DaoTest {
 
     @Test
     public void payService(){
-        authenticationService.componetToekn().getMessage();
+      User user =  persistenceService.get(User.class,"ooBfdwNcoMaol2CF0zlcRUYkYE_Q1");
+      user.getOpenId();
+      //user.getUpdateTime();
     }
 }
