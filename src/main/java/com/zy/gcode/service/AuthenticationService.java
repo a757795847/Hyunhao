@@ -24,7 +24,7 @@ import java.util.Map;
  */
 @Component
 public class AuthenticationService implements IAuthenticationService {
-    public  static String ComponentVerifyTicket ="ticket@@@KyW9OIa35O5KVXl3BgiKGXhU8zu1No2ozX3hbsnqMkCzmpdhghtkGdgNDxJMvM-nMloq7WUHIcXhK2zONupIHQ";
+    public  static String ComponentVerifyTicket ="ticket@@@ba322i29d8HUS-QSoIOXAhhao1SHkM9hKC2oUDfki_dpnIgqvdEnWpdIy9vklq8LZG2MzNeXoYjuWOWJL6BRpQ";
 
     @Autowired
     PersistenceService persistenceService;
@@ -110,6 +110,6 @@ public class AuthenticationService implements IAuthenticationService {
         } catch (NullPointerException e) {
            return null;
         }
-        return appInterface;
+        return appInterface
     }
 }
