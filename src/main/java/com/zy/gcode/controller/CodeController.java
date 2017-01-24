@@ -1,7 +1,9 @@
 package com.zy.gcode.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.pojo.User;
+import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.ICodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -73,7 +75,11 @@ public class CodeController {
             return error(codeRe.getErrorMessage());
         }
         Map map = new HashMap(4);
-        map.put("userinfo", codeRe.getMessage());
+        try {
+            map.put("userinfo", CodeService.objectMapper.writeValueAsString(codeRe.getMessage()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return ok(map);
     }
 

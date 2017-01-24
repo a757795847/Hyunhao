@@ -32,6 +32,7 @@ public class CodeService implements ICodeService {
     public final static String GE_CODE="https://open.weixin.qq.com/connect/oauth2/authorize";
     public static ObjectMapper objectMapper = new ObjectMapper();
     static {
+        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
     }
     @Autowired
