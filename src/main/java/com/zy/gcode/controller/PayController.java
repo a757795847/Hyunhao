@@ -2,11 +2,16 @@ package com.zy.gcode.controller;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.pojo.RedStatus;
+import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by admin5 on 17/1/20.
@@ -23,8 +28,9 @@ public class PayController {
     }
 
     @RequestMapping("send")
-    public @ResponseBody Object send(){
-        return payService.pay("ooBfdwNcoMaol2CF0zlcRUYkYE_Q",100).getMessage();
+    public @ResponseBody Object send(HttpSession session){
+        User user = (User)session.getAttribute("c_user");
+       return payService.pay(user.getOpenId(),1).getMessage();
     }
 
     @RequestMapping("redinfo")

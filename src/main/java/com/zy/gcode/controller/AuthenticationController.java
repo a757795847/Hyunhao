@@ -27,6 +27,7 @@ public class AuthenticationController {
     @Autowired
     IAuthenticationService authenticationService;
 
+
     @RequestMapping("auth/receive")
     public @ResponseBody String getGeCode(String msg_signature,String timestamp,String nonce,@RequestBody(required = false) String str){
        authenticationService.decrpt(msg_signature,timestamp,nonce,str);
@@ -37,12 +38,12 @@ public class AuthenticationController {
     public String authAppid(@PathVariable String appid){
         CodeRe<ComponetToken> codeRe = authenticationService.componetToekn();
         if(codeRe.isError()){
-            return "error.jsp";
+            return "error.jsp?message="+codeRe.getErrorMessage();
         }
         String url = "https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token="+codeRe.getMessage().getComponentAccessToken();
         Map<String,String> map=  HttpClientUtils.mapSSLPostSend(url,"{\"component_appid\":\"wxa8febcce6444f95f\"}");
-       return "redirect:https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=" +
-               "wxa8febcce6444f95f&pre_auth_code="+map.get("pre_auth_code")+"&redirect_uri=http://open.izhuiyou.com/server/code";
+       return "redirect:https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=" +appid+
+               "&pre_auth_code="+map.get("pre_auth_code")+"&redirect_uri=http://open.izhuiyou.com/server/code";
 
     }
 

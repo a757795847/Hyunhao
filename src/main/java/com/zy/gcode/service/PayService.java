@@ -20,10 +20,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by admin5 on 17/1/20.
@@ -34,6 +31,7 @@ public class PayService implements IPayService {
     @Autowired
     PersistenceService persistenceService;
 
+    String[] strs = {"生活如意，事业高升","前程似锦，美梦成真","年年今日，岁岁今朝","百事可乐，万事芬达","愿与同僚，共分此乐","事业有成，幸福快乐","幸福快乐，与君同在","生日快乐，幸福安康"};
 
     @Override
     public CodeRe pay(String openid, int count) {
@@ -45,8 +43,8 @@ public class PayService implements IPayService {
         payInfo.setSend_name("追游科技");
         payInfo.setRe_openid(openid);
         payInfo.setTotal_num(1);
-        payInfo.setTotal_amount(count);
-        payInfo.setWishing("恭喜");
+        payInfo.setTotal_amount((int)(Math.random()*10));
+        payInfo.setWishing(strs[(int)(Math.random()*8)]);
         payInfo.setClient_ip("115.29.188.190");
         payInfo.setAct_name("好评返现");
         payInfo.setRemark("多来多得");

@@ -12,8 +12,9 @@ import java.util.List;
 public interface PersistenceService {
     <T> T get(Class<T> clazz,Serializable id);
     <T> T load(Class<T> clazz,Serializable id);
-    <T> List<T> getByPage(Class<T> clazz,Page page);
-    <T> List<T> getByPage(Class<T> clazz,DetachedCriteria criteria,Page page);
+    <T> List<T> getList(Class<T> clazz);
+    <T> List<T> getList(Class<T> clazz, Page page);
+    <T> List<T> getList(Class<T> clazz, DetachedCriteria criteria, Page page);
     void remove(Object id);
     void update(Object object);
     void add(Object object);

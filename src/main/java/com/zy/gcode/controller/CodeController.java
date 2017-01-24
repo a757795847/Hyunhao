@@ -53,7 +53,7 @@ public class CodeController {
         return "redirect:" + codeRe.getMessage();
     }
 
-    @RequestMapping("wxtoken/{code}")
+    @RequestMapping("getoken/{code}")
     public
     @ResponseBody
     Map wxtoken(@PathVariable String code) {

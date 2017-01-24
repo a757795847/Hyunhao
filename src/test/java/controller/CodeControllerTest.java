@@ -62,19 +62,19 @@ public class CodeControllerTest {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
-     System.out.println(   WxXmlParser.elementString("<xml><AppId><![CDATA[wxa8febcce6444f95f]]></AppId>\n" +
+/*     System.out.println(   WxXmlParser.elementString("<xml><AppId><![CDATA[wxa8febcce6444f95f]]></AppId>\n" +
                 "<CreateTime>1484976266</CreateTime>\n" +
                 "<InfoType><![CDATA[component_verify_ticket]]></InfoType>\n" +
                 "<ComponentVerifyTicket><![CDATA[ticket@@@ckeb06Yq3ou7tWt3ibSH28nxzf3IaOmMLBhaMeM5Y5xiJvN54iK0lBJFP04EwxSHpNVN2_O6EC6endK3-9GzHQ]]></ComponentVerifyTicket>\n" +
-                "</xml>","ComponentVerifyTicket"));
+                "</xml>","ComponentVerifyTicket"));*/
     }
    @Test
     public void code() throws Exception{
-       /* this.mockMvc.perform(get("/pay/send").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
-                .andDo(MockMvcResultHandlers.print());*/
-       ObjectMapper objectMapper = new ObjectMapper();
+        this.mockMvc.perform(get("/middle/testa").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+                .andDo(MockMvcResultHandlers.print());
+      /* ObjectMapper objectMapper = new ObjectMapper();
      Map<String,Map> map = objectMapper.readValue("{\"authorization_info\":{\"authorizer_appid\":\"wx653d39223641bea7\",\"authorizer_access_token\":\"nH9FksTs4eWAM4EGJrTfTMsSGyJfuzN_5atu4aQpx0rbF624OWrtDYlNpeaf78E7pa9EIlDFHpO2VksaOW1Gfs9iFbqYFOHAd2eHLPOib0IpAGVswZ_X1Sh4bQcztjM2YCGfAGDUYC\",\"expires_in\":7200,\"authorizer_refresh_token\":\"refreshtoken@@@abWK9VW_xjLWXecdIcWw8fyfA-iUIen-reaDPjL6r3E\",\"func_info\":[{\"funcscope_category\":{\"id\":1}},{\"funcscope_category\":{\"id\":15}},{\"funcscope_category\":{\"id\":4}},{\"funcscope_category\":{\"id\":2}},{\"funcscope_category\":{\"id\":9}}]}}", Map.class);
-        println(map.get("authorization_info").get("func_info").getClass());
+        println(map.get("authorization_info").get("func_info").getClass());*/
     }
     public void println(Object str){
         System.out.println(str);

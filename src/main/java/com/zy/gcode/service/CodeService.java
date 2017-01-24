@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.*;
 import java.util.Date;
@@ -52,7 +53,11 @@ public class CodeService implements ICodeService {
         geCode.setExpires(CODE_EXPIRS);
         geCode.setGeAppid(geappid);
         geCode.setGeCodeM(code);
-        geCode.setCallbackUrl(url);
+        try {
+            geCode.setCallbackUrl(URLDecoder.decode(url,"utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         persistenceService.updateOrSave(geCode);
 
 

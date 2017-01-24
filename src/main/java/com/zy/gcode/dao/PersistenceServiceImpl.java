@@ -35,12 +35,12 @@ public class PersistenceServiceImpl implements PersistenceService {
         return sessionFactory.getCurrentSession();
     }
 
-    public<T> List<T> getByPage(Class<T> clazz, Page page) {
+    public<T> List<T> getList(Class<T> clazz, Page page) {
         Criteria criteria = session().createCriteria(clazz);
         return  criteria.setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
     }
 
-    public<T> List<T> getByPage(Class<T> clazz, DetachedCriteria criteria, Page page) {
+    public<T> List<T> getList(Class<T> clazz, DetachedCriteria criteria, Page page) {
         return  criteria.getExecutableCriteria(session()).setMaxResults(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
     }
 
@@ -51,6 +51,11 @@ public class PersistenceServiceImpl implements PersistenceService {
     public void update(Object object) {
         session().update(object);
 
+    }
+
+    @Override
+    public <T> List<T> getList(Class<T> clazz) {
+        return session().createCriteria(clazz).list();
     }
 
     public void add(Object object) {

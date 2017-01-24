@@ -3,6 +3,7 @@ package com.zy.gcode.service;
 import com.zy.gcode.controller.AuthenticationController;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
+import com.zy.gcode.pojo.AppInterface;
 import com.zy.gcode.pojo.AuthorizationInfo;
 import com.zy.gcode.pojo.ComponetToken;
 import com.zy.gcode.service.pay.WxXmlParser;
@@ -99,5 +100,16 @@ public class AuthenticationService implements IAuthenticationService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public AppInterface allAppInterface(String id) {
+       AppInterface appInterface = persistenceService.get(AppInterface.class,id);
+        try {
+            appInterface.getGeAppid();
+        } catch (NullPointerException e) {
+           return null;
+        }
+        return appInterface;
     }
 }
