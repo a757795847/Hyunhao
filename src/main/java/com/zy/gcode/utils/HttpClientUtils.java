@@ -12,7 +12,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import javax.net.ssl.SSLContext;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -93,11 +95,18 @@ public class HttpClientUtils {
         if (response == null) {
             return null;
         }
-        if (response.getStatusLine().getStatusCode() != 200) {
-            return null;
-        }
+
 
         try {
+            if (response.getStatusLine().getStatusCode() != 200) {
+                try(BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))){
+                    String line;
+                    while((line =reader.readLine())!=null){
+                        System.out.println(line);
+                    }
+                }
+                return null;
+            }
             Map map = CodeService.objectMapper.readValue(response.getEntity().getContent(), Map.class);
             return map;
         } catch (IOException e) {
