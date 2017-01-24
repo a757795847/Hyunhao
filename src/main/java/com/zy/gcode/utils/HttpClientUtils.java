@@ -44,6 +44,7 @@ public class HttpClientUtils {
 
     public static HttpResponse SSLGetSend(String url) {
         HttpGet get = new HttpGet(url);
+        get.setHeader("Connection","close");
         try {
             return httpClient.execute(get);
         } catch (IOException e) {
@@ -54,6 +55,7 @@ public class HttpClientUtils {
 
     public static HttpResponse SSLPostSend(String url, String body) {
         HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader("Connection","close");
         StringEntity entity = new StringEntity(body, "utf-8");//解决中文乱码问题
         entity.setContentEncoding("UTF-8");
         httpPost.setEntity(entity);
