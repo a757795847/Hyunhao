@@ -1,6 +1,5 @@
 package com.zy.gcode.service;
 
-import com.zy.gcode.controller.AuthenticationController;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.AppInterface;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -110,6 +108,6 @@ public class AuthenticationService implements IAuthenticationService {
         } catch (NullPointerException e) {
            return null;
         }
-        return appInterface
+        return appInterface;
     }
 }
