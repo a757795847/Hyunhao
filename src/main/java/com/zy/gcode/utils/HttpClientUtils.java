@@ -31,7 +31,7 @@ public class HttpClientUtils {
             SSLContext sslcontext = SSLContexts.custom()
                     .loadKeyMaterial(keyStore, "1426499802".toCharArray())
                     .build();
-            httpClient = HttpClientBuilder.create().setSSLContext(sslcontext).build();
+            httpClient = HttpClientBuilder.create().setMaxConnPerRoute(5).setSSLContext(sslcontext).build();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -44,11 +44,12 @@ public class HttpClientUtils {
 
     public static HttpResponse SSLGetSend(String url) {
         HttpGet get = new HttpGet(url);
-        get.setHeader("Connection","close");
         try {
             return httpClient.execute(get);
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            get.releaseConnection();
         }
         return null;
     }
@@ -63,6 +64,8 @@ public class HttpClientUtils {
             return httpClient.execute(httpPost);
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            httpPost.releaseConnection();
         }
         return null;
     }

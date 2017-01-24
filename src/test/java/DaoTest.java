@@ -78,9 +78,22 @@ public class DaoTest {
 
     @Test
     public void payService(){
-        System.out.println(
-        WxXmlParser.Xml2Map(
-                "<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[发放成功]]></return_msg><result_code><![CDATA[SUCCESS]]></result_code><err_code><![CDATA[SUCCESS]]></err_code><err_code_des><![CDATA[发放成功]]></err_code_des><mch_billno><![CDATA[1426499802201701233199406103]]></mch_billno><mch_id><![CDATA[1426499802]]></mch_id><wxappid><![CDATA[wx653d39223641bea7]]></wxappid><re_openid><![CDATA[ooBfdwNcoMaol2CF0zlcRUYkYE_Q]]></re_openid><total_amount>100</total_amount><send_listid><![CDATA[1000041701201701233000059759067]]></send_listid></xml>")
-        );
+       System.out.println(te());
+    }
+
+    public String te1(){
+        System.out.println("t1");
+return "return";
+    }
+
+    public String te(){
+        try{
+            return te1();
+        }catch (NullPointerException e){
+            System.out.println("catch");
+        }finally {
+            System.out.println("finally");
+        }
+        return null;
     }
 }
