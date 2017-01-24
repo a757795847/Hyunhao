@@ -22,7 +22,7 @@ public class MiddleController {
     @RequestMapping("a")
     public String a(String appid, HttpSession session) throws UnsupportedEncodingException{
        if(session.getAttribute("c_ussr")==null){
-            return "redirect:http://open.izhuiyou.com/code/wxcode/"+appid+"/"+ URLEncoder.encode("http://open.izhuiyou.com/middle/token","utf-8");
+            return "redirect:http://open.izhuiyou.com/code/wxcode/"+appid+"?redirect_url="+ URLEncoder.encode("http://open.izhuiyou.com/middle/token","utf-8");
        }
 
        return "redirect:/html/a.html";
