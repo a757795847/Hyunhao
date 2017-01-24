@@ -43,7 +43,7 @@ public class PayService implements IPayService {
         payInfo.setSend_name("追游科技");
         payInfo.setRe_openid(openid);
         payInfo.setTotal_num(1);
-        payInfo.setTotal_amount(10);
+        payInfo.setTotal_amount(100);
         payInfo.setWishing(strs[(int)(Math.random()*8)]);
         payInfo.setClient_ip("115.29.188.190");
         payInfo.setAct_name("好评返现");
