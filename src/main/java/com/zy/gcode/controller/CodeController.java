@@ -6,10 +6,7 @@ import com.zy.gcode.service.ICodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -43,8 +40,8 @@ public class CodeController {
         return "redirect:" + codeRe.getMessage();
     }
 
-    @RequestMapping("wxcode/{geappid}/{callback}")
-    public String wxcode(@PathVariable("geappid") String geappid, @PathVariable("callback") String callback) throws UnsupportedEncodingException {
+    @RequestMapping("wxcode/{geappid}")
+    public String wxcode(@PathVariable("geappid") String geappid,@RequestParam("redirect_url") String callback) throws UnsupportedEncodingException {
         callback = URLDecoder.decode(callback, "utf-8");
         CodeRe codeRe = iCodeService.code(geappid, callback);
         if (codeRe.isError()) {
