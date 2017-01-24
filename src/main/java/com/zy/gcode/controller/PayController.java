@@ -7,9 +7,8 @@ import com.zy.gcode.service.IPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
 
@@ -26,11 +25,12 @@ public class PayController {
     public @ResponseBody String index(){
         return "welcome pay index!";
     }
-
     @RequestMapping("send")
-    public @ResponseBody Object send(HttpSession session){
+    public @ResponseBody Object send(@RequestParam String phone, HttpSession session){
         User user = (User)session.getAttribute("c_user");
+        if(phone.equals("13989887625"))
        return payService.pay(user.getOpenId(),1).getMessage();
+        return "false";
     }
 
     @RequestMapping("redinfo")
