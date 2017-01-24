@@ -1,5 +1,6 @@
 package com.zy.gcode.service;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zy.gcode.controller.AuthenticationController;
 import com.zy.gcode.controller.delegate.CodeRe;
@@ -29,7 +30,9 @@ public class CodeService implements ICodeService {
     public final static String CALL_BACK_URL="http://open.izhuiyou.com/code/userinfo";
     public final static String GE_CODE="https://open.weixin.qq.com/connect/oauth2/authorize";
     public static ObjectMapper objectMapper = new ObjectMapper();
-
+    static {
+        objectMapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, true);
+    }
     @Autowired
     PersistenceService persistenceService;
 
