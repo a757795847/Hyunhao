@@ -35,6 +35,11 @@ public class MiddleController {
 
         return "redirect:/html/a.html";
     }
+    @RequestMapping("testaa")
+    public @ResponseBody String testaa(){
+
+        return "redirect:/html/a.html";
+    }
 
 
     @RequestMapping("token")
