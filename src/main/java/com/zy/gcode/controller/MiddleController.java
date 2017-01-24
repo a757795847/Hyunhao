@@ -33,7 +33,7 @@ public class MiddleController {
     @RequestMapping("testa")
     public String testa(){
 
-        return "/html/a.html";
+        return "redirect:/html/a.html";
     }
 
 
