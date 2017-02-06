@@ -62,6 +62,7 @@ public class CodeService implements ICodeService {
             geCode.setCallbackUrl(URLDecoder.decode(url,"utf-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            return CodeRe.error("回调地址错误");
         }
         persistenceService.updateOrSave(geCode);
 
@@ -73,6 +74,7 @@ public class CodeService implements ICodeService {
             builder.append("&response_type=code&scope=").append(appInterface.getScope()).append("&state=").append(geCode.getGeCodeM());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            return CodeRe.error("token回调地址有误!");
         }
         builder.append("&component_appid=wxa8febcce6444f95f");
         builder.append("#wechat_redirect");

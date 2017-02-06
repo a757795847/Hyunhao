@@ -45,6 +45,9 @@ public class MiddleController {
     @RequestMapping("token")
     public String token(String code,HttpSession session){
       Map map  = HttpClientUtils.mapSSLGetSend("http://open.izhuiyou.com/code/getoken/"+code);
+      if(map == null){
+          return "redirect:/error.html";
+      }
       if(map.containsKey("status")&&map.get("status").equals("1")){
            Map map1 = HttpClientUtils.mapSSLGetSend("http://open.izhuiyou.com/code/guserinfo?token="+map.get("access_token"));
           if(map1.containsKey("status")&&map1.get("status").equals("1")){

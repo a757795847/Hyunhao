@@ -32,9 +32,7 @@ public class CodeController {
         if (StringUtils.isEmpty(code)) {
             return "redirect:error.html?message=code is empty";
         }
-        System.out.println("code:" + code);
-        System.out.println("state:" + state);
-        CodeRe<String> codeRe = iCodeService.token(code, state, appid);
+        CodeRe<String> codeRe = iCodeService.token(code,state,appid);
         if (codeRe.isError()) {
             return "redirect:/error?message=" + codeRe.getErrorMessage();
         }

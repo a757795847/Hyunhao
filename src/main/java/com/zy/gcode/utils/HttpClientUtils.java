@@ -93,7 +93,7 @@ public class HttpClientUtils {
     public static Map mapSSLGetSend(String url) {
         HttpResponse response = SSLGetSend(url);
         if (response == null) {
-            return null;
+            throw new NullPointerException("response is null");
         }
 
 

@@ -60,6 +60,9 @@ public class PayService implements IPayService {
         builder.append("key=acjkgkliutguizkjgailzsghqyesiu11");
         payInfo.setSign(UniqueStringGenerator.getMd5(builder.toString()));
         HttpResponse response = HttpClientUtils.SSLPostSend("https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack",WxXmlParser.getWxXml(payInfo));
+        if(response.getStatusLine().getStatusCode()!=200){
+            CodeRe.error("请求微信服务器失败！发红包");
+        }
         StringBuilder builder1 = new StringBuilder();
         try(BufferedReader reader =new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"utf-8"))){
             String line;
@@ -137,6 +140,11 @@ public class PayService implements IPayService {
         info.setSign(UniqueStringGenerator.getMd5(builder.toString()));
 
         HttpResponse response = HttpClientUtils.SSLPostSend("https://api.mch.weixin.qq.com/mmpaymkttransfers/gethbinfo",WxXmlParser.getWxXml(info));
+        if(response.getStatusLine().getStatusCode()!=200){
+            CodeRe.error("请求微信服务器失败！获取红包信息");
+        }
+
+
         StringBuilder builder1 = new StringBuilder();
         try(BufferedReader reader =new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"utf-8"))){
             String line;
