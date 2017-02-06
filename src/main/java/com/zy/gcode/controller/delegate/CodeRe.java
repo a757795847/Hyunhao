@@ -29,7 +29,7 @@ public class CodeRe<T> {
     }
 
     public CodeRe(String error) {
-        this.error = error;
+        this.setError(error);
     }
 
     public CodeRe(T message) {
