@@ -44,8 +44,8 @@ public class DaoTest {
         try {
             properties.load(resource.getInputStream());
             FileOutputStream outputStream = new FileOutputStream(resource.getFile());
-            properties.setProperty("san","wanwu");
-            properties.store(outputStream,"11=222");
+            properties.store(outputStream,null);
+            System.out.println(properties.getProperty("precode.insert")==null);
             outputStream.flush();
             outputStream.close();
         } catch (IOException e) {

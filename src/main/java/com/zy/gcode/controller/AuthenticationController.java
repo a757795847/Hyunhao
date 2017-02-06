@@ -52,7 +52,7 @@ public class AuthenticationController {
         try {
             Resource resource = new ClassPathResource("config.properties");
             properties.load(resource.getInputStream());
-            long insert =Long.parseLong(Optional.of(properties.get("precode.insert").toString()).orElse("0"));
+            long insert =Long.parseLong(Optional.ofNullable(properties.get("precode.insert")).orElse("0").toString());
             if(insert+1750000<System.currentTimeMillis()){
                 FileOutputStream outputStream = new FileOutputStream(resource.getFile());
                 Map<String,String> map=  HttpClientUtils.mapSSLPostSend(url,"{\"component_appid\":\"wxa8febcce6444f95f\"}");
