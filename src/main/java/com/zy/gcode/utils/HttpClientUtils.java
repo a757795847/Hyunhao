@@ -82,7 +82,7 @@ public class HttpClientUtils {
         }
 
         try {
-            Map map = CodeService.objectMapper.readValue(response.getEntity().getContent(), Map.class);
+            Map map = Constants.objectMapper.readValue(response.getEntity().getContent(), Map.class);
             return map;
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,7 +107,7 @@ public class HttpClientUtils {
                 }
                 return null;
             }
-            Map map = CodeService.objectMapper.readValue(response.getEntity().getContent(), Map.class);
+            Map map = Constants.objectMapper.readValue(response.getEntity().getContent(), Map.class);
             return map;
         } catch (IOException e) {
             e.printStackTrace();

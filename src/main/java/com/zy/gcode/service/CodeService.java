@@ -70,7 +70,7 @@ public class CodeService implements ICodeService {
             e.printStackTrace();
             return CodeRe.error("token回调地址有误!");
         }
-        builder.append("&component_appid=wxa8febcce6444f95f");
+        builder.append("&component_appid=").append(Constants.properties.get("platform.appid"));
         builder.append("#wechat_redirect");
         codeRe.setMessage(builder.toString());
         return codeRe;
@@ -94,7 +94,7 @@ public class CodeService implements ICodeService {
         builder.append("?appid=").append(appid);
         builder.append("&code=").append(code);
         builder.append("&grant_type=authorization_code")
-                .append("&component_appid=wxa8febcce6444f95f");
+                .append("&component_appid=").append(Constants.properties.getProperty("platform.appid"));
         builder.append("&component_access_token=").append(componetTokenCodeRe.getMessage().getComponentAccessToken());
 
         Map map = HttpClientUtils.mapSSLGetSend(builder.toString());
