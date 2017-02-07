@@ -7,6 +7,7 @@ import com.zy.gcode.controller.AuthenticationController;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.*;
+import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;
 import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.UniqueStringGenerator;
@@ -28,8 +29,6 @@ import java.util.Map;
 @Component
 public class CodeService implements ICodeService {
     public final static long CODE_EXPIRS=100;
-    public final static String CALL_BACK_URL="http://open.izhuiyou.com/code/userinfo";
-    public final static String GE_CODE="https://open.weixin.qq.com/connect/oauth2/authorize";
     @Autowired
     PersistenceService persistenceService;
 
@@ -62,10 +61,10 @@ public class CodeService implements ICodeService {
         persistenceService.updateOrSave(geCode);
 
 
-        StringBuilder builder = new StringBuilder(GE_CODE).append("?");
+        StringBuilder builder = new StringBuilder("https://open.weixin.qq.com/connect/oauth2/authorize").append("?");
         builder.append("appid=").append(wxappid);
         try {
-            builder.append("&redirect_uri=").append(URLEncoder.encode(CALL_BACK_URL,"utf-8"));
+            builder.append("&redirect_uri=").append(URLEncoder.encode(Constants.CALL_BACK_URL,"utf-8"));
             builder.append("&response_type=code&scope=").append(appInterface.getScope()).append("&state=").append(geCode.getGeCodeM());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

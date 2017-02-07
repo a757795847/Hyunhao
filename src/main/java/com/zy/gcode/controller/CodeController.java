@@ -5,6 +5,7 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.ICodeService;
+import com.zy.gcode.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -34,7 +35,7 @@ public class CodeController {
         }
         CodeRe<String> codeRe = iCodeService.token(code,state,appid);
         if (codeRe.isError()) {
-            return "redirect:/error?message=" + codeRe.getErrorMessage();
+            return "redirect:/index.jsp?message=" + codeRe.getErrorMessage();
         }
 
         return "redirect:" + codeRe.getMessage();
@@ -74,7 +75,7 @@ public class CodeController {
         }
         Map map = new HashMap(4);
         try {
-            map.put("userinfo", CodeService.objectMapper.writeValueAsString(codeRe.getMessage()));
+            map.put("userinfo", Constants.objectMapper.writeValueAsString(codeRe.getMessage()));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
