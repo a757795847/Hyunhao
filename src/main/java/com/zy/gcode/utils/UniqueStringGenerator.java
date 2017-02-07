@@ -17,7 +17,7 @@ public class UniqueStringGenerator {
 
     private static int generateCount = 0;
 
-    public  static  final String MCH_ID="1426499802";
+
 
     private static Random random = new Random();
     private static BASE64Encoder base64Encoder = new BASE64Encoder();
@@ -51,7 +51,7 @@ public class UniqueStringGenerator {
         if(i>=999){
             integer.set(100);
         }
-        return MCH_ID + DateUtils.format(new Date(),"yyyyMMdd")+beg+i;
+        return Constants.MCH_ID + DateUtils.format(new Date(),"yyyyMMdd")+beg+i;
     }
 
     public static String getMd5(String plainText) {

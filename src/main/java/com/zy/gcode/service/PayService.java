@@ -7,6 +7,7 @@ import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.service.pay.RedPayInfo;
 import com.zy.gcode.service.pay.RedReqInfo;
 import com.zy.gcode.service.pay.WxXmlParser;
+import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;
 import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.UniqueStringGenerator;
@@ -38,7 +39,7 @@ public class PayService implements IPayService {
         RedPayInfo payInfo = new RedPayInfo();
         payInfo.setNonce_str(UniqueStringGenerator.getUniqueCode());
         payInfo.setMch_billno(UniqueStringGenerator.wxbillno());
-        payInfo.setMch_id(UniqueStringGenerator.MCH_ID);
+        payInfo.setMch_id(Constants.MCH_ID);
         payInfo.setWxappid("wx653d39223641bea7");
         payInfo.setSend_name("追游科技");
         payInfo.setRe_openid(openid);
@@ -123,7 +124,7 @@ public class PayService implements IPayService {
     public CodeRe<RedStatus> payInfo(String billno) {
         RedReqInfo info  = new RedReqInfo();
         info.setNonce_str(UniqueStringGenerator.getUniqueCode());
-        info.setMch_id(UniqueStringGenerator.MCH_ID);
+        info.setMch_id(Constants.MCH_ID);
         info.setMch_billno(billno);
         info.setAppid("wx653d39223641bea7");
         info.setBill_type("MCHT");

@@ -4,15 +4,14 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IPayService;
+import com.zy.gcode.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.Properties;
 
 /**
  * Created by admin5 on 17/1/20.
@@ -30,13 +29,7 @@ public class PayController {
     @RequestMapping("send")
     public @ResponseBody Object send(@RequestParam String phone, HttpSession session){
         User user = (User)session.getAttribute("c_user");
-        Properties properties = new Properties();
-        try {
-            properties.load(new ClassPathResource("config.properties").getInputStream());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if(phone.equals(properties.getProperty("phone")))
+        if(phone.equals(Constants.properties.getProperty("phone")))
         return payService.pay(user.getOpenId(),1).getMessage();
         return "false";
     }
