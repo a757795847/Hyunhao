@@ -80,7 +80,8 @@ public class DaoTest {
 
     @Test
     public void payService() throws Exception{
-      Constants.objectMapper.readValue("{openId=ooBfdwNcoMaol2CF0zlcRUYkYE_Q, phone=null, nick=桂, province=浙江, city=杭州, country=中国, headImgUrl=http://wx.qlogo.cn/mmopen/t7Grpf3YAiaDtC3sPADibEhITpkusZlOLnxzoub617SnqmAPXeAb2dPb36ic2lrqttTM0DS9HqJDnJ8VYlRzFf4I8JfcPBeL2fp/0, privilege=[], unionId=null, sex=1, insertTime=null, updateTime=null}".replace("=",":"), User.class);
+    //  Constants.objectMapper.readValue("{openId=ooBfdwNcoMaol2CF0zlcRUYkYE_Q, phone=null, nick=桂, province=浙江, city=杭州, country=中国, headImgUrl=http://wx.qlogo.cn/mmopen/t7Grpf3YAiaDtC3sPADibEhITpkusZlOLnxzoub617SnqmAPXeAb2dPb36ic2lrqttTM0DS9HqJDnJ8VYlRzFf4I8JfcPBeL2fp/0, privilege=[], unionId=null, sex=1, insertTime=null, updateTime=null}".replace("=",":"), User.class);
+    System.out.println("S767sdf5sdHUfy8Sj7edR86wsEr6dh5giYfu6Tr7g8h".length());
     }
 
     public String te1(){
