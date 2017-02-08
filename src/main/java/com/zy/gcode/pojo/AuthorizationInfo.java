@@ -13,6 +13,9 @@ public class AuthorizationInfo {
     private String funcInfo;
     private Timestamp insertTime;
     private Timestamp updateTime;
+    private String userName;
+    private String nickName;
+    private String principalName;
 
     public String getAuthorizerAppid() {
         return authorizerAppid;
@@ -70,4 +73,27 @@ public class AuthorizationInfo {
         this.updateTime = updateTime;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nikcName) {
+        this.nickName = nikcName;
+    }
+
+    public String getPrincipalName() {
+        return principalName;
+    }
+
+    public void setPrincipalName(String principalName) {
+        this.principalName = principalName;
+    }
 }

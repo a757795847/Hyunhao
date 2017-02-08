@@ -41,9 +41,13 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
-    public CodeRe saveServerToken(String content) {
+    public CodeRe<AuthorizationInfo> saveServerToken(String content,String token) {
         try {
             Map<String,Map> map= Constants.objectMapper.readValue(content, Map.class);
+            if(map.containsKey("errmsg")){
+                return  CodeRe.error(map.get("errmsg").toString());
+            }
+
             Map child = map.get("authorization_info");
             AuthorizationInfo authorizationInfo = new AuthorizationInfo();
             authorizationInfo.setAuthorizerAppid(child.get("authorizer_appid").toString());
@@ -56,7 +60,20 @@ public class AuthenticationService implements IAuthenticationService {
                    builder.append(third.get("funcscope_category").get("id").toString()).append(",");
             }
             authorizationInfo.setFuncInfo(builder.substring(0,builder.length()-1));
+             Map map1 =  HttpClientUtils.mapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info?component_access_token="+token,
+                    "{" +
+                            "\"component_appid\":\""+Constants.properties.getProperty("platform.appid")+"\" ," +
+                            "\"authorizer_appid\": \""+authorizationInfo.getAuthorizerAppid()+"\"" +
+                            "}");
+             if(map1==null){
+                 return CodeRe.error("获取公众号名称错误!");
+             }
+             authorizationInfo.setUserName((String)(map1.get("user_name")));
+             authorizationInfo.setNickName((String)(map1.get("nick_name")));
+             authorizationInfo.setPrincipalName((String)(map1.get("principal_name")));
+
             persistenceService.updateOrSave(authorizationInfo);
+            return CodeRe.correct(authorizationInfo);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -68,7 +68,10 @@ public class AuthenticationController {
             e.printStackTrace();
       }
 
-        authenticationService.saveServerToken(content.toString());
+     CodeRe codeRe =  authenticationService.saveServerToken(content.toString(),componetTokenCodeRe.getMessage().getComponentAccessToken());
+      if(codeRe.isError()){
+          return  codeRe.getErrorMessage();
+      }
       return "authorization success";
 
     }
