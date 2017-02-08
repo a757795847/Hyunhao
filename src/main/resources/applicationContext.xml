@@ -14,7 +14,7 @@
         <property name="jdbcUrl" value="jdbc:mysql://115.29.188.190:3306/jt_platform?characterEncoding=utf8"/>
         <property name="user" value="jt_dev"></property>
         <property name="password" value="*+YC!X+mLz%C(fA="></property>
-        <property name="idleConnectionTestPeriod">2000</property>
+        <property name="idleConnectionTestPeriod" value="2000"></property>
     </bean>
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" lazy-init="false">
         <!-- 注入datasource，给sessionfactoryBean内setdatasource提供数据源 -->
