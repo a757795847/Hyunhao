@@ -31,7 +31,7 @@ public class HttpClientUtils {
             Resource resource = new ClassPathResource("apiclient_cert.p12");
             keyStore.load(resource.getInputStream(), "1426499802".toCharArray());
             SSLContext sslcontext = SSLContexts.custom()
-                    .loadKeyMaterial(keyStore, "1426499802".toCharArray())
+                    .loadKeyMaterial(keyStore, Constants.MCH_ID.toCharArray())
                     .build();
             httpClient = HttpClientBuilder.create().setMaxConnPerRoute(5).setSSLContext(sslcontext).build();
         } catch (NoSuchAlgorithmException e) {
