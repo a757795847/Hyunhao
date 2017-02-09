@@ -10,5 +10,5 @@ public interface ICodeService {
     CodeRe code(String appid, String url);
     CodeRe token(String code, String state,String appid);
     CodeRe<String> geToken(String geCode,String geappid);
-    CodeRe<User> getUser(String token);
+    CodeRe<User> getUser(String zyid,String token);
 }

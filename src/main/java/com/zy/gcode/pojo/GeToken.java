@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  */
 public class GeToken {
 
-    private long geAppid;
+    private String geAppid;
     private String geTokenM;
     private String geCodeM;
     private String openid;
@@ -16,28 +16,12 @@ public class GeToken {
     private Timestamp updateTime;
 
 
-    public long getGeAppid() {
+    public String getGeAppid() {
         return geAppid;
     }
 
-    public void setGeAppid(long geAppid) {
+    public void setGeAppid(String geAppid) {
         this.geAppid = geAppid;
-    }
-
-    public String getOpenid() {
-        return openid;
-    }
-
-    public void setOpenid(String openid) {
-        this.openid = openid;
-    }
-
-    public String getWxToken() {
-        return wxToken;
-    }
-
-    public void setWxToken(String wxToken) {
-        this.wxToken = wxToken;
     }
 
     public String getGeTokenM() {
@@ -56,6 +40,22 @@ public class GeToken {
         this.geCodeM = geCodeM;
     }
 
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public String getWxToken() {
+        return wxToken;
+    }
+
+    public void setWxToken(String wxToken) {
+        this.wxToken = wxToken;
+    }
+
     public Timestamp getInsertTime() {
         return insertTime;
     }
@@ -71,5 +71,4 @@ public class GeToken {
     public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
-
 }

@@ -208,13 +208,14 @@ public class CodeService implements ICodeService {
         geToken.setGeTokenM(geTokenM);
         geToken.setWxToken(geCode.getWxToken());
         geToken.setOpenid(geCode.getOpenid());
+        geToken.setGeAppid(geappid);
         persistenceService.updateOrSave(geToken);
         return CodeRe.correct(geTokenM);
     }
 
     @Override
-    public CodeRe<User> getUser(String token) {
-       GeToken geToken = persistenceService.get(GeToken.class,token);
+    public CodeRe<User> getUser(String zyid,String token) {
+       GeToken geToken = persistenceService.get(GeToken.class,zyid);
         Timestamp updatetime;
 
         try {
@@ -222,7 +223,8 @@ public class CodeService implements ICodeService {
         } catch (NullPointerException e) {
            return CodeRe.error("token is invalid");
         }
-
+        if(!geToken.getGeTokenM().equals(token))
+            return CodeRe.error("token is error");
 
         if(DateUtils.isOutOfDate(updatetime,7000L)){
            return CodeRe.error("token out time");

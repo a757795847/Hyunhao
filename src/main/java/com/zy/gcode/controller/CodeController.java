@@ -68,11 +68,14 @@ public class CodeController {
     @RequestMapping("guserinfo")
     public
     @ResponseBody
-    Map guserinfo(String token) {
-        CodeRe<User> codeRe = iCodeService.getUser(token);
+    Map guserinfo(String token,String zyid) {
+        CodeRe<User> codeRe = iCodeService.getUser(zyid,token);
         if (codeRe.isError()) {
             return error(codeRe.getErrorMessage());
         }
+
+
+
         Map map = new HashMap(4);
         try {
             map.put("userinfo", Constants.objectMapper.writeValueAsString(codeRe.getMessage()));
