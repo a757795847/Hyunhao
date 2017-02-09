@@ -121,6 +121,7 @@ public class AuthenticationService implements IAuthenticationService {
         try(OutputStream outputStream =new FileOutputStream(new ClassPathResource("config.properties").getFile())) {
             Constants.properties.setProperty("componentVerifyTicket",WxXmlParser.elementString(wxBizMsgCrypt.decryptMsg(msg_signature,timestamp,nonce,str),"ComponentVerifyTicket"));
             Constants.properties.store(outputStream,"时间:"+DateUtils.format(new Date(),"yyyy-MM-dd hh:mm:ss"));
+            outputStream.flush();
             System.out.println("ComponentVerifyTicket已更新");
         } catch (AesException e) {
             e.printStackTrace();
