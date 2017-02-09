@@ -77,12 +77,11 @@ public class CodeService implements ICodeService {
     }
 
     public CodeRe token(String code, String state,String appid) {//state gecodeM
-        GeCode geCode = persistenceService.get(GeCode.class,state);
-
+        GeCode geCode = persistenceService.get(GeCode.class,appid);
         try {
             geCode.getGeCodeM();
         } catch (NullPointerException e) {
-            CodeRe.error("geCodeM is invalid");
+           return CodeRe.error("appid 不存在");
         }
 
         CodeRe<ComponetToken> componetTokenCodeRe =  authenticationService.componetToekn();
@@ -186,16 +185,18 @@ public class CodeService implements ICodeService {
     }
 
     @Override
-    public CodeRe<String> geToken(String geCodeM) {
-        GeCode geCode =persistenceService.get(GeCode.class,geCodeM);
+    public CodeRe<String> geToken(String geCodeM,String geappid) {
+        GeCode geCode =persistenceService.get(GeCode.class,geappid);
 
         Timestamp updatetime;
         try {
             updatetime = geCode.getUpdateTime();
         } catch (NullPointerException e) {
-           return CodeRe.error("invalid geCodeM");
+           return CodeRe.error("invalid appid");
         }
-
+        if(!geCode.getGeCodeM().equals(geCodeM.trim())){
+            return CodeRe.error("invalid geCodeM");
+        }
         if(DateUtils.isOutOfDate(updatetime,geCode.getExpires())){
             return CodeRe.error("time out gecode");
         }

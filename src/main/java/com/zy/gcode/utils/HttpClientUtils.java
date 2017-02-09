@@ -12,18 +12,22 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import javax.net.ssl.SSLContext;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by admin5 on 17/1/17.
  */
 public class HttpClientUtils {
     private static HttpClient httpClient;
+
+    private static Map<String,HttpClient> stringHttpClientMap = new ConcurrentHashMap<>();
 
     static {
         try {
@@ -111,6 +115,49 @@ public class HttpClientUtils {
             return map;
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static HttpResponse paySSLSend(String mechid,String path,String url,String body){
+        if(stringHttpClientMap.containsKey(mechid)){
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.setHeader("Connection","close");
+            StringEntity entity = new StringEntity(body, "utf-8");//解决中文乱码问题
+            entity.setContentEncoding("UTF-8");
+            httpPost.setEntity(entity);
+            try {
+                return stringHttpClientMap.get(mechid).execute(httpPost);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }finally {
+                httpPost.releaseConnection();
+            }
+            return null;
+        }else {
+            try (InputStream stream = new FileInputStream(path)){
+                KeyStore keyStore = KeyStore.getInstance("PKCS12");
+                keyStore.load(stream, mechid.toCharArray());
+                SSLContext sslcontext = SSLContexts.custom()
+                        .loadKeyMaterial(keyStore, Constants.MCH_ID.toCharArray())
+                        .build();
+            HttpClient   httpClient1 = HttpClientBuilder.create().setMaxConnPerRoute(5).setSSLContext(sslcontext).build();
+            stringHttpClientMap.put(mechid,httpClient1);
+            return paySSLSend(mechid,path,url,body);
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }catch (IOException e){
+                e.printStackTrace();
+            }catch (UnrecoverableKeyException e){
+                e.printStackTrace();
+            }catch (KeyStoreException e){
+                e.printStackTrace();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
         return null;
     }

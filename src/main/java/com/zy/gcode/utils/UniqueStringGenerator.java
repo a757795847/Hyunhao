@@ -81,20 +81,5 @@ public class UniqueStringGenerator {
         }
 
     }
-    public static void main(String[] args){
-   /*     Thread t = new Thread(()-> {
-            for (int i = 0; i < 10000; i++) {
-                System.out.println(wxbillno());
-            }
-        });
-        Thread t1 = new Thread(()-> {
-            for (int i = 0; i < 10000; i++) {
-                System.out.println(wxbillno());
-            }
-        });
-        t.start();
-        t1.start();*/
-
-    }
 
 }

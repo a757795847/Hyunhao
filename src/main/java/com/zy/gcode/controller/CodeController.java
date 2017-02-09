@@ -51,11 +51,11 @@ public class CodeController {
         return "redirect:" + codeRe.getMessage();
     }
 
-    @RequestMapping("getoken/{code}")
+    @RequestMapping("getoken/{code}/{geappid}")
     public
     @ResponseBody
-    Map wxtoken(@PathVariable String code) {
-        CodeRe codeRe = iCodeService.geToken(code);
+    Map wxtoken(@PathVariable String code,@PathVariable String geappid) {
+        CodeRe codeRe = iCodeService.geToken(code,geappid);
         if (codeRe.isError()) {
             return error(codeRe.getErrorMessage());
         }

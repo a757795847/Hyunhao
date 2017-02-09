@@ -6,6 +6,8 @@ import java.sql.Timestamp;
  * Created by admin5 on 17/1/16.
  */
 public class GeToken {
+
+    private long geAppid;
     private String geTokenM;
     private String geCodeM;
     private String openid;
@@ -13,6 +15,14 @@ public class GeToken {
     private Timestamp insertTime;
     private Timestamp updateTime;
 
+
+    public long getGeAppid() {
+        return geAppid;
+    }
+
+    public void setGeAppid(long geAppid) {
+        this.geAppid = geAppid;
+    }
 
     public String getOpenid() {
         return openid;
@@ -62,27 +72,4 @@ public class GeToken {
         this.updateTime = updateTime;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        GeToken geToken = (GeToken) o;
-
-        if (geTokenM != null ? !geTokenM.equals(geToken.geTokenM) : geToken.geTokenM != null) return false;
-        if (geCodeM != null ? !geCodeM.equals(geToken.geCodeM) : geToken.geCodeM != null) return false;
-        if (insertTime != null ? !insertTime.equals(geToken.insertTime) : geToken.insertTime != null) return false;
-        if (updateTime != null ? !updateTime.equals(geToken.updateTime) : geToken.updateTime != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = geTokenM != null ? geTokenM.hashCode() : 0;
-        result = 31 * result + (geCodeM != null ? geCodeM.hashCode() : 0);
-        result = 31 * result + (insertTime != null ? insertTime.hashCode() : 0);
-        result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
-        return result;
-    }
 }

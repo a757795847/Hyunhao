@@ -7,6 +7,6 @@ import com.zy.gcode.pojo.RedStatus;
  * Created by admin5 on 17/1/20.
  */
 public interface IPayService {
-    CodeRe pay(String openid,int count);
-    CodeRe<RedStatus> payInfo(String billno);
+    CodeRe pay(String openid,int count,String wxappid,String token,String geappid);
+    CodeRe<RedStatus> payInfo(String billno,String wxappid,String token,String geappid);
 }

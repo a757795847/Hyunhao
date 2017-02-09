@@ -2,6 +2,8 @@ package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
+import com.zy.gcode.pojo.GeToken;
+import com.zy.gcode.pojo.PayCredential;
 import com.zy.gcode.pojo.RedBill;
 import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.service.pay.RedPayInfo;
@@ -35,18 +37,40 @@ public class PayService implements IPayService {
     String[] strs = {"生活如意，事业高升","前程似锦，美梦成真","年年今日，岁岁今朝","百事可乐，万事芬达","愿与同僚，共分此乐","事业有成，幸福快乐","幸福快乐，与君同在","生日快乐，幸福安康"};
 
     @Override
-    public CodeRe pay(String openid, int count) {
+    public CodeRe pay(String openid, int count,String wxappid,String token,String geappid) {
+
+        GeToken geToken = persistenceService.get(GeToken.class,geappid);
+        Timestamp updatetime;
+
+        try {
+            updatetime = geToken.getUpdateTime();
+        } catch (NullPointerException e) {
+            return CodeRe.error("token is of invalid");
+        }
+
+        if(!geToken.getGeTokenM().equals(token.trim())){
+            return  CodeRe.error("token is invalid");
+        }
+
+
+        if(DateUtils.isOutOfDate(updatetime,7000L)){
+            return CodeRe.error("token of time out");
+        }
+
+
+        PayCredential payCredential =  persistenceService.get(PayCredential.class,wxappid);
+
         RedPayInfo payInfo = new RedPayInfo();
         payInfo.setNonce_str(UniqueStringGenerator.getUniqueCode());
         payInfo.setMch_billno(UniqueStringGenerator.wxbillno());
-        payInfo.setMch_id(Constants.MCH_ID);
-        payInfo.setWxappid("wx653d39223641bea7");
+        payInfo.setMch_id(payCredential.getMchid());
+        payInfo.setWxappid(wxappid);
         payInfo.setSend_name("追游科技");
         payInfo.setRe_openid(openid);
         payInfo.setTotal_num(1);
-        payInfo.setTotal_amount(100);
-        payInfo.setWishing(strs[(int)(Math.random()*8)]);
-        payInfo.setClient_ip("115.29.188.190");
+        payInfo.setTotal_amount(count*100);
+        payInfo.setWishing(payCredential.getWishing());
+        payInfo.setClient_ip(payCredential.getClientIp());
         payInfo.setAct_name("好评返现");
         payInfo.setRemark("多来多得");
         Map<String,String> map = WxXmlParser.getWxMap(payInfo);
@@ -58,11 +82,12 @@ public class PayService implements IPayService {
             builder.append(objs[i].toString()).append("=")
                     .append(map.get(objs[i])).append("&");
         }
-        builder.append("key=acjkgkliutguizkjgailzsghqyesiu11");
+        builder.append("key=").append(payCredential.getKey());
         payInfo.setSign(UniqueStringGenerator.getMd5(builder.toString()));
-        HttpResponse response = HttpClientUtils.SSLPostSend("https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack",WxXmlParser.getWxXml(payInfo));
+        HttpResponse response = HttpClientUtils.paySSLSend(payCredential.getMchid(),payCredential.getCredentialPath(),
+                "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack",WxXmlParser.getWxXml(payInfo));
         if(response.getStatusLine().getStatusCode()!=200){
-            CodeRe.error("请求微信服务器失败！发红包");
+            CodeRe.error("发红包 请求微信服务器失败！");
         }
         StringBuilder builder1 = new StringBuilder();
         try(BufferedReader reader =new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"utf-8"))){
@@ -121,12 +146,34 @@ public class PayService implements IPayService {
     }
 
     @Override
-    public CodeRe<RedStatus> payInfo(String billno) {
+    public CodeRe<RedStatus> payInfo(String billno,String wxappid,String token,String geappid) {
+
+
+        GeToken geToken = persistenceService.get(GeToken.class,geappid);
+        Timestamp updatetime;
+
+        try {
+            updatetime = geToken.getUpdateTime();
+        } catch (NullPointerException e) {
+            return CodeRe.error("token is of invalid");
+        }
+
+        if(!geToken.getGeTokenM().equals(token.trim())){
+            return  CodeRe.error("token is invalid");
+        }
+
+
+        if(DateUtils.isOutOfDate(updatetime,7000L)){
+            return CodeRe.error("token of time out");
+        }
+
+        PayCredential payCredential =  persistenceService.get(PayCredential.class,wxappid);
+
         RedReqInfo info  = new RedReqInfo();
         info.setNonce_str(UniqueStringGenerator.getUniqueCode());
-        info.setMch_id(Constants.MCH_ID);
+        info.setMch_id(payCredential.getMchid());
         info.setMch_billno(billno);
-        info.setAppid("wx653d39223641bea7");
+        info.setAppid(wxappid);
         info.setBill_type("MCHT");
         Map<String,String> map = WxXmlParser.getWxMap(info);
         Set<String> keys = map.keySet();
@@ -137,10 +184,11 @@ public class PayService implements IPayService {
             builder.append(objs[i].toString()).append("=")
                     .append(map.get(objs[i])).append("&");
         }
-        builder.append("key=acjkgkliutguizkjgailzsghqyesiu11");
+        builder.append("key=").append(payCredential.getCredentialPath());
         info.setSign(UniqueStringGenerator.getMd5(builder.toString()));
 
-        HttpResponse response = HttpClientUtils.SSLPostSend("https://api.mch.weixin.qq.com/mmpaymkttransfers/gethbinfo",WxXmlParser.getWxXml(info));
+        HttpResponse response = HttpClientUtils.paySSLSend(payCredential.getMchid(),payCredential.getCredentialPath(),
+                "https://api.mch.weixin.qq.com/mmpaymkttransfers/gethbinfo",WxXmlParser.getWxXml(info));
         if(response.getStatusLine().getStatusCode()!=200){
             CodeRe.error("请求微信服务器失败！获取红包信息");
         }
