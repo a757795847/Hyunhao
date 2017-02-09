@@ -65,7 +65,7 @@ public class CodeService implements ICodeService {
         builder.append("appid=").append(wxappid);
         try {
             builder.append("&redirect_uri=").append(URLEncoder.encode(Constants.CALL_BACK_URL,"utf-8"));
-            builder.append("&response_type=code&scope=").append(appInterface.getScope()).append("&state=").append(geCode.getGeCodeM());
+            builder.append("&response_type=code&scope=").append(appInterface.getScope()).append("&state=").append(geappid);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return CodeRe.error("token回调地址有误!");
@@ -77,11 +77,12 @@ public class CodeService implements ICodeService {
     }
 
     public CodeRe token(String code, String state,String appid) {//state gecodeM
-        GeCode geCode = persistenceService.get(GeCode.class,appid);
+
+        GeCode geCode = persistenceService.get(GeCode.class,state);
         try {
             geCode.getGeCodeM();
         } catch (NullPointerException e) {
-           return CodeRe.error("appid 不存在");
+           return CodeRe.error("app_id is not exist");
         }
 
         CodeRe<ComponetToken> componetTokenCodeRe =  authenticationService.componetToekn();
