@@ -1,7 +1,5 @@
 package com.zy.gcode.service;
 
-import com.sun.tools.corba.se.idl.constExpr.Times;
-import com.sun.tools.hat.internal.parser.ReadBuffer;
 import com.zy.gcode.controller.delegate.BatchRe;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
@@ -18,10 +16,8 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
