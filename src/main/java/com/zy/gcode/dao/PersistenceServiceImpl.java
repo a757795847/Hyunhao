@@ -5,11 +5,13 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by admin5 on 17/1/16.
@@ -40,8 +42,11 @@ public class PersistenceServiceImpl implements PersistenceService {
         return  criteria.setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
     }
 
-    public<T> List<T> getList(Class<T> clazz, DetachedCriteria criteria, Page page) {
-        return  criteria.getExecutableCriteria(session()).setMaxResults(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
+    public<T> List<T> getList( DetachedCriteria criteria, Page page) {
+        if(page !=null){
+            return  criteria.getExecutableCriteria(session()).setMaxResults(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
+        }
+       return criteria.getExecutableCriteria(session()).list();
     }
 
     public void remove(Object id) {
@@ -60,5 +65,11 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     public void add(Object object) {
         session().save(object);
+    }
+
+    @Override
+    public Object max(Class clazz, String column) {
+
+        return Optional.of( session().createCriteria(clazz).setProjection(Projections.max(column)).uniqueResult()).get();
     }
 }

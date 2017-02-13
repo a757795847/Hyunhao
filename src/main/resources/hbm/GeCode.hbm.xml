@@ -13,5 +13,6 @@
         <property name="callbackUrl" column="callback_url"/>
         <property name="openid" column="openid"/>
         <property name="wxToken" column="wx_token"/>
+        <property name="state" column="state"/>
     </class>
 </hibernate-mapping>

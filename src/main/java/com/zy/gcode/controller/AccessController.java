@@ -2,6 +2,7 @@ package com.zy.gcode.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zy.gcode.controller.delegate.CodeRe;
+import com.zy.gcode.pojo.GeToken;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.ICodeService;
@@ -23,12 +24,12 @@ import static com.zy.gcode.controller.delegate.ControllerStatus.ok;
  * Created by admin5 on 17/1/17.
  */
 @Controller
-@RequestMapping("code")
-public class CodeController {
+@RequestMapping("access")
+public class AccessController {
     @Autowired
     ICodeService iCodeService;
 
-    @RequestMapping("userinfo")
+    @RequestMapping("wxaccess_token")
     public String callback(String code, String state, String appid) {
         if (StringUtils.isEmpty(code)) {
             return "redirect:error.html?message=code is empty";
@@ -42,9 +43,9 @@ public class CodeController {
     }
 
     @RequestMapping("wxcode/{geappid}")
-    public String wxcode(@PathVariable("geappid") String geappid,@RequestParam("redirect_url") String callback) throws UnsupportedEncodingException {
+    public String wxcode(@PathVariable("geappid") String geappid,@RequestParam("redirect_url") String callback,String state) throws UnsupportedEncodingException {
         callback = URLDecoder.decode(callback, "utf-8");
-        CodeRe codeRe = iCodeService.code(geappid, callback);
+        CodeRe codeRe = iCodeService.code(geappid,callback,state);
         if (codeRe.isError()) {
             return "redirect:" + callback;
         }
@@ -55,13 +56,14 @@ public class CodeController {
     public
     @ResponseBody
     Map wxtoken(@PathVariable String code,@PathVariable String geappid) {
-        CodeRe codeRe = iCodeService.geToken(code,geappid);
+        CodeRe<GeToken> codeRe = iCodeService.geToken(code,geappid);
         if (codeRe.isError()) {
             return error(codeRe.getErrorMessage());
         }
         Map map = new HashMap(4);
-        map.put("access_token", codeRe.getMessage());
-        map.put("expirs", 7200);
+        map.put("access_token",codeRe.getMessage().getGeTokenM());
+        map.put("openid",codeRe.getMessage().getOpenid());
+        map.put("expirs", 7000);
         return ok(map);
     }
 
@@ -75,7 +77,6 @@ public class CodeController {
         }
 
 
-
         Map map = new HashMap(4);
         try {
             map.put("userinfo", Constants.objectMapper.writeValueAsString(codeRe.getMessage()));
@@ -85,11 +86,5 @@ public class CodeController {
         return ok(map);
     }
 
-    @RequestMapping("userinfoTest")
-    public
-    @ResponseBody
-    String userinfoTest(@RequestBody String str) {
-        return str;
-    }
 
 }

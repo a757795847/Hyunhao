@@ -10,7 +10,7 @@
         <property name="secret" column="secret"/>
         <property name="customerId" column="customer_id"/>
         <property name="scope" column="scope"/>
-        <property insert="false" name="insertTime" column="insert_time"/>
-        <property insert="false" name="updateTime" column="update_time"/>
+        <property update="false" insert="false" name="insertTime" column="insert_time"/>
+        <property update="false" insert="false" name="updateTime" column="update_time"/>
     </class>
 </hibernate-mapping>

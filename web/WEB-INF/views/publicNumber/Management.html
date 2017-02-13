@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>公众号订单管理</title>
+    <link rel="stylesheet" href="${basePath}/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="${basePath}/stylesheets/font-awesome.min.css">
+    <link rel="stylesheet" href="${basePath}/stylesheets/jquery-jvectormap-1.2.2.css">
+    <link rel="stylesheet" href="${basePath}/stylesheets/AdminLTE.min.css">
+    <link rel="stylesheet" href="${basePath}/stylesheets/_all-skins.min.css">
+    <link rel="stylesheet" href="${basePath}/stylesheets/words.css">
+    <link rel="stylesheet" href="${basePath}/stylesheets/main.css">
+    <link rel="stylesheet" href="${basePath}/stylesheets/welcome.css">
+    <link rel="stylesheet" href="${basePath}/stylesheets/remodal.css">
+    <link rel="stylesheet" href="${basePath}/stylesheets/remodal-default-theme.css">
+    <link rel="stylesheet" href="${basePath}/stylesheets/datepicker3.css">
+    <link rel="stylesheet" href="${basePath}/stylesheets/daterangepicker.css">
+    <link rel="stylesheet" href="${basePath}/stylesheets/Administrator.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+
+<div class="wrapper">
+    <header class="main-header">
+
+        <a href="/" class="logo">
+
+            <span class="logo-mini"><b>A</b>LT</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>Admin</b>LTE</span>
+        </a>
+
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="${basePath}/images/user2-160x160.jpg" class="user-image" alt="User Image">
+                            <span class="hidden-xs">欢迎你gc243728357</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="${basePath}/images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                <p>
+                                    <small>用户名</small>
+                                        <span>gc243728357</span>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="row">
+                                   <span style="margin-left:71px;">手机号</span>
+                                   <span>-12345676878</span>
+                                </div>
+                            </li>
+
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <span class="label label-info" id="modify">
+                                    <a href="#">修改密码</a></span>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="label label-info"><a href="#" >退出</a></span>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="${basePath}/images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                </div>
+                <div class="pull-left info">
+                    <p>微信公众号</p>
+                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                </div>
+            </div>
+            <!-- search form -->
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+              <span class="input-group-btn">
+              </span>
+                </div>
+            </form>
+            <!-- /.search form -->
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+                <li class="header">MAIN NAVIGATION</li>
+                <li>
+                    <a href="">
+                        <i class="fa fa-weixin mr-housite"></i> <span>公众号列表</span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-green">new</small>
+            </span>
+                    </a>
+                </li>
+                <li class="active treeview">
+                    <a href="proxylist.html">
+                        <i class="fa fa-dashboard"></i> <span>订单管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="active"><a href="proxylist.html"><i class="fa fa-circle-o"></i> 订单列表</a></li>
+                        <li><a href="index2.html"><i class="fa fa-circle-o"></i> 导入订单</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="redmanagement.html">
+                        <i class="fa fa-th-large mr-housite"></i> <span>红包管理</span>
+            <span class="pull-right-container">
+            </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="${basePath}/proxy/billing.html">
+                        <i class="fa fa-pie-chart"></i><span>统计</span>
+            <span class="pull-right-container">
+            </span>
+                    </a>
+                </li>
+                </ul>
+        </section>
+    </aside>
+    <div class="content-wrapper row">
+        <section class="content">
+
+                <div class="box box-info">
+
+                     <div class="col-sm-12 mb-housite" id="nav">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="">公众号列表</a>
+                    </li>
+                </ul>
+                    <a href="#" class="btn pull-left btn-success" id="addId">+ 添加公众号</a>
+                    </div>
+                    <div class="col-sm-12" id="lich">
+                        <div class="housite-container" style="position: relative; padding: 10px;margin-bottom: 0;">
+                            <div class="media">
+                                <div class="media-left">
+                                    <img src="${basePath}/images/125.jpg" alt="" style="height:50px;">
+                                </div>
+                                <div class="media-body">
+                                    <p>添加方式1：微信公众号授权登录</p>
+                                    <small class="text-muted">适用于公众号未注册本平台的情况，需成为该公众号的微信平台管理员</small>
+                                    <a href="#modal"><button class="pull-right btn btn-success btn-housite" type="button"
+                                            style="position: absolute; top: 50%; margin-top: -17px; right: 10px;width:100px;
+                                            background-color: #fff;outline-color: #5ac28d;">
+
+                                        开始授权</button></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="housite-container" style="padding: 10px;">
+                            <img src="${basePath}/images/7EA009350579CB2AD46A6495B9CE226E.jpg" alt="" class="img-responsive">
+
+                        </div>
+                        <div class="housite-container" style="position: relative; padding: 10px;margin-bottom: 0;">
+                            <div class="media">
+                                <div class="media-left">
+                                    <img src="${basePath}/images/873392674D483C37E62A23165670E5A9.jpg" alt="" style="height:50px;">
+                                </div>
+                                <div class="media-body">
+                                    <p>添加方式2：组织连接码登录</p>
+                                    <small class="text-muted">适用于公众号已经注册本平台的情况，需登录对应客户端-我的账号页面生成连接码</small>
+                                    <button class="pull-right btn btn-success btn-housite" type="button" data-toggle="modal" data-target="#myModal"
+                                            style="position: absolute; top: 50%; margin-top: -17px;
+                                             right: 10px;width:100px;background-color: #fff;outline-color: #5ac28d;">
+                                        输入链接码</button>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="housite-container" style="padding: 10px;">
+                            <img src="${basePath}/images/124.jpg" alt="" class="img-responsive">
+
+                        </div>
+
+                    </div>
+
+                    <div class="btn-group pull-right" id="Right">
+                        <button class="btn btn-default" type="button">最新</button>
+                        <button class="btn btn-default" type="button" id="early">最早</button>
+                    </div>
+
+
+                <div class="col-sm-12" style="float:none;" id="bottom">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>公众号名称</th>
+                            <th>授权状态</th>
+                            <th>服务类型</th>
+                            <th>服务起始</th>
+                            <th>服务结束</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>悦读书店</td>
+                            <td>2017-12-04</td>
+                            <td>已开通</td>
+                            <td>服务中</td>
+                            <td>2017-06-24</td>
+                            <td><span class="label label-success"> <a href="${basePath}/order/list">详情</a></span>
+                               <span class="label label-success"><a href="#modalt" id="buy">购买</a></span>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-center text-muted mtb-housite" style="height:50px;">尚未绑定公众号，点击左上角“+ 添加公众号”</div>
+
+                    </div>
+                </div>
+
+
+        </section>
+        <div class="custom-panel">
+            <div class="custom-header">
+                <h4 style="font-weight:bold;" class="text-info">重置密码</h4>
+            </div>
+            <div class="custom-body">
+                <div class="mb-housite">
+                    <input type="text" class="form-control" placeholder="输入你注册的手机号">
+                </div>
+                <br>
+                <p class="text-center">
+                    <button class="btn btn-primary btn-block">下一步</button>
+                </p>
+
+            </div>
+            <button type="button" class="btn btn-block btn-default">关闭</button>
+
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span> <span class="sr-only">Close</span></button>
+                        <h5 class="modal-title">输入公众号的组织连接码</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <a href="#modal"><button class="btn btn-default" id="searchfor">
+                                <span class="glyphicon glyphicon-search">
+
+                                </span>
+                            </button></a>
+                        </span>
+                    </div>
+                    <small class="text-muted" style="display: inline-block;margin-top: 10px;">
+                        前往待添加公众号的“账号”页获取组织连接码
+                    </small>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" data-dismiss="modal">添加公众号</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="remodal" data-remodal-id="modal" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+        <button data-remodal-action="close" class="remodal-close" aria-label="Close"></button>
+        <div class="sa-icon sa-warning pulseWarning">
+            <span class="sa-body pulseWarningIns"></span>
+            <span class="sa-dot pulseWarningIns"></span>
+
+        </div>
+        <div>
+            <h2 id="modal1Title">确认</h2>
+            <p id="modal1Desc">
+                即将前往公众号授权页面,确认授权吗?
+            </p>
+        </div>
+        <br>
+        <button data-remodal-action="cancel" class="remodal-cancel">取消</button>
+        <button data-remodal-action="confirm" class="remodal-confirm">确认</button>
+    </div>
+    <div class="remodal" data-remodal-id="modalt" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+    <div class="gray-box fn-clear">
+        <div class="title pre-title">
+            <h2>购买</h2>
+        </div>
+        <div class="box-inner ui-goods-cart">
+
+            <div class="cart-table">
+            <div class="cart-group js-cart-group">
+
+            </div>
+
+                <div class="box-inner">
+                    <div class="order-discount-line">
+                        <div class="form-group">
+                            <label>服务开始</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="enddate">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group">
+                            <label>服务结束</label>
+                           <p>1997-01-23</p>
+                        </div>
+                        <div class="form-group">
+                            <label>购买服务时长(30天为1周期)</label>
+                            <ul class="duration">
+                                <li>1</li>
+                                <li>2</li>
+                                <li>3</li>
+                             <li>4</li>
+                             <li>5</li>
+                             <li>6</li>
+                             <li>7</li>
+                             <li>8</li>
+                             <li>9</li>
+                             <li>10</li>
+                             <li>11</li>
+                             <li>12</li>
+                            </ul>
+                        </div>
+                    <p class="Label">
+                    <label>已选择 <b>0</b>个周期</label> <label>服务结束时间:</label><b>0000-00-00</b><label style="float:right;">总计:<b>0</b>元</label>
+                    </p>
+                    </div>
+
+                </div>
+                <div class="box-inner">
+                    <div class="last-payment vouchers-wrapper fn-clear abc">
+                        <a href="">提交订单</a>
+                        <span class="prices fn-right">
+
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+        </div>
+
+<script src="${basePath}/javascripts/jquery-2.2.3.min.js"></script>
+<script src="${basePath}/javascripts/bootstrap.min.js"></script>
+<script src="${basePath}/javascripts/app.min.js"></script>
+    <script src="${basePath}/javascripts/moment.min.js"></script>
+    <script src="${basePath}/javascripts/bootstrap-datepicker.js"></script>
+    <script src="${basePath}/javascripts/bootstrap-datepicker.zh-CN.js"></script>
+    <script src="${basePath}/javascripts/remodal.js"></script>
+<script src="${basePath}/javascripts/management.js"></script>
+
+
+
+</body>
+</html>

@@ -10,8 +10,8 @@
         <property name="expiresIn" column="expires_in"/>
         <property name="authorizerRefreshToken" column="authorizer_refresh_token"/>
         <property name="funcInfo" column="func_info"/>
-        <property insert="false" name="insertTime" column="insert_time"/>
-        <property  name="updateTime" column="update_time"/>
+        <property update="false" insert="false" name="insertTime" column="insert_time"/>
+        <property update="false" insert="false"  name="updateTime" column="update_time"/>
         <property name="NickName" column="nick_name"/>
         <property name="principalName" column="principal_name"/>
         <property name="userName" column="user_name"/>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <link rel="stylesheet" href="${basePath}/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="${basePath}/stylesheets/register.css">
+</head>
+<body>
+<div id="register">
+    <div class="custom-panel">
+        <div class="custom-header">
+            <img src="${basePath}/images/121.jpg" alt="" class="logo">
+            <br>
+            <br>
+            <h4 class="text-info" style="font-weight:bold;">开启微信公众号的神奇之旅</h4>
+
+
+        </div>
+        <div class="custom-body">
+
+
+            <div class="custom-progress mb-housite">
+                <span class="step dot done" style="left:-11px;"></span>
+                <small class="step title text-muted" style="left:-35px;">注册登录账号</small>
+                <span class="step dot" style="right:-11px;"></span>
+                <small class="step title text-muted" style="right: -40px;">开启神奇之旅</small>
+            </div>
+
+
+            <div class="mb-housite" style="background-color:white;padding:50px 170px 20px;">
+                <input type="text" class="form-control" placeholder="输入你的手机号" style="margin-bottom:10px;" id="mobile">
+                <div class="input-group" style="margin-bottom:10px;">
+                    <input type="text" class="form-control" placeholder="输入短信验证码" id="Verification">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="getcode">获取验证码</button>
+                    </span>
+                </div>
+                <div class="text-right" style="margin-bottom: 30px;height:20px;">
+                    
+                </div>
+                <input type="password" class="form-control" placeholder="请输入六位以上密码" style="margin-bottom:10px;" id="password">
+                <input type="password" class="form-control" placeholder="请再次输入确认密码" style="margin-bottom:30px;" id="passwords">
+                <p class="text-center mb-housite">
+                    <button class="btn btn-primary btn-lg btn-block" id="addID">创建账号</button>
+
+                </p>
+                <p class="text-center">已经有账号?</p>
+                <p class="text-center">
+                    <a href="login.html" class="text-info">登录</a>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">请输入下方验证码，完成短信发送验证</h4>
+            </div>
+            <div class="modal-body text-center">
+                <div class="center-block" style="width:270px;overflow:hidden;">
+                    <div class="pull-left">
+                        <a href="#">
+                            <img src="${basePath}/images/121.jpg" alt="" style="width:130px;height:53px;">
+                        </a>
+                        <div class="text-muted small">点击图片刷新验证码</div>
+                    </div>
+                    <div class="pull-left">
+                        <input type="text" class="form-control" placeholder="输入左侧验证码" style="width:130px;margin-left:10px;height:56px;">
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" style="width:100px;">关闭</button>
+                <button class="btn btn-success" data-dismiss="modal" style="width:100px;">确认发送</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script><#include "../../javascripts/incHead.js" /></script>
+    <script src="${basePath}/javascripts/jquery-2.2.3.min.js"></script>
+    <script src="${basePath}/javascripts/bootstrap.min.js"></script>
+    <script src="${basePath}/javascripts/register.js"></script>
+</body>
+</html>

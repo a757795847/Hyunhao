@@ -1,0 +1,56 @@
+.label.label-success{
+    margin-right:10px;
+
+}
+
+.table.table-hover.table-striped td,th{
+   text-align:center;
+    width:25%;
+
+}
+
+#addred{
+    width: 64px;
+    padding: 4px;
+    border-radius:0;
+    background-color:#5ac28d;
+    border-color:#5ac28d;
+    color:#fff;
+    float: right;
+    margin-right: 46px;
+    margin-top: 20px;
+
+
+}
+#addred:hover{
+    background-color:#00a65a;
+    border-color:#008d4c;
+
+
+}
+.label-success:hover{
+    background-color:#0bc570;
+
+
+}
+#myModal .modal-content{
+    padding:0 5px;
+    width:350px;
+    margin-left:200px;
+
+}  #myModal .modal-title{
+       text-align:center;
+
+   }
+.input-group{
+    width:100%;
+    margin-top:14px;
+}
+#nub{
+    width:90%;
+}
+.modal-footer button{
+    padding:4px 12px;
+
+}
+

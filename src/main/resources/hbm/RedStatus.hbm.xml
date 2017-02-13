@@ -13,7 +13,8 @@
         <property name="refundTime" column="refund_time"/>
         <property name="rcvTime" column="rcv_time"/>
         <property name="openid" column="openid"/>
-        <property insert="false" name="insertTime" column="insert_time"/>
-        <property insert="false" name="updateTime" column="update_time"/>
+        <property update="false" insert="false" name="insertTime" column="insert_time"/>
+        <property update="false" insert="false" name="updateTime" column="update_time"/>
+        <property name="wxappid" column="wxappid"/>
     </class>
 </hibernate-mapping>

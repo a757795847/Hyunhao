@@ -8,8 +8,8 @@
         <id name="geAppid" column="ge_appid"/>
         <property name="geTokenM" column="ge_tokenM"/>
         <property name="geCodeM" column="ge_codeM"/>
-        <property insert="false" name="insertTime" column="insert_time"/>
-        <property insert="false" name="updateTime" column="update_time"/>
+        <property update="false" insert="false" name="insertTime" column="insert_time"/>
+        <property update="false" insert="false" name="updateTime" column="update_time"/>
         <property name="openid" column="openid"/>
         <property name="wxToken" column="wx_token"/>
     </class>

@@ -18,7 +18,7 @@ public abstract class Constants {
     /**
      *微信token 回调url
      */
-    public final static String CALL_BACK_URL="http://open.izhuiyou.com/code/userinfo";
+    public final static String CALL_BACK_URL="http://open.izhuiyou.com/access/wxaccess_token";
 
     /**
      * 商户号

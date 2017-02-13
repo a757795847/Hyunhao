@@ -1,0 +1,24 @@
+.custom-panel{
+height:400px;
+    top:50%;
+    margin-top:-200px;
+    position: absolute;
+    width: 300px;
+    left: 50%;
+    margin-left: -150px;
+
+}
+.text-info{
+    color: #2ca2fb;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    ont-family: inherit;
+    line-height: 1.1;
+}
+.form-control:focus{
+    outline: none;
+    border: 1px solid #58b195;
+}
+
+

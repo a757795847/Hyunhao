@@ -1,0 +1,171 @@
+body{
+    font-family: "PingFang SC",'HanHei SC',"Lantinghei SC","Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","\5FAE\8F6F\96C5\9ED1",STHeiti,"WenQuanYi Micro Hei",SimSun,sans-serif;
+    background-color: #f4f4f8;
+    color: #444952;
+    font-size: 14px;
+
+}
+a, a:focus, a:hover {
+    text-decoration: none;
+    background-color: transparent;
+}
+#register .custom-panel {
+    position:absolute;
+    left:50%;
+    top:50px;
+    width: 600px;
+    margin-left: -300px;
+}
+.logo{
+    height:80px;
+    border: 0;
+
+}
+#register .custom-panel .custom-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.btn {
+    border-radius: 0;
+}
+h4{
+    color: #2ca2fb;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    ont-family: inherit;
+    line-height: 1.1;
+}
+
+
+.form-control {
+    border-radius: 0;
+    border-color: #f2f2f2;
+    box-shadow: none;
+}
+.btn-primary {
+    color:#fff;
+    background-color: #2ca2fb;
+    border-color: #2ca2fb;
+}
+.btn-block {
+    display: block;
+    width: 100%;
+}
+.btn-primary:hover{
+    background-color:#2791e1 ;
+    border-color:#2ca2fb;
+
+}
+
+.mb-housite{
+    margin-bottom: 20px;
+}
+.custom-panel input{
+    background-color: #f5f5f5;
+
+}
+.custom-progress {
+    border-top: 2px solid #2ca2fb;
+    margin: 0 20px 60px 20px;
+    position: relative;
+}
+.custom-progress .step {
+    position: absolute;
+}
+.custom-progress .dot{
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    top: -11px;
+    background-color: #f4f4f8;
+    border: 2px solid #2ca2fb;
+}
+.custom-progress .dot.done{
+    background-color: #2ca2fb;
+}
+.custom-progress .title{
+    top:15px;
+
+}
+.text-center {
+    text-align: center;
+}
+.text-muted{
+    color:#747982;
+}
+small{
+    font-size:85%;
+}
+.text-center .text-info {
+    color: #2ca2fb;
+}
+.text-center .text-info:hover{
+    color:#337ab7;
+
+}
+ .modal {
+     position: fixed;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+     z-index: 1050;
+}
+
+@media (min-width: 768px)
+vendor.8d32ef78.css:5
+    .modal-dialog {
+        width: 600px;
+        margin: 30px auto;
+    }
+    .modal-dialog {
+        position: relative;
+    }
+    .modal .modal-content {
+        box-shadow: none;
+        border-radius: 0;
+        position: relative;
+        background-color: #fff;
+    }
+    .modal .modal-content .modal-header {
+        text-align: center;
+    }
+    .modal-header {
+        min-height: 16.43px;
+        padding: 15px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    .modal .modal-content .modal-body {
+        max-height: 450px;
+        overflow-y: auto;
+    }
+    .modal-body {
+        position: relative;
+        padding: 15px;
+    }
+    .pull-left {
+        float: left;
+    }
+    .text-muted {
+        color: #747982;
+    }
+    .btn-default {
+        border-color: #f2f2f2;
+        color: #444952;
+    }
+    .btn {
+        border-radius: 0;
+    }
+    .modal-footer .btn+.btn {
+        margin-bottom: 0;
+        margin-left: 5px;
+    }
+    .btn-success {
+        background-color: #5ac28d;
+        border-color: #5ac28d;
+        color: #fff;
+    }

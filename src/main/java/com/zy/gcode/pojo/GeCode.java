@@ -14,30 +14,7 @@ public class GeCode {
     private String callbackUrl;
     private String openid;
     private String wxToken;
-
-    public String getOpenid() {
-        return openid;
-    }
-
-    public void setOpenid(String openid) {
-        this.openid = openid;
-    }
-
-    public String getWxToken() {
-        return wxToken;
-    }
-
-    public void setWxToken(String wxtoken) {
-        this.wxToken = wxtoken;
-    }
-
-    public String getCallbackUrl() {
-        return callbackUrl;
-    }
-
-    public void setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
-    }
+    private String state;
 
     public String getGeAppid() {
         return geAppid;
@@ -79,5 +56,35 @@ public class GeCode {
         this.geCodeM = geCodeM;
     }
 
+    public String getCallbackUrl() {
+        return callbackUrl;
+    }
 
+    public void setCallbackUrl(String callbackUrl) {
+        this.callbackUrl = callbackUrl;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public String getWxToken() {
+        return wxToken;
+    }
+
+    public void setWxToken(String wxToken) {
+        this.wxToken = wxToken;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 }

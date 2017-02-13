@@ -8,7 +8,7 @@
         <id name="componetAppid" column="componet_appid"/>
         <property name="componentAccessToken" column="component_access_token"/>
         <property name="expiresIn" column="expires_in"/>
-        <property insert="false" name="insertTime" column="insert_time"/>
-        <property insert="false" name="updateTime" column="update_time"/>
+        <property update="false" insert="false" name="insertTime" column="insert_time"/>
+        <property update="false" insert="false" name="updateTime" column="update_time"/>
     </class>
 </hibernate-mapping>

@@ -44,7 +44,7 @@ public class MiddleController {
 
 
     @RequestMapping("token")
-    public @ResponseBody String token(String code,HttpSession session){
+    public @ResponseBody String token(String code,HttpSession session,String state,String zyid){
       Map map  = HttpClientUtils.mapSSLGetSend("http://open.izhuiyou.com/code/getoken/"+code+"/ge111");
       if(map == null){
           return "redirect:/error.html";
@@ -55,8 +55,8 @@ public class MiddleController {
              String str =  map1.get("userinfo").toString();
               try {
                 User user = Constants.objectMapper.readValue(str, User.class);
-                  Map map11 = HttpClientUtils.mapSSLGetSend("http://open.izhuiyou.com/pay/send?appid=wx653d39223641bea7"+
-                  "&openid="+user.getOpenId()+"&count=1&access_token="+map.get("access_token")+"&zyid=ge111");
+                  Map map11 = HttpClientUtils.mapSSLGetSend("http://open.izhuiyou.com/pay/send?"+
+                  "openid="+user.getOpenId()+"&count=1&access_token="+map.get("access_token")+"&zyid=ge111");
                 session.setAttribute("c_user",user);
                 return map11.toString();
               } catch (IOException e) {

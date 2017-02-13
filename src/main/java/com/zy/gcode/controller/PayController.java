@@ -28,8 +28,8 @@ public class PayController {
         return "welcome pay index!";
     }
     @RequestMapping("send")
-    public @ResponseBody Object send(String appid,String openid,String count,String access_token,String zyid){
-       CodeRe<String> codeRe = payService.pay(openid,Integer.parseInt(count),appid,access_token,zyid);
+    public @ResponseBody Object send(String openid,String count,String access_token,String zyid){
+       CodeRe<String> codeRe = payService.pay(openid,Integer.parseInt(count),access_token,zyid);
        if(codeRe.isError()){
            return ControllerStatus.error(codeRe.getErrorMessage());
        }
@@ -37,8 +37,8 @@ public class PayController {
     }
 
     @RequestMapping("redinfo")
-    public @ResponseBody Object redinfo(String billno,String appid,String access_token,String zyid){
-      CodeRe<RedStatus> redStatusCodeRe = payService.payInfo(billno,appid,access_token,zyid);
+    public @ResponseBody Object redinfo(String billno,String access_token,String zyid){
+      CodeRe<RedStatus> redStatusCodeRe = payService.payInfo(billno,access_token,zyid);
       if (redStatusCodeRe.isError()){
         return redStatusCodeRe.getErrorMessage();
       }

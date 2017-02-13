@@ -1,0 +1,233 @@
+* {
+    margin: 0;
+    list-style: none;
+    padding: 0;
+}
+
+body{
+    font-family: "PingFang SC",'HanHei SC',"Lantinghei SC","Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","\5FAE\8F6F\96C5\9ED1",STHeiti,"WenQuanYi Micro Hei",SimSun,sans-serif;
+    background-color: #f4f4f8;
+    color: #444952;
+    font-size: 14px;
+
+}
+header{
+    height:73px;
+    background-color:#fff;
+    line-height:71px;
+
+
+}
+.out,.sub,.oder,.key,.mon,.footer{
+    width:70%;
+    margin:0 auto;
+}
+.out button{
+    margin-top:21px;
+    float:right;
+    width: 60px;
+    height: 29px;
+    line-height: 17px;
+
+}
+#login{
+    margin-top:21px;
+
+}
+#lich{
+    margin-right:25px;
+    margin-top:21px;
+
+}
+.sub{
+    position:relative;
+
+}
+#background{
+    position:absolute;
+    left:250px;
+    top:-10px;
+
+
+}
+h2{
+    color:#fff;
+    margin:0;
+
+}
+#section{
+    background-color:rgb(47,64,94);
+    height:460px;
+    padding-top:60px;
+
+}
+.pool {
+    margin-top: 33px;
+    width: 422px;
+    border: 1px solid #fff;
+}
+.text{
+    width: 322px;
+    font-size: 12px;
+    color: #fff;
+    line-height: 25px;
+
+}
+#top{
+    margin-top:50px;
+    text-align: center;
+
+}
+#serrve{
+    color:#333;
+    margin:0 auto;
+
+}
+/*#top ul{
+    margin-top:30px;
+
+}*/
+#top ul li{
+    float:left;
+    width:25%;
+    margin-right: 12%;
+    height:210px;
+    margin-top:30px;
+}
+.marginq{
+    margin:0;
+}
+#top p{
+    margin-top:20px;
+}
+.oder li div{
+   height:100px;
+}
+.oder li h3{
+    color:rgb(0,146,221);
+    margin:10px auto;
+
+
+}
+.key{
+
+}
+
+.content{text-align:center;
+    margin-top:30px;
+    background-color:rgb(178,178,178);
+    height:390px;
+
+}
+.content h3{
+    color:#fff;
+}
+.content img{
+    width:1135px;
+}
+.key{
+    padding-top:30px;
+
+}
+
+#top:after{
+    content:".";
+    display:block;
+    height:0;
+    clear:both;
+    visibility:hidden;
+
+}
+.Advantage:after{
+    content:".";
+    display:block;
+    height:0;
+    clear:both;
+    visibility:hidden;
+
+}
+.Advantage{
+    background-color:#fff;
+    padding-top:175px;
+    padding-bottom:120px;
+
+}
+.Advantage .mon{
+    text-align: center;
+
+}
+.Advantage .mon ul{
+    margin-top:30px;
+
+}
+.Advantage .mon li{
+    width:25%;
+    float:left;
+    margin-right:12%;
+
+}
+.mon ul li div{
+    height:110px;
+
+}
+.mon ul li h3{
+    margin-top:10px;
+
+}
+.mon ul li p{
+    margin-top:20px;
+
+}
+footer{
+    background-color: rgb(48,56,60);
+
+
+}
+footer:after{
+    content:".";
+    display:block;
+    height:0;
+    clear:both;
+    visibility:hidden;
+
+}
+.Cooperation {
+    padding-top:10px;
+
+}
+.Cooperation p{
+    margin:3px 0;
+    color:#fff;
+}
+.Cooperation h4{
+    color:rgb(151,151,150);
+
+}
+.footer{
+    padding-bottom:10px;
+    position:relative;
+
+}
+.right{
+    padding-top:10px;
+    text-align: center;
+    width:210px;
+    background-color:rgb(57,70,77);
+    position: absolute;
+    top: 0px;
+    right: 0;
+}
+.right p{
+    margin:2px 0;
+    color:rgb(138,139,140);
+}
+.bottom{
+    background-color: rgb(30,42,48);
+    height: 33px;
+    text-align: center;
+    color: #fff;
+    line-height: 33px;
+
+}
+
+

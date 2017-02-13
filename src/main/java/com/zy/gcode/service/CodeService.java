@@ -35,7 +35,7 @@ public class CodeService implements ICodeService {
     @Autowired
     AuthenticationService authenticationService;
 
-    public CodeRe code(String geappid, String url) {
+    public CodeRe code(String geappid, String url,String state) {
         CodeRe codeRe = new CodeRe();
         AppInterface appInterface = persistenceService.get(AppInterface.class, geappid);
 
@@ -52,6 +52,7 @@ public class CodeService implements ICodeService {
         geCode.setExpires(CODE_EXPIRS);
         geCode.setGeAppid(geappid);
         geCode.setGeCodeM(code);
+        geCode.setState(state);
         try {
             geCode.setCallbackUrl(URLDecoder.decode(url,"utf-8"));
         } catch (UnsupportedEncodingException e) {
@@ -76,7 +77,7 @@ public class CodeService implements ICodeService {
         return codeRe;
     }
 
-    public CodeRe token(String code, String state,String appid) {//state gecodeM
+    public CodeRe token(String code, String state,String appid) {
 
         GeCode geCode = persistenceService.get(GeCode.class,state);
         try {
@@ -140,7 +141,7 @@ public class CodeService implements ICodeService {
         if(user ==null){
             return CodeRe.error("to get user from weixin is fail");
         }
-        return CodeRe.correct(geCode.getCallbackUrl()+"?code="+geCode.getGeCodeM());
+        return CodeRe.correct(geCode.getCallbackUrl()+"?code="+geCode.getGeCodeM()+"&state="+geCode.getState()+"&zyid="+geCode.getGeAppid());
     }
 
     private User user(String token, String openid){
@@ -186,7 +187,7 @@ public class CodeService implements ICodeService {
     }
 
     @Override
-    public CodeRe<String> geToken(String geCodeM,String geappid) {
+    public CodeRe<GeToken> geToken(String geCodeM,String geappid) {
         GeCode geCode =persistenceService.get(GeCode.class,geappid);
 
         Timestamp updatetime;
@@ -210,7 +211,7 @@ public class CodeService implements ICodeService {
         geToken.setOpenid(geCode.getOpenid());
         geToken.setGeAppid(geappid);
         persistenceService.updateOrSave(geToken);
-        return CodeRe.correct(geTokenM);
+        return CodeRe.correct(geToken);
     }
 
     @Override

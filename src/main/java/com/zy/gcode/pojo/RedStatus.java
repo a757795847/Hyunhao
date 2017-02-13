@@ -16,6 +16,15 @@ public class RedStatus {
     private Timestamp insertTime;
     private Timestamp updateTime;
     private String openid;
+    private String wxappid;
+
+    public String getWxappid() {
+        return wxappid;
+    }
+
+    public void setWxappid(String wxappid) {
+        this.wxappid = wxappid;
+    }
 
     public String getMchBillno() {
         return mchBillno;

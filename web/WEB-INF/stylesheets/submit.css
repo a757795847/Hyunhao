@@ -1,0 +1,89 @@
+* {
+    margin: 0;
+    list-style: none;
+    padding: 0;
+}
+body{
+    font-family: "PingFang SC",'HanHei SC',"Lantinghei SC","Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","\5FAE\8F6F\96C5\9ED1",STHeiti,"WenQuanYi Micro Hei",SimSun,sans-serif;
+    background-color: #f4f4f8;
+    color: #444952;
+    font-size: 14px;
+
+}
+#redbull{
+    width:100%;
+    height:auto;
+}
+#form{
+    position:absolute;
+    bottom:0;
+    z-index:999;
+    padding:0 8%;
+    width:100%;
+
+
+}
+
+#form ul{
+    margin:0 auto;
+}
+#form ul li{
+    width:26%;
+    float:left;
+    margin-right:2%;
+
+}
+.last{
+    margin-top:-1px;
+    border-radius:5px;
+    padding-top:3%;
+    padding-bottom:2%;
+    border:1px solid #ddd;
+    margin:none;
+    text-align:center;
+    color:#fff;
+
+}
+.last p{
+    font-size:12px;
+
+}
+#Orders{
+    margin-top:13px;
+    width: 76%;
+    margin-left: 1%;
+    height: 35px;
+    border-radius: 6px;
+    background-color: #f7f7f7;
+    border: none;
+    padding-left: 14px;
+    font-size: 14px;
+    outline:none;
+
+}
+#addID{
+    background-color:rgb(237,233,49);
+    border: none;
+    width: 77%;
+    margin-left: 8px;
+    height: 40px;
+    margin-top: 13px;
+    border-radius: 6px;
+    font-size: 18px;
+    outline: none;
+
+}
+.text-info{
+    color:#fff;
+    font-size:12px;
+    text-decoration: underline;
+    margin-left: 33%;
+
+
+}
+.father{
+    margin:7px;
+
+
+}
+
