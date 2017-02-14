@@ -83,6 +83,7 @@ public class UniqueStringGenerator {
     }
 
     public static String SHA1(String str) {
+        System.out.println(str);
         if (null == str || 0 == str.length()){
             return null;
         }
