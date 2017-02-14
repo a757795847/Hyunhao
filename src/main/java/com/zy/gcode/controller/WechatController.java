@@ -53,9 +53,9 @@ public class WechatController {
 
                StringBuilder builder = new StringBuilder("{");
                builder.append("timestamp:").append(map.get("timestamp")).append(",")
-               .append("nonceStr:").append(map.get("nonceStr")).append(",")
-               .append("appid:").append("wx653d39223641bea7").append(",")
-               .append("signature:").append(map.get("signature")).append("}");
+               .append("nonceStr:").append("\"").append(map.get("nonceStr")).append("\"").append(",")
+               .append("appid:").append("\"wx653d39223641bea7\"").append(",")
+               .append("signature:").append("\"").append(map.get("signature")).append("\"").append("}");
                request.setAttribute("jsonConfig",builder.toString());
 
 
