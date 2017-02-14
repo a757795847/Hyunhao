@@ -25,38 +25,37 @@ $("#odd").on("click",function(){
             //upload image to wechat server
 
             localIds.map(function (id){
-                wx.uploadImage(
+                wx.uploadImage({
                     localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
                     isShowProgressTips: 1, // 默认为1，显示进度提示
                     success: function (res) {
-                    var serverId = res.serverId; // 返回图片的服务器端ID
+                        var serverId = res.serverId; // 返回图片的服务器端ID
 
 
-                    /*outer.state.images[position] = serverId;
-                     outer.state.images_display[position] = outer.state.source_tempfile + serverId;
-                     outer.setState({});*/
-                    // console.info("serverId: " + serverId);
-                    // window.location = "/" + serverId;
+                        /*outer.state.images[position] = serverId;
+                         outer.state.images_display[position] = outer.state.source_tempfile + serverId;
+                         outer.setState({});*/
+                        // console.info("serverId: " + serverId);
+                        // window.location = "/" + serverId;
 
-                    // notify server to fetch image
-                    // $.post(outer.state.source + serverId, {}, function (res) {
-                    //     alert(res.result);
-                    //     alert(res.result.image);
-                    //     console.info(res);
-                    //     var newData = outer.state.data;
-                    //     newData.imagePath = res.result.image;
-                    //     outer.setState({data: newData})
-                    // });
-                }
+                        // notify server to fetch image
+                        // $.post(outer.state.source + serverId, {}, function (res) {
+                        //     alert(res.result);
+                        //     alert(res.result.image);
+                        //     console.info(res);
+                        //     var newData = outer.state.data;
+                        //     newData.imagePath = res.result.image;
+                        //     outer.setState({data: newData})
+                        // });
+                    }
+                });
             });
-        })
-}
+        }
+    });
 });
 
-
-
-});
 var sub=serverId;
+console.log(sub)
 
 $("addID").on("click",function(){
     var orders=$("$Orders").val();
