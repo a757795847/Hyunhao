@@ -21,4 +21,5 @@ public interface PersistenceService {
     void updateOrSave(Object object);
     void save(Object obj);
     Object max(Class clazz,String column);
+    <T> T getOneByColumn(Class<T> clazz,String column,Object value);
 }
