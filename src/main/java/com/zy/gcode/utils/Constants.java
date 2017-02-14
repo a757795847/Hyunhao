@@ -25,6 +25,8 @@ public abstract class Constants {
 
     public  final static String COMPONENTVERIFYTICKET = "componentverifyticket";
 
+    public final static String RED_PICTURE_PATH="/opt/zy/picture";
+
     /**
      * 商户号
      */

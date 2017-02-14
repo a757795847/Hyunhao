@@ -72,4 +72,9 @@ public class PersistenceServiceImpl implements PersistenceService {
 
         return Optional.of( session().createCriteria(clazz).setProjection(Projections.max(column)).uniqueResult()).get();
     }
+
+    @Override
+    public void save(Object obj) {
+        session().save(obj);
+    }
 }

@@ -5,6 +5,7 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IAuthenticationService;
+import com.zy.gcode.service.IWechatService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.UniqueStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ import java.util.Set;
 public class WechatController {
     @Autowired
     IAuthenticationService authenticationService;
+
+    @Autowired
+    IWechatService wechatService;
 
     @RequestMapping("home")
     public String home(HttpServletRequest request){
@@ -65,12 +69,17 @@ public class WechatController {
     }
 
     @RequestMapping("submit")
-    public String submit(MultipartFile[] multipartFiles, @RequestParam String billno) throws IOException{
-            int len = multipartFiles.length;
-            for(int i =0 ; i < len;i++){
-                multipartFiles[i].transferTo(new File("/opt/zy/picture"+billno+"i"));
+    public String submit(@RequestParam(required = false) String image1,@RequestParam(required = false) String image2,
+                         @RequestParam(required = false) String image3,@RequestParam String billno,HttpSession session) throws IOException{
+            User user =  (User)session.getAttribute("c_user");
+            if(user ==null){
+                return "登录以过期,请刷新";
             }
-            return null;
+          CodeRe<String> codeRe =  wechatService.sumbit(image1,image2,image3,billno,user.getOpenId());
+            if(codeRe.isError()){
+                return codeRe.getErrorMessage();
+            }
+            return codeRe.getMessage();
     }
 
     private String signature(Map<String,String> map,String url){

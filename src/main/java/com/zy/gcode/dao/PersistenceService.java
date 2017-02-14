@@ -19,5 +19,6 @@ public interface PersistenceService {
     void update(Object object);
     void add(Object object);
     void updateOrSave(Object object);
+    void save(Object obj);
     Object max(Class clazz,String column);
 }
