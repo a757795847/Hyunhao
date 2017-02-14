@@ -10,25 +10,44 @@ body{
     font-size: 14px;
 
 }
-#redbull{
+
+#image{
+    height:100%;
     width:100%;
-    height:auto;
+    position: fixed;
+    z-index: -10;
+    background:url(../images/15.png) no-repeat;
+    background-position: 0px 0px;
+    background-size: 100% 100%;
+    text-align: center;
+
+
 }
+
 #form{
     position:absolute;
     bottom:0;
     z-index:999;
-    padding:0 8%;
     width:100%;
+    text-align:center;
 
 
 }
 
 #form ul{
     margin:0 auto;
+    width:77%;
+}
+#form ul:after{
+    content:".";
+    display:block;
+    height:0;
+    clear:both;
+    visibility:hidden;
+
 }
 #form ul li{
-    width:26%;
+    width:31%;
     float:left;
     margin-right:5px;
 
@@ -77,7 +96,6 @@ body{
     color:#fff;
     font-size:12px;
     text-decoration: underline;
-    margin-left: 33%;
 
 
 }
@@ -87,7 +105,7 @@ body{
 
 }
 #form .lict{
-    width:100%;
+    width:31%;
     height:84px;
 
 }

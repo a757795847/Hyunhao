@@ -13,6 +13,7 @@ wx.config({
 var ids = [];
 //选择图片
 $("#odd").on("click",function(){
+
     wx.chooseImage({
         count: 1, // 默认9
         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -21,7 +22,6 @@ $("#odd").on("click",function(){
             console.log(res);
             var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
             console.log(localIds);
-            var serverId = res.serverId; // 返回图片的服务器端ID
 
             // console.info("success");
             //upload image to wechat server
@@ -32,7 +32,10 @@ $("#odd").on("click",function(){
                     localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
                     isShowProgressTips: 1, // 默认为1，显示进度提示
                     success: function (res) {
-                        ids.push(serverId);
+                        var serverId = res.serverId; // 返回图片的服务器端ID
+                        console.log(serverId);
+
+                            ids.push(serverId);
                         var image='<li class="lict"><img src="'+id+'" alt=""></li>';
 
                         if(ids.length == 3){
@@ -65,29 +68,40 @@ $("#odd").on("click",function(){
 
 console.log(ids);
 
-$("addID").on("click",function(){
-    var orders=$("$Orders").val();
+
+$("#addID").on("click",function(){
+
+    var orders=$("#Orders").val();
     var datas={
         "images":ids,
         "billno":orders
     }
-    $.ajax({
-        type:'POST',
-        url:"view/wechat/submit",
-        data: datas,
-        dataType: 'json',
-        success:function(data){
+    console.log(datas);
+     $.ajax({
+         type:'POST',
+         url:"view/wechat/submit",
+         data: datas,
+         dataType: 'json',
+         success:function(data){
+            if(data.submit=="success"){
+                $("#hide").hide();
+                $("#Orders").hide();
+                $("#addID").css("margin-bottom","96px");
+                $("#addID").html("提交成功");
 
-            console.log(data);
-            console.log(data.url);
-        },
-        error:function(jqXHR){
-            if(jqXHR.status == 406){
+            }else{
+                console.log("提交失败");
 
             }
-        }
 
-    })
+         },
+         error:function(jqXHR){
+             if(jqXHR.status == 406){
+
+             }
+         }
+
+     })
 
 
 });
