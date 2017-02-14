@@ -42,10 +42,10 @@ public class WechatController {
        HttpSession session = request.getSession(true);
       User user  = (User) session.getAttribute("c_user");
 
-       if(user!=null||true) {
+       if(user!=null) {
            Map<String, String> map = new HashMap<>();
 
-           map.put("timestamp", String.valueOf(System.currentTimeMillis()));
+           map.put("timestamp", String.valueOf(System.currentTimeMillis()/1000));
            map.put("nonceStr", UniqueStringGenerator.getUniqueCode());
            map.put("appid", "wx653d39223641bea7");
            map.put("signature", signature(map, request.getRequestURL().toString()));
