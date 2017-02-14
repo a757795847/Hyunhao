@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.zy.gcode.pojo.RedSubmitInfo" table="red_submit_info" schema="jt_platform">
+        <id name="rsNumber" column="rs_number">
+            <generator class="native"/>
+        </id>
+        <property insert="false" update="false" name="insertTime" column="insert_time"/>
+        <property name="refuseTime" column="refuse_time"/>
+        <property name="refuseMark" column="refuse_mark"/>
+        <property name="redSubmitInfocol" column="red_submit_infocol"/>
+        <property name="pic1Path" column="pic1_path"/>
+        <property name="pic2Path" column="pic2_path"/>
+        <property name="pic3Path" column="pic3_path"/>
+        <property name="isSend" column="is_send"/>
+        <property name="isRefuse" column="is_refuse"/>
+        <property name="openId" column="open_id"/>
+        <property name="redAmount" column="red_amount"/>
+    </class>
+</hibernate-mapping>
