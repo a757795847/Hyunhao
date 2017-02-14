@@ -2,14 +2,13 @@ package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
-import com.zy.gcode.pojo.RedSubmitInfo;
+import com.zy.gcode.pojo.DataOrder;
+import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.utils.Constants;
+import com.zy.gcode.utils.HttpClientUtils;
+import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by admin5 on 17/2/14.
@@ -19,58 +18,47 @@ public class WechatService implements IWechatService {
     @Autowired
     PersistenceService persistenceService;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
 
     @Override
     public CodeRe sumbit(String image1,String image2,String image3, String billno,String openid) {
         String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").append(billno).toString();
-        RedSubmitInfo redSubmitInfo = new RedSubmitInfo();
-       /* try {
-            switch (multipartFiles.length){
-                case 1:
-                    String a = path+"A";
-                    multipartFiles[1].transferTo(new File(a));
-                    redSubmitInfo.setPic1Path(billno+"A");
-                    break;
-                case 2:
-                    String a1 = path+"A";
-                    multipartFiles[1].transferTo(new File(a1));
-                    String b = path+"B";
-                    multipartFiles[1].transferTo(new File(b));
-                    redSubmitInfo.setPic1Path(path+"A");
-                    redSubmitInfo.setPic1Path(path+"B");
-                    break;
-                case 3:
-                    String a3 = path+"A";
-                    multipartFiles[1].transferTo(new File(a3));
-                    String b2 = path+"B";
-                    multipartFiles[1].transferTo(new File(b2));
-                    String c = path+"C";
-                    multipartFiles[1].transferTo(new File(c));
-                    redSubmitInfo.setPic1Path(path+"A");
-                    redSubmitInfo.setPic1Path(path+"B");
-                    redSubmitInfo.setPic1Path(path+"C");
-                    break;
-                default:
-                    CodeRe.error("最多只支持上传4张图片");
-                    break;
-            }
-        } catch (IOException e) {
-            return CodeRe.error("文件写入错误! 请联系管理员");
+        DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class,"orderNumber",billno);
+
+        if(dataOrder==null){
+            CodeRe.error("订单不存在");
         }
-        */
 
         if(image1!=null){
-         redSubmitInfo.setPic1Path(image1);
+            dataOrder.setCommentFile1(billno+"A");
         }
         if(image2!=null){
-            redSubmitInfo.setPic2Path(image2);
+            dataOrder.setCommentFile2(billno+"B");
         }
         if(image3 !=null){
-            redSubmitInfo.setPic3Path(image3);
+            dataOrder.setCommentFile3(billno+"C");
         }
-        redSubmitInfo.setOpenId(openid);
-        redSubmitInfo.setRsNumber(billno);
-        persistenceService.save(redSubmitInfo);
+        Thread t = new Thread(()->{
+            CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.componetToekn();
+            if(tokenConfigCodeRe.isError()){
+
+            }
+
+            if(image1!=null){
+              HttpResponse response = HttpClientUtils.SSLGetSend("http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID");
+            }
+            if(image2!=null){
+                dataOrder.setCommentFile2(billno+"B");
+            }
+            if(image3 !=null){
+                dataOrder.setCommentFile3(billno+"C");
+            }
+        });
+
+        dataOrder.setWeixinId(openid);
+        persistenceService.save(dataOrder);
 
         return CodeRe.correct("success");
     }

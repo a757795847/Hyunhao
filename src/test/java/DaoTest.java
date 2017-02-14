@@ -1,5 +1,6 @@
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.AuthorizationInfo;
+import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
@@ -40,19 +41,8 @@ public class DaoTest {
 
     @Test
     public void test(){
-        Resource resource = new ClassPathResource("config.properties");
-        Properties properties = new Properties();
-        try {
-            properties.load(resource.getInputStream());
-            FileOutputStream outputStream = new FileOutputStream(resource.getFile());
-            properties.store(outputStream,null);
-            System.out.println(properties.getProperty("precode.insert")==null);
-            outputStream.flush();
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+       System.out.println(persistenceService.getOneByColumn(DataOrder.class,"orderNumber","24423067612233391"));
     }
     @Test
     public void dome(){

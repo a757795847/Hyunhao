@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.zy.gcode.pojo.DataOrder" table="data_order" schema="jt_platform">
+        <id name="id" column="id"/>
+        <property name="weixinId" column="weixin_id"/>
+        <property name="orderNumber" column="order_number"/>
+        <property name="giftMoney" column="gift_money"/>
+        <property name="giftDetail" column="gift_detail"/>
+        <property name="giftState" column="gift_state"/>
+        <property name="commentFile1" column="comment_file1"/>
+        <property name="commentFile2" column="comment_file2"/>
+        <property name="commentFile3" column="comment_file3"/>
+        <property name="applyDate" column="apply_date"/>
+        <property name="approveDate" column="approve_date"/>
+        <property name="sendDate" column="send_date"/>
+        <property name="recieveDate" column="recieve_date"/>
+        <property name="rejectReason" column="reject_reason"/>
+        <property name="createUserId" column="create_user_id"/>
+        <property name="createDate" column="create_date"/>
+        <property name="updateUserId" column="update_user_id"/>
+        <property name="updateDate" column="update_date"/>
+        <property name="delFlag" column="del_flag"/>
+        <property name="buyerName" column="buyer_name"/>
+        <property name="buyerZhifubao" column="buyer_zhifubao"/>
+        <property name="dues" column="dues"/>
+        <property name="postage" column="postage"/>
+        <property name="payPoints" column="pay_points"/>
+        <property name="amount" column="amount"/>
+        <property name="rebatePoint" column="rebate_point"/>
+        <property name="actualAmount" column="actual_amount"/>
+        <property name="actualPayPoints" column="actual_pay_points"/>
+        <property name="orderState" column="order_state"/>
+        <property name="buyerNotice" column="buyer_notice"/>
+        <property name="receiver" column="receiver"/>
+        <property name="receiverAddress" column="receiver_address"/>
+        <property name="postKind" column="post_kind"/>
+        <property name="receiverTel" column="receiver_tel"/>
+        <property name="receiverMobile" column="receiver_mobile"/>
+        <property name="orderCreateTime" column="order_create_time"/>
+        <property name="orderPayTime" column="order_pay_time"/>
+        <property name="goodsTitle" column="goods_title"/>
+        <property name="goodsKind" column="goods_kind"/>
+        <property name="logisticsNumber" column="logistics_number"/>
+        <property name="logisticsCompany" column="logistics_company"/>
+        <property name="orderRemark" column="order_remark"/>
+        <property name="goodsNumber" column="goods_number"/>
+        <property name="shopId" column="shop_id"/>
+        <property name="shopName" column="shop_name"/>
+        <property name="orderCloseReason" column="order_close_reason"/>
+        <property name="solderFee" column="solder_fee"/>
+        <property name="buyerFee" column="buyer_fee"/>
+        <property name="invoiceTitle" column="invoice_title"/>
+        <property name="isMobileOrder" column="is_mobile_order"/>
+        <property name="phaseOrderInfo" column="phase_order_info"/>
+        <property name="privilegeOrderId" column="privilege_order_id"/>
+        <property name="isTransferAgreementPhoto" column="is_transfer_agreement_photo"/>
+        <property name="isTransferReceipt" column="is_transfer_receipt"/>
+        <property name="isPayByAnother" column="is_pay_by_another"/>
+        <property name="earnestRanking" column="earnest_ranking"/>
+        <property name="skuChanged" column="sku_changed"/>
+        <property name="receiverAddressChanged" column="receiver_address_changed"/>
+        <property name="errorInfo" column="error_info"/>
+        <property name="tmallCardsDeduction" column="tmall_cards_deduction"/>
+        <property name="pointDedution" column="point_dedution"/>
+        <property name="isO2OTrade" column="is_o2o_trade"/>
+    </class>
+</hibernate-mapping>

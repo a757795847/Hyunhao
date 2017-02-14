@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -76,5 +77,11 @@ public class PersistenceServiceImpl implements PersistenceService {
     @Override
     public void save(Object obj) {
         session().save(obj);
+    }
+
+    @Override
+    public <T> T getOneByColumn(Class<T> clazz, String column, Object value) {
+     return (T)session().createCriteria(clazz).add(Restrictions.eq(column,value)).uniqueResult();
+
     }
 }

@@ -100,7 +100,7 @@ public class UniqueStringGenerator {
                 }
                 hexString.append(shaHex);
             }
-            return hexString.toString().toUpperCase();
+            return hexString.toString();
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
