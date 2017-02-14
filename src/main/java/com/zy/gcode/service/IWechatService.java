@@ -8,5 +8,5 @@ import org.springframework.web.multipart.MultipartFile;
  * Created by admin5 on 17/2/14.
  */
 public interface IWechatService {
-    CodeRe sumbit(MultipartFile[] multipartFiles,String billno,String openid);
+    CodeRe sumbit(String image1,String image2,String image3,String billno,String openid);
 }

@@ -69,12 +69,13 @@ public class WechatController {
     }
 
     @RequestMapping("submit")
-    public String submit(MultipartFile[] multipartFiles, @RequestParam String billno,HttpSession session) throws IOException{
+    public String submit(@RequestParam(required = false) String image1,@RequestParam(required = false) String image2,
+                         @RequestParam(required = false) String image3,@RequestParam String billno,HttpSession session) throws IOException{
             User user =  (User)session.getAttribute("c_user");
             if(user ==null){
                 return "登录以过期,请刷新";
             }
-          CodeRe<String> codeRe =  wechatService.sumbit(multipartFiles,billno,user.getOpenId());
+          CodeRe<String> codeRe =  wechatService.sumbit(image1,image2,image3,billno,user.getOpenId());
             if(codeRe.isError()){
                 return codeRe.getErrorMessage();
             }

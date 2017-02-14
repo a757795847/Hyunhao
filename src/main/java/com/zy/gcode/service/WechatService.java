@@ -21,15 +21,15 @@ public class WechatService implements IWechatService {
 
 
     @Override
-    public CodeRe sumbit(MultipartFile[] multipartFiles, String billno,String openid) {
+    public CodeRe sumbit(String image1,String image2,String image3, String billno,String openid) {
         String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").append(billno).toString();
         RedSubmitInfo redSubmitInfo = new RedSubmitInfo();
-        try {
+       /* try {
             switch (multipartFiles.length){
                 case 1:
                     String a = path+"A";
                     multipartFiles[1].transferTo(new File(a));
-                    redSubmitInfo.setPic1Path(path+"A");
+                    redSubmitInfo.setPic1Path(billno+"A");
                     break;
                 case 2:
                     String a1 = path+"A";
@@ -57,11 +57,24 @@ public class WechatService implements IWechatService {
         } catch (IOException e) {
             return CodeRe.error("文件写入错误! 请联系管理员");
         }
+        */
+
+        if(image1!=null){
+         redSubmitInfo.setPic1Path(image1);
+        }
+        if(image2!=null){
+            redSubmitInfo.setPic2Path(image2);
+        }
+        if(image3 !=null){
+            redSubmitInfo.setPic3Path(image3);
+        }
         redSubmitInfo.setOpenId(openid);
         redSubmitInfo.setRsNumber(billno);
         persistenceService.save(redSubmitInfo);
 
         return CodeRe.correct("success");
     }
+
+
 
 }
