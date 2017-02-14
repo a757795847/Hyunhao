@@ -51,11 +51,13 @@ public class WechatController {
            map.put("signature", signature(map, request.getRequestURL().toString()));
 
 
-           try {
-               request.setAttribute("jsonConfig", Constants.objectMapper.writeValueAsString(map));
-           } catch (JsonProcessingException e) {
-               e.printStackTrace();
-           }
+               StringBuilder builder = new StringBuilder("{");
+               builder.append("timestamp:").append(map.get("timestamp")).append(",")
+               .append("nonceStr:").append(map.get("nonceStr")).append(",")
+               .append("appid:").append("wx653d39223641bea7").append(",")
+               .append("signature:").append(map.get("signature")).append("}");
+               request.setAttribute("jsonConfig",builder.toString());
+
 
 
            return "/views/wechat/submit.html";
