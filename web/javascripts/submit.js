@@ -10,7 +10,7 @@ wx.config({
     jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 
 });
-
+var ids = [];
 //选择图片
 $("#odd").on("click",function(){
     wx.chooseImage({
@@ -30,7 +30,7 @@ $("#odd").on("click",function(){
                     success: function (res) {
                     var serverId = res.serverId; // 返回图片的服务器端ID
 
-
+                    ids.push(serverId);
                     /*outer.state.images[position] = serverId;
                      outer.state.images_display[position] = outer.state.source_tempfile + serverId;
                      outer.setState({});*/
@@ -55,12 +55,12 @@ $("#odd").on("click",function(){
 
 
 });
-var sub=serverId;
-
+/*var sub=serverId;*/
+console.log(ids);
 $("addID").on("click",function(){
     var orders=$("$Orders").val();
     var datas={
-        "images":sub,
+        "images":ids,
         "billno":orders
 
     }
