@@ -62,7 +62,7 @@ public class WechatController {
         StringBuilder builder = new StringBuilder();
         for(int i = 0 ;i <objs.length;i++){
             builder.append(objs[i].toString()).append("=")
-                    .append(map.get(objs[i])).append("&");
+                    .append(signatureMap.get(objs[i])).append("&");
         }
       return   builder.substring(0,builder.length()-1);
 
