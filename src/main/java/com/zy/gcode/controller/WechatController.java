@@ -49,7 +49,7 @@ public class WechatController {
     private String signature(Map<String,String> map,String url){
         Map<String,String> signatureMap = new HashMap();
         signatureMap.put("timestamp",map.get("timestamp"));
-        signatureMap.put("nonceStr",map.get("noncestr"));
+        signatureMap.put("noncestr",map.get("nonceStr"));
         CodeRe<TokenConfig> configCodeRe = authenticationService.getJsapiTicket();
         if(configCodeRe.isError()){
             throw  new IllegalArgumentException();
@@ -64,7 +64,8 @@ public class WechatController {
             builder.append(objs[i].toString()).append("=")
                     .append(signatureMap.get(objs[i])).append("&");
         }
-      return   builder.substring(0,builder.length()-1);
+
+      return UniqueStringGenerator.SHA1(builder.substring(0,builder.length()-1));
 
     }
 
