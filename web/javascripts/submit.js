@@ -12,47 +12,49 @@ wx.config({
 });
 
 //选择图片
-wx.chooseImage({
-    count: 1, // 默认9
-    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-    success: function (res) {
-        var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+$("#odd").on("click",function(){
+    wx.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+            var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
 
-        // console.info("success");
-        //upload image to wechat server
+            // console.info("success");
+            //upload image to wechat server
 
-        localIds.map(function (id){
-            wx.uploadImage(
-                localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
-                isShowProgressTips: 1, // 默认为1，显示进度提示
-                success: function (res) {
-                var serverId = res.serverId; // 返回图片的服务器端ID
+            localIds.map(function (id){
+                wx.uploadImage(
+                    localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
+                    isShowProgressTips: 1, // 默认为1，显示进度提示
+                    success: function (res) {
+                    var serverId = res.serverId; // 返回图片的服务器端ID
 
 
-                /*outer.state.images[position] = serverId;
-                 outer.state.images_display[position] = outer.state.source_tempfile + serverId;
-                 outer.setState({});*/
-                // console.info("serverId: " + serverId);
-                // window.location = "/" + serverId;
+                    /*outer.state.images[position] = serverId;
+                     outer.state.images_display[position] = outer.state.source_tempfile + serverId;
+                     outer.setState({});*/
+                    // console.info("serverId: " + serverId);
+                    // window.location = "/" + serverId;
 
-                // notify server to fetch image
-                // $.post(outer.state.source + serverId, {}, function (res) {
-                //     alert(res.result);
-                //     alert(res.result.image);
-                //     console.info(res);
-                //     var newData = outer.state.data;
-                //     newData.imagePath = res.result.image;
-                //     outer.setState({data: newData})
-                // });
-            }
-        });
-    })
+                    // notify server to fetch image
+                    // $.post(outer.state.source + serverId, {}, function (res) {
+                    //     alert(res.result);
+                    //     alert(res.result.image);
+                    //     console.info(res);
+                    //     var newData = outer.state.data;
+                    //     newData.imagePath = res.result.image;
+                    //     outer.setState({data: newData})
+                    // });
+                }
+            });
+        })
 }
 });
 
 
 
+});
 var sub=serverId;
 
 $("addID").on("click",function(){
