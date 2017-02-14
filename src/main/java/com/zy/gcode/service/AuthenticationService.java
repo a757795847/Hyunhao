@@ -140,6 +140,7 @@ public class AuthenticationService implements IAuthenticationService {
         if(DateUtils.isOutOfDate(updateTime,7200)){
             Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+componetTokenCodeRe.getMessage().getToken()+"&type=jsapi");
             if(map.containsKey("errmsg")){
+                if(!map.get("errmsg").equals("ok"))
                 return CodeRe.error((String)map.get("errmsg"));
             }
             tokenConfig.setToken(map.get("ticket").toString());
