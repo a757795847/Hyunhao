@@ -21,6 +21,7 @@ $("#odd").on("click",function(){
             console.log(res);
             var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
             console.log(localIds);
+            var serverId = res.serverId; // 返回图片的服务器端ID
 
             // console.info("success");
             //upload image to wechat server
@@ -31,11 +32,14 @@ $("#odd").on("click",function(){
                     localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
                     isShowProgressTips: 1, // 默认为1，显示进度提示
                     success: function (res) {
-                        var serverId = res.serverId; // 返回图片的服务器端ID
-                        var image='<li class="lict"><img src="../../images/7.png" alt=""></li>';
-                        $("#last").before(image);
+                        ids.push(serverId);
+                        var image='<li class="lict"><img src="'+id+'" alt=""></li>';
 
-                    ids.push(serverId);
+                        if(ids.length == 3){
+                            $("#odd").hide();
+                        }
+
+                        $("#odd").before(image);
                     /*outer.state.images[position] = serverId;
                      outer.state.images_display[position] = outer.state.source_tempfile + serverId;
                      outer.setState({});*/
