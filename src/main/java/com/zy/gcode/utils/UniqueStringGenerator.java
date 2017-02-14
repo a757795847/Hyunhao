@@ -82,30 +82,30 @@ public class UniqueStringGenerator {
     }
 
     public static String SHA1(String decrypt) {
-        //获取信息摘要 - 参数字典排序后字符串
-
         try {
-            //指定sha1算法
-            MessageDigest digest = MessageDigest.getInstance("SHA-1");
-            digest.update(decrypt.getBytes());
-            //获取字节数组
-            byte messageDigest[] = digest.digest();
-            // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            // 字节数组转换为 十六进制 数
-            for (int i = 0; i < messageDigest.length; i++) {
-                String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
-                if (shaHex.length() < 2) {
-                    hexString.append(0);
-                }
-                hexString.append(shaHex);
-            }
-            return hexString.toString();
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            md.update(decrypt.getBytes());
+            byte b[] = md.digest();
 
+            int i;
+
+            StringBuffer buf = new StringBuffer("");
+            for (int offset = 0; offset < b.length; offset++) {
+                i = b[offset];
+                if (i < 0)
+                    i += 256;
+                if (i < 16)
+                    buf.append("0");
+                buf.append(Integer.toHexString(i));
+            }
+            //32位加密
+            return buf.toString();
+            // 16位的加密
+            //return buf.toString().substring(8, 24);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+            return null;
         }
-        throw new IllegalArgumentException();
     }
 
 
