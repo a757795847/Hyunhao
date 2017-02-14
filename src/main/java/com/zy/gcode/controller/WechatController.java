@@ -64,7 +64,7 @@ public class WechatController {
             builder.append(objs[i].toString()).append("=")
                     .append(map.get(objs[i])).append("&");
         }
-      return   builder.substring(builder.length()-1);
+      return   builder.substring(0,builder.length()-1);
 
     }
 

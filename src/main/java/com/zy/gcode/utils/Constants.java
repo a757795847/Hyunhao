@@ -23,6 +23,8 @@ public abstract class Constants {
 
     public final static String JSSDK_TICKET_NAME="jssdk_ticket";
 
+    public  final static String COMPONENTVERIFYTICKET = "componentverifyticket";
+
     /**
      * 商户号
      */

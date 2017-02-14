@@ -84,7 +84,8 @@ public class AuthenticationService implements IAuthenticationService {
     @Override
     public CodeRe<TokenConfig> componetToekn() {
         String componetAppid = Constants.properties.getProperty("platform.appid");
-      TokenConfig componetToken =  persistenceService.get(TokenConfig.class,componetAppid);
+        TokenConfig componetToken =  persistenceService.get(TokenConfig.class,componetAppid);
+         TokenConfig componentVerifyTicket= persistenceService.get(TokenConfig.class,"componentVerifyTicket");
         try {
             componetToken.getExpiresIn();
         } catch (NullPointerException e) {
@@ -93,7 +94,7 @@ public class AuthenticationService implements IAuthenticationService {
         }
 
         if(componetToken.getUpdateTime()==null||DateUtils.isOutOfDate(componetToken.getUpdateTime(),componetToken.getExpiresIn())){
-            String ticket = Constants.properties.getProperty("componentVerifyTicket");
+            String ticket = componentVerifyTicket.getToken();
                if(ticket==null){
                     return CodeRe.error("ComponentVerifyTicket is null");
                }
@@ -153,16 +154,17 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Override
     public String decrpt(String msg_signature, String timestamp, String nonce, String str) {
-        try(OutputStream outputStream =new FileOutputStream(new ClassPathResource("config.properties").getFile())) {
-            Constants.properties.setProperty("componentVerifyTicket",WxXmlParser.elementString(wxBizMsgCrypt.decryptMsg(msg_signature,timestamp,nonce,str),"ComponentVerifyTicket"));
-            Constants.properties.store(outputStream,"时间:"+DateUtils.format(new Date(),"yyyy-MM-dd hh:mm:ss"));
-            outputStream.flush();
-            System.out.println("ComponentVerifyTicket已更新");
+        TokenConfig tokenConfig = new TokenConfig();
+        tokenConfig.setName("componentVerifyTicket");
+        try {
+            tokenConfig.setToken(WxXmlParser.elementString(wxBizMsgCrypt.decryptMsg(msg_signature,timestamp,nonce,str),"ComponentVerifyTicket"));
+            persistenceService.updateOrSave(tokenConfig);
+            System.out.println("componentVerifyTicket已更新");
         } catch (AesException e) {
             e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
         }
+
+
         return null;
     }
 
