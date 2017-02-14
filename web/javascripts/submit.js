@@ -71,7 +71,6 @@ $("addID").on("click",function(){
 
             console.log(data);
             console.log(data.url);
-            location.href=basePath+data.url;
         },
         error:function(jqXHR){
             if(jqXHR.status == 406){
