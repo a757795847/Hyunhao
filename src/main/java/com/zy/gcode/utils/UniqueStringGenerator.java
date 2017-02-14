@@ -107,6 +107,7 @@ public class UniqueStringGenerator {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 
