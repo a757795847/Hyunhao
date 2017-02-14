@@ -54,15 +54,14 @@ $("#odd").on("click",function(){
     });
 });
 
-var sub=serverId;
-console.log(sub)
+
+console.log(ids);
 
 $("addID").on("click",function(){
     var orders=$("$Orders").val();
     var datas={
         "images":ids,
         "billno":orders
-
     }
     $.ajax({
         type:'POST',
