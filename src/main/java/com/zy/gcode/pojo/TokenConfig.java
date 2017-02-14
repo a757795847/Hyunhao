@@ -5,27 +5,27 @@ import java.sql.Timestamp;
 /**
  * Created by admin5 on 17/1/22.
  */
-public class ComponetToken {
-    private String componetAppid;
-    private String componentAccessToken;
+public class TokenConfig {
+    private String name;
+    private String token;
     private Long expiresIn;
     private Timestamp insertTime;
     private Timestamp updateTime;
 
-    public String getComponetAppid() {
-        return componetAppid;
+    public String getName() {
+        return name;
     }
 
-    public void setComponetAppid(String componetAppid) {
-        this.componetAppid = componetAppid;
+    public void setName(String componetAppid) {
+        this.name = componetAppid;
     }
 
-    public String getComponentAccessToken() {
-        return componentAccessToken;
+    public String getToken() {
+        return token;
     }
 
-    public void setComponentAccessToken(String componentAccessToken) {
-        this.componentAccessToken = componentAccessToken;
+    public void setToken(String componentAccessToken) {
+        this.token = componentAccessToken;
     }
 
     public Long getExpiresIn() {
@@ -57,11 +57,11 @@ public class ComponetToken {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ComponetToken that = (ComponetToken) o;
+        TokenConfig that = (TokenConfig) o;
 
-        if (componetAppid != null ? !componetAppid.equals(that.componetAppid) : that.componetAppid != null)
+        if (name != null ? !name.equals(that.name) : that.name != null)
             return false;
-        if (componentAccessToken != null ? !componentAccessToken.equals(that.componentAccessToken) : that.componentAccessToken != null)
+        if (token != null ? !token.equals(that.token) : that.token != null)
             return false;
         if (expiresIn != null ? !expiresIn.equals(that.expiresIn) : that.expiresIn != null) return false;
         if (insertTime != null ? !insertTime.equals(that.insertTime) : that.insertTime != null) return false;
@@ -72,8 +72,8 @@ public class ComponetToken {
 
     @Override
     public int hashCode() {
-        int result = componetAppid != null ? componetAppid.hashCode() : 0;
-        result = 31 * result + (componentAccessToken != null ? componentAccessToken.hashCode() : 0);
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (token != null ? token.hashCode() : 0);
         result = 31 * result + (expiresIn != null ? expiresIn.hashCode() : 0);
         result = 31 * result + (insertTime != null ? insertTime.hashCode() : 0);
         result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);

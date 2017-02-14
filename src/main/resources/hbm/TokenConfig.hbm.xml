@@ -4,9 +4,9 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.zy.gcode.pojo.ComponetToken" table="componet_token" schema="jt_platform">
-        <id name="componetAppid" column="componet_appid"/>
-        <property name="componentAccessToken" column="component_access_token"/>
+    <class name="com.zy.gcode.pojo.TokenConfig" table="token_config" schema="jt_platform">
+        <id name="name" column="name"/>
+        <property name="token" column="token"/>
         <property name="expiresIn" column="expires_in"/>
         <property update="false" insert="false" name="insertTime" column="insert_time"/>
         <property update="false" insert="false" name="updateTime" column="update_time"/>

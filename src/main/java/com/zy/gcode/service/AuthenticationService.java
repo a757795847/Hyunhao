@@ -4,7 +4,7 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.AppInterface;
 import com.zy.gcode.pojo.AuthorizationInfo;
-import com.zy.gcode.pojo.ComponetToken;
+import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.service.pay.WxXmlParser;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -81,14 +82,14 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
-    public CodeRe<ComponetToken> componetToekn() {
+    public CodeRe<TokenConfig> componetToekn() {
         String componetAppid = Constants.properties.getProperty("platform.appid");
-      ComponetToken componetToken =  persistenceService.get(ComponetToken.class,componetAppid);
+      TokenConfig componetToken =  persistenceService.get(TokenConfig.class,componetAppid);
         try {
             componetToken.getExpiresIn();
         } catch (NullPointerException e) {
-            componetToken = new ComponetToken();
-            componetToken.setComponetAppid(componetAppid);
+            componetToken = new TokenConfig();
+            componetToken.setName(componetAppid);
         }
 
         if(componetToken.getUpdateTime()==null||DateUtils.isOutOfDate(componetToken.getUpdateTime(),componetToken.getExpiresIn())){
@@ -104,7 +105,7 @@ public class AuthenticationService implements IAuthenticationService {
                if(map.containsKey("errmsg")){
                    return CodeRe.error((String)map.get("errmsg"));
                }
-               componetToken.setComponentAccessToken(map.get("component_access_token").toString());
+               componetToken.setToken(map.get("component_access_token").toString());
                componetToken.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
             persistenceService.updateOrSave(componetToken);
 
@@ -113,7 +114,40 @@ public class AuthenticationService implements IAuthenticationService {
         return CodeRe.correct(componetToken);
     }
 
+    public CodeRe<TokenConfig> getJsapiTicket(){
+       CodeRe<TokenConfig> componetTokenCodeRe = componetToekn();
+       if(componetTokenCodeRe.isError()){
+           return componetTokenCodeRe;
+       }
 
+       TokenConfig tokenConfig = persistenceService.get(TokenConfig.class,Constants.JSSDK_TICKET_NAME);
+        Timestamp updateTime;
+        try {
+          updateTime = tokenConfig.getUpdateTime();
+        } catch (NullPointerException e) {
+           tokenConfig = new TokenConfig();
+           tokenConfig.setName(Constants.JSSDK_TICKET_NAME);
+            Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+componetTokenCodeRe.getMessage().getToken()+"&type=jsapi");
+            if(map.containsKey("errmsg")){
+                return CodeRe.error((String)map.get("errmsg"));
+            }
+            tokenConfig.setToken(map.get("ticket").toString());
+            persistenceService.updateOrSave(tokenConfig);
+            return  CodeRe.correct(tokenConfig);
+        }
+        if(DateUtils.isOutOfDate(updateTime,7200)){
+            Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+componetTokenCodeRe.getMessage().getToken()+"&type=jsapi");
+            if(map.containsKey("errmsg")){
+                return CodeRe.error((String)map.get("errmsg"));
+            }
+            tokenConfig.setToken(map.get("ticket").toString());
+            persistenceService.updateOrSave(tokenConfig);
+            return  CodeRe.correct(tokenConfig);
+
+        }
+
+      return CodeRe.correct(tokenConfig);
+    }
 
 
     @Override

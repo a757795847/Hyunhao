@@ -6,8 +6,7 @@ import sun.misc.BASE64Encoder;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -81,5 +80,6 @@ public class UniqueStringGenerator {
         }
 
     }
+
 
 }

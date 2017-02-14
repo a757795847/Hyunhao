@@ -1,9 +1,5 @@
 package com.zy.gcode.service;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zy.gcode.controller.AuthenticationController;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.*;
@@ -11,7 +7,6 @@ import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;
 import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.UniqueStringGenerator;
-import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -20,7 +15,6 @@ import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.*;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -86,7 +80,7 @@ public class CodeService implements ICodeService {
            return CodeRe.error("app_id is not exist");
         }
 
-        CodeRe<ComponetToken> componetTokenCodeRe =  authenticationService.componetToekn();
+        CodeRe<TokenConfig> componetTokenCodeRe =  authenticationService.componetToekn();
         if(componetTokenCodeRe.isError()){
             return  componetTokenCodeRe;
         }
@@ -96,7 +90,7 @@ public class CodeService implements ICodeService {
         builder.append("&code=").append(code);
         builder.append("&grant_type=authorization_code")
                 .append("&component_appid=").append(Constants.properties.getProperty("platform.appid"));
-        builder.append("&component_access_token=").append(componetTokenCodeRe.getMessage().getComponentAccessToken());
+        builder.append("&component_access_token=").append(componetTokenCodeRe.getMessage().getToken());
 
         Map map = HttpClientUtils.mapSSLGetSend(builder.toString());
         if(map == null){

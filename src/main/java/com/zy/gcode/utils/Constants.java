@@ -20,6 +20,9 @@ public abstract class Constants {
      */
     public final static String CALL_BACK_URL="http://open.izhuiyou.com/access/wxaccess_token";
 
+
+    public final static String JSSDK_TICKET_NAME="jssdk_ticket";
+
     /**
      * 商户号
      */

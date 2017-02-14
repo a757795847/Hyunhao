@@ -33,8 +33,54 @@
                         </bean>
                 </mvc:message-converters>
         </mvc:annotation-driven>
+
         <mvc:default-servlet-handler/>
         <mvc:resources mapping="/html/**" location="WEB-INF/html/"/>
         <context:component-scan base-package="com.zy.gcode.controller"></context:component-scan>
+
+        <!-- Freemarker配置 -->
+
+        <bean id="freemarkerConfig"
+              class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+                <property name="templateLoaderPath" value="/" />
+                <property name="freemarkerSettings">
+                        <props>
+                                <prop key="template_update_delay">0</prop>
+                                <prop key="default_encoding">UTF-8</prop>
+                                <prop key="number_format">0.##########</prop>
+                                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+                                <prop key="classic_compatible">true</prop>
+                                <prop key="template_exception_handler">ignore</prop>
+                        </props>
+                </property>
+                <property name="freemarkerVariables">
+                        <map>
+                                <entry key="xml_escape" value-ref="fmXmlEscape" />
+                        </map>
+                </property>
+        </bean>
+
+
+        <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape" />
+
+
+
+
+        <!--视图解释器 -->
+        <!-- 配置freeMarker视图解析器 -->
+        <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+                <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+         <!--       <property name="viewNames" value="*.ftl"/>-->
+                <property name="cache" value="true"/>
+                <!--  <property name="prefix" value=""/> -->
+                <property name="suffix" value=""/>
+                <property name="exposeSpringMacroHelpers" value="true"/>
+                <!--  获取request中参数 -->
+                <property name="exposeRequestAttributes" value="true"/>
+                <!--  获取session中参数 -->
+                <property name="exposeSessionAttributes" value="true"/>
+                <property name="requestContextAttribute" value="request"/>
+                <property name="contentType" value="text/html; charset=utf-8"/>
+        </bean>
 
 </beans>
