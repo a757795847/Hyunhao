@@ -19,16 +19,17 @@ $("#odd").on("click",function(){
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
             var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+            console.log(localIds);
 
             // console.info("success");
             //upload image to wechat server
 
             localIds.map(function (id){
-                wx.uploadImage(
+                wx.uploadImage({
                     localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
                     isShowProgressTips: 1, // 默认为1，显示进度提示
                     success: function (res) {
-                    var serverId = res.serverId; // 返回图片的服务器端ID
+                        var serverId = res.serverId; // 返回图片的服务器端ID
 
                     ids.push(serverId);
                     /*outer.state.images[position] = serverId;
@@ -37,26 +38,25 @@ $("#odd").on("click",function(){
                     // console.info("serverId: " + serverId);
                     // window.location = "/" + serverId;
 
-                    // notify server to fetch image
-                    // $.post(outer.state.source + serverId, {}, function (res) {
-                    //     alert(res.result);
-                    //     alert(res.result.image);
-                    //     console.info(res);
-                    //     var newData = outer.state.data;
-                    //     newData.imagePath = res.result.image;
-                    //     outer.setState({data: newData})
-                    // });
-                }
+                        // notify server to fetch image
+                        // $.post(outer.state.source + serverId, {}, function (res) {
+                        //     alert(res.result);
+                        //     alert(res.result.image);
+                        //     console.info(res);
+                        //     var newData = outer.state.data;
+                        //     newData.imagePath = res.result.image;
+                        //     outer.setState({data: newData})
+                        // });
+                    }
+                });
             });
-        })
-}
+        }
+    });
 });
 
+var sub=serverId;
+console.log(sub)
 
-
-});
-/*var sub=serverId;*/
-console.log(ids);
 $("addID").on("click",function(){
     var orders=$("$Orders").val();
     var datas={

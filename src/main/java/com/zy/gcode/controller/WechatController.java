@@ -42,7 +42,7 @@ public class WechatController {
        HttpSession session = request.getSession(true);
       User user  = (User) session.getAttribute("c_user");
 
-       if(user!=null) {
+       if(user!=null||true) {
            Map<String, String> map = new HashMap<>();
 
            map.put("timestamp", String.valueOf(System.currentTimeMillis()));
