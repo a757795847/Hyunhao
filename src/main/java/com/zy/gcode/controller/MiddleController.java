@@ -44,21 +44,19 @@ public class MiddleController {
 
 
     @RequestMapping("token")
-    public @ResponseBody String token(String code,HttpSession session,String state,String zyid){
-      Map map  = HttpClientUtils.mapSSLGetSend("http://open.izhuiyou.com/code/getoken/"+code+"/ge111");
+    public  String token(String code,HttpSession session,String state,String zyid){
+      Map map  = HttpClientUtils.mapSSLGetSend("http://open.izhuiyou.com/access/getoken/"+code+"/"+zyid);
       if(map == null){
           return "redirect:/error.html";
       }
       if(map.containsKey("status")&&map.get("status").equals("1")){
-           Map map1 = HttpClientUtils.mapSSLGetSend("http://open.izhuiyou.com/code/guserinfo?token="+map.get("access_token")+"&zyid=ge111");
+           Map map1 = HttpClientUtils.mapSSLGetSend("http://open.izhuiyou.com/code/guserinfo?token="+map.get("access_token")+"&zyid="+zyid);
           if(map1.containsKey("status")&&map1.get("status").equals("1")){
              String str =  map1.get("userinfo").toString();
               try {
                 User user = Constants.objectMapper.readValue(str, User.class);
-                  Map map11 = HttpClientUtils.mapSSLGetSend("http://open.izhuiyou.com/pay/send?"+
-                  "openid="+user.getOpenId()+"&count=1&access_token="+map.get("access_token")+"&zyid=ge111");
                 session.setAttribute("c_user",user);
-                return map11.toString();
+                return "redirect:/view/wechat/home";
               } catch (IOException e) {
                   e.printStackTrace();
               }
