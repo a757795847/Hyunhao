@@ -49,7 +49,7 @@ public class WechatController {
     private String signature(Map<String,String> map,String url){
         Map<String,String> signatureMap = new HashMap();
         signatureMap.put("timestamp",map.get("timestamp"));
-        signatureMap.put("noncestr",map.get("noncestr"));
+        signatureMap.put("nonceStr",map.get("noncestr"));
         CodeRe<TokenConfig> configCodeRe = authenticationService.getJsapiTicket();
         if(configCodeRe.isError()){
             throw  new IllegalArgumentException();

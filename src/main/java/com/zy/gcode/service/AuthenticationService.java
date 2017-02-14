@@ -129,6 +129,7 @@ public class AuthenticationService implements IAuthenticationService {
            tokenConfig.setName(Constants.JSSDK_TICKET_NAME);
             Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+componetTokenCodeRe.getMessage().getToken()+"&type=jsapi");
             if(map.containsKey("errmsg")){
+                if(!map.get("errmsg").equals("ok"))
                 return CodeRe.error((String)map.get("errmsg"));
             }
             tokenConfig.setToken(map.get("ticket").toString());
