@@ -14,7 +14,8 @@ var ids = [];
 //选择图片
 $("#odd").on("click",function(){
 
-    wx.chooseImage({
+    
+    /*wx.chooseImage({
         count: 1, // 默认9
         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
@@ -23,8 +24,7 @@ $("#odd").on("click",function(){
             var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
             console.log(localIds);
 
-            // console.info("success");
-            //upload image to wechat server
+           
 
             localIds.map(function (id){
                 console.log(id);
@@ -43,32 +43,18 @@ $("#odd").on("click",function(){
                         }
 
                         $("#odd").before(image);
-                    /*outer.state.images[position] = serverId;
-                     outer.state.images_display[position] = outer.state.source_tempfile + serverId;
-                     outer.setState({});*/
-                    // console.info("serverId: " + serverId);
-                    // window.location = "/" + serverId;
-
-                        // notify server to fetch image
-                        // $.post(outer.state.source + serverId, {}, function (res) {
-                        //     alert(res.result);
-                        //     alert(res.result.image);
-                        //     console.info(res);
-                        //     var newData = outer.state.data;
-                        //     newData.imagePath = res.result.image;
-                        //     outer.setState({data: newData})
-                        // });
+                   
                     }
                 });
             });
         }
-    });
+    });*/
 });
 
 
 console.log(ids);
 
-
+/*
 $("#addID").on("click",function(){
 
     var orders=$("#Orders").val();
@@ -104,6 +90,6 @@ $("#addID").on("click",function(){
      })
 
 
-});
+});*/
 
 
