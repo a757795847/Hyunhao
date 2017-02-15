@@ -92,7 +92,6 @@ $("#addID").on("click",function(){
                 $(".father").css("margin-top","20%");
 
             }else{
-                $.alert(' 请输入验证码');
                 console.log(datas.message);
             }
 
