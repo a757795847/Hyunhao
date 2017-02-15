@@ -46,7 +46,17 @@ public class DaoTest {
     }
     @Test
     public void dome(){
+        new MyThread().start();
 
+        }
+        public static class MyThread extends Thread{
+            public void run(){
+                System.out.println("1");
+                if(true){
+                    return;
+                }
+                System.out.println("2");
+            }
         }
     @Test
     public void utils(){
