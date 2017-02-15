@@ -46,7 +46,7 @@ public class WechatController {
            Map<String, String> map = new HashMap<>();
 
            map.put("timestamp", String.valueOf(System.currentTimeMillis()/1000));
-           map.put("nonceStr", UniqueStringGenerator.getUniqueCode());
+           map.put("nonceStr","Wm3WZYTPz0wzccnW");
            map.put("appid", "wx653d39223641bea7");
            map.put("signature", signature(map, request.getRequestURL().toString()));
 
