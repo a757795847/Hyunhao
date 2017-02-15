@@ -70,12 +70,12 @@ $("#addID").on("click",function(){
         "image1":ids[0],
         "image2":ids[1],
         "image3":ids[2],
-        "billn":orders
+        "billno":orders
     }
     console.log(datas);
      $.ajax({
          type:'POST',
-         url:"view/wechat/submit",
+         url:"http://open.izhuiyou.com/view/wechat/submit",
          data: datas,
          dataType: 'json',
          success:function(data){

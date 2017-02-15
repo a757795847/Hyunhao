@@ -90,6 +90,7 @@ public class WechatService implements IWechatService {
                 persistenceService.updateOrSave(mediaMap);
             }
         });
+        t.start();
 
         dataOrder.setWeixinId(openid);
         persistenceService.save(dataOrder);
