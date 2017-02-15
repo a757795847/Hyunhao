@@ -52,38 +52,39 @@ public class WechatService implements IWechatService {
             }
             String geturl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token="+tokenConfigCodeRe.getMessage().getToken()+"&media_id=";
             if(image1!=null){
-              HttpResponse response = HttpClientUtils.SSLGetSend(geturl+image1);
-               boolean flag = transferTo(response,path+dataOrder.getCommentFile1());
+
+                boolean flag =  HttpClientUtils.fileGetSend(geturl + image1, path + dataOrder.getCommentFile1());
                 MediaMap mediaMap = new MediaMap();
+                mediaMap.setMediaId(image3);
                 mediaMap.setOwner(billno);
-                if(flag){
+                if (flag) {
                     mediaMap.setIsPersistence("1");
-                    mediaMap.setMediaId(image1);
-                    mediaMap.setPath(path+dataOrder.getCommentFile1());
+                    mediaMap.setPath(path + dataOrder.getCommentFile1());
                 }
-                  persistenceService.updateOrSave(mediaMap);
+                persistenceService.updateOrSave(mediaMap);
 
             }
             if(image2!=null){
-                HttpResponse response = HttpClientUtils.SSLGetSend(geturl+image2);
-             boolean flag=  transferTo(response,path+dataOrder.getCommentFile2());
+
+                boolean flag =  HttpClientUtils.fileGetSend(geturl + image2, path + dataOrder.getCommentFile2());
                 MediaMap mediaMap = new MediaMap();
+                mediaMap.setMediaId(image2);
                 mediaMap.setOwner(billno);
-                if(flag){
+                if (flag) {
                     mediaMap.setIsPersistence("1");
-                    mediaMap.setMediaId(image2);
-                    mediaMap.setPath(path+dataOrder.getCommentFile2());
+                    mediaMap.setPath(path + dataOrder.getCommentFile2());
                 }
                 persistenceService.updateOrSave(mediaMap);
             }
             if(image3 !=null) {
-                HttpResponse response = HttpClientUtils.SSLGetSend(geturl + image3);
-                boolean flag = transferTo(response, path + dataOrder.getCommentFile3());
+
+
+                boolean flag =  HttpClientUtils.fileGetSend(geturl + image3, path + dataOrder.getCommentFile3());
                 MediaMap mediaMap = new MediaMap();
+                mediaMap.setMediaId(image3);
                 mediaMap.setOwner(billno);
                 if (flag) {
                     mediaMap.setIsPersistence("1");
-                    mediaMap.setMediaId(image3);
                     mediaMap.setPath(path + dataOrder.getCommentFile3());
                 }
                 persistenceService.updateOrSave(mediaMap);
@@ -96,29 +97,7 @@ public class WechatService implements IWechatService {
         return CodeRe.correct("success");
     }
 
-    private boolean transferTo(HttpResponse response,String path){
-        File file = new File(path);
-       if(!file.getParentFile().exists()){
-           file.getParentFile().mkdirs();
-       }
 
-        if(!file.exists()){
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        try(FileOutputStream fileOutputStream = new FileOutputStream(file)){
-            response.getEntity().writeTo(fileOutputStream);
-
-        }catch (IOException e){
-            e.printStackTrace();
-            return false;
-        }
-      return true;
-    }
 
 
 }

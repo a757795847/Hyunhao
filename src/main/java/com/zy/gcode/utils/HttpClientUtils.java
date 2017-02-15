@@ -60,6 +60,42 @@ public class HttpClientUtils {
         return null;
     }
 
+    public static boolean fileGetSend(String url,String path) {
+        HttpGet get = new HttpGet(url);
+        try {
+            HttpResponse response = httpClient.execute(get);
+            return transferTo(response,path);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+            get.releaseConnection();
+        }
+    }
+
+    private static boolean transferTo(HttpResponse response,String path){
+        File file = new File(path);
+        if(!file.getParentFile().exists()){
+            file.getParentFile().mkdirs();
+        }
+
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        try(FileOutputStream fileOutputStream = new FileOutputStream(file)){
+            response.getEntity().writeTo(fileOutputStream);
+
+        }catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
     public static HttpResponse SSLPostSend(String url, String body) {
         HttpPost httpPost = new HttpPost(url);
         httpPost.setHeader("Connection","close");
