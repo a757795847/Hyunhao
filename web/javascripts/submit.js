@@ -50,6 +50,15 @@ $("#odd").on("click",function(){
         }
     });
 });
+/*$("#form img").on("click",function(){
+    var src=this.src;
+    wx.previewImage({
+        current: '', // 当前显示图片的http链接
+        urls: [] // 需要预览的图片http链接列表
+    });
+
+});*/
+
 
 
 console.log(ids);
@@ -58,8 +67,10 @@ $("#addID").on("click",function(){
 
     var orders=$("#Orders").val();
     var datas={
-        "images":ids,
-        "billno":orders
+        "image1":ids[0],
+        "image2":ids[1],
+        "image3":ids[2],
+        "billn":orders
     }
     console.log(datas);
      $.ajax({

@@ -101,18 +101,24 @@ body{
 }
 .father{
     margin:7px;
-
-
 }
-#form .lict{
+/*#form .lict{
     width:31%;
     height:84px;
 
-}
-#form .lict img{
-    width:70px;
-    height:70px;
+}*/
 
+@media screen and (max-width: 320px){
+    #form .lict
+    {
+        width:70px;
+        height:70px;
+
+    }
+    #form .lict img{
+        width:100%;
+
+    }
 }
 
 
