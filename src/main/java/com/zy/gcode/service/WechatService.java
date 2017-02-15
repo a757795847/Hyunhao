@@ -45,11 +45,10 @@ public class WechatService implements IWechatService {
         if(image3 !=null){
             dataOrder.setCommentFile3(billno+"C");
         }
-        Thread t = new Thread(()->{
             CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessToken(appid);
             if(tokenConfigCodeRe.isError()){
                 System.err.println(tokenConfigCodeRe.getErrorMessage());
-                return;
+                return tokenConfigCodeRe;
             }
             String geturl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token="+tokenConfigCodeRe.getMessage().getToken()+"&media_id=";
             if(image1!=null){
@@ -77,20 +76,19 @@ public class WechatService implements IWechatService {
                 }
                 persistenceService.updateOrSave(mediaMap);
             }
-            if(image3 !=null){
-                HttpResponse response = HttpClientUtils.SSLGetSend(geturl+image3);
-                boolean flag=  transferTo(response,path+dataOrder.getCommentFile3());
+            if(image3 !=null) {
+                HttpResponse response = HttpClientUtils.SSLGetSend(geturl + image3);
+                boolean flag = transferTo(response, path + dataOrder.getCommentFile3());
                 MediaMap mediaMap = new MediaMap();
                 mediaMap.setOwner(billno);
-                if(flag){
+                if (flag) {
                     mediaMap.setIsPersistence("1");
                     mediaMap.setMediaId(image3);
-                    mediaMap.setPath(path+dataOrder.getCommentFile3());
+                    mediaMap.setPath(path + dataOrder.getCommentFile3());
                 }
                 persistenceService.updateOrSave(mediaMap);
             }
-        });
-        t.start();
+
 
         dataOrder.setWeixinId(openid);
         persistenceService.updateOrSave(dataOrder);

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.async.WebAsyncTask;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -64,11 +65,12 @@ public class WechatController {
     }
 
     @RequestMapping("submit")
-    public @ResponseBody String submit(@RequestParam(required = false) String image1, @RequestParam(required = false) String image2,
-                  @RequestParam(required = false) String image3, @RequestParam String billno, HttpSession session) throws IOException{
+    @ResponseBody
+    public String submit(@RequestParam(required = false) String image1, @RequestParam(required = false) String image2,
+                               @RequestParam(required = false) String image3, @RequestParam String billno, HttpSession session) throws IOException{
             User user =  (User)session.getAttribute("c_user");
             if(user ==null){
-                return "登录以过期,请刷新";
+                return "登录过期";
             }
           CodeRe<String> codeRe =  wechatService.sumbit(image1,image2,image3,billno,user.getOpenId(),user.getAppid());
             if(codeRe.isError()){
