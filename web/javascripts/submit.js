@@ -80,14 +80,14 @@ $("#addID").on("click",function(){
          data: datas,
          dataType: 'json',
          success:function(data){
-            if(data.submit=="success"){
+            if(data.status=="1"){
                 $("#hide").hide();
                 $("#Orders").hide();
                 $("#addID").css("margin-bottom","96px");
                 $("#addID").html("提交成功");
 
             }else{
-                console.log("提交失败");
+                console.log(datas.message);
 
             }
 
