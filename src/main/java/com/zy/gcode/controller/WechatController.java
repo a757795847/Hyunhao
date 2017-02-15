@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -63,8 +64,8 @@ public class WechatController {
     }
 
     @RequestMapping("submit")
-    public String submit(@RequestParam(required = false) String image1,@RequestParam(required = false) String image2,
-                         @RequestParam(required = false) String image3,@RequestParam String billno,HttpSession session) throws IOException{
+    public @ResponseBody String submit(@RequestParam(required = false) String image1, @RequestParam(required = false) String image2,
+                  @RequestParam(required = false) String image3, @RequestParam String billno, HttpSession session) throws IOException{
             User user =  (User)session.getAttribute("c_user");
             if(user ==null){
                 return "登录以过期,请刷新";
