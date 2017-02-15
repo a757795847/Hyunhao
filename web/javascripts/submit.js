@@ -71,12 +71,9 @@ $("#addID").on("click",function(){
         "image3":ids[2],
         "billno":orders
     }
-    if(orders==''){
-        $.alert('请输入订单号');
-    }else if(ids[0]==''){
-        $.alert('请上传图片');
-
-    }else{
+    if(orders==''||ids[0]==''){
+        $.alert('请上传图片和订单号');
+    } else{
      $.ajax({
          type:'POST',
          url:"http://open.izhuiyou.com/view/wechat/submit",
