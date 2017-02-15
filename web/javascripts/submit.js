@@ -64,7 +64,7 @@ $("#odd").on("click",function(){
 console.log(ids);
 
 $("#addID").on("click",function(){
-
+    console.log(1)
     var orders=$("#Orders").val();
     var datas={
         "image1":ids[0],
@@ -84,7 +84,6 @@ $("#addID").on("click",function(){
                 $("#Orders").hide();
                 $("#addID").css("margin-bottom","96px");
                 $("#addID").html("提交成功");
-
             }else{
                 console.log("提交失败");
 
