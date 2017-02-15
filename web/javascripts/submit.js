@@ -37,7 +37,6 @@ $("#odd").on("click",function(){
 
                             ids.push(serverId);
                         var image='<li class="lict"><img src="'+id+'" alt=""></li>';
-
                         if(ids.length == 3){
                             $("#odd").hide();
                         }
@@ -66,14 +65,18 @@ console.log(ids);
 $("#addID").on("click",function(){
 
     var orders=$("#Orders").val();
-
     var datas={
         "image1":ids[0],
         "image2":ids[1],
         "image3":ids[2],
         "billno":orders
     }
-    console.log(datas);
+    if(orders==''){
+        $.alert('请输入订单号');
+    }else if(ids[0]==''){
+        $.alert('请上传图片');
+
+    }else{
      $.ajax({
          type:'POST',
          url:"http://open.izhuiyou.com/view/wechat/submit",
@@ -81,14 +84,16 @@ $("#addID").on("click",function(){
          dataType: 'json',
          success:function(data){
             if(data.status=="1"){
+                $("#text").css("display","block");
                 $("#hide").hide();
                 $("#Orders").hide();
-                $("#addID").css("margin-bottom","96px");
-                $("#addID").html("提交成功");
+                $("#addID").addClass("aiar");
+                $("#addID").html("点击关闭");
+                $(".father").css("margin-top","20%");
 
             }else{
+                $.alert(' 请输入验证码');
                 console.log(datas.message);
-
             }
 
          },
@@ -99,7 +104,7 @@ $("#addID").on("click",function(){
          }
 
      })
-
+    }
 
 });
 
