@@ -5,7 +5,8 @@
 <hibernate-mapping>
 
     <class name="com.zy.gcode.pojo.MediaMap" table="media_map" schema="jt_platform">
-        <id name="owner" column="owner"/>
+        <id name="id" column="id"></id>
+        <property name="owner" column="owner"/>
         <property name="type" column="type"/>
         <property name="mediaId" column="media_id"/>
         <property name="path" column="path"/>

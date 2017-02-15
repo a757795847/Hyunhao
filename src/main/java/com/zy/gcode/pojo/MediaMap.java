@@ -4,6 +4,8 @@ package com.zy.gcode.pojo;
  * Created by admin5 on 17/2/15.
  */
 public class MediaMap {
+
+    private long id;
     private String owner;
     private String type;
     private String mediaId;
@@ -48,5 +50,13 @@ public class MediaMap {
 
     public void setIsPersistence(String isPersistence) {
         this.isPersistence = isPersistence;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
