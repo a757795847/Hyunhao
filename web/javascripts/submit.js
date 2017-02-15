@@ -92,8 +92,8 @@ $("#addID").on("click",function(){
                 $(".father").css("margin-top","20%");
 
             }else{
-                $.alert(datas.message);
-                console.log(datas.message);
+                $.alert(data.message);
+                console.log(data.message);
 
             }
 
