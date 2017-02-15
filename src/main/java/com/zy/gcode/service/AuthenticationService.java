@@ -238,7 +238,7 @@ public class AuthenticationService implements IAuthenticationService {
             tokenConfig.setName(appid+"token");
             tokenConfig.setToken(map.get("access_token").toString());
             tokenConfig.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
-            persistenceService.save(tokenConfig);
+            persistenceService.updateOrSave(tokenConfig);
             return CodeRe.correct(tokenConfig);
         }
 

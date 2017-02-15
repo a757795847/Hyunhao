@@ -17,5 +17,6 @@
         <property name="sex" column="sex"/>
         <property update="false" insert="false" name="insertTime" column="insert_time"/>
         <property update="false" insert="false" name="updateTime" column="update_time"/>
+        <property name="appid" column="appid"/>
     </class>
 </hibernate-mapping>

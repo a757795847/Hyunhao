@@ -130,7 +130,7 @@ public class CodeService implements ICodeService {
             return  CodeRe.error("token or openid is empty");
         }
 
-       User user = user(wxToken.getWxToken(),wxToken.getUserOpenId());
+       User user = user(wxToken.getWxToken(),wxToken.getUserOpenId(),appid);
 
         if(user ==null){
             return CodeRe.error("to get user from weixin is fail");
@@ -138,7 +138,7 @@ public class CodeService implements ICodeService {
         return CodeRe.correct(geCode.getCallbackUrl()+"?code="+geCode.getGeCodeM()+"&state="+geCode.getState()+"&zyid="+geCode.getGeAppid());
     }
 
-    private User user(String token, String openid){
+    private User user(String token, String openid,String appid){
         StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/userinfo?access_token=")
         .append(token).append("&openid=").append(openid).append("&lang=zh_CN");
         Map map = HttpClientUtils.mapSSLGetSend(builder.toString());
@@ -175,6 +175,7 @@ public class CodeService implements ICodeService {
         if(map.containsKey("unionid")){
             user.setUnionId(map.get("unionid").toString());
         }
+        user.setAppid(appid);
         persistenceService.updateOrSave(user);
 
         return user;
