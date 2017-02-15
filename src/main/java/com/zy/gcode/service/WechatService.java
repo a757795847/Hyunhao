@@ -10,6 +10,10 @@ import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * Created by admin5 on 17/2/14.
  */
@@ -23,7 +27,7 @@ public class WechatService implements IWechatService {
 
 
     @Override
-    public CodeRe sumbit(String image1,String image2,String image3, String billno,String openid) {
+    public CodeRe sumbit(final String image1,final String image2,final String image3,final String billno,final String openid,final String appid) {
         String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").append(billno).toString();
         DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class,"orderNumber",billno);
 
@@ -41,19 +45,22 @@ public class WechatService implements IWechatService {
             dataOrder.setCommentFile3(billno+"C");
         }
         Thread t = new Thread(()->{
-            CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.componetToekn();
+            CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessToken(appid);
             if(tokenConfigCodeRe.isError()){
-
+                Thread.currentThread().interrupt();
             }
 
             if(image1!=null){
               HttpResponse response = HttpClientUtils.SSLGetSend("http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID");
+                transferTo(response,path+dataOrder.getCommentFile1());
             }
             if(image2!=null){
-                dataOrder.setCommentFile2(billno+"B");
+                HttpResponse response = HttpClientUtils.SSLGetSend("http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID");
+                transferTo(response,path+dataOrder.getCommentFile2());
             }
             if(image3 !=null){
-                dataOrder.setCommentFile3(billno+"C");
+                HttpResponse response = HttpClientUtils.SSLGetSend("http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID");
+                transferTo(response,path+dataOrder.getCommentFile3());
             }
         });
 
@@ -63,6 +70,25 @@ public class WechatService implements IWechatService {
         return CodeRe.correct("success");
     }
 
+    private boolean transferTo(HttpResponse response,String path){
+        File file = new File(path);
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        try(FileOutputStream fileOutputStream = new FileOutputStream(file)){
+            response.getEntity().writeTo(fileOutputStream);
+
+        }catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
+      return true;
+    }
 
 
 }
