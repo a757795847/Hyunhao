@@ -3,6 +3,7 @@ package com.zy.gcode.service;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.DataOrder;
+import com.zy.gcode.pojo.MediaMap;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
@@ -47,20 +48,46 @@ public class WechatService implements IWechatService {
         Thread t = new Thread(()->{
             CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessToken(appid);
             if(tokenConfigCodeRe.isError()){
-                Thread.currentThread().interrupt();
+                System.err.println(tokenConfigCodeRe.getErrorMessage());
+                return;
             }
-
+            String geturl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token="+tokenConfigCodeRe.getMessage().getToken()+"&media_id=";
             if(image1!=null){
-              HttpResponse response = HttpClientUtils.SSLGetSend("http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID");
-                transferTo(response,path+dataOrder.getCommentFile1());
+              HttpResponse response = HttpClientUtils.SSLGetSend(geturl+image1);
+               boolean flag = transferTo(response,path+dataOrder.getCommentFile1());
+                MediaMap mediaMap = new MediaMap();
+                mediaMap.setOwner(billno);
+                if(flag){
+                    mediaMap.setIsPersistence("1");
+                    mediaMap.setMediaId(image1);
+                    mediaMap.setPath(path+dataOrder.getCommentFile1());
+                }
+                  persistenceService.updateOrSave(mediaMap);
+
             }
             if(image2!=null){
-                HttpResponse response = HttpClientUtils.SSLGetSend("http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID");
-                transferTo(response,path+dataOrder.getCommentFile2());
+                HttpResponse response = HttpClientUtils.SSLGetSend(geturl+image2);
+             boolean flag=  transferTo(response,path+dataOrder.getCommentFile2());
+                MediaMap mediaMap = new MediaMap();
+                mediaMap.setOwner(billno);
+                if(flag){
+                    mediaMap.setIsPersistence("1");
+                    mediaMap.setMediaId(image2);
+                    mediaMap.setPath(path+dataOrder.getCommentFile2());
+                }
+                persistenceService.updateOrSave(mediaMap);
             }
             if(image3 !=null){
-                HttpResponse response = HttpClientUtils.SSLGetSend("http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID");
-                transferTo(response,path+dataOrder.getCommentFile3());
+                HttpResponse response = HttpClientUtils.SSLGetSend(geturl+image3);
+                boolean flag=  transferTo(response,path+dataOrder.getCommentFile3());
+                MediaMap mediaMap = new MediaMap();
+                mediaMap.setOwner(billno);
+                if(flag){
+                    mediaMap.setIsPersistence("1");
+                    mediaMap.setMediaId(image3);
+                    mediaMap.setPath(path+dataOrder.getCommentFile3());
+                }
+                persistenceService.updateOrSave(mediaMap);
             }
         });
 
