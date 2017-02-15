@@ -7,13 +7,8 @@ import com.zy.gcode.pojo.MediaMap;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
-import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 /**
  * Created by admin5 on 17/2/14.
@@ -65,7 +60,6 @@ public class WechatService implements IWechatService {
 
             }
             if(image2!=null){
-
                 boolean flag =  HttpClientUtils.fileGetSend(geturl + image2, path + dataOrder.getCommentFile2());
                 MediaMap mediaMap = new MediaMap();
                 mediaMap.setMediaId(image2);
@@ -78,7 +72,6 @@ public class WechatService implements IWechatService {
             }
             if(image3 !=null) {
 
-
                 boolean flag =  HttpClientUtils.fileGetSend(geturl + image3, path + dataOrder.getCommentFile3());
                 MediaMap mediaMap = new MediaMap();
                 mediaMap.setMediaId(image3);
@@ -89,11 +82,8 @@ public class WechatService implements IWechatService {
                 }
                 persistenceService.updateOrSave(mediaMap);
             }
-
-
         dataOrder.setWeixinId(openid);
         persistenceService.updateOrSave(dataOrder);
-
         return CodeRe.correct("success");
     }
 
