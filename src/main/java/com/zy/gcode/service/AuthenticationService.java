@@ -179,4 +179,85 @@ public class AuthenticationService implements IAuthenticationService {
         }
         return appInterface;
     }
+
+    @Override
+    public CodeRe<TokenConfig> getJsapiTicketByAppid(String appid) {
+        CodeRe<TokenConfig> wxAccessToken = getWxAccessToken(appid);
+        if(wxAccessToken.isError()){
+            return wxAccessToken;
+        }
+        String name = Constants.JSSDK_TICKET_NAME+appid;
+        TokenConfig tokenConfig = persistenceService.get(TokenConfig.class,name);
+        Timestamp updateTime;
+        try {
+            updateTime = tokenConfig.getUpdateTime();
+        } catch (NullPointerException e) {
+            tokenConfig = new TokenConfig();
+            tokenConfig.setName(name);
+            Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+wxAccessToken.getMessage().getToken()+"&type=jsapi");
+            if(map.containsKey("errmsg")){
+                if(!map.get("errmsg").equals("ok"))
+                    return CodeRe.error((String)map.get("errmsg"));
+            }
+            tokenConfig.setToken(map.get("ticket").toString());
+            tokenConfig.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
+            persistenceService.updateOrSave(tokenConfig);
+            return  CodeRe.correct(tokenConfig);
+        }
+        if(DateUtils.isOutOfDate(updateTime,tokenConfig.getExpiresIn())){
+            Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+wxAccessToken.getMessage().getToken()+"&type=jsapi");
+            if(map.containsKey("errmsg")){
+                if(!map.get("errmsg").equals("ok"))
+                    return CodeRe.error((String)map.get("errmsg"));
+            }
+            tokenConfig.setToken(map.get("ticket").toString());
+            persistenceService.updateOrSave(tokenConfig);
+            return  CodeRe.correct(tokenConfig);
+
+        }
+
+        return CodeRe.correct(tokenConfig);
+    }
+
+    @Override
+    public CodeRe<TokenConfig> getWxAccessToken(String appid) {
+        TokenConfig tokenConfig = persistenceService.get(TokenConfig.class,appid+"toekn");
+        Timestamp updateTime;
+        try {
+            updateTime = tokenConfig.getUpdateTime();
+        } catch (Exception e) {
+            tokenConfig = new TokenConfig();
+            AppInterface appInterface = persistenceService.getOneByColumn(AppInterface.class,"wxAppid",appid);
+            if(appInterface==null){
+                return CodeRe.error("appid 不存在");
+            }
+          Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+appInterface.getSecret());
+            if(map.containsKey("errmsg")){
+                return CodeRe.error(map.get("errmsg").toString());
+            }
+            tokenConfig.setName(appid+"token");
+            tokenConfig.setToken(map.get("access_token").toString());
+            tokenConfig.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
+            persistenceService.save(tokenConfig);
+            return CodeRe.correct(tokenConfig);
+        }
+
+        if(DateUtils.isOutOfDate(updateTime,tokenConfig.getExpiresIn())){
+            AppInterface appInterface = persistenceService.getOneByColumn(AppInterface.class,"wxAppid",appid);
+            if(appInterface==null){
+                return CodeRe.error("appid 不存在,获取wxaccesstoken");
+            }
+            Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+appInterface.getSecret());
+            if(map.containsKey("errmsg")){
+                return CodeRe.error(map.get("errmsg").toString());
+            }
+            tokenConfig.setName(appid+"token");
+            tokenConfig.setToken(map.get("access_token").toString());
+            tokenConfig.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
+            persistenceService.updateOrSave(tokenConfig);
+
+        }
+        return CodeRe.correct(tokenConfig);
+
+    }
 }
