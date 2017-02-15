@@ -65,17 +65,20 @@ console.log(ids);
 
 $("#addID").on("click",function(){
     console.log(1)
+    console.log(ids[0]);
+    console.log(ids[1]);
+    console.log(ids[2]);
     var orders=$("#Orders").val();
     var datas={
         "image1":ids[0],
         "image2":ids[1],
         "image3":ids[2],
-        "billn":orders
+        "billno":orders
     }
     console.log(datas);
      $.ajax({
          type:'POST',
-         url:"view/wechat/submit",
+         url:"view/wechat/home/view/wechat/submit",
          data: datas,
          dataType: 'json',
          success:function(data){
