@@ -33,7 +33,7 @@ public class WechatService implements IWechatService {
         DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class,"orderNumber",billno);
 
         if(dataOrder==null){
-            CodeRe.error("订单不存在");
+           return CodeRe.error("订单不存在");
         }
 
         if(image1!=null){
@@ -93,7 +93,7 @@ public class WechatService implements IWechatService {
         t.start();
 
         dataOrder.setWeixinId(openid);
-        persistenceService.save(dataOrder);
+        persistenceService.updateOrSave(dataOrder);
 
         return CodeRe.correct("success");
     }
