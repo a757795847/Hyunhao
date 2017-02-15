@@ -84,15 +84,16 @@ $("#addID").on("click",function(){
          dataType: 'json',
          success:function(data){
             if(data.status=="1"){
+                $("#addID").addClass("aiar");
                 $("#text").css("display","block");
                 $("#hide").hide();
                 $("#Orders").hide();
-                $("#addID").addClass("aiar");
                 $("#addID").html("点击关闭");
                 $(".father").css("margin-top","20%");
 
             }else{
                 $.alert(datas.message);
+                console.log(datas.message);
 
             }
 
