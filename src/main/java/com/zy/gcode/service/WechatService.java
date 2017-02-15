@@ -100,6 +100,10 @@ public class WechatService implements IWechatService {
 
     private boolean transferTo(HttpResponse response,String path){
         File file = new File(path);
+       if(!file.getParentFile().exists()){
+           file.getParentFile().mkdirs();
+       }
+
         if(!file.exists()){
             try {
                 file.createNewFile();
