@@ -87,7 +87,7 @@ $("#addID").on("click",function(){
                 $("#Orders").hide();
                 $("#addID").html("点击关闭");
                 $("#addID").css("backgroundColor","#a20510");
-                $(".father").css("margin-top","20%");
+                $(".father").css("margin-top","11%");
 
             }else{
                 $.alert(data.message);
