@@ -42,11 +42,9 @@ public class WechatController {
       User user  = (User) session.getAttribute("c_user");
 
        if(user!=null) {
-           Map<String, String> map = sign(authenticationService.getJsapiTicket().getMessage().getToken(),request.getRequestURL().toString());
-
+           Map<String, String> map = sign(authenticationService.getJsapiTicketByAppid("wx653d39223641bea7").getMessage().getToken(),
+                   request.getRequestURL().toString());
            map.put("appid", "wx653d39223641bea7");
-
-
 
            try {
                request.setAttribute("jsonConfig", Constants.objectMapper.writeValueAsString(map));

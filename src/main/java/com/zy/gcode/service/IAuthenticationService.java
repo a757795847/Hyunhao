@@ -16,4 +16,7 @@ public interface IAuthenticationService {
 
     CodeRe<TokenConfig> getJsapiTicket();
 
+    CodeRe<TokenConfig> getJsapiTicketByAppid(String appid);
+    CodeRe<TokenConfig> getWxAccessToken(String appid);
+
 }
