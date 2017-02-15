@@ -95,6 +95,8 @@ $("#addID").on("click",function(){
                 $.alert(data.message);
                 console.log(data.message);
 
+
+
             }
 
          },
