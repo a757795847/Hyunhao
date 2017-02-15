@@ -194,4 +194,21 @@ body{
 
     }
 }
+.weui_dialog{
+    left:14.5%;
+    width:70%;
+    border-radius: 11px;
+}
+.weui_btn_dialog.primary{
+    color:#333;
+
+}
+.weui_dialog_hd{
+   color:#F27474;
+
+}
+.weui_dialog_bd{
+    color:#333;
+
+}
 
