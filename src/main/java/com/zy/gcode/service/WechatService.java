@@ -55,7 +55,7 @@ public class WechatService implements IWechatService {
 
                 boolean flag =  HttpClientUtils.fileGetSend(geturl + image1, path + dataOrder.getCommentFile1());
                 MediaMap mediaMap = new MediaMap();
-                mediaMap.setMediaId(image3);
+                mediaMap.setMediaId(image1);
                 mediaMap.setOwner(billno);
                 if (flag) {
                     mediaMap.setIsPersistence("1");
