@@ -66,6 +66,7 @@ console.log(ids);
 $("#addID").on("click",function(){
 
     var orders=$("#Orders").val();
+
     var datas={
         "image1":ids[0],
         "image2":ids[1],
