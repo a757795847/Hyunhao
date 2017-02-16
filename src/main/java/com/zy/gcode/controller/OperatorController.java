@@ -8,9 +8,11 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -23,7 +25,9 @@ public class OperatorController {
 
     @RequestMapping("login")
     public @ResponseBody
-    Map login(String username, String password){
+    Map login(@RequestBody Map map){
+        String username = (String)map.get("username");
+        String password = (String)map.get("password");
       Subject subject = SecurityUtils.getSubject();
       UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username,password);
         try {
@@ -33,7 +37,10 @@ public class OperatorController {
         }catch (IncorrectCredentialsException e){
             return ControllerStatus.error("密码不正确");
         }
-        return null;
+        Map result = new HashMap(2);
+        result.put("url","/order/home");
+
+        return ControllerStatus.ok(result);
     }
 
 

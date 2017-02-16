@@ -35,16 +35,18 @@
         </tx:attributes>
     </tx:advice>
     <!-- 配置事务切点，并把切点和事务属性关联起来 -->
-    <aop:config>
-        <aop:pointcut expression="execution(* com.zy.gcode.dao.*.*(..))" id="txPointcut"/>
+    <aop:config proxy-target-class="true">
+        <aop:pointcut expression="execution(* com.zy.gcode.service.*.*(..))" id="txPointcut"/>
+        <aop:pointcut expression="execution(* com.zy.gcode.security.*.*(..))" id="setxPointcut"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="setxPointcut"/>
     </aop:config>
 
     <bean id="zyRealm" class="com.zy.gcode.security.ZyRealm">
         <property name="persistenceService" ref="persistenceServiceImpl"/>
     </bean>
     <!-- 安全管理器 -->
-    <bean id="securityManager" class="org.apache.shiro.mgt.DefaultSecurityManager">
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realms">
             <list><ref bean="zyRealm"/></list>
         </property>
@@ -63,14 +65,13 @@
           class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
         <property name="usernameParam" value="username"/>
         <property name="passwordParam" value="password"/>
-        <property name="loginUrl" value="/login.jsp"/>
-        <property name="successUrl" value=".."/>
+        <property name="loginUrl" value="/login"/>
+        <property name="successUrl" value="/order/home"/>
     </bean>
     <!-- Shiro的Web过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/login.jsp"/>
-        <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
         <property name="filters">
             <map>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
@@ -78,11 +79,12 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
-                /index.jsp = anon
+                /order/home=authc
+               <!-- /index.jsp = anon
                 /unauthorized.jsp = anon
                 /login.jsp = authc
                 /logout = logout
-                /** = user
+                /** = user-->
             </value>
         </property>
     </bean>

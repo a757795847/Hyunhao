@@ -29,6 +29,12 @@ public class ControllerStatus {
         map.put("page",page);
         return map;
     }
+    public static Map ok(List list){
+        Map map = new HashMap(5);
+        map.put("status","1");
+        map.put("list",list);
+        return map;
+    }
 
     public static Map ok(Map map){
         if(map==null){

@@ -5,7 +5,9 @@
 <hibernate-mapping>
 
     <class name="com.zy.gcode.pojo.DataOrder" table="data_order" schema="jt_platform">
-        <id name="id" column="id"/>
+        <id name="id" column="id">
+        <generator class="uuid"/>
+        </id>
         <property name="weixinId" column="weixin_id"/>
         <property name="orderNumber" column="order_number"/>
         <property name="giftMoney" column="gift_money"/>

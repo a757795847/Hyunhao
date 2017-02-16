@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -16,7 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -44,8 +49,11 @@ public class CodeControllerTest {
     }
    @Test
     public void code() throws Exception{
-        this.mockMvc.perform(post("/order/list").content("{\"status\":1,\"currentPageIndex\":1}").
-                contentType(MediaType.parseMediaType("application/json;charset=UTF-8")).
+       File file = new File("/Users/admin5/play/ExportOrderList201612281719.csv");
+       System.out.println(file.exists());
+       FileInputStream inputStream = new FileInputStream(file);
+       MockMultipartFile multipartFile = new MockMultipartFile("file",inputStream);
+        this.mockMvc.perform(fileUpload("/order/parseCsv").file(multipartFile).
                 accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
                 .andDo(MockMvcResultHandlers.print());
 
