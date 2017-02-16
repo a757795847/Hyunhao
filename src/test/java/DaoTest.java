@@ -46,8 +46,7 @@ public class DaoTest {
     }
     @Test
     public void dome(){
-        String a = "沈坚\uD83D\uDCAF";
-        System.out.println(a.trim());
+        System.out.println(persistenceService.count(DataOrder.class));
         }
     @Test
     public void utils(){

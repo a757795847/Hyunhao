@@ -43,9 +43,13 @@ public class PersistenceServiceImpl implements PersistenceService {
         return  criteria.setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
     }
 
-    public<T> List<T> getList( DetachedCriteria criteria, Page page) {
+    public<T> List<T> getList( DetachedCriteria criteria) {
+       return criteria.getExecutableCriteria(session()).list();
+    }
+    public<T> List<T> getListAndSetCount(Class<T> clazz,DetachedCriteria criteria, Page page) {
         if(page !=null){
-            return  criteria.getExecutableCriteria(session()).setMaxResults(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
+            page.setCount(count(clazz));
+            return  criteria.getExecutableCriteria(session()).setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
         }
        return criteria.getExecutableCriteria(session()).list();
     }
@@ -83,5 +87,11 @@ public class PersistenceServiceImpl implements PersistenceService {
     public <T> T getOneByColumn(Class<T> clazz, String column, Object value) {
      return (T)session().createCriteria(clazz).add(Restrictions.eq(column,value)).uniqueResult();
 
+    }
+
+    @Override
+    public int count(Class clazz) {
+        Long l= (Long)session().createCriteria(clazz).setProjection(Projections.rowCount()).uniqueResult();
+        return l.intValue();
     }
 }

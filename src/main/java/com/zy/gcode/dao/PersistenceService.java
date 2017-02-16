@@ -14,11 +14,13 @@ public interface PersistenceService {
     <T> T load(Class<T> clazz,Serializable id);
     <T> List<T> getList(Class<T> clazz);
     <T> List<T> getList(Class<T> clazz, Page page);
-    <T> List<T> getList(DetachedCriteria criteria, Page page);
+    <T> List<T> getList(DetachedCriteria criteria);
+    <T> List<T> getListAndSetCount(Class<T> clazz,DetachedCriteria criteria, Page page);
     void remove(Object id);
     void update(Object object);
     void add(Object object);
     void updateOrSave(Object object);
+    int count(Class clazz);
     void save(Object obj);
     Object max(Class clazz,String column);
     <T> T getOneByColumn(Class<T> clazz,String column,Object value);

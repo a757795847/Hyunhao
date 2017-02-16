@@ -83,6 +83,7 @@ public class WechatService implements IWechatService {
                 persistenceService.updateOrSave(mediaMap);
             }
         dataOrder.setWeixinId(openid);
+        dataOrder.setGiftState(2);
         persistenceService.updateOrSave(dataOrder);
         return CodeRe.correct("success");
     }
