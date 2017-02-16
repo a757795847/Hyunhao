@@ -36,64 +36,73 @@ public class OrderService implements IOrderService {
     @Override
     public List<DataOrder> getOrderByStatus(int status, Page page) {
         DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
-        criteria.add(Restrictions.eq("giftState",status));
-        return persistenceService.getListAndSetCount(DataOrder.class,criteria,page);
+        criteria.add(Restrictions.eq("giftState", status));
+        return persistenceService.getListAndSetCount(DataOrder.class, criteria, page);
     }
 
     @Override
-    public CodeRe handleCsv(MultipartFile multipartFile,String operatorName) {
-        File file = new File(MzUtils.merge(Constants.RED_CSV_PATH,"/",operatorName,":",
-                DateUtils.format(new Date(),"yyyy-MM-dd")));
+    public CodeRe handleCsv(MultipartFile multipartFile, String operatorName) {
+        File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/", operatorName, ":",
+                DateUtils.format(new Date(), "yyyy-MM-dd")));
         CsvReader csvReader;
         List<String[]> csvValueList = new ArrayList<>(256);
         try {
             multipartFile.transferTo(file);
-            csvReader = new CsvReader(file.getAbsolutePath(),',', Charset.forName("GBK"));
-            while (csvReader.readRecord()){
+            csvReader = new CsvReader(file.getAbsolutePath(), ',', Charset.forName("GBK"));
+            while (csvReader.readRecord()) {
                 csvValueList.add(csvReader.getValues());
             }
         } catch (IOException e) {
             e.printStackTrace();
-         return CodeRe.error("csv文件处理错误");
+            return CodeRe.error("csv文件处理错误");
         }
-        Map<String,String> title2Value = getCsvMap();
-       String[] titles =MzUtils.trimArray(csvValueList.get(0));
+        Map<String, String> title2Value = getCsvMap();
+        String[] titles = MzUtils.trimArray(csvValueList.get(0));
         List<String> orderNoList = new ArrayList(256);
         List<DataOrder> dataOrderList = new ArrayList<>(256);
-        for(int i =0; i <titles.length;i++){
-                for(int j = 1; j <csvValueList.size();j++){
-                    String[] values = csvValueList.get(j);
-                   DataOrder dataOrder = new DataOrder();
-                   BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
-                   beanWrapper.setPropertyValue(title2Value.get(titles[i]),values[i]);
-
+        for (int j = 1; j < csvValueList.size(); j++) {
+            DataOrder dataOrder = new DataOrder();
+            BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
+            String[] values = csvValueList.get(j);
+            for (int i = 0; i < titles.length; i++) {
+                if(titles[i].equals("订单编号")){
+                    orderNoList.add(values[i]);
+                }
+                System.out.println(titles[i]+i);
+                beanWrapper.setPropertyValue(title2Value.get(titles[i]), values[i]);
+              dataOrderList.add((DataOrder)beanWrapper.getWrappedInstance());
             }
         }
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(DataOrder.class);
-        detachedCriteria.add(Restrictions.in("orderNumber",orderNoList.toArray()));
+        detachedCriteria.add(Restrictions.in("orderNumber", orderNoList.toArray()));
         List<DataOrder> existDataOrderList = persistenceService.getList(detachedCriteria);
 
+        List<Map> resultList = new ArrayList<>(256);
+        dataOrderList.forEach(dataOrder ->{
+            Map resultMap = new HashMap(3);
+            resultMap.put("orderno",dataOrder.getOrderNumber());
+            if(existDataOrderList.contains(dataOrder)){
+                resultMap.put("state","订单已存在");
+            }else {
+                resultMap.put("state","success");
+                persistenceService.save(dataOrder);
+            }
+            resultList.add(resultMap);
+        } );
 
-        DataOrder dataOrder = new DataOrder();
-        BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
-
-
-
-
-
-        return null;
+        return CodeRe.correct(resultList);
     }
 
-    private Map<String,String> getCsvMap(){
-      Field[] fields =  DataOrder.class.getDeclaredFields();
+    private Map<String, String> getCsvMap() {
+        Field[] fields = DataOrder.class.getDeclaredFields();
         HashMap map = new HashMap(64);
-      int len = fields.length;
-      for(int i = 0; i< len ;i ++){
-       CsvPush csvPush =  fields[i].getAnnotation(CsvPush.class);
-       if(csvPush!=null){
-           map.put(csvPush.value(),fields[i].getName());
-       }
-      }
-      return map;
+        int len = fields.length;
+        for (int i = 0; i < len; i++) {
+            CsvPush csvPush = fields[i].getAnnotation(CsvPush.class);
+            if (csvPush != null) {
+                map.put(csvPush.value(), fields[i].getName());
+            }
+        }
+        return map;
     }
 }

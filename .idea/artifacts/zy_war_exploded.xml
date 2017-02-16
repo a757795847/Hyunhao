@@ -47,6 +47,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-context-support:4.3.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-spring:1.4.0-RC2" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-web:1.4.0-RC2" />
+          <element id="library" level="project" name="javacsv" />
         </element>
       </element>
       <element id="directory" name="META-INF">

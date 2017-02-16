@@ -1,5 +1,6 @@
 package com.zy.gcode.controller;
 
+import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.service.IOrderService;
 import com.zy.gcode.utils.Constants;
@@ -15,7 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,6 +38,10 @@ public class OrderController {
         Page page = new Page();
         page.setCurrentPageIndex((Integer) map.get("currentPageIndex"));
     return ControllerStatus.ok(orderService.getOrderByStatus((Integer) map.get("status"),page),page);
+    }
+    @RequestMapping("home")
+    public String index(HttpSession session){
+        return "/views/publicNumber/proxyList.html";
     }
 
     @RequestMapping("picture/{name}")
@@ -61,8 +68,12 @@ public class OrderController {
     }
 
     @RequestMapping(value = "parseCsv",method = RequestMethod.POST)
-    public String parseCsv(MultipartFile file){
-      return null;
+    public @ResponseBody  Object parseCsv(MultipartFile file){
+       CodeRe codeRe =  orderService.handleCsv(file,"zhang123");
+        if(codeRe.isError()){
+            return  ControllerStatus.error(codeRe.getErrorMessage());
+        }
+      return ControllerStatus.ok((List)codeRe.getMessage());
     }
 
 

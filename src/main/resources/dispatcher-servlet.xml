@@ -35,7 +35,6 @@
         </mvc:annotation-driven>
 
         <mvc:default-servlet-handler/>
-        <mvc:resources mapping="/html/**" location="WEB-INF/html/"/>
         <context:component-scan base-package="com.zy.gcode.controller"></context:component-scan>
 
         <!-- Freemarker配置 -->
@@ -73,7 +72,7 @@
          <!--       <property name="viewNames" value="*.ftl"/>-->
                 <property name="cache" value="true"/>
                 <!--  <property name="prefix" value=""/> -->
-                <property name="suffix" value=""/>
+                <property name="prefix" value="/WEB-INF"/>
                 <property name="exposeSpringMacroHelpers" value="true"/>
                 <!--  获取request中参数 -->
                 <property name="exposeRequestAttributes" value="true"/>
@@ -82,5 +81,7 @@
                 <property name="requestContextAttribute" value="request"/>
                 <property name="contentType" value="text/html; charset=utf-8"/>
         </bean>
+
+
 
 </beans>

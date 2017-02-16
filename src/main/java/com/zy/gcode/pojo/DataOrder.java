@@ -33,7 +33,7 @@ public class DataOrder {
     private String buyerName;
     @CsvPush("买家支付宝账号")
     private String buyerZhifubao;
-    @CsvPush("买家应付款")
+    @CsvPush("买家应付货款")
     private String dues;
     @CsvPush("买家应付邮费")
     private String postage;
@@ -105,9 +105,9 @@ public class DataOrder {
     private String earnestRanking;
     @CsvPush("修改后的sku")
     private String skuChanged;
-    @CsvPush("异常信息")
+    @CsvPush("修改后的收货地址")
     private String receiverAddressChanged;
-    @CsvPush("买家支付积分")
+    @CsvPush("异常信息")
     private String errorInfo;
     @CsvPush("天猫卡券抵扣")
     private String tmallCardsDeduction;
