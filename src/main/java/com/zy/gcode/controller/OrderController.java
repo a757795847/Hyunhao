@@ -4,14 +4,13 @@ import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.service.IOrderService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.Page;
+import com.zy.gcode.utils.Timing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletRequest;
@@ -61,14 +60,37 @@ public class OrderController {
         }
     }
 
+    @RequestMapping(value = "parseCsv",method = RequestMethod.POST)
+    public String parseCsv(MultipartFile file){
+      return null;
+    }
+
+
+
     @RequestMapping("asy")
-    public void asyTest(HttpServletRequest request,HttpServletResponse response){
+    public void asyTest(HttpServletRequest request,HttpServletResponse response) throws IOException{
+        response.getWriter().println("before");
      AsyncContext asyncContext =  request.startAsync();
-     long start = System.currentTimeMillis();
-     System.out.println("start:"+start);
+     response.getWriter().println("after");
+     response.getWriter().flush();
+     Timing timing = new Timing();
+     timing.start();
+     Thread t = new Thread(()->{
+        HttpServletResponse httpServletResponse = (HttpServletResponse)asyncContext.getResponse();
+         try {
+             Thread.currentThread().sleep(10000);
+             timing.middle("aysn");
+             httpServletResponse.getWriter().println("hello");
+             httpServletResponse.getWriter().flush();
+             asyncContext.complete();
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+     });
+     asyncContext.start(()->System.out.println("runnable"));
+     asyncContext.complete();
+     t.start();
 
-
-     System.out.println("end:"+(System.currentTimeMillis()-start));
-
+        timing.end();
     }
 }

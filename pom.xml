@@ -152,6 +152,11 @@
             <artifactId>shiro-spring</artifactId>
             <version>1.4.0-RC2</version>
         </dependency>
+        <dependency>
+            <groupId>com.csv</groupId>
+            <artifactId>parser</artifactId>
+            <systemPath>${basedir}/lib/javacsv.jar</systemPath>
+        </dependency>
 
 
 

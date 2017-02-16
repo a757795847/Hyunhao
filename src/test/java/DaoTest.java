@@ -5,19 +5,27 @@ import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.IPayService;
+import com.zy.gcode.service.annocation.CsvPush;
 import com.zy.gcode.service.pay.WxXmlParser;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.factory.annotation.AnnotationBeanWiringInfoResolver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.ClassUtils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -50,10 +58,6 @@ public class DaoTest {
         }
     @Test
     public void utils(){
-       /* RedPayInfo redPayInfo = new RedPayInfo();
-        redPayInfo.setAct_name("哥哥");
-        redPayInfo.setTotal_num(22);
-        System.out.println(WxXmlParser.getWxXml(redPayInfo));*/
 
     }
 

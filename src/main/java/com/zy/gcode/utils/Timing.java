@@ -6,14 +6,25 @@ package com.zy.gcode.utils;
 public class Timing {
     private long startTime;
 
+    private long endTime;
+
+    private long spendTime;
     public void start(){
+        spendTime = System.currentTimeMillis();
         System.out.println("start:"+startTime);
     }
 
 
     public void end(){
-        System.out.println("end:"+System.currentTimeMillis());
-        System.out.
+        endTime = System.currentTimeMillis();
+        spendTime = startTime-endTime;
+        System.out.println("end:"+endTime);
+        System.out.println("spend:"+spendTime);
+    }
+
+    public void middle(String name){
+        System.out.println("currentTime:"+System.currentTimeMillis());
+        System.out.println(name+":"+(System.currentTimeMillis()-startTime));
     }
 
 }

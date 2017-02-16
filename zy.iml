@@ -43,6 +43,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Spring Integration-4.0.3" level="project" />
     <orderEntry type="library" name="aes-jre1.6" level="project" />
+    <orderEntry type="library" name="javacsv" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.3.2.RELEASE" level="project" />
@@ -84,5 +85,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:4.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.apache.shiro:shiro-spring:1.4.0-RC2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.shiro:shiro-web:1.4.0-RC2" level="project" />
+    <orderEntry type="library" name="Maven: com.csv:parser:unknown" level="project" />
   </component>
 </module>

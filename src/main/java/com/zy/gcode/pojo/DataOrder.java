@@ -1,5 +1,7 @@
 package com.zy.gcode.pojo;
 
+import com.zy.gcode.service.annocation.CsvPush;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
@@ -9,6 +11,7 @@ import java.sql.Timestamp;
 public class DataOrder {
     private String id;
     private String weixinId;
+    @CsvPush("订单编号")
     private String orderNumber;
     private BigDecimal giftMoney;
     private String giftDetail;
@@ -26,48 +29,91 @@ public class DataOrder {
     private String updateUserId;
     private Timestamp updateDate;
     private String delFlag;
+    @CsvPush("买家会员名")
     private String buyerName;
+    @CsvPush("买家支付宝账号")
     private String buyerZhifubao;
+    @CsvPush("买家应付款")
     private String dues;
+    @CsvPush("买家应付邮费")
     private String postage;
+    @CsvPush("买家支付积分")
     private String payPoints;
+    @CsvPush("总金额")
     private String amount;
+    @CsvPush("返点积分")
     private String rebatePoint;
+    @CsvPush("买家实际支付金额")
     private String actualAmount;
+    @CsvPush("买家实际支付积分")
     private String actualPayPoints;
+    @CsvPush("订单状态")
     private String orderState;
+    @CsvPush("买家留言")
     private String buyerNotice;
+    @CsvPush("收货人姓名")
     private String receiver;
+    @CsvPush("收货地址")
     private String receiverAddress;
+    @CsvPush("运送方式")
     private String postKind;
+    @CsvPush("联系电话")
     private String receiverTel;
+    @CsvPush("联系手机")
     private String receiverMobile;
+    @CsvPush("订单创建时间")
     private String orderCreateTime;
+    @CsvPush("订单付款时间")
     private String orderPayTime;
+    @CsvPush("宝贝标题")
     private String goodsTitle;
+    @CsvPush("宝贝种类")
     private String goodsKind;
+    @CsvPush("物流单号")
     private String logisticsNumber;
+    @CsvPush("物流公司")
     private String logisticsCompany;
+    @CsvPush("订单备注")
     private String orderRemark;
+    @CsvPush("宝贝总数量")
     private String goodsNumber;
+    @CsvPush("店铺Id")
     private String shopId;
+    @CsvPush("店铺名称")
     private String shopName;
+    @CsvPush("订单关闭原因")
     private String orderCloseReason;
+    @CsvPush("卖家服务费")
     private String solderFee;
+    @CsvPush("买家服务费")
     private String buyerFee;
+    @CsvPush("发票抬头")
     private String invoiceTitle;
+    @CsvPush("是否手机订单")
     private String isMobileOrder;
+    @CsvPush("分阶段订单信息")
     private String phaseOrderInfo;
+    @CsvPush("特权订金订单id")
     private String privilegeOrderId;
+    @CsvPush("是否上传合同照片")
     private String isTransferAgreementPhoto;
+    @CsvPush("是否上传小票")
     private String isTransferReceipt;
+    @CsvPush("是否代付")
     private String isPayByAnother;
+    @CsvPush("定金排名")
     private String earnestRanking;
+    @CsvPush("修改后的sku")
     private String skuChanged;
+    @CsvPush("异常信息")
     private String receiverAddressChanged;
+    @CsvPush("买家支付积分")
     private String errorInfo;
+    @CsvPush("天猫卡券抵扣")
     private String tmallCardsDeduction;
+    @CsvPush("集分宝抵扣")
     private String pointDedution;
+    @CsvPush("是否是O2O交易")
     private String isO2OTrade;
 
     public String getId() {

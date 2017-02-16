@@ -27,6 +27,8 @@ public abstract class Constants {
 
     public final static String RED_PICTURE_PATH="/Users/admin5/Pictures";
 
+    public final static String RED_CSV_PATH="/Users/admin5/Documents";
+
     /**
      * 商户号
      */
