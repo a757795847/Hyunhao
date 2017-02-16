@@ -43,6 +43,7 @@ body{
 
 }
 .last{
+    box-sizing: border-box;
     margin-top:-1px;
     border-radius:5px;
     border:1px solid #ddd;
@@ -56,15 +57,14 @@ body{
 
 }
 #Orders{
+    text-indent: 10px;
     box-shadow:6px 6px 5px rgb(216, 207, 207) inset;
     margin-top:4%;
-    width: 74%;
-    margin-left: 1%;
+    width: 77%;
     height: 40px;
     border-radius: 6px;
     background-color: #f7f7f7;
     border: none;
-    padding-left: 14px;
     font-size: 14px;
     outline:none;
 
@@ -73,14 +73,12 @@ body{
 #addID{
     background-color:rgb(237,233,49);
     border: none;
-    width: 79%;
-    margin-left: 4px;
+    width: 77%;
     height: 40px;
     margin-top: 4%;
     border-radius: 6px;
     font-size: 18px;
     outline: none;
-
 }
 /*#addID:hover{
     background-color:rgb(245, 242, 94);
@@ -124,34 +122,30 @@ body{
 
 
 
-
+#form li{
+    width:calc(100% / 3 - 4%);
+    height:92px;
+    float:left;
+    margin-right:6%
+}
+#form li:nth-child(2){
+    margin-right:6%;
+}
+#form li:nth-child(3){
+    float:right;
+    margin-right:0;
+}
 
 @media screen and (max-width: 414px) {
     #form li{
-        width:calc(100% / 3);
         height:92px;
-        float:left;
-        padding-left:16px;
     }
     #form #odd p:first-child{
         margin-top:14px;
 
     }
-    #Orders{
-        width:72%;
-        margin-left:0;
 
-    }
-    #addID {
-        width:75%;
-        margin-left:0;
 
-    }
-
-    #form ul li:first-child{
-        margin-left:2px;
-
-    }
     .last p,.text-info{
         font-size:13px;
 
@@ -160,27 +154,17 @@ body{
 }
 @media screen and (max-width: 375px) {
     #form li{
-        width:calc(100% / 3);
         height:84px;
-        float:left;
-        padding-left:16px;
     }
     #form #odd p:first-child{
         margin-top:10px;
 
     }
-    #addID {
-        width:78%;
 
-    }
 
 }
 @media screen and (max-width: 320px) {
     #form li{
-        width:calc(100% / 3);
-        height:70px;
-        float:left;
-        padding-left:16px;
     }
     #form #odd p:first-child{
         margin-top:3px;
