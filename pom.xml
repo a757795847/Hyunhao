@@ -155,7 +155,8 @@
         <dependency>
             <groupId>com.csv</groupId>
             <artifactId>parser</artifactId>
-            <systemPath>${basedir}/web/WEB-INF/lib/javacsv.jar</systemPath>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/javacsv.jar</systemPath>
         </dependency>
 
 
