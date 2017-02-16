@@ -41,7 +41,7 @@ public class OrderController {
     }
     @RequestMapping("home")
     public String index(HttpSession session){
-        return "/views/publicNumber/Management.html";
+        return "/views/publicNumber/proxyList.html";
     }
 
     @RequestMapping("picture/{name}")
