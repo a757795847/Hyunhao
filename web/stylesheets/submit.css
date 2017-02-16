@@ -13,6 +13,7 @@ body{
 }
 
 #image{
+    margin-top:-7%;
     height:auto;
     width:100%;
 
@@ -103,8 +104,8 @@ body{
 .aiar{
     margin-top:3%;
     background-color:#a20510;
-    color:rgb(238,205,124);
-    border:1px solid rgb(238,205,124);
+    color:#ffe9b8;
+    border:1px solid #ffe9b8;
 
 }
 
