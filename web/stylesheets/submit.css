@@ -27,7 +27,7 @@ body{
 
 #form{
     text-align: center;
-    margin-top:6%;
+    margin-top:3%;
 
 }
 #form ul{
@@ -161,13 +161,12 @@ body{
 
     }
 
-
 }
 @media screen and (max-width: 320px) {
     #form li{
     }
     #form #odd p:first-child{
-        margin-top:3px;
+        margin-top:9px;
 
     }
 
