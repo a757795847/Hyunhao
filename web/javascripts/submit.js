@@ -63,7 +63,7 @@ $("#odd").on("click",function(){
 console.log(ids);
 
 $("#addID").on("click",function(){
-
+    var HTML=$("#addID").html();
     var orders=$("#Orders").val();
     var datas={
         "image1":ids[0],
@@ -71,39 +71,49 @@ $("#addID").on("click",function(){
         "image3":ids[2],
         "billno":orders
     }
-    if(orders==''||ids[0]==''){
-        $.alert('请上传图片和订单号');
-    } else{
-     $.ajax({
-         type:'POST',
-         url:"http://open.izhuiyou.com/view/wechat/submit",
-         data: datas,
-         dataType: 'json',
-         success:function(data){
-            if(data.status=="1"){
-                $("#addID").addClass("aiar");
-                $("#text").css("display","block");
-                $("#hide").hide();
-                $("#Orders").hide();
-                $("#addID").html("点击关闭");
-                $(".father").css("margin-top","11%");
+    if(HTML=="马上提交") {
+        if (orders == '' || ids[0] == '') {
+            $.alert('请上传图片和订单号');
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: "http://open.izhuiyou.com/view/wechat/submit",
+                data: datas,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status == "1") {
+                        $("#text").css("display", "block");
+                        $("#hide").hide();
+                        $("#Orders").hide();
+                        $("#addID").html("点击关闭");
+                        $("#addID").css({
+                            "backgroundColor": "#a20510",
+                            "border": '1px solid #ffe9b8',
+                            "color": "#ffe9b8",
+                            "margin-top": "3%"
+                        });
+                        $("#addID").html("点击关闭");
+                        $(".father").css("margin-top", "11%");
 
-            }else{
-                $.alert(data.message);
-                console.log(data.message);
+                    } else {
+                        $.alert(data.message);
+                        console.log(data.message);
 
 
+                    }
 
-            }
+                },
+                error: function (jqXHR) {
+                    if (jqXHR.status == 406) {
 
-         },
-         error:function(jqXHR){
-             if(jqXHR.status == 406){
+                    }
+                }
 
-             }
-         }
+            })
+        }
+    }else{
+        WeixinJSBridge.call('closeWindow');
 
-     })
     }
 
 });
