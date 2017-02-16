@@ -5,12 +5,18 @@ package com.zy.gcode.utils;
  */
 public class Page {
     private int currentPageIndex;
-    private int pageSize;
+    private int pageSize = 30;
     private int count;
     private int pageCount;
     private int startIndex;
 
     public int getCurrentPageIndex() {
+ /*       if(currentPageIndex<1){
+            return 1;
+        }
+        if(currentPageIndex > pageCount){
+            return pageCount;
+        }*/
         return currentPageIndex;
     }
 
@@ -35,7 +41,8 @@ public class Page {
     }
 
     public int getPageCount() {
-        return pageCount;
+
+        return count%pageSize==0?count/pageSize:count/pageSize+1;
     }
 
     public void setPageCount(int pageCount) {
@@ -43,7 +50,8 @@ public class Page {
     }
 
     public int getStartIndex() {
-        return startIndex;
+
+        return (currentPageIndex-1)*pageSize;
     }
 
     public void setStartIndex(int startIndex) {

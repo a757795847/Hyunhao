@@ -285,7 +285,7 @@ public class PayService implements IPayService {
 
         DetachedCriteria billCriteria = DetachedCriteria.forClass(RedBill.class);
         billCriteria.add(Restrictions.ge("insert_time",new Timestamp(lastReadTime.getTime())));
-        List<RedBill> redBillList =  persistenceService.getList(billCriteria,null);
+        List<RedBill> redBillList =  persistenceService.getList(billCriteria);
         Timestamp maxInsertTime = (Timestamp)persistenceService.max(RedBill.class,"insert_time");
         Constants.properties.setProperty("pay.lastReadTime",DateUtils.format(maxInsertTime,"yyyy-MM-dd hh:mm:ss"));
 
@@ -307,7 +307,7 @@ public class PayService implements IPayService {
         disjunction.
                 add(Restrictions.not(Restrictions.in("status",new String[]{"RECEIVED","REFUND"})));
         criteria.add(disjunction);
-        List<RedStatus> redStatuses =  persistenceService.getList(criteria,null);
+        List<RedStatus> redStatuses =  persistenceService.getList(criteria);
         redStatuses.forEach(redStatus -> {
          CodeRe<RedStatus> redStatusCodeRe =  redinfo(redStatus.getWxappid(),redStatus.getMchBillno());
          if(redStatusCodeRe.isError()){

@@ -9,6 +9,26 @@
 <html>
   <head>
     <title>$Title$</title>
+    <script src="/javascripts/jquery.min.js"/>
+    <script>
+        $.ajax({
+            type: 'POST',
+            url: "http://open.izhuiyou.com/view/wechat/submit",
+            data: datas,
+            dataType: 'json',
+            async:true,
+            success: function (data) {
+
+
+
+            },
+            error: function () {
+
+            }
+
+        })
+
+    </script>
   </head>
   <body>
 
