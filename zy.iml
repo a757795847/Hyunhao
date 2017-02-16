@@ -85,14 +85,5 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:4.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.apache.shiro:shiro-spring:1.4.0-RC2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.shiro:shiro-web:1.4.0-RC2" level="project" />
-    <orderEntry type="module-library">
-      <library name="Maven: com.csv:parser:unknown">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/javacsv.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
   </component>
 </module>
