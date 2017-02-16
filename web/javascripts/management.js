@@ -6,7 +6,6 @@ $(function () {
 
 $("#modify").click(function(){
     $(".custom-panel").css("display","block");
-
 });
 $(".btn.btn-block.btn-default").click(function(){
     $(".custom-panel").css("display","none");
@@ -18,8 +17,6 @@ $(".btn-group.pull-right").on('click','button',function() {
     $(this).addClass('active');
     $(this).siblings().removeClass('active');
     $(this).css("background-color","#fff");
-
-
 });
 
 
@@ -30,14 +27,11 @@ $(".btn-group.pull-right").on('click','button',function() {
                 $("#lich").css("display", "block");
                 $("#bottom").css("display", "none");
                 $("#Right").css("display", "none");
-
-
             } else {
                 $("#addId").html("+ 添加公众号");
                 $("#lich").css("display", "none");
                 $("#bottom").css("display", "block");
                 $("#Right").css("display", "block");
-
             }
         });
  
@@ -49,10 +43,8 @@ $("#searchfor").on("click",function(){
         $(".sa-warning").css("border-color","#C9DAE1");
         $(".sa-body").css("background-color","#C9DAE1");
         $(".sa-dot").css("background-color","#C9DAE1");
-
     }else if(lich=2){
         $(".sa-warning").css("border-color","#F27474");
-
     }else{
         $(".sa-warning").css("border-color","#ccc");
     }
