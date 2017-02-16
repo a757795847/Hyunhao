@@ -128,14 +128,18 @@ body{
 
 @media screen and (max-width: 414px) {
     #form li{
-        width:94px;
-        height:94px;
+        width:92px;
+        height:92px;
         float:left;
         margin-left:16px;
-
     }
     #form #odd p:first-child{
         margin-top:14px;
+
+    }
+    #Orders{
+        width:72%;
+        margin-left:0;
 
     }
     #addID {
