@@ -30,6 +30,7 @@ import java.util.*;
 public class OrderService implements IOrderService {
 
     int HANDLE_COUNT = 256;
+    int HANDLE_MOST_COUNT = 200;
 
     @Autowired
     PersistenceService persistenceService;
@@ -51,8 +52,13 @@ public class OrderService implements IOrderService {
         try {
             multipartFile.transferTo(file);
             csvReader = new CsvReader(file.getAbsolutePath(), ',', Charset.forName("GBK"));
+            int count =1;
             while (csvReader.readRecord()) {
+                if(count>HANDLE_MOST_COUNT){
+                    break;
+                }
                 csvValueList.add(csvReader.getValues());
+                count++;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,10 +78,9 @@ public class OrderService implements IOrderService {
                     values[i] = str.substring(2,str.length()-1);
                     orderNoList.add(values[i]);
                 }
-                System.out.println(titles[i] + i);
                 beanWrapper.setPropertyValue(title2Value.get(titles[i]), values[i]);
-                dataOrderList.add((DataOrder) beanWrapper.getWrappedInstance());
             }
+            dataOrderList.add((DataOrder) beanWrapper.getWrappedInstance());
         }
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(DataOrder.class);
         detachedCriteria.add(Restrictions.in("orderNumber", orderNoList.toArray()));

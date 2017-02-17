@@ -69,6 +69,10 @@ public class OrderController {
 
         }
     }
+    @RequestMapping("import")
+    public String importCsv(){
+        return "/views/publicNumber/import.html";
+    }
 
     @RequestMapping(value = "parseCsv",method = RequestMethod.POST)
     public @ResponseBody  Object parseCsv(MultipartFile file){

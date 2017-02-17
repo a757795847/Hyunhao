@@ -4,14 +4,12 @@ import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.WxOperator;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.credential.AllowAllCredentialsMatcher;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
-import org.apache.shiro.authc.credential.DefaultPasswordService;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.authc.credential.PasswordService;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,14 +33,31 @@ public class ZyRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-      WxOperator wxOperator = persistenceService.get(WxOperator.class,token.getPrincipal().toString());
+        WxOperator wxOperator = persistenceService.get(WxOperator.class, token.getPrincipal().toString());
         try {
-         wxOperator.getUsername();
+            wxOperator.getUsername();
         } catch (NullPointerException e) {
             throw new UnknownAccountException();
         }
-          return   new SimpleAuthenticationInfo(wxOperator.getUsername(),wxOperator.getPassword(),getName());
+        System.out.println(wxOperator.getName());
+        SecurityUtils.getSubject().getSession(true).setAttribute("operator_name",wxOperator.getName());
+        return new SimpleAuthenticationInfo(wxOperator.getUsername(), wxOperator.getPassword(), getName());
 
+    }
+
+    protected void assertCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) throws AuthenticationException {
+        CredentialsMatcher cm = getCredentialsMatcher();
+        if (cm != null) {
+            if (!cm.doCredentialsMatch(token, info)) {
+                //not successful - throw an exception to indicate this:
+                String msg = "Submitted credentials for token [" + token + "] did not match the expected credentials.";
+                throw new IncorrectCredentialsException(msg);
+            }
+        } else {
+            throw new AuthenticationException("A CredentialsMatcher must be configured in order to verify " +
+                    "credentials during authentication.  If you do not wish for credentials to be examined, you " +
+                    "can configure an " + AllowAllCredentialsMatcher.class.getName() + " instance.");
+        }
     }
 
 }

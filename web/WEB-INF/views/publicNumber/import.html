@@ -59,7 +59,7 @@
         e.preventDefault();
 
         $.ajax({
-            url: basePath + '/order/importcsv',
+            url: '/order/parseCsv',
             type: 'POST',
             cache: false,
             dataType: 'json',

@@ -82,6 +82,7 @@
                 <property name="contentType" value="text/html; charset=utf-8"/>
         </bean>
 
-
+        <!-- 支持上传文件 -->
+        <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
 
 </beans>
