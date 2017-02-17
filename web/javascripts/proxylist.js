@@ -21,14 +21,22 @@ function indexAjax(datas,pageState){
         dataType: 'json',
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
-            console.log(data.list[0].giftState);
+            // console.log(data.list[0].giftState);
             console.log(data);
             var tbody='';
 
-
+            var than='';
+            var thao='';
             $.each(data.list,function(i,order){
                 if(order.giftState==0){
                     order.giftState="未申领";
+
+                }
+                if(order.giftState==1){
+                    order.giftState="审核中";
+                    than="通过";
+                    thao="驳回";
+
                 }
               // for(var a=0;a<order.length;a++){
               //     console.log(2)
@@ -51,8 +59,8 @@ function indexAjax(datas,pageState){
                 tbody +='<td class="mailbox-date"><span>'+order.giftDetail+'</span></td>';
                 tbody +='<td class="mailbox-date"><span>'+order.sendDate+'</span></td>';
                 tbody +='<td class="mailbox-date"><span>'+order.recieveDate+'</span></td>';
-                tbody +='<td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span>';
-                tbody +='<span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td></tr>';
+                tbody +='<td class="mailbox-date"><span class="label label-success" id="bys"><a href="#modalt">'+than+'</a></span>';
+                tbody +='<span class="label label-success turn" data-toggle="modal" data-target="#myModal">'+thao+'</span></td></tr>';
 
 
             });
@@ -67,7 +75,7 @@ function indexAjax(datas,pageState){
                     rCount: 1,//最后预留的数量
                     callback: function (options){
                         var index=options.index;
-                        indexAjax({status:0,currentPageIndex:index});
+                        indexAjax({status:1,currentPageIndex:index});
                         //options.count = 300;
                         //return options;
                     },
@@ -83,8 +91,13 @@ function indexAjax(datas,pageState){
 
     })
 }
-indexAjax({status:0,currentPageIndex:1},1);
-
+indexAjax({status:1,currentPageIndex:1},1);
+$("#bys").on("click",function(){
+    
+    
+    
+    
+});
 
 
 $('#basic-usage-demo').fancySelect();
