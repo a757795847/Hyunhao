@@ -620,7 +620,6 @@ public class DataOrder {
         DataOrder dataOrder = (DataOrder) o;
 
         if (giftState != dataOrder.giftState) return false;
-        if (id != null ? !id.equals(dataOrder.id) : dataOrder.id != null) return false;
         if (weixinId != null ? !weixinId.equals(dataOrder.weixinId) : dataOrder.weixinId != null) return false;
         if (orderNumber != null ? !orderNumber.equals(dataOrder.orderNumber) : dataOrder.orderNumber != null)
             return false;

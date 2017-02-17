@@ -15,7 +15,6 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -29,6 +28,9 @@ import java.util.*;
  */
 @Component
 public class OrderService implements IOrderService {
+
+    int HANDLE_COUNT = 256;
+
     @Autowired
     PersistenceService persistenceService;
 
@@ -45,7 +47,7 @@ public class OrderService implements IOrderService {
         File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/", operatorName, ":",
                 DateUtils.format(new Date(), "yyyy-MM-dd")));
         CsvReader csvReader;
-        List<String[]> csvValueList = new ArrayList<>(512);
+        List<String[]> csvValueList = new ArrayList<>(HANDLE_COUNT);
         try {
             multipartFile.transferTo(file);
             csvReader = new CsvReader(file.getAbsolutePath(), ',', Charset.forName("GBK"));
@@ -58,37 +60,39 @@ public class OrderService implements IOrderService {
         }
         Map<String, String> title2Value = getCsvMap();
         String[] titles = MzUtils.trimArray(csvValueList.get(0));
-        List<String> orderNoList = new ArrayList(512);
-        List<DataOrder> dataOrderList = new ArrayList<>(512);
+        List<String> orderNoList = new ArrayList(HANDLE_COUNT);
+        List<DataOrder> dataOrderList = new ArrayList<>(HANDLE_COUNT);
         for (int j = 1; j < csvValueList.size(); j++) {
             DataOrder dataOrder = new DataOrder();
             BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
             String[] values = csvValueList.get(j);
             for (int i = 0; i < titles.length; i++) {
-                if(titles[i].equals("订单编号")){
+                if (titles[i].equals("订单编号")) {
+                    String str = values[i];
+                    values[i] = str.substring(2,str.length()-1);
                     orderNoList.add(values[i]);
                 }
-                System.out.println(titles[i]+i);
+                System.out.println(titles[i] + i);
                 beanWrapper.setPropertyValue(title2Value.get(titles[i]), values[i]);
-              dataOrderList.add((DataOrder)beanWrapper.getWrappedInstance());
+                dataOrderList.add((DataOrder) beanWrapper.getWrappedInstance());
             }
         }
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(DataOrder.class);
         detachedCriteria.add(Restrictions.in("orderNumber", orderNoList.toArray()));
         List<DataOrder> existDataOrderList = persistenceService.getList(detachedCriteria);
 
-        List<Map> resultList = new ArrayList<>(512);
-        dataOrderList.forEach(dataOrder ->{
+        List<Map> resultList = new ArrayList<>(HANDLE_COUNT);
+        dataOrderList.forEach(dataOrder -> {
             Map resultMap = new HashMap(3);
-            resultMap.put("order",dataOrder);
-            if(existDataOrderList.contains(dataOrder)){
-                resultMap.put("state","订单已存在");
-            }else {
-                resultMap.put("state","success");
+            resultMap.put("order", dataOrder);
+            if (existDataOrderList.contains(dataOrder)) {
+                resultMap.put("state", "订单已存在");
+            } else {
+                resultMap.put("state", "success");
                 persistenceService.save(dataOrder);
             }
             resultList.add(resultMap);
-        } );
+        });
 
         return CodeRe.correct(resultList);
     }
@@ -104,5 +108,11 @@ public class OrderService implements IOrderService {
             }
         }
         return map;
+    }
+
+    @Override
+    public CodeRe saveOrderList(List<DataOrder> orderList) {
+        orderList.forEach(dataOrder -> persistenceService.save(dataOrder));
+        return CodeRe.correct("success");
     }
 }

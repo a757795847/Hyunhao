@@ -38,9 +38,15 @@ public class OperatorController {
         }catch (IncorrectCredentialsException e){
             return ControllerStatus.error("密码不正确");
         }
+        subject.getSession(true).setAttribute("operator_name",username);
         Map result = new HashMap(2);
         result.put("url","/order/home");
         return ControllerStatus.ok(result);
+    }
+
+    @RequestMapping("register")
+    public String register(String nick,String password,String username){
+        return  null;
     }
 
 

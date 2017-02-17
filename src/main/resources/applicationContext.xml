@@ -44,9 +44,26 @@
         <aop:advisor advice-ref="txAdvice" pointcut-ref="setxPointcut"/>
     </aop:config>
 
+    <bean name="passwordService" class="org.apache.shiro.authc.credential.DefaultPasswordService">
+        <property name="hashService">
+            <bean class="org.apache.shiro.crypto.hash.DefaultHashService">
+                <property name="hashIterations" value="2"/>
+                <property name="hashAlgorithmName" value="md5"/>
+                <property name="generatePublicSalt" value="true"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean name="passwordMatcher" class="org.apache.shiro.authc.credential.PasswordMatcher">
+        <property name="passwordService" ref="passwordService"/>
+    </bean>
+
     <bean id="zyRealm" class="com.zy.gcode.security.ZyRealm">
         <property name="persistenceService" ref="persistenceServiceImpl"/>
+        <property name="credentialsMatcher" ref="passwordMatcher"/>
     </bean>
+
+
     <!-- 安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realms">
@@ -84,6 +101,7 @@
         <property name="filterChainDefinitions">
             <value>
                 /order/home=authc
+                /pay/**=authc
                 <!-- /index.jsp = anon
                  /unauthorized.jsp = anon
                  /login.jsp = authc
