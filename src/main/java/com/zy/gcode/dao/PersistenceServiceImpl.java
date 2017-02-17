@@ -48,8 +48,10 @@ public class PersistenceServiceImpl implements PersistenceService {
     }
     public<T> List<T> getListAndSetCount(Class<T> clazz,DetachedCriteria criteria, Page page) {
         if(page !=null){
-            page.setCount(count(clazz));
-            return  criteria.getExecutableCriteria(session()).setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
+        Long l  =  (Long)criteria.getExecutableCriteria(session()).setProjection(Projections.rowCount()).uniqueResult();
+        page.setCount(l.intValue());
+        criteria.setProjection(null);
+        return  criteria.getExecutableCriteria(session()).setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
         }
        return criteria.getExecutableCriteria(session()).list();
     }

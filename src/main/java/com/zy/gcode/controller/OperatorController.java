@@ -6,6 +6,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,10 +38,15 @@ public class OperatorController {
         }catch (IncorrectCredentialsException e){
             return ControllerStatus.error("密码不正确");
         }
+        subject.getSession(true).setAttribute("operator_name",username);
         Map result = new HashMap(2);
         result.put("url","/order/home");
-
         return ControllerStatus.ok(result);
+    }
+
+    @RequestMapping("register")
+    public String register(String nick,String password,String username){
+        return  null;
     }
 
 

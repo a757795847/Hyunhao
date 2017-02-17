@@ -58,8 +58,10 @@ public class CodeControllerTest {
                 .andDo(MockMvcResultHandlers.print());
 
     }
-    public void println(Object str){
-        System.out.println(str);
+    @Test
+    public void login() throws Exception{
+        this.mockMvc.perform(post("/operator/login").content("{\"username\":\"zhuiyou123\",\"password\":\"123456\"}").contentType(MediaType.APPLICATION_JSON))
+        .andDo(MockMvcResultHandlers.print());
     }
 
 

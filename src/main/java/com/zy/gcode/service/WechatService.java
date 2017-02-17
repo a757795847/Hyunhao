@@ -7,6 +7,7 @@ import com.zy.gcode.pojo.MediaMap;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
+import com.zy.gcode.utils.MzUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +25,7 @@ public class WechatService implements IWechatService {
 
     @Override
     public CodeRe sumbit(final String image1,final String image2,final String image3,final String billno,final String openid,final String appid) {
-        String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").append(billno).toString();
+        String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").toString();
         DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class,"orderNumber",billno);
 
         if(dataOrder==null){
@@ -32,13 +33,13 @@ public class WechatService implements IWechatService {
         }
 
         if(image1!=null){
-            dataOrder.setCommentFile1(billno+"A");
+            dataOrder.setCommentFile1(MzUtils.merge(appid,":",billno,":","A"));
         }
         if(image2!=null){
-            dataOrder.setCommentFile2(billno+"B");
+            dataOrder.setCommentFile2(MzUtils.merge(appid,":",billno,":","A"));
         }
         if(image3 !=null){
-            dataOrder.setCommentFile3(billno+"C");
+            dataOrder.setCommentFile3(MzUtils.merge(appid,":",billno,":","A"));
         }
             CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessToken(appid);
             if(tokenConfigCodeRe.isError()){
@@ -83,7 +84,7 @@ public class WechatService implements IWechatService {
                 persistenceService.updateOrSave(mediaMap);
             }
         dataOrder.setWeixinId(openid);
-        dataOrder.setGiftState(2);
+        dataOrder.setGiftState(1);
         persistenceService.updateOrSave(dataOrder);
         return CodeRe.correct("success");
     }

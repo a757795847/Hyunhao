@@ -9,6 +9,15 @@ import com.zy.gcode.service.annocation.CsvPush;
 import com.zy.gcode.service.pay.WxXmlParser;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
+import org.apache.shiro.authc.credential.DefaultPasswordService;
+import org.apache.shiro.authc.credential.PasswordMatcher;
+import org.apache.shiro.authc.credential.PasswordService;
+import org.apache.shiro.crypto.hash.DefaultHashService;
+import org.apache.shiro.crypto.hash.HashService;
+import org.apache.shiro.util.ByteSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeanWrapper;
@@ -46,6 +55,8 @@ public class DaoTest {
     @Autowired
     AuthenticationService authenticationService;
 
+    @Autowired
+    PasswordService passwordService;
 
     @Test
     public void test(){
@@ -58,7 +69,27 @@ public class DaoTest {
         }
     @Test
     public void utils(){
+        DefaultPasswordService passwordService = new DefaultPasswordService();
+        DefaultHashService hashService = new DefaultHashService();
+        hashService.setHashIterations(2);
+        passwordService.setHashService(hashService);
 
+        hashService.setGeneratePublicSalt(true);
+        PasswordMatcher passwordMatcher = new PasswordMatcher();
+        passwordMatcher.setPasswordService(passwordService);
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("zhang123","123456");
+        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo("zhang123",passwordService.encryptPassword("123456"),"myreal");
+       boolean flag = passwordMatcher.doCredentialsMatch(usernamePasswordToken,simpleAuthenticationInfo);
+
+        System.out.println(flag);
+        System.out.println(passwordService.encryptPassword("123456"));
+        System.out.println(passwordService.encryptPassword("123456"));
+    }
+
+    @Test
+    public void password(){
+        String str = "=\"2943843414580221\"";
+        System.out.println(str.substring(2,str.length()-1));
     }
 
     @Test

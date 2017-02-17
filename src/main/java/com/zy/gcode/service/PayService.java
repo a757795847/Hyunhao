@@ -37,24 +37,7 @@ public class PayService implements IPayService {
     @Override
     public CodeRe pay(String openid, int count,String token,String geappid) {
 
-        GeToken geToken = persistenceService.get(GeToken.class,geappid);
         AppInterface appInterface = persistenceService.get(AppInterface.class,geappid);
-        Timestamp updatetime;
-
-        try {
-            updatetime = geToken.getUpdateTime();
-        } catch (NullPointerException e) {
-            return CodeRe.error("token is of invalid");
-        }
-
-        if(!geToken.getGeTokenM().equals(token.trim())){
-            return  CodeRe.error("token is invalid");
-        }
-
-
-        if(DateUtils.isOutOfDate(updatetime,7000L)){
-            return CodeRe.error("token of time out");
-        }
 
 
         PayCredential payCredential =  persistenceService.get(PayCredential.class,appInterface.getWxAppid());
@@ -148,24 +131,7 @@ public class PayService implements IPayService {
     public CodeRe<RedStatus> payInfo(String billno,String token,String geappid) {
 
 
-        GeToken geToken = persistenceService.get(GeToken.class,geappid);
         AppInterface appInterface = persistenceService.get(AppInterface.class,geappid);
-        Timestamp updatetime;
-
-        try {
-            updatetime = geToken.getUpdateTime();
-        } catch (NullPointerException e) {
-            return CodeRe.error("token is of invalid");
-        }
-
-        if(!geToken.getGeTokenM().equals(token.trim())){
-            return  CodeRe.error("token is invalid");
-        }
-
-
-        if(DateUtils.isOutOfDate(updatetime,7000L)){
-            return CodeRe.error("token of time out");
-        }
 
       return redinfo(appInterface.getWxAppid(),billno);
     }

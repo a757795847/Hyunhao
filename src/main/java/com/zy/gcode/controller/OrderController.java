@@ -2,10 +2,13 @@ package com.zy.gcode.controller;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
+import com.zy.gcode.pojo.DataOrder;
+import com.zy.gcode.pojo.WxOperator;
 import com.zy.gcode.service.IOrderService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.Page;
 import com.zy.gcode.utils.Timing;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +43,7 @@ public class OrderController {
     return ControllerStatus.ok(orderService.getOrderByStatus((Integer) map.get("status"),page),page);
     }
     @RequestMapping("home")
-    public String index(HttpSession session){
+    public String index(){
         return "/views/publicNumber/proxyList.html";
     }
 
@@ -69,12 +72,19 @@ public class OrderController {
 
     @RequestMapping(value = "parseCsv",method = RequestMethod.POST)
     public @ResponseBody  Object parseCsv(MultipartFile file){
-       CodeRe codeRe =  orderService.handleCsv(file,"zhang123");
+//      WxOperator operator = (WxOperator) SecurityUtils.getSubject().getSession().getAttribute("operator");
+       CodeRe codeRe =  orderService.handleCsv(file,"zhuiyou123");
         if(codeRe.isError()){
             return  ControllerStatus.error(codeRe.getErrorMessage());
         }
       return ControllerStatus.ok((List)codeRe.getMessage());
     }
+    @RequestMapping("importCsv")
+    public @ResponseBody  String importCsv(@RequestBody List<DataOrder> orderList){
+      CodeRe codeRe =  orderService.saveOrderList(orderList);
+      return codeRe.getMessage().toString();
+    }
+
 
 
 
