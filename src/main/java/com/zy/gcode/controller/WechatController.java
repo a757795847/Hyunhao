@@ -92,7 +92,6 @@ public class WechatController {
                 "&noncestr=" + nonce_str +
                 "&timestamp=" + timestamp +
                 "&url=" + url;
-        System.out.println(string1);
 
         try
         {

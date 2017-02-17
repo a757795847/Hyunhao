@@ -40,7 +40,7 @@ public class OrderController {
     return ControllerStatus.ok(orderService.getOrderByStatus((Integer) map.get("status"),page),page);
     }
     @RequestMapping("home")
-    public String index(HttpSession session){
+    public String index(){
         return "/views/publicNumber/proxyList.html";
     }
 

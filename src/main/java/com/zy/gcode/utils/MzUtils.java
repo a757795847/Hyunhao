@@ -6,7 +6,7 @@ import java.util.Arrays;
  * Created by admin5 on 17/2/16.
  */
 public class MzUtils {
-    public static String merge(String... strs){
+    public static String merge(Object... strs){
         StringBuilder builder = new StringBuilder();
         Arrays.stream(strs).forEach(builder::append);
         return builder.toString();

@@ -2,6 +2,7 @@ package com.zy.gcode.security;
 
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.WxOperator;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -31,9 +32,10 @@ public class ZyRealm extends AuthorizingRealm {
         } catch (NullPointerException e) {
             throw new UnknownAccountException();
         }
-        if(!password.equals(wxOperator.getPassword())){
+        if(!password.equals(wxOperator.getPassword())) {
             throw new IncorrectCredentialsException();
         }
+        SecurityUtils.getSubject().getSession().setAttribute("operator",wxOperator);
         return new SimpleAuthenticationInfo(token.getPrincipal(),token.getCredentials(),getName());
     }
 }

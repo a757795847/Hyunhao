@@ -6,6 +6,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +40,6 @@ public class OperatorController {
         }
         Map result = new HashMap(2);
         result.put("url","/order/home");
-
         return ControllerStatus.ok(result);
     }
 

@@ -45,7 +45,7 @@ public class OrderService implements IOrderService {
         File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/", operatorName, ":",
                 DateUtils.format(new Date(), "yyyy-MM-dd")));
         CsvReader csvReader;
-        List<String[]> csvValueList = new ArrayList<>(256);
+        List<String[]> csvValueList = new ArrayList<>(512);
         try {
             multipartFile.transferTo(file);
             csvReader = new CsvReader(file.getAbsolutePath(), ',', Charset.forName("GBK"));
@@ -58,8 +58,8 @@ public class OrderService implements IOrderService {
         }
         Map<String, String> title2Value = getCsvMap();
         String[] titles = MzUtils.trimArray(csvValueList.get(0));
-        List<String> orderNoList = new ArrayList(256);
-        List<DataOrder> dataOrderList = new ArrayList<>(256);
+        List<String> orderNoList = new ArrayList(512);
+        List<DataOrder> dataOrderList = new ArrayList<>(512);
         for (int j = 1; j < csvValueList.size(); j++) {
             DataOrder dataOrder = new DataOrder();
             BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
@@ -77,10 +77,10 @@ public class OrderService implements IOrderService {
         detachedCriteria.add(Restrictions.in("orderNumber", orderNoList.toArray()));
         List<DataOrder> existDataOrderList = persistenceService.getList(detachedCriteria);
 
-        List<Map> resultList = new ArrayList<>(256);
+        List<Map> resultList = new ArrayList<>(512);
         dataOrderList.forEach(dataOrder ->{
             Map resultMap = new HashMap(3);
-            resultMap.put("orderno",dataOrder.getOrderNumber());
+            resultMap.put("order",dataOrder);
             if(existDataOrderList.contains(dataOrder)){
                 resultMap.put("state","订单已存在");
             }else {
