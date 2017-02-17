@@ -12,9 +12,14 @@ import java.util.Map;
 @Controller
 public class IndexController {
 
-    @RequestMapping("/")
+    @RequestMapping("/login")
     public String login(){
 
-        return "/views/publicNumber/Management.html";
+        return "/views/proxy/login.html";
+    }
+
+    @RequestMapping("/")
+    public String index(){
+        return "/views/publicNumber/goodcomment.html";
     }
 }
