@@ -12,18 +12,79 @@ $(".checkbox-toggle").click(function () {
     $(this).data("clicks", !clicks);
 });
 
-$("#jqueryPage").pagination({
-    count: 100, //总数
-    size:20, //每页数量
-    index: 1,//当前页
-    lrCount: 5,//当前页左右最多显示的数量
-    lCount: 1,//最开始预留的数量
-    rCount: 1,//最后预留的数量
-    callback: function () {
-        //options.count = 300;
-        //return options;
-    },
-});
+
+function indexAjax(datas,pageState){
+    $.ajax({
+        type: 'post',
+        url: '/order/list',
+        data: JSON.stringify(datas),
+        dataType: 'json',
+        contentType: 'application/json;charset=UTF-8',
+        success: function (data) {
+            console.log(data.list[0].giftState);
+            console.log(data);
+            var tbody='';
+
+
+            $.each(data.list,function(i,order){
+                if(order.giftState==0){
+                    order.giftState="未申领";
+                }
+              // for(var a=0;a<order.length;a++){
+              //     console.log(2)
+              //     if(order[a]==null){
+              //         console.log(1)
+              //         order[a]="";
+              //     }
+              //
+              // }
+                for(var key in order){
+                    if(order[key] == null){
+                        order[key] = '';
+                    }
+                }
+                tbody +='<tr><td><input type="checkbox" id="statistic"></td><td class="mailbox-date"><span>'+order.orderNumber+'</span></td>';
+                tbody +='<td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>';
+                tbody +='<td class="mailbox-date"></td>';
+                tbody +='<td class="mailbox-date"><span>'+order.applyDate+'</span></td>';
+                tbody +='<td class="mailbox-date"><span>'+order.giftState+'</span></td>';
+                tbody +='<td class="mailbox-date"><span>'+order.giftDetail+'</span></td>';
+                tbody +='<td class="mailbox-date"><span>'+order.sendDate+'</span></td>';
+                tbody +='<td class="mailbox-date"><span>'+order.recieveDate+'</span></td>';
+                tbody +='<td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span>';
+                tbody +='<span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td></tr>';
+
+
+            });
+            $("#Table").find("tbody").html(tbody);
+            if(pageState == 1){
+                $("#jqueryPage").pagination({
+                    count: data.page.count, //总数
+                    size:data.page.pageSize, //每页数量
+                    index: 1,//当前页
+                    lrCount:1,//当前页左右最多显示的数量
+                    lCount: 1,//最开始预留的数量
+                    rCount: 1,//最后预留的数量
+                    callback: function (options){
+                        var index=options.index;
+                        indexAjax({status:0,currentPageIndex:index});
+                        //options.count = 300;
+                        //return options;
+                    },
+                });
+            }
+
+        },
+        error: function (jqXHR) {
+            if (jqXHR.status == 406) {
+
+            }
+        }
+
+    })
+}
+indexAjax({status:0,currentPageIndex:1},1);
+
 
 
 $('#basic-usage-demo').fancySelect();
@@ -38,7 +99,7 @@ $(".trigger").on('click',function(){
     if(sub=="导入时间"){
         $("div.fancy-select ul.options").css('left','180px');
 
-    }else if(sub=="状态"){
+    }else if(sub=="未申领"){
         $("div.fancy-select ul.options").css('left','360px');
 
     }else if(sub=="红包详情"){

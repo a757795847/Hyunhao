@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../../stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../stylesheets/font-awesome.min.css">
+    <link rel="stylesheet" href="../../../stylesheets/jquery-jvectormap-1.2.2.css">
+    <link rel="stylesheet" href="../../../stylesheets/AdminLTE.min.css">
+    <link rel="stylesheet" href="../../../stylesheets/_all-skins.min.css">
+    <link rel="stylesheet" href="../../../stylesheets/general.css">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <#include "../include/header.html"/>
+    <#include "../include/aside.html"/>
+    <div class="content-wrapper">
+        <section class="content">
+            <ol class="breadcrumb">
+                <li><a href=""><i class="fa fa-dashboard"></i>订单列表</a></li>
+                <li class="active"><a href="../../../order/toimport">导入订单</a></li>
+            </ol>
+            <div class="row">
+                <form action="" method="post" target="" id="uploadForm"  enctype="multipart/form-data">
+                    <input id="fileId" type="file" name="file" accept="text/csv" id="limit"/>
+                    <input type="text" name="weixinid" id="weixinid" value="weixin1" />
+                    <input type="submit" name="submit" id="submit" value="upload" />
+                </form>
+
+               <!-- <input type="file" onchange="filefujianChange(this);" value="1"/>-->
+                </div>
+            </section>
+        </div>
+</div>
+<script src="../../../javascripts/jquery-2.2.3.min.js"></script>
+<script src="../../../javascripts/bootstrap.min.js"></script>
+<script src="../../../javascripts/app.min.js"></script>
+<script>
+
+
+
+//function hhh() {
+//    console.log(new FormData($('#uploadForm')[0]))
+//    $.ajax({
+//        url: basePath + '/order/importcsv',
+//        type: 'POST',
+//        cache: false,
+//        data: new FormData($('#uploadForm')[0]),
+//        processData: false,
+//        contentType: false
+//    }).done(function (res) {
+//        console.log(res);
+//    }).fail(function (res) {
+//        console.log(res);
+//    });
+//}
+    $("#submit").on("click",function(e){
+        e.preventDefault();
+
+        $.ajax({
+            url: basePath + '/order/importcsv',
+            type: 'POST',
+            cache: false,
+            dataType: 'json',
+            data: new FormData($('#uploadForm')[0]),
+            processData: false,
+            contentType: false
+        }).done(function(res) {
+            console.log(res);
+        }).fail(function(res) {});
+
+
+
+    });
+//// 获得上传文件DOM对象
+//var oFiles = document.querySelector("#fileId");
+//
+//
+//// 实例化一个表单数据对象
+//var formData = new FormData();
+//for (var i = 0, file; file = oFiles[i]; i++) {
+//    // 文件名称，文件对象
+//    formData.append(file.name, file);
+//}
+
+</script>
+
+
+
+
+</body>
+</html>

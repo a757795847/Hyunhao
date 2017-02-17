@@ -12,18 +12,14 @@
     <link rel="stylesheet" href="../../stylesheets/remodal.css">
     <link rel="stylesheet" href="../../stylesheets/remodal-default-theme.css">
     <link rel="stylesheet" href="../../stylesheets/fancySelect.css">
-
     <link rel="stylesheet" href="../../stylesheets/proxylist.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
     <header class="main-header">
-
         <a href="/" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-lg">
           <img src="../../images/B3F0F1AD70377E062920F9BA53902227.jpg" alt="">
-            <!-- logo for regular state and mobile devices -->
             <b>聚塔微客户管理平台</b></span>
         </a>
 
@@ -140,6 +136,10 @@
     </aside>
     <div class="content-wrapper">
         <section class="content">
+            <ol class="breadcrumb">
+                <li><a href=""><i class="fa fa-dashboard"></i>订单列表</a></li>
+                <li class="active"><a href="${basePath}/order/toimport">导入订单</a></li>
+            </ol>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
@@ -170,16 +170,8 @@
                             <option>Frang</option>
                         </select>
                         <select id="basic-status-demo">
-                            <option value="">状态</option>
-                            <option>Lorem Ipsum</option>
-                            <option>Dolor Sit</option>
-                            <option>Vehicula Ornare</option>
-                            <option>Foo</option>
-                            <option>Bar</option>
-                            <option>Baz</option>
-                            <option>Qux</option>
-                            <option>Zoobie</option>
-                            <option>Frang</option>
+                            <option value="">未申领</option>
+                            <option>申领中</option>
                         </select>
                         <select id="basic-details-demo">
                             <option value="">红包详情</option>
@@ -204,7 +196,7 @@
                         </form>
 <div class="table-responsive mailbox-messages">
 
-    <table class="table table-hover table-striped">
+    <table class="table table-hover table-striped" id="Table">
         <thead>
             <th><button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
             </button>全选</th>
@@ -219,246 +211,6 @@
                 <th>操作</th>
         </thead>
         <tbody>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" id="statistic"></td>
-            <td class="mailbox-date"><span>3217463276</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>
-            <td class="mailbox-date"></td>
-            <td class="mailbox-date"><span>2017-08-10</span></td>
-            <td class="mailbox-date"><span>未申领</span></td>
-            <td class="mailbox-date"><span>一元返现</span></td>
-            <td class="mailbox-date"><span>2017-02-09</span></td>
-            <td class="mailbox-date"><span>2017-06-18</span></td>
-            <td class="mailbox-date"><span class="label label-success"><a href="#modalt">通过</a></span><span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span></td>
-        </tr>
 
         </tbody>
     </table>
@@ -573,7 +325,7 @@
     <script src="../../javascripts/jqueryPage.js"></script>
     <script src="../../javascripts/fancySelect.js"></script>
     <script src="../../javascripts/remodal.js"></script>
-    <script src="../../javascripts/proxylist.js"></script>
+    <script src="../../../javascripts/proxylist.js"></script>
 
 
 </body>

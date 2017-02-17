@@ -100,7 +100,7 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
-                /order/home=authc
+             <!--   /order/home=authc-->
                 /pay/**=authc
                 <!-- /index.jsp = anon
                  /unauthorized.jsp = anon
