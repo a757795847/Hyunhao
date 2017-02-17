@@ -120,12 +120,12 @@ public class OrderController {
     }
 
     @RequestMapping("passAuditing/{id}")
-    public @ResponseBody String pass(@PathVariable String id){
+    public @ResponseBody Map pass(@PathVariable String id){
        CodeRe codeRe =  orderService.passAuditing(id);
        if(codeRe.isError()){
-           return  codeRe.getErrorMessage();
+           return  ControllerStatus.error(codeRe.getErrorMessage());
        }
-       return codeRe.getMessage().toString();
+       return ControllerStatus.ok(codeRe.getMessage().toString());
     }
 
 
