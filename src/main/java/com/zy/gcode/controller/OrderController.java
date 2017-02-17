@@ -44,7 +44,7 @@ public class OrderController {
     }
     @RequestMapping("home")
     public String index(){
-        return "/views/publicNumber/proxyList.html";
+        return "/views/publicNumber/proxylist.html";
     }
 
     @RequestMapping("picture/{name}")
