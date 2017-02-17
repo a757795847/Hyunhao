@@ -35,10 +35,25 @@ public class PayService implements IPayService {
     PersistenceService persistenceService;
 
     @Override
-    public CodeRe pay(String openid, int count,String token,String geappid) {
+    public CodeRe pay(String id, int count,String geappid) {
 
         AppInterface appInterface = persistenceService.get(AppInterface.class,geappid);
+        DataOrder dataOrder =  persistenceService.get(DataOrder.class,id);
 
+
+
+        String openid;
+        try {
+            openid= dataOrder.getWeixinId();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return CodeRe.error("订单不存在");
+        }
+
+        int state = dataOrder.getGiftState();
+        if(state !=2){
+            return  CodeRe.error("该订单未审核通过");
+        }
 
         PayCredential payCredential =  persistenceService.get(PayCredential.class,appInterface.getWxAppid());
 

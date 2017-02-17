@@ -4,8 +4,10 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.pojo.User;
+import com.zy.gcode.pojo.WxOperator;
 import com.zy.gcode.service.IPayService;
 import com.zy.gcode.utils.Constants;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +30,9 @@ public class PayController {
         return "welcome pay index!";
     }
     @RequestMapping("send")
-    public @ResponseBody Object send(String openid,String count,String access_token,String zyid){
-       CodeRe<String> codeRe = payService.pay(openid,Integer.parseInt(count),access_token,zyid);
+    public @ResponseBody Object send(String id,String count){
+        WxOperator operator = (WxOperator) SecurityUtils.getSubject().getSession().getAttribute("operator");
+       CodeRe<String> codeRe = payService.pay(id,Integer.parseInt(count),operator.getWxAppid());
        if(codeRe.isError()){
            return ControllerStatus.error(codeRe.getErrorMessage());
        }

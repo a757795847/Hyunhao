@@ -36,7 +36,7 @@ public class OperatorController {
         } catch (UnknownAccountException e) {
            return ControllerStatus.error("用户名不存在");
         }catch (IncorrectCredentialsException e){
-            subject.getSession().removeAttribute("operator_name");
+            subject.getSession().removeAttribute("operator");
             return ControllerStatus.error("密码不正确");
         }
         Map result = new HashMap(2);

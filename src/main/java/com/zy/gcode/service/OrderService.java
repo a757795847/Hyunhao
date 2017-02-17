@@ -45,8 +45,9 @@ public class OrderService implements IOrderService {
 
     @Override
     public CodeRe handleCsv(MultipartFile multipartFile, String operatorName) {
-        File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/", operatorName, ":",
-                DateUtils.format(new Date(), "yyyy-MM-dd")));
+        Date date = new Date();
+        File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/",DateUtils.format(date,"yyyyMM"),"/", operatorName, ":",
+                DateUtils.format(date, "yyyy-MM-dd hh:mm:ss")));
         CsvReader csvReader;
         List<String[]> csvValueList = new ArrayList<>(HANDLE_COUNT);
         try {
@@ -91,10 +92,9 @@ public class OrderService implements IOrderService {
             Map resultMap = new HashMap(3);
             resultMap.put("order", dataOrder);
             if (existDataOrderList.contains(dataOrder)) {
-                resultMap.put("state", "订单已存在");
+                resultMap.put("state", "0");
             } else {
-                resultMap.put("state", "success");
-                persistenceService.save(dataOrder);
+                resultMap.put("state", "1");
             }
             resultList.add(resultMap);
         });
@@ -119,5 +119,17 @@ public class OrderService implements IOrderService {
     public CodeRe saveOrderList(List<DataOrder> orderList) {
         orderList.forEach(dataOrder -> persistenceService.save(dataOrder));
         return CodeRe.correct("success");
+    }
+
+    @Override
+    public CodeRe passAuditing(String uuid) {
+      DataOrder dataOrder =   persistenceService.get(DataOrder.class,uuid);
+      if(dataOrder.getGiftState()==1){
+        return   CodeRe.error("该红包未申领");
+      }
+      dataOrder.setGiftState(2);
+      persistenceService.updateOrSave(dataOrder);
+
+        return CodeRe.correct("处理成功");
     }
 }

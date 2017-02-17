@@ -36,10 +36,10 @@ public class WechatService implements IWechatService {
             dataOrder.setCommentFile1(MzUtils.merge(appid,":",billno,":","A"));
         }
         if(image2!=null){
-            dataOrder.setCommentFile2(MzUtils.merge(appid,":",billno,":","A"));
+            dataOrder.setCommentFile2(MzUtils.merge(appid,":",billno,":","B"));
         }
         if(image3 !=null){
-            dataOrder.setCommentFile3(MzUtils.merge(appid,":",billno,":","A"));
+            dataOrder.setCommentFile3(MzUtils.merge(appid,":",billno,":","C"));
         }
             CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessToken(appid);
             if(tokenConfigCodeRe.isError()){

@@ -10,6 +10,15 @@ public class WxOperator {
     private String password;
     private Timestamp insertTime;
     private String name;
+    private String wxAppid;
+
+    public String getWxAppid() {
+        return wxAppid;
+    }
+
+    public void setWxAppid(String wxAppid) {
+        this.wxAppid = wxAppid;
+    }
 
     public String getUsername() {
         return username;
@@ -43,27 +52,4 @@ public class WxOperator {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        WxOperator that = (WxOperator) o;
-
-        if (username != null ? !username.equals(that.username) : that.username != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (insertTime != null ? !insertTime.equals(that.insertTime) : that.insertTime != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = username != null ? username.hashCode() : 0;
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (insertTime != null ? insertTime.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
-    }
 }

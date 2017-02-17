@@ -9,5 +9,6 @@
         <property name="password" column="password"/>
         <property name="insertTime" column="insert_time"/>
         <property name="name" column="name"/>
+        <property name="wxAppid" column="wx_appid"/>
     </class>
 </hibernate-mapping>

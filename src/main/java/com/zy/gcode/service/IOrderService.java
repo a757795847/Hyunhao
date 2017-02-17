@@ -14,4 +14,5 @@ public interface IOrderService {
     List<DataOrder> getOrderByStatus(int status, Page page);
     CodeRe handleCsv(MultipartFile multipartFile,String operatorName);
     CodeRe saveOrderList(List<DataOrder> orderList);
+    CodeRe passAuditing(String uuid);
 }

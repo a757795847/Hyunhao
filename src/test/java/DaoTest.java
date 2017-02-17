@@ -34,6 +34,7 @@ import org.springframework.util.ClassUtils;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -88,8 +89,8 @@ public class DaoTest {
 
     @Test
     public void password(){
-        String str = "=\"2943843414580221\"";
-        System.out.println(str.substring(2,str.length()-1));
+        Calendar calendar = Calendar.getInstance();
+        System.out.println(calendar.get(Calendar.DAY_OF_WEEK));
     }
 
     @Test

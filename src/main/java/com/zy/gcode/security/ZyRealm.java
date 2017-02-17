@@ -40,7 +40,7 @@ public class ZyRealm extends AuthorizingRealm {
             throw new UnknownAccountException();
         }
         System.out.println(wxOperator.getName());
-        SecurityUtils.getSubject().getSession(true).setAttribute("operator_name",wxOperator.getName());
+        SecurityUtils.getSubject().getSession(true).setAttribute("operator",wxOperator);
         return new SimpleAuthenticationInfo(wxOperator.getUsername(), wxOperator.getPassword(), getName());
 
     }

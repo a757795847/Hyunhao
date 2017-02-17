@@ -118,4 +118,15 @@ public class OrderController {
 
         timing.end();
     }
+
+    @RequestMapping("passAuditing/{id}")
+    public @ResponseBody String pass(@PathVariable String id){
+       CodeRe codeRe =  orderService.passAuditing(id);
+       if(codeRe.isError()){
+           return  codeRe.getErrorMessage();
+       }
+       return codeRe.getMessage().toString();
+    }
+
+
 }
