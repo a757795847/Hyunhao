@@ -191,7 +191,7 @@ public class HttpClientUtils {
             throw new NullPointerException("response is null");
         }
         try {
-            if (response.getStatusLine().getStatusCode() == 200) {
+            if (response.getStatusLine().getStatusCode() != 200) {
                 try(BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))){
                     String line;
                     while((line =reader.readLine())!=null){
