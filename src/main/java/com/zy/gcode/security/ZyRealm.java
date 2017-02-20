@@ -41,7 +41,7 @@ public class ZyRealm extends AuthorizingRealm {
         }
         System.out.println(wxOperator.getName());
         SecurityUtils.getSubject().getSession(true).setAttribute("operator",wxOperator);
-        return new SimpleAuthenticationInfo(wxOperator.getUsername(), wxOperator.getPassword(), getName());
+        return new SimpleAuthenticationInfo(wxOperator, wxOperator.getPassword(), getName());
 
     }
 

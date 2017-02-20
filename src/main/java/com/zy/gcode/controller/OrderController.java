@@ -5,15 +5,11 @@ import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.WxOperator;
 import com.zy.gcode.service.IOrderService;
-import com.zy.gcode.service.annocation.CsvPush;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.Page;
 import com.zy.gcode.utils.Timing;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,8 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -53,16 +51,20 @@ public class OrderController {
     public void picture(@PathVariable String name, HttpServletResponse response) throws IOException{
         File file = new File(Constants.RED_PICTURE_PATH+"/"+name);
         if(!file.exists()){
+            response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("文件不存在");
             response.getWriter().flush();
+            response.getWriter().close();
             return;
         }
         String[] strs =   name.split(":");
         WxOperator wxOperator = (WxOperator)SecurityUtils.getSubject().getSession().getAttribute("operator");
 
         if(!strs[0].equals(wxOperator.getWxAppid())){
+            response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("无法访问");
             response.getWriter().flush();
+            response.getWriter().close();
             return;
         }
 
