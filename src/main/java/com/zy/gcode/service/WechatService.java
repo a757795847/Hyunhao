@@ -28,7 +28,7 @@ public class WechatService implements IWechatService {
     public CodeRe sumbit(final String image1,final String image2,final String image3,final String billno,final String openid,final String appid) {
         String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").toString();
         DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class,"orderNumber",billno);
-        AppInterface appInterface = persistenceService.get(AppInterface.class,appid);
+        AppInterface appInterface = persistenceService.getOneByColumn(AppInterface.class,"wxAppid",appid);
 
 
         if(dataOrder==null){
@@ -39,15 +39,15 @@ public class WechatService implements IWechatService {
         }
 
         if(image1!=null){
-            dataOrder.setCommentFile1(MzUtils.merge(appid,":",billno,":","A"));
+            dataOrder.setCommentFile1(MzUtils.merge(appInterface.getGeAppid(),":",billno,":","A"));
         }
         if(image2!=null){
-            dataOrder.setCommentFile2(MzUtils.merge(appid,":",billno,":","B"));
+            dataOrder.setCommentFile2(MzUtils.merge(appInterface.getGeAppid(),":",billno,":","B"));
         }
         if(image3 !=null){
-            dataOrder.setCommentFile3(MzUtils.merge(appid,":",billno,":","C"));
+            dataOrder.setCommentFile3(MzUtils.merge(appInterface.getGeAppid(),":",billno,":","C"));
         }
-            CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessToken(appInterface.getWxAppid());
+            CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessToken(appid);
             if(tokenConfigCodeRe.isError()){
                 System.err.println(tokenConfigCodeRe.getErrorMessage());
                 return tokenConfigCodeRe;
