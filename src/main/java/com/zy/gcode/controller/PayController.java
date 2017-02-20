@@ -31,7 +31,9 @@ public class PayController {
     }
     @RequestMapping("send")
     public @ResponseBody Object send(String openid,String count,String wxAppid,String sign) throws Exception{
-
+        if(!sign.equals("13468794sagag")){
+            Constants.objectMapper.writeValueAsString(ControllerStatus.error("签名错误"));
+        }
 
        CodeRe<String> codeRe = payService.pay(openid,Integer.parseInt(count),wxAppid);
        if(codeRe.isError()){
