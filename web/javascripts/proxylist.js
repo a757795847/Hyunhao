@@ -158,7 +158,7 @@ $("#confim_l").on('click',function(){
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
         $('#'+order_index+' #order_state span').html("红包发送成功");
-        $('#'+order_index+' .top').html(Idx+'元红包');
+        $('#'+order_index+' .top').html(Idx/100+'元红包');
         $('#'+order_index+' .turn').remove();
        }
     })
