@@ -30,6 +30,10 @@ public class WechatService implements IWechatService {
         DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class,"orderNumber",billno);
         AppInterface appInterface = persistenceService.getOneByColumn(AppInterface.class,"wxAppid",appid);
 
+        if(appInterface==null){
+            return CodeRe.error("该微信公众号未录入系统");
+        }
+
 
         if(dataOrder==null){
            return CodeRe.error("订单不存在");
