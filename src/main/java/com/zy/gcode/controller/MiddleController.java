@@ -1,7 +1,6 @@
 package com.zy.gcode.controller;
 
 import com.zy.gcode.pojo.User;
-import com.zy.gcode.service.CodeService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
 import org.springframework.stereotype.Controller;
@@ -45,12 +44,12 @@ public class MiddleController {
 
     @RequestMapping("token")
     public  String token(String code,HttpSession session,String state,String zyid){
-      Map map  = HttpClientUtils.mapSSLGetSend("http://open.izhuiyou.com/access/getoken/"+code+"/"+zyid);
+      Map map  = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/access/getoken/"+code+"/"+zyid);
       if(map == null){
           return "redirect:/error.html";
       }
       if(map.containsKey("status")&&map.get("status").equals("1")){
-           Map map1 = HttpClientUtils.mapSSLGetSend("http://open.izhuiyou.com/code/guserinfo?token="+map.get("access_token")+"&zyid="+zyid);
+           Map map1 = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/code/guserinfo?token="+map.get("access_token")+"&zyid="+zyid);
           if(map1.containsKey("status")&&map1.get("status").equals("1")){
              String str =  map1.get("userinfo").toString();
               try {

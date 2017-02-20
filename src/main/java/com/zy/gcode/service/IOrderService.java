@@ -3,6 +3,7 @@ package com.zy.gcode.service;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.utils.Page;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface IOrderService {
     CodeRe handleCsv(MultipartFile multipartFile,String operatorName);
     CodeRe saveOrderList(List<DataOrder> orderList);
     CodeRe passAuditing(String uuid);
+    CodeRe redSend(String orderno,int count);
 }

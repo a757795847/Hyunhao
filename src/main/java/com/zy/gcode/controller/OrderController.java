@@ -5,6 +5,7 @@ import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.WxOperator;
 import com.zy.gcode.service.IOrderService;
+import com.zy.gcode.service.annocation.CsvPush;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.Page;
 import com.zy.gcode.utils.Timing;
@@ -126,6 +127,22 @@ public class OrderController {
            return  ControllerStatus.error(codeRe.getErrorMessage());
        }
        return ControllerStatus.ok(codeRe.getMessage().toString());
+    }
+
+    @RequestMapping(value = "redSend",method = RequestMethod.POST )
+    public @ResponseBody Object redSend(@RequestBody Map map){
+        if(!map.containsKey("id")){
+            ControllerStatus.error("请传入订单id");
+        }
+        if(!map.containsKey("count")){
+            ControllerStatus.error("请传入红包大小");
+        }
+      CodeRe codeRe =  orderService.redSend(map.get("id").toString(),Integer.valueOf(map.get("count").toString()));
+        if(codeRe.isError()){
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
+        return ControllerStatus.ok(codeRe.getMessage().toString());
+
     }
 
 

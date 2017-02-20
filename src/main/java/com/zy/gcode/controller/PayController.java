@@ -30,9 +30,10 @@ public class PayController {
         return "welcome pay index!";
     }
     @RequestMapping("send")
-    public @ResponseBody Object send(String id,String count){
-        WxOperator operator = (WxOperator) SecurityUtils.getSubject().getSession().getAttribute("operator");
-       CodeRe<String> codeRe = payService.pay(id,Integer.parseInt(count),operator.getWxAppid());
+    public @ResponseBody Object send(String openid,String count,String wxAppid){
+
+
+       CodeRe<String> codeRe = payService.pay(openid,Integer.parseInt(count),wxAppid);
        if(codeRe.isError()){
            return ControllerStatus.error(codeRe.getErrorMessage());
        }

@@ -40,7 +40,7 @@ public class AuthenticationController {
             return "error.jsp?message="+codeRe.getErrorMessage();
         }
         String url = "https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token="+codeRe.getMessage().getToken();
-        Map<String,String> map=  HttpClientUtils.mapSSLPostSend(url,"{\"component_appid\":\"wxa8febcce6444f95f\"}");
+        Map<String,String> map=  HttpClientUtils.mapPostSend(url,"{\"component_appid\":\"wxa8febcce6444f95f\"}");
        return "redirect:https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid="+Constants.properties.getProperty("platform.appid")+
                "&pre_auth_code="+map.get("pre_auth_code")+"&redirect_uri=http://open.izhuiyou.com/auth/code";
 
@@ -53,7 +53,7 @@ public class AuthenticationController {
             return  componetTokenCodeRe.getErrorMessage();
         }
 
-      HttpResponse response = HttpClientUtils.SSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token="+componetTokenCodeRe.getMessage().getToken(),
+      HttpResponse response = HttpClientUtils.postSend("https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token="+componetTokenCodeRe.getMessage().getToken(),
                 "{\"component_appid\":\""+ Constants.properties.getProperty("platform.appid")+"\" ,\"authorization_code\": \""+auth_code+"\"}");
       StringBuilder content = new StringBuilder();
       try(BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"utf-8"))){

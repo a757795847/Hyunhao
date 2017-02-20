@@ -4,13 +4,14 @@ import com.csvreader.CsvReader;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.DataOrder;
+import com.zy.gcode.pojo.WxOperator;
 import com.zy.gcode.service.annocation.CsvPush;
-import com.zy.gcode.utils.Constants;
-import com.zy.gcode.utils.DateUtils;
-import com.zy.gcode.utils.MzUtils;
-import com.zy.gcode.utils.Page;
+import com.zy.gcode.utils.*;
+import org.apache.shiro.SecurityUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ import java.util.*;
  */
 @Component
 public class OrderService implements IOrderService {
+
+    Logger log = LoggerFactory.getLogger(OrderService.class);
 
     int HANDLE_COUNT = 256;
     int HANDLE_MOST_COUNT = 200;
@@ -131,5 +134,42 @@ public class OrderService implements IOrderService {
       persistenceService.updateOrSave(dataOrder);
 
         return CodeRe.correct("处理成功");
+    }
+
+    @Override
+    public CodeRe redSend(String orderno, int count) {
+        WxOperator operator = (WxOperator) SecurityUtils.getSubject().getSession().getAttribute("operator");
+        if(operator ==null){
+            CodeRe.error("操作超时,请重新登录!");
+        }
+       String wxappid =  operator.getWxAppid();
+       DataOrder order =  persistenceService.get(DataOrder.class,orderno);
+       int giftState;
+       try {
+         giftState = order.getGiftState();
+       }catch (NullPointerException e){
+           return CodeRe.error("订单不存在!");
+       }
+       if(giftState!=2){
+           return CodeRe.error("订单未处于审核通过状态!");
+       }
+
+       if(count < 100){
+           return  CodeRe.error("红包金额必须大于100");
+       }
+        /*String openid,String count,String wxAppid*/
+
+      Map map =  HttpClientUtils.mapGetSend("http://open.izhuiyou.com","openid",order.getWeixinId(),
+                "count",String.valueOf(count),"wxAppid",wxappid);
+      if(map ==null){
+          log.error("http请求错误");
+          return CodeRe.error("红包发送失败");
+      }
+
+      if(map.get("status").equals("0")){
+          CodeRe.error((String)map.get("message"));
+      }
+
+        return CodeRe.correct("success");
     }
 }

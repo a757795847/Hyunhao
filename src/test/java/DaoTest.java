@@ -30,10 +30,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.ClassUtils;
+import sun.jvm.hotspot.runtime.Bytes;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -89,8 +92,12 @@ public class DaoTest {
 
     @Test
     public void password(){
-        Calendar calendar = Calendar.getInstance();
-        System.out.println(calendar.get(Calendar.DAY_OF_WEEK));
+        try {
+            String bs =  InetAddress.getLocalHost().getHostAddress();
+            System.out.println(new String(bs));
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

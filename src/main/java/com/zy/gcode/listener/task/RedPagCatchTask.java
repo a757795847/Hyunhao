@@ -4,11 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zy.gcode.controller.delegate.BatchRe;
 import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.service.IPayService;
-import com.zy.gcode.service.PayService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.util.Map;
 import java.util.TimerTask;
@@ -31,7 +29,7 @@ public class RedPagCatchTask extends TimerTask {
         map.put("list",batchRe.getTlist());
         map.put("error",batchRe.getErrorList());
         try {
-            HttpClientUtils.SSLPostSend(Constants.properties.getProperty("callback.redinfo"),Constants.objectMapper.writeValueAsString(map));
+            HttpClientUtils.postSend(Constants.properties.getProperty("callback.redinfo"),Constants.objectMapper.writeValueAsString(map));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
