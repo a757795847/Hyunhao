@@ -30,7 +30,7 @@ public class PayController {
         return "welcome pay index!";
     }
     @RequestMapping("send")
-    public @ResponseBody Object send(String openid,String count,String wxAppid){
+    public @ResponseBody Object send(String openid,String count,String wxAppid,String sign){
 
 
        CodeRe<String> codeRe = payService.pay(openid,Integer.parseInt(count),wxAppid);

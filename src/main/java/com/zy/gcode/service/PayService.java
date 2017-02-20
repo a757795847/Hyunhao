@@ -38,22 +38,8 @@ public class PayService implements IPayService {
     public CodeRe pay(String id, int count,String geappid) {
 
         AppInterface appInterface = persistenceService.get(AppInterface.class,geappid);
-        DataOrder dataOrder =  persistenceService.get(DataOrder.class,id);
 
 
-
-        String openid;
-        try {
-            openid= dataOrder.getWeixinId();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            return CodeRe.error("订单不存在");
-        }
-
-        int state = dataOrder.getGiftState();
-        if(state !=2){
-            return  CodeRe.error("该订单未审核通过");
-        }
 
         PayCredential payCredential =  persistenceService.get(PayCredential.class,appInterface.getWxAppid());
 
@@ -63,7 +49,7 @@ public class PayService implements IPayService {
         payInfo.setMch_id(payCredential.getMchid());
         payInfo.setWxappid(appInterface.getWxAppid());
         payInfo.setSend_name("追游科技");
-        payInfo.setRe_openid(openid);
+        payInfo.setRe_openid(id);
         payInfo.setTotal_num(1);
         payInfo.setTotal_amount(count);
         payInfo.setWishing(payCredential.getWishing());
