@@ -28,8 +28,12 @@ public class WechatService implements IWechatService {
         String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").toString();
         DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class,"orderNumber",billno);
 
+
         if(dataOrder==null){
            return CodeRe.error("订单不存在");
+        }
+        if(dataOrder.getGiftState()!=0){
+            return CodeRe.error("订单未处于未申领状态");
         }
 
         if(image1!=null){
