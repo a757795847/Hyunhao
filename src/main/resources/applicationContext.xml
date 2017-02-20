@@ -83,7 +83,7 @@
           class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
     <bean id="userFilter"
-          class="com.zy.gcode.filter.UserSessionFilter">
+          class="org.apache.shiro.web.filter.authc.PassThruAuthenticationFilter">
         <property name="loginUrl" value="/login"/>
     </bean>
     <!-- Shiro的Web过滤器 -->
