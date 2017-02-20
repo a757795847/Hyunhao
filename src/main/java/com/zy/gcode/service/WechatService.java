@@ -2,6 +2,7 @@ package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
+import com.zy.gcode.pojo.AppInterface;
 import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.MediaMap;
 import com.zy.gcode.pojo.TokenConfig;
@@ -27,6 +28,7 @@ public class WechatService implements IWechatService {
     public CodeRe sumbit(final String image1,final String image2,final String image3,final String billno,final String openid,final String appid) {
         String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").toString();
         DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class,"orderNumber",billno);
+        AppInterface appInterface = persistenceService.get(AppInterface.class,appid);
 
 
         if(dataOrder==null){
@@ -45,7 +47,7 @@ public class WechatService implements IWechatService {
         if(image3 !=null){
             dataOrder.setCommentFile3(MzUtils.merge(appid,":",billno,":","C"));
         }
-            CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessToken(appid);
+            CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessToken(appInterface.getWxAppid());
             if(tokenConfigCodeRe.isError()){
                 System.err.println(tokenConfigCodeRe.getErrorMessage());
                 return tokenConfigCodeRe;

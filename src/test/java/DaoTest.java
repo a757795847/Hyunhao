@@ -37,10 +37,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by admin5 on 17/1/19.
@@ -79,12 +76,8 @@ public class DaoTest {
 
     @Test
     public void password(){
-        try {
-            String bs =  InetAddress.getLocalHost().getHostAddress();
-            System.out.println(new String(bs));
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+     List<DataOrder> dataOrderList =  persistenceService.getList(DataOrder.class);
+     dataOrderList.forEach(dataOrder->System.out.println(dataOrder.getOrderNumber()));
     }
 
     @Test
