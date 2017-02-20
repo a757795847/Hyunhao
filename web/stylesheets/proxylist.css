@@ -257,7 +257,7 @@ p{
 }
 
 
-.text-color.border-color{
+.border-color{
     float:left;
     margin-right: 10px;
     border: 1px solid;
