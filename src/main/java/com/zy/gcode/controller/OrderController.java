@@ -58,7 +58,7 @@ public class OrderController {
             return;
         }
         String[] strs =   name.split(":");
-        WxOperator wxOperator = (WxOperator)SecurityUtils.getSubject().getSession().getAttribute("operator");
+        WxOperator wxOperator = (WxOperator) SecurityUtils.getSubject().getPrincipal();
 
         if(!strs[0].equals(wxOperator.getWxAppid())){
             response.setContentType("text/html;charset=utf-8");

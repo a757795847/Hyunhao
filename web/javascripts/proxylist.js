@@ -148,18 +148,16 @@ $("#confim_l").on('click',function(){
 
     var parameter={
         "id":order_index,
-        "count":Idx,
-        "status":1,
-        "currentPageIndex":1
+        "count":Idx
     }
    $.ajax({
         type: 'post',
-        url:
+        url:"/order/redSend",
         data: JSON.stringify(parameter),
         dataType: 'json',
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
-
+            console.log(data);
        }
     })
 });
