@@ -35,7 +35,7 @@ public class PayController {
             Constants.objectMapper.writeValueAsString(ControllerStatus.error("签名错误"));
         }
 
-       CodeRe<String> codeRe = payService.pay(openid,Integer.parseInt(count),wxAppid);
+       CodeRe<String> codeRe = payService.pay(openid,100,wxAppid);
        if(codeRe.isError()){
            return Constants.objectMapper.writeValueAsString(ControllerStatus.error(codeRe.getErrorMessage()));
        }
