@@ -257,7 +257,7 @@ p{
 }
 
 
-.border-color{
+.text-color.border-color{
     float:left;
     margin-right: 10px;
     border: 1px solid;
@@ -292,7 +292,7 @@ p{
     font-size:16px;
 
 }
-.active{
+.actives{
     background-color: #2ca2fb;
     color: #fff;
 

@@ -138,7 +138,7 @@ $("#confim_l").on('click',function(){
 
     for(var i=0;i< $("#span").find('.text-color').length;i++){
 
-        if($("#span").find('.text-color').eq(i).hasClass('active')){
+        if($("#span").find('.text-color').eq(i).hasClass('actives')){
             console.log($('#span .text-color').eq(i).attr('class'))
             Idx=(i+1)*100;
         }
@@ -157,18 +157,16 @@ $("#confim_l").on('click',function(){
         dataType: 'json',
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
-            console.log(data);
+        $('#'+order_index+' .top').html("发送成功");
+        $('#'+order_index+' .turn').remove();
        }
     })
 });
 
 
  $(".order-discount-line .text-color.border-color").on("click",function(){
-                $(this).addClass("active");
-                $(this).siblings().removeClass("active");
-
-
-
+                $(this).addClass("actives");
+                $(this).siblings().removeClass("actives");
  });
 
 
