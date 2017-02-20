@@ -152,7 +152,7 @@ $("#confim_l").on('click',function(){
         "status":1,
         "currentPageIndex":1
     }
-   /*$.ajax({
+   $.ajax({
         type: 'post',
         url:
         data: JSON.stringify(parameter),
@@ -161,7 +161,7 @@ $("#confim_l").on('click',function(){
         success: function (data) {
 
        }
-    })*/
+    })
 });
 
 
