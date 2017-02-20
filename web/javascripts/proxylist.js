@@ -51,20 +51,28 @@ function indexAjax(datas,pageState){
                         order[key] = '';
                     }
                 }
-                tbody +='<tr><td><input type="checkbox" id="statistic"></td><td class="mailbox-date"><span>'+order.orderNumber+'</span></td>';
+                tbody +='<tr id="'+ order.id +'"><td><input type="checkbox" id="statistic"></td><td class="mailbox-date"><span>'+order.orderNumber+'</span></td>';
                 tbody +='<td class="mailbox-date"><span class="label label-success"><a href="proxydetails.html">详情</span></a></td>';
                 tbody +='<td class="mailbox-date"></td>';
                 tbody +='<td class="mailbox-date"><span>'+order.applyDate+'</span></td>';
-                tbody +='<td class="mailbox-date"><span>'+order.giftState+'</span></td>';
-                tbody +='<td class="mailbox-date"><span>'+order.giftDetail+'</span></td>';
+                tbody +='<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">'+order.giftState+'</span></td>';
+                tbody +='<td class="mailbox-date"><span class="top">'+order.giftDetail+'</span></td>';
                 tbody +='<td class="mailbox-date"><span>'+order.sendDate+'</span></td>';
                 tbody +='<td class="mailbox-date"><span>'+order.recieveDate+'</span></td>';
-                tbody +='<td class="mailbox-date"><span class="label label-success" id="bys"><a href="#modalt">'+than+'</a></span>';
+                tbody +='<td class="mailbox-date"><span class="label label-success order_confirm_btn" data-index="' + order.id + '" >'+than+'</span>';
                 tbody +='<span class="label label-success turn" data-toggle="modal" data-target="#myModal">'+thao+'</span></td></tr>';
+
+
 
 
             });
             $("#Table").find("tbody").html(tbody);
+
+
+
+
+
+
             if(pageState == 1){
                 $("#jqueryPage").pagination({
                     count: data.page.count, //总数
@@ -82,6 +90,9 @@ function indexAjax(datas,pageState){
                 });
             }
 
+
+
+
         },
         error: function (jqXHR) {
             if (jqXHR.status == 406) {
@@ -92,12 +103,75 @@ function indexAjax(datas,pageState){
     })
 }
 indexAjax({status:1,currentPageIndex:1},1);
-$("#bys").on("click",function(){
-    
-    
-    
-    
+
+$("#Table").on('click','.order_confirm_btn',function(){
+
+    var orderIndex =$(this).data("index");
+    var that = $(this);
+    console.log(orderIndex);
+    $.ajax({
+        type: 'post',
+        url: '/order/passAuditing/'+orderIndex,
+        data: JSON.stringify({status:1,currentPageIndex:1}),
+        dataType: 'json',
+        contentType: 'application/json;charset=UTF-8',
+        success: function (data) {
+            if(data.status==1){
+                $('.'+orderIndex).html("审核通过");
+                // $(".label.label-success.turn").remove();
+                var link='<span class="label label-success turn" data-toggle="modal" data-target="#hongbao"><a href="#modalt">发送红包</a></span>';
+                console.log(that);
+                that.parent().html(link);
+
+
+            }
+
+        }
+    })
+    $('#confim_l').attr('data-index',orderIndex);
 });
+
+$("#confim_l").on('click',function(){
+    var order_index =$(this).data("index");
+
+    var Idx='';
+
+    for(var i=0;i< $("#span").find('.text-color').length;i++){
+
+        if($("#span").find('.text-color').eq(i).hasClass('active')){
+            console.log($('#span .text-color').eq(i).attr('class'))
+            Idx=(i+1)*100;
+        }
+    }
+
+
+
+    var parameter={
+        "id":order_index,
+        "count":Idx,
+        "status":1,
+        "currentPageIndex":1
+    }
+   /*$.ajax({
+        type: 'post',
+        url:
+        data: JSON.stringify(parameter),
+        dataType: 'json',
+        contentType: 'application/json;charset=UTF-8',
+        success: function (data) {
+
+       }
+    })*/
+});
+
+
+ $(".order-discount-line .text-color.border-color").on("click",function(){
+                $(this).addClass("active");
+                $(this).siblings().removeClass("active");
+
+
+
+ });
 
 
 $('#basic-usage-demo').fancySelect();
@@ -129,24 +203,7 @@ $(".trigger").on('click',function(){
 });
 
 $("#clear").click(function(){
-    console.log("1");
     $("#Text").val("");
 });
 
 
-var reds=true;
-$(".text-color.border-color").click(function(){
-    if(reds) {
-        $(this).addClass("redbag");
-        reds=false;
-    }else{
-        $(this).removeClass("redbag");  
-
-    }
-
-});
-    //$(this).css("background-color","#2ca2fb");
-
-
-
-// Boilerplate

@@ -70,21 +70,8 @@ public class DaoTest {
         }
     @Test
     public void utils(){
-        DefaultPasswordService passwordService = new DefaultPasswordService();
-        DefaultHashService hashService = new DefaultHashService();
-        hashService.setHashIterations(2);
-        passwordService.setHashService(hashService);
 
-        hashService.setGeneratePublicSalt(true);
-        PasswordMatcher passwordMatcher = new PasswordMatcher();
-        passwordMatcher.setPasswordService(passwordService);
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("zhang123","123456");
-        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo("zhang123",passwordService.encryptPassword("123456"),"myreal");
-       boolean flag = passwordMatcher.doCredentialsMatch(usernamePasswordToken,simpleAuthenticationInfo);
-
-        System.out.println(flag);
-        System.out.println(passwordService.encryptPassword("123456"));
-        System.out.println(passwordService.encryptPassword("123456"));
+       //persistenceService.updateOrSave();
     }
 
     @Test

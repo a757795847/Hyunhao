@@ -124,7 +124,7 @@ public class OrderService implements IOrderService {
     @Override
     public CodeRe passAuditing(String uuid) {
       DataOrder dataOrder =   persistenceService.get(DataOrder.class,uuid);
-      if(dataOrder.getGiftState()==1){
+      if(dataOrder.getGiftState()!=1){
         return   CodeRe.error("该红包未申领");
       }
       dataOrder.setGiftState(2);

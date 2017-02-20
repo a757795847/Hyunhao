@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>公众号列表</title>
-    <link rel="stylesheet" href="../../stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="../../stylesheets/font-awesome.min.css">
-    <link rel="stylesheet" href="../../stylesheets/jquery-jvectormap-1.2.2.css">
-    <link rel="stylesheet" href="../../stylesheets/AdminLTE.min.css">
-    <link rel="stylesheet" href="../../stylesheets/_all-skins.min.css">
-    <link rel="stylesheet" href="../../stylesheets/words.css">
-    <link rel="stylesheet" href="../../stylesheets/remodal.css">
-    <link rel="stylesheet" href="../../stylesheets/remodal-default-theme.css">
-    <link rel="stylesheet" href="../../stylesheets/fancySelect.css">
-    <link rel="stylesheet" href="../../stylesheets/proxylist.css">
+    <link rel="stylesheet" href="../../../stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../stylesheets/font-awesome.min.css">
+    <link rel="stylesheet" href="../../../stylesheets/jquery-jvectormap-1.2.2.css">
+    <link rel="stylesheet" href="../../../stylesheets/AdminLTE.min.css">
+    <link rel="stylesheet" href="../../../stylesheets/_all-skins.min.css">
+    <link rel="stylesheet" href="../../../stylesheets/words.css">
+    <link rel="stylesheet" href="../../../stylesheets/remodal.css">
+    <link rel="stylesheet" href="../../../stylesheets/remodal-default-theme.css">
+    <link rel="stylesheet" href="../../../stylesheets/fancySelect.css">
+    <link rel="stylesheet" href="../../../stylesheets/proxylist.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
     <header class="main-header">
         <a href="/" class="logo">
             <span class="logo-lg">
-          <img src="../../images/B3F0F1AD70377E062920F9BA53902227.jpg" alt="">
+          <img src="../../../images/B3F0F1AD70377E062920F9BA53902227.jpg" alt="">
             <b>聚塔微客户管理平台</b></span>
         </a>
 
@@ -35,7 +35,7 @@
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="../../images/user2-160x160.jpg" class="user-image" alt="User Image">
+                            <img src="../../../images/user2-160x160.jpg" class="user-image" alt="User Image">
                             <span class="hidden-xs">欢迎你${operator.name}</span>
                         </a>
                         <ul class="dropdown-menu">
@@ -44,7 +44,7 @@
 
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="../../images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                <img src="../../../images/user2-160x160.jpg" class="img-circle" alt="User Image">
                                 <p>
                                     <small>用户名</small>
                                     <span>gc243728357</span>
@@ -79,7 +79,7 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="../../images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <img src="../../../images/user2-160x160.jpg" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
                     <p>微信公众号</p>
@@ -125,7 +125,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="../../proxy/billing.html">
+                    <a href="../../../proxy/billing.html">
                         <i class="fa fa-pie-chart"></i><span>统计</span>
             <span class="pull-right-container">
             </span>
@@ -253,7 +253,7 @@
         </div>
     </div>
 
-<div class="remodal" data-remodal-id="modalt" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+<div class="remodal" data-remodal-id="modalt" id="hongbao" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
     <div class="gray-box fn-clear">
         <div class="title pre-title">
             <h2>选择红包类型</h2>
@@ -266,37 +266,38 @@
                 </div>
 
                 <div class="box-inner">
-                    <div class="order-discount-line">
+                    <div class="order-discount-line" id="span">
                         <div>
-                        <span class="text-color border-color" id="span">
-                            <small id="small">一元红包</small>
+                        <span data-id="111" class="text-color border-color" >
+                           一元红包
                         </span>
                         <span class="text-color border-color">
-                            <small>二元红包</small>
+                           二元红包
                         </span>
                         <span class="text-color border-color">
-                            <small>三元红包</small>
+                          三元红包
                         </span>
                         <span class="text-color border-color">
-                            <small>四元红包</small>
+                            四元红包
                         </span>
                         <span class="text-color border-color">
-                            <small>五元红包</small>
+                           五元红包
                         </span>
                         <span class="text-color border-color">
-                            <small>六元红包</small>
+                            六元红包
                         </span>
                         <span class="text-color border-color">
-                            <small>七元红包</small>
+                            七元红包
                         </span>
                         <span class="text-color border-color">
-                            <small>八元红包</small>
+                           八元红包
+                        </span>
+
+                        <span class="text-color border-color">
+                           九元红包
                         </span>
                         <span class="text-color border-color">
-                            <small>九元红包</small>
-                        </span>
-                        <span class="text-color border-color">
-                            <small>十元红包</small>
+                            十元红包
                         </span>
                             <span style="clear:both"></span>
                     </div>
@@ -304,8 +305,8 @@
                 </div>
                 <div class="box-inner">
                     <div class="last-payment vouchers-wrapper fn-clear abc">
-                        <a href="">确认</a>
-                        <a href="">取消</a>
+                        <a id="confim_l" data-remodal-action="confirm" class="remodal-confirm">确认</a>
+                        <a data-remodal-action="cancel" class="remodal-cancel">取消</a>
                     </div>
 
                 </div>
@@ -318,13 +319,13 @@
 </div>
     </div>
 
-    <script src="../../javascripts/jquery-2.2.3.min.js"></script>
-    <script src="../../javascripts/bootstrap.min.js"></script>
-    <script src="../../javascripts/app.min.js"></script>
-    <script src="../../javascripts/icheck.min.js"></script>
-    <script src="../../javascripts/jqueryPage.js"></script>
-    <script src="../../javascripts/fancySelect.js"></script>
-    <script src="../../javascripts/remodal.js"></script>
+    <script src="../../../javascripts/jquery-2.2.3.min.js"></script>
+    <script src="../../../javascripts/bootstrap.min.js"></script>
+    <script src="../../../javascripts/app.min.js"></script>
+    <script src="../../../javascripts/icheck.min.js"></script>
+    <script src="../../../javascripts/jqueryPage.js"></script>
+    <script src="../../../javascripts/fancySelect.js"></script>
+    <script src="../../../javascripts/remodal.js"></script>
     <script src="../../../javascripts/proxylist.js"></script>
 
 

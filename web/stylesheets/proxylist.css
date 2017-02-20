@@ -257,7 +257,7 @@ p{
 }
 
 
-.text-color.border-color{
+.border-color{
     float:left;
     margin-right: 10px;
     border: 1px solid;
@@ -290,6 +290,11 @@ p{
 }
 .logo-lg b{
     font-size:16px;
+
+}
+.active{
+    background-color: #2ca2fb;
+    color: #fff;
 
 }
 
