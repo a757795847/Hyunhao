@@ -10,6 +10,7 @@ import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.Page;
 import com.zy.gcode.utils.Timing;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,15 +53,26 @@ public class OrderController {
     public void picture(@PathVariable String name, HttpServletResponse response) throws IOException{
         File file = new File(Constants.RED_PICTURE_PATH+"/"+name);
         if(!file.exists()){
+            response.getWriter().println("文件不存在");
+            response.getWriter().flush();
             return;
         }
+        String[] strs =   name.split(":");
+        WxOperator wxOperator = (WxOperator)SecurityUtils.getSubject().getSession().getAttribute("operator");
+
+        if(!strs[0].equals(wxOperator.getWxAppid())){
+            response.getWriter().println("无法访问");
+            response.getWriter().flush();
+            return;
+        }
+
+
         FileInputStream fileInputStream = new FileInputStream(file);
         try {
-            int l;
-            response.setContentType("image/png");
             OutputStream outputStream = response.getOutputStream();
+            response.setContentType("image/png");
             final byte[] tmp = new byte[4096];
-            while ((l = fileInputStream.read(tmp)) != -1) {
+            while (( fileInputStream.read(tmp)) != -1) {
                outputStream.write(tmp);
             }
             outputStream.flush();

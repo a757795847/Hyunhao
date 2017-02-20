@@ -59,7 +59,7 @@ public class PayService implements IPayService {
 
         RedPayInfo payInfo = new RedPayInfo();
         payInfo.setNonce_str(UniqueStringGenerator.getUniqueCode());
-        payInfo.setMch_billno(UniqueStringGenerator.wxbillno());
+        payInfo.setMch_billno(UniqueStringGenerator.wxbillno(payCredential.getMchid()));
         payInfo.setMch_id(payCredential.getMchid());
         payInfo.setWxappid(appInterface.getWxAppid());
         payInfo.setSend_name("追游科技");

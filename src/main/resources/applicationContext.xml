@@ -98,6 +98,7 @@
         <property name="filterChainDefinitions">
             <value>
                 /pay/**=authe
+                /order/**=authe
             </value>
         </property>
     </bean>
