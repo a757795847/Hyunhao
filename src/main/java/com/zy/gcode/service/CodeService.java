@@ -92,7 +92,7 @@ public class CodeService implements ICodeService {
                 .append("&component_appid=").append(Constants.properties.getProperty("platform.appid"));
         builder.append("&component_access_token=").append(componetTokenCodeRe.getMessage().getToken());
 
-        Map map = HttpClientUtils.mapSSLGetSend(builder.toString());
+        Map map = HttpClientUtils.mapGetSend(builder.toString());
         if(map == null){
             return CodeRe.error("status error!");
         }
@@ -141,7 +141,7 @@ public class CodeService implements ICodeService {
     private User user(String token, String openid,String appid){
         StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/userinfo?access_token=")
         .append(token).append("&openid=").append(openid).append("&lang=zh_CN");
-        Map map = HttpClientUtils.mapSSLGetSend(builder.toString());
+        Map map = HttpClientUtils.mapGetSend(builder.toString());
         if(map == null){
             return  null;
         }

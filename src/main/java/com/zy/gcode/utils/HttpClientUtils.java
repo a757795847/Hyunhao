@@ -1,6 +1,5 @@
 package com.zy.gcode.utils;
 
-import com.zy.gcode.service.CodeService;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -8,16 +7,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.ssl.SSLContexts;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 import javax.net.ssl.SSLContext;
 import java.io.*;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,16 +24,16 @@ public class HttpClientUtils {
 
     static {
         try {
-            KeyStore keyStore = KeyStore.getInstance("PKCS12");
+          /*  KeyStore keyStore = KeyStore.getInstance("PKCS12");
             Resource resource = new ClassPathResource("apiclient_cert.p12");
             keyStore.load(resource.getInputStream(), "1426499802".toCharArray());
             SSLContext sslcontext = SSLContexts.custom()
                     .loadKeyMaterial(keyStore, Constants.MCH_ID.toCharArray())
-                    .build();
-            httpClient = HttpClientBuilder.create().setMaxConnPerRoute(5).setSSLContext(sslcontext).build();
-        } catch (NoSuchAlgorithmException e) {
+                    .build();*/
+            httpClient = HttpClientBuilder.create().setMaxConnPerRoute(5).build();
+        }/* catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (Exception e) {
+        }*/ catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -48,7 +41,7 @@ public class HttpClientUtils {
     }
 
 
-    public static HttpResponse SSLGetSend(String url) {
+    public static HttpResponse getSend(String url) {
         HttpGet get = new HttpGet(url);
         try {
             return httpClient.execute(get);
@@ -58,6 +51,17 @@ public class HttpClientUtils {
             get.releaseConnection();
         }
         return null;
+    }
+    public static HttpResponse getSend(String url,String... params) {
+        int len = params.length;
+        StringBuilder builder = new StringBuilder(url).append("?");
+        for(int i = 0 ;i <len;i+=2){
+            if(i!=0){
+               builder.append("&");
+            }
+            builder.append(params[i]).append("=").append(params[i+1]);
+        }
+        return getSend(builder.toString());
     }
 
     public static boolean fileGetSend(String url,String path) {
@@ -96,7 +100,7 @@ public class HttpClientUtils {
         }
         return true;
     }
-    public static HttpResponse SSLPostSend(String url, String body) {
+    public static HttpResponse postSend(String url, String body) {
         HttpPost httpPost = new HttpPost(url);
         httpPost.setHeader("Connection","close");
         StringEntity entity = new StringEntity(body, "utf-8");//解决中文乱码问题
@@ -111,9 +115,36 @@ public class HttpClientUtils {
         }
         return null;
     }
+    public static HttpResponse postSend(String url, String... params) {
+        StringBuilder builder = new StringBuilder("{");
+        int len = params.length;
+        for(int i =0;i < len ; i+=2){
+            builder.append("\"").append(params[i]).append("\"").append(":")
+                    .append("\"").append(params[i+1]).append("\"").append(",");
+        }
+      return   postSend(builder.substring(0,builder.length()-1)+"}");
 
-    public static Map mapSSLPostSend(String url, String body) {
-        HttpResponse response = SSLPostSend(url, body);
+    }
+
+    public static Map mapPostSend(String url, String body) {
+        HttpResponse response = postSend(url, body);
+        if (response == null) {
+            return null;
+        }
+        if (response.getStatusLine().getStatusCode() != 200) {
+            return null;
+        }
+
+        try {
+            Map map = Constants.objectMapper.readValue(response.getEntity().getContent(), Map.class);
+            return map;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static Map mapPostSend(String url, String... params) {
+        HttpResponse response = postSend(url,params);
         if (response == null) {
             return null;
         }
@@ -130,8 +161,32 @@ public class HttpClientUtils {
         return null;
     }
 
-    public static Map mapSSLGetSend(String url) {
-        HttpResponse response = SSLGetSend(url);
+    public static Map mapGetSend(String url) {
+        HttpResponse response = getSend(url);
+        if (response == null) {
+            throw new NullPointerException("response is null");
+        }
+
+
+        try {
+            if (response.getStatusLine().getStatusCode() != 200) {
+                try(BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))){
+                    String line;
+                    while((line =reader.readLine())!=null){
+                        System.out.println(line);
+                    }
+                }
+                return null;
+            }
+            Map map = Constants.objectMapper.readValue(response.getEntity().getContent(), Map.class);
+            return map;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static Map mapGetSend(String url,String... params) {
+        HttpResponse response = getSend(url,params);
         if (response == null) {
             throw new NullPointerException("response is null");
         }
@@ -180,17 +235,7 @@ public class HttpClientUtils {
             HttpClient   httpClient1 = HttpClientBuilder.create().setMaxConnPerRoute(5).setSSLContext(sslcontext).build();
             stringHttpClientMap.put(mechid,httpClient1);
             return paySSLSend(mechid,path,url,body);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }catch (IOException e){
-                e.printStackTrace();
-            }catch (UnrecoverableKeyException e){
-                e.printStackTrace();
-            }catch (KeyStoreException e){
-                e.printStackTrace();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

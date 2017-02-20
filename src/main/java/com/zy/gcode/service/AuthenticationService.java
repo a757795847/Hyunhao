@@ -12,14 +12,10 @@ import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.wx.AesException;
 import com.zy.gcode.utils.wx.WXBizMsgCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +57,7 @@ public class AuthenticationService implements IAuthenticationService {
                    builder.append(third.get("funcscope_category").get("id").toString()).append(",");
             }
             authorizationInfo.setFuncInfo(builder.substring(0,builder.length()-1));
-             Map map1 =  HttpClientUtils.mapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info?component_access_token="+token,
+             Map map1 =  HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info?component_access_token="+token,
                     "{" +
                             "\"component_appid\":\""+Constants.properties.getProperty("platform.appid")+"\" ," +
                             "\"authorizer_appid\": \""+authorizationInfo.getAuthorizerAppid()+"\"" +
@@ -98,7 +94,7 @@ public class AuthenticationService implements IAuthenticationService {
                if(ticket==null){
                     return CodeRe.error("ComponentVerifyTicket is null");
                }
-                Map map = HttpClientUtils.mapSSLPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
+                Map map = HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/component/api_component_token"
                         ,"{ \"component_appid\":\""+componetAppid+"\" ," +
                                 "\"component_appsecret\": \""+Constants.properties.getProperty("platform.secret")+"\", " +
                                 "\"component_verify_ticket\":\""+ticket +
@@ -128,7 +124,7 @@ public class AuthenticationService implements IAuthenticationService {
         } catch (NullPointerException e) {
            tokenConfig = new TokenConfig();
            tokenConfig.setName(Constants.JSSDK_TICKET_NAME);
-            Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+componetTokenCodeRe.getMessage().getToken()+"&type=jsapi");
+            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+componetTokenCodeRe.getMessage().getToken()+"&type=jsapi");
             if(map.containsKey("errmsg")){
                 if(!map.get("errmsg").equals("ok"))
                 return CodeRe.error((String)map.get("errmsg"));
@@ -138,7 +134,7 @@ public class AuthenticationService implements IAuthenticationService {
             return  CodeRe.correct(tokenConfig);
         }
         if(DateUtils.isOutOfDate(updateTime,7200)){
-            Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+componetTokenCodeRe.getMessage().getToken()+"&type=jsapi");
+            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+componetTokenCodeRe.getMessage().getToken()+"&type=jsapi");
             if(map.containsKey("errmsg")){
                 if(!map.get("errmsg").equals("ok"))
                 return CodeRe.error((String)map.get("errmsg"));
@@ -194,7 +190,7 @@ public class AuthenticationService implements IAuthenticationService {
         } catch (NullPointerException e) {
             tokenConfig = new TokenConfig();
             tokenConfig.setName(name);
-            Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+wxAccessToken.getMessage().getToken()+"&type=jsapi");
+            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+wxAccessToken.getMessage().getToken()+"&type=jsapi");
             if(map.containsKey("errmsg")){
                 if(!map.get("errmsg").equals("ok"))
                     return CodeRe.error((String)map.get("errmsg"));
@@ -205,7 +201,7 @@ public class AuthenticationService implements IAuthenticationService {
             return  CodeRe.correct(tokenConfig);
         }
         if(DateUtils.isOutOfDate(updateTime,tokenConfig.getExpiresIn())){
-            Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+wxAccessToken.getMessage().getToken()+"&type=jsapi");
+            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+wxAccessToken.getMessage().getToken()+"&type=jsapi");
             if(map.containsKey("errmsg")){
                 if(!map.get("errmsg").equals("ok"))
                     return CodeRe.error((String)map.get("errmsg"));
@@ -231,7 +227,7 @@ public class AuthenticationService implements IAuthenticationService {
             if(appInterface==null){
                 return CodeRe.error("appid 不存在");
             }
-          Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+appInterface.getSecret());
+          Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+appInterface.getSecret());
             if(map.containsKey("errmsg")){
                 return CodeRe.error(map.get("errmsg").toString());
             }
@@ -247,7 +243,7 @@ public class AuthenticationService implements IAuthenticationService {
             if(appInterface==null){
                 return CodeRe.error("appid 不存在,获取wxaccesstoken");
             }
-            Map map = HttpClientUtils.mapSSLGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+appInterface.getSecret());
+            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+appInterface.getSecret());
             if(map.containsKey("errmsg")){
                 return CodeRe.error(map.get("errmsg").toString());
             }

@@ -2,7 +2,7 @@ package com.zy.gcode.utils;
 
 
 import org.apache.commons.codec.digest.Md5Crypt;
-import sun.misc.BASE64Encoder;
+import org.springframework.util.Base64Utils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -20,7 +20,6 @@ public class UniqueStringGenerator {
 
 
     private static Random random = new Random();
-    private static BASE64Encoder base64Encoder = new BASE64Encoder();
     private static AtomicInteger integer = new AtomicInteger(100);
     private UniqueStringGenerator() {
 
@@ -42,16 +41,16 @@ public class UniqueStringGenerator {
 
 
     private static String toBase64(String str){
-            return  base64Encoder.encode(Md5Crypt.apr1Crypt(str,"zykjss").getBytes()).replace("=","A").substring(17);
+            return Base64Utils.encodeToString(Md5Crypt.apr1Crypt(str,"zykjss").getBytes()).replace("=","A").substring(17);
     }
 
-    public static  String wxbillno(){
+    public static  String wxbillno(String mchId){
         String beg = String.valueOf(System.currentTimeMillis()).substring(6);
        int i =  integer.getAndIncrement();
         if(i>=999){
             integer.set(100);
         }
-        return Constants.MCH_ID + DateUtils.format(new Date(),"yyyyMMdd")+beg+i;
+        return mchId + DateUtils.format(new Date(),"yyyyMMdd")+beg+i;
     }
 
     public static String getMd5(String plainText) {

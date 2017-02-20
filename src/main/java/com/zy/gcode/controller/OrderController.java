@@ -10,8 +10,6 @@ import com.zy.gcode.utils.Page;
 import com.zy.gcode.utils.Timing;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,8 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -51,15 +51,30 @@ public class OrderController {
     public void picture(@PathVariable String name, HttpServletResponse response) throws IOException{
         File file = new File(Constants.RED_PICTURE_PATH+"/"+name);
         if(!file.exists()){
+            response.setContentType("text/html;charset=utf-8");
+            response.getWriter().println("文件不存在");
+            response.getWriter().flush();
+            response.getWriter().close();
             return;
         }
+        String[] strs =   name.split(":");
+        WxOperator wxOperator = (WxOperator)SecurityUtils.getSubject().getSession().getAttribute("operator");
+
+        if(!strs[0].equals(wxOperator.getWxAppid())){
+            response.setContentType("text/html;charset=utf-8");
+            response.getWriter().println("无法访问");
+            response.getWriter().flush();
+            response.getWriter().close();
+            return;
+        }
+
+
         FileInputStream fileInputStream = new FileInputStream(file);
         try {
-            int l;
-            response.setContentType("image/png");
             OutputStream outputStream = response.getOutputStream();
+            response.setContentType("image/png");
             final byte[] tmp = new byte[4096];
-            while ((l = fileInputStream.read(tmp)) != -1) {
+            while (( fileInputStream.read(tmp)) != -1) {
                outputStream.write(tmp);
             }
             outputStream.flush();
@@ -126,6 +141,22 @@ public class OrderController {
            return  ControllerStatus.error(codeRe.getErrorMessage());
        }
        return ControllerStatus.ok(codeRe.getMessage().toString());
+    }
+
+    @RequestMapping(value = "redSend",method = RequestMethod.POST )
+    public @ResponseBody Object redSend(@RequestBody Map map){
+        if(!map.containsKey("id")){
+            ControllerStatus.error("请传入订单id");
+        }
+        if(!map.containsKey("count")){
+            ControllerStatus.error("请传入红包大小");
+        }
+      CodeRe codeRe =  orderService.redSend(map.get("id").toString(),Integer.valueOf(map.get("count").toString()));
+        if(codeRe.isError()){
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
+        return ControllerStatus.ok(codeRe.getMessage().toString());
+
     }
 
 
