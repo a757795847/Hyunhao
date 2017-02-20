@@ -30,14 +30,14 @@ public class PayController {
         return "welcome pay index!";
     }
     @RequestMapping("send")
-    public @ResponseBody Object send(String openid,String count,String wxAppid,String sign){
+    public @ResponseBody Object send(String openid,String count,String wxAppid,String sign) throws Exception{
 
 
        CodeRe<String> codeRe = payService.pay(openid,Integer.parseInt(count),wxAppid);
        if(codeRe.isError()){
-           return ControllerStatus.error(codeRe.getErrorMessage());
+           return Constants.objectMapper.writeValueAsString(ControllerStatus.error(codeRe.getErrorMessage()));
        }
-        return ControllerStatus.ok(codeRe.getMessage());
+        return Constants.objectMapper.writeValueAsString(ControllerStatus.ok(codeRe.getMessage()));
     }
 
     @RequestMapping("redinfo")
