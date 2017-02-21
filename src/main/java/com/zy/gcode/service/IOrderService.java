@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface IOrderService {
     List<DataOrder> getOrderByStatus(int status, Page page,String userId);
-    CodeRe handleCsv(MultipartFile multipartFile,String operatorName);
+    CodeRe handleCsv(MultipartFile multipartFile);
     CodeRe saveOrderList(List<DataOrder> orderList,String userId);
     CodeRe passAuditing(String uuid);
     CodeRe redSend(String orderno,int count);

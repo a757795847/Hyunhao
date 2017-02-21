@@ -128,7 +128,7 @@ public class OrderController {
     @RequestMapping(value = "parseCsv",method = RequestMethod.POST)
     public @ResponseBody  Object parseCsv(MultipartFile file){
 //      WxOperator operator = (WxOperator) SecurityUtils.getSubject().getSession().getAttribute("operator");
-       CodeRe codeRe =  orderService.handleCsv(file,"zhuiyou123");
+       CodeRe codeRe =  orderService.handleCsv(file);
         if(codeRe.isError()){
             return  ControllerStatus.error(codeRe.getErrorMessage());
         }

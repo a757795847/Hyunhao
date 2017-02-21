@@ -48,15 +48,23 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public CodeRe handleCsv(MultipartFile multipartFile, String operatorName) {
+    public CodeRe handleCsv(MultipartFile multipartFile) {
+        if(multipartFile.isEmpty()){
+            return CodeRe.error("上传文件不能为空");
+        }
+
         WxOperator operator = getWxOperator();
+
         if(operator == null){
             return CodeRe.error("登录过期!");
         }
 
         Date date = new Date();
-        File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/",DateUtils.format(date,"yyyyMM"),"/", operatorName, ":",
-                DateUtils.format(date, "yyyy-MM-dd hh:mm:ss")));
+        File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/",DateUtils.format(date,"yyyyMM"),"/", operator.getUsername(), ":",
+                DateUtils.format(date, "yyyyMMddhhmmss")));
+        if(!file.exists()){
+            file.mkdirs();
+        }
         CsvReader csvReader;
         List<String[]> csvValueList = new ArrayList<>(HANDLE_COUNT);
         try {
@@ -64,7 +72,7 @@ public class OrderService implements IOrderService {
             csvReader = new CsvReader(file.getAbsolutePath(), ',', Charset.forName("GBK"));
             int count =1;
             while (csvReader.readRecord()) {
-                if(count>HANDLE_MOST_COUNT){
+                if(count>HANDLE_MOST_COUNT){ //判断是否大于每次csv解析条数上线
                     break;
                 }
                 csvValueList.add(csvReader.getValues());
@@ -80,11 +88,12 @@ public class OrderService implements IOrderService {
         List<DataOrder> dataOrderList = new ArrayList<>(HANDLE_COUNT);
         for (int j = 1; j < csvValueList.size(); j++) {
             DataOrder dataOrder = new DataOrder();
-            BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
+            BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);//使用spring 包装bean设置csv读入属性到pojo
             String[] values = csvValueList.get(j);
             for (int i = 0; i < titles.length; i++) {
                 if (titles[i].equals("订单编号")) {
                     String str = values[i];
+                    //因为csv订单号格式有问题，所以进行特别处理
                     values[i] = str.substring(2,str.length()-1);
                     orderNoList.add(values[i]);
                 }
@@ -102,18 +111,25 @@ public class OrderService implements IOrderService {
             DataOrder containOrder = getContainsOrder(existDataOrderList,dataOrder);
             if (containOrder!=null) {
                 if(!containOrder.getCreateUserId().equals(operator.getUsername())){
-                    resultMap.put("state","-1");
+                    resultMap.put("state","-1"); //-1 表示解析的订单已存在，且不属于该运营者
                 }else {
-                    resultMap.put("state", "0");
+                    resultMap.put("state", "0"); // 0 表示订单已存在,且属于当前运营者
                 }
             } else {
-                resultMap.put("state", "1");
+                resultMap.put("state", "1"); // 1 表示订单不存在
             }
             resultList.add(resultMap);
         });
 
         return CodeRe.correct(resultList);
     }
+
+    /**
+     * 如果集合中存在订单号与传入参数相等的订单，则返回单号相等的订单，否则返回null
+     * @param list
+     * @param dataOrder
+     * @return
+     */
     private DataOrder getContainsOrder(List<DataOrder> list,DataOrder dataOrder){
         for(DataOrder order:list){
             if(order.getOrderNumber().equals(dataOrder.getOrderNumber())){

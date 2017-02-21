@@ -7,12 +7,14 @@ import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.MediaMap;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.utils.Constants;
+import com.zy.gcode.utils.DateUtils;
 import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.MzUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by admin5 on 17/2/14.
@@ -43,15 +45,16 @@ public class WechatService implements IWechatService {
         if(dataOrder.getGiftState()!=0){
             return CodeRe.error("订单未处于未申领状态");
         }
+        String dataPath = DateUtils.format(new Date(),"yyyyMM");
 
         if(image1!=null){
-            dataOrder.setCommentFile1(MzUtils.merge(appInterface.getGeAppid(),":",billno,":","A"));
+            dataOrder.setCommentFile1(MzUtils.merge(dataPath,"/",appInterface.getGeAppid(),":",billno,"A"));
         }
         if(image2!=null){
-            dataOrder.setCommentFile2(MzUtils.merge(appInterface.getGeAppid(),":",billno,":","B"));
+            dataOrder.setCommentFile2(MzUtils.merge(dataPath,"/",appInterface.getGeAppid(),":",billno,"B"));
         }
         if(image3 !=null){
-            dataOrder.setCommentFile3(MzUtils.merge(appInterface.getGeAppid(),":",billno,":","C"));
+            dataOrder.setCommentFile3(MzUtils.merge(dataPath,"/",appInterface.getGeAppid(),":",billno,"C"));
         }
             CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessToken(appid);
             if(tokenConfigCodeRe.isError()){
