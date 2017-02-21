@@ -62,8 +62,8 @@ public class OrderService implements IOrderService {
         Date date = new Date();
         File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/",DateUtils.format(date,"yyyyMM"),"/", operator.getUsername(), ":",
                 DateUtils.format(date, "yyyyMMddhhmmss")));
-        if(!file.exists()){
-            file.mkdirs();
+        if(!file.getParentFile().exists()){
+            file.getParentFile().mkdirs();
         }
         CsvReader csvReader;
         List<String[]> csvValueList = new ArrayList<>(HANDLE_COUNT);
