@@ -231,7 +231,7 @@ public class OrderService implements IOrderService {
       }
 
       if(map.get("status").equals("0")){
-          CodeRe.error((String)map.get("message"));
+         return CodeRe.error((String)map.get("message"));
       }
       order.setSendDate(new Timestamp(System.currentTimeMillis()));
       persistenceService.updateOrSave(order);

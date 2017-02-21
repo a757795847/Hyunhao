@@ -1,9 +1,6 @@
 package controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zy.gcode.service.pay.WxXmlParser;
-import com.zy.gcode.utils.wx.AesException;
-import com.zy.gcode.utils.wx.WXBizMsgCrypt;
+import com.zy.gcode.service.OrderService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,14 +14,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Map;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 /**
  * Created by admin5 on 17/1/18.
@@ -45,7 +42,8 @@ public class CodeControllerTest {
 
     @Test
     public void geAppid() throws Exception {
-
+       ParameterizedType clazz =  (ParameterizedType) OrderService.class.getDeclaredMethod("saveOrderList", List.class,String.class).getParameters()[0].getParameterizedType();
+        System.out.println(clazz.getActualTypeArguments()[0]);
     }
    @Test
     public void file() throws Exception{
