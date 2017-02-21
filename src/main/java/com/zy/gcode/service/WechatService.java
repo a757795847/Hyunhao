@@ -12,6 +12,8 @@ import com.zy.gcode.utils.MzUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+
 /**
  * Created by admin5 on 17/2/14.
  */
@@ -95,6 +97,7 @@ public class WechatService implements IWechatService {
             }
         dataOrder.setWeixinId(openid);
         dataOrder.setGiftState(1);
+        dataOrder.setApplyDate(new Timestamp(System.currentTimeMillis()));
         persistenceService.updateOrSave(dataOrder);
         return CodeRe.correct("success");
     }

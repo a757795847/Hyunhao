@@ -29,6 +29,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
 import sun.jvm.hotspot.runtime.Bytes;
 
@@ -70,7 +71,6 @@ public class DaoTest {
         }
     @Test
     public void utils(){
-
        //persistenceService.updateOrSave();
     }
 

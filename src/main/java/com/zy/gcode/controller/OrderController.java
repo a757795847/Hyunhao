@@ -34,19 +34,38 @@ public class OrderController {
     @Autowired
     IOrderService orderService;
 
+    /**
+     * 分页获取用户信息
+     * @param map
+     * @return
+     */
+
+
     @RequestMapping("list")
     public @ResponseBody
     Map
     list(@RequestBody Map map){
         Page page = new Page();
         page.setCurrentPageIndex((Integer) map.get("currentPageIndex"));
-    return ControllerStatus.ok(orderService.getOrderByStatus((Integer) map.get("status"),page),page);
+        WxOperator wxOperator =  (WxOperator) SecurityUtils.getSubject().getPrincipal();
+    return ControllerStatus.ok(orderService.getOrderByStatus((Integer) map.get("status"),page,wxOperator.getUsername()),page);
     }
+
+    /**
+     * 返货订单首页
+     * @return
+     */
     @RequestMapping("home")
     public String index(){
         return "/views/publicNumber/proxylist.html";
     }
 
+    /**
+     * 根据图片的名称访问图片
+     * @param name
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping("picture/{name}")
     public void picture(@PathVariable String name, HttpServletResponse response) throws IOException{
         File file = new File(Constants.RED_PICTURE_PATH+"/"+name);
@@ -58,7 +77,14 @@ public class OrderController {
             return;
         }
         String[] strs =   name.split(":");
-        WxOperator wxOperator = (WxOperator) SecurityUtils.getSubject().getPrincipal();
+        WxOperator wxOperator = (WxOperator)SecurityUtils.getSubject().getPrincipal();
+        if(wxOperator==null){
+            response.setContentType("text/html;charset=utf-8");
+            response.getWriter().println("如要访问，请先登录！");
+            response.getWriter().flush();
+            response.getWriter().close();
+            return;
+        }
 
         if(!strs[0].equals(wxOperator.getWxAppid())){
             response.setContentType("text/html;charset=utf-8");
@@ -84,11 +110,21 @@ public class OrderController {
 
         }
     }
+
+    /**
+     * 返回导入csv的页面
+     * @return
+     */
     @RequestMapping("import")
     public String importCsv(){
         return "/views/publicNumber/import.html";
     }
 
+    /**
+     * 解析csv但不导入
+      * @param file
+     * @return
+     */
     @RequestMapping(value = "parseCsv",method = RequestMethod.POST)
     public @ResponseBody  Object parseCsv(MultipartFile file){
 //      WxOperator operator = (WxOperator) SecurityUtils.getSubject().getSession().getAttribute("operator");
@@ -98,42 +134,24 @@ public class OrderController {
         }
       return ControllerStatus.ok((List)codeRe.getMessage());
     }
+
+    /**
+     * 根据前段传入的数组导入order数据到DB
+     * @param orderList
+     * @return
+     */
     @RequestMapping("importCsv")
     public @ResponseBody  String importCsv(@RequestBody List<DataOrder> orderList){
-      CodeRe codeRe =  orderService.saveOrderList(orderList);
+        WxOperator operator = (WxOperator)SecurityUtils.getSubject().getPrincipal();
+      CodeRe codeRe =  orderService.saveOrderList(orderList,operator.getUsername());
       return codeRe.getMessage().toString();
     }
 
-
-
-
-    @RequestMapping("asy")
-    public void asyTest(HttpServletRequest request,HttpServletResponse response) throws IOException{
-        response.getWriter().println("before");
-     AsyncContext asyncContext =  request.startAsync();
-     response.getWriter().println("after");
-     response.getWriter().flush();
-     Timing timing = new Timing();
-     timing.start();
-     Thread t = new Thread(()->{
-        HttpServletResponse httpServletResponse = (HttpServletResponse)asyncContext.getResponse();
-         try {
-             Thread.currentThread().sleep(10000);
-             timing.middle("aysn");
-             httpServletResponse.getWriter().println("hello");
-             httpServletResponse.getWriter().flush();
-             asyncContext.complete();
-         } catch (Exception e) {
-             e.printStackTrace();
-         }
-     });
-     asyncContext.start(()->System.out.println("runnable"));
-     asyncContext.complete();
-     t.start();
-
-        timing.end();
-    }
-
+    /**
+     * 根据指定的id，设置订单状态为审核通过
+     * @param id
+     * @return
+     */
     @RequestMapping("passAuditing/{id}")
     public @ResponseBody Map pass(@PathVariable String id){
        CodeRe codeRe =  orderService.passAuditing(id);

@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -40,14 +41,19 @@ public class OrderService implements IOrderService {
 
 
     @Override
-    public List<DataOrder> getOrderByStatus(int status, Page page) {
+    public List<DataOrder> getOrderByStatus(int status, Page page,String userId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
-        criteria.add(Restrictions.eq("giftState", status));
+        criteria.add(Restrictions.eq("giftState", status)).add(Restrictions.eq("createUserId",userId));
         return persistenceService.getListAndSetCount(DataOrder.class, criteria, page);
     }
 
     @Override
     public CodeRe handleCsv(MultipartFile multipartFile, String operatorName) {
+        WxOperator operator = getWxOperator();
+        if(operator == null){
+            return CodeRe.error("登录过期!");
+        }
+
         Date date = new Date();
         File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/",DateUtils.format(date,"yyyyMM"),"/", operatorName, ":",
                 DateUtils.format(date, "yyyy-MM-dd hh:mm:ss")));
@@ -86,16 +92,20 @@ public class OrderService implements IOrderService {
             }
             dataOrderList.add((DataOrder) beanWrapper.getWrappedInstance());
         }
-        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(DataOrder.class);
-        detachedCriteria.add(Restrictions.in("orderNumber", orderNoList.toArray()));
-        List<DataOrder> existDataOrderList = persistenceService.getList(detachedCriteria);
+
+        List<DataOrder> existDataOrderList = persistenceService.getListByIn(DataOrder.class,"orderNumber",orderNoList.toArray());
 
         List<Map> resultList = new ArrayList<>(HANDLE_COUNT);
         dataOrderList.forEach(dataOrder -> {
             Map resultMap = new HashMap(3);
             resultMap.put("order", dataOrder);
-            if (existDataOrderList.contains(dataOrder)) {
-                resultMap.put("state", "0");
+            DataOrder containOrder = getContainsOrder(existDataOrderList,dataOrder);
+            if (containOrder!=null) {
+                if(!containOrder.getCreateUserId().equals(operator.getUsername())){
+                    resultMap.put("state","-1");
+                }else {
+                    resultMap.put("state", "0");
+                }
             } else {
                 resultMap.put("state", "1");
             }
@@ -104,6 +114,16 @@ public class OrderService implements IOrderService {
 
         return CodeRe.correct(resultList);
     }
+    private DataOrder getContainsOrder(List<DataOrder> list,DataOrder dataOrder){
+        for(DataOrder order:list){
+            if(order.getOrderNumber().equals(dataOrder.getOrderNumber())){
+                return order;
+            }
+        }
+        return null;
+    }
+
+
 
     private Map<String, String> getCsvMap() {
         Field[] fields = DataOrder.class.getDeclaredFields();
@@ -119,18 +139,41 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public CodeRe saveOrderList(List<DataOrder> orderList) {
-        orderList.forEach(dataOrder -> persistenceService.save(dataOrder));
+    public CodeRe saveOrderList(List<DataOrder> orderList,String userId) {
+        int len = orderList.size();
+        String[] dataNos = new String[len];
+        for(int i = 0 ; i < len;i++){
+            dataNos[i]=orderList.get(i).getOrderNumber();
+        }
+        List<DataOrder> dataOrderList = persistenceService.getListByIn(DataOrder.class,"orderNumber", dataNos);
+       for(DataOrder dataOrder:orderList){
+           DataOrder containOrder = getContainsOrder(dataOrderList,dataOrder);
+           if(containOrder!=null&&containOrder.getCreateUserId().equals(userId)){
+               continue;
+           }
+           dataOrder.setCreateUserId(userId);
+           persistenceService.save(dataOrder);
+       }
         return CodeRe.correct("success");
     }
 
     @Override
     public CodeRe passAuditing(String uuid) {
+
       DataOrder dataOrder =   persistenceService.get(DataOrder.class,uuid);
       if(dataOrder.getGiftState()!=1){
         return   CodeRe.error("该红包未申领");
       }
+      WxOperator operator = getWxOperator();
+      if(operator == null){
+          return CodeRe.error("登录超时!");
+      }
+      if(!operator.getUsername().equals(dataOrder.getCreateUserId())){
+          return CodeRe.error("您无此权限更改用户状态");
+      }
+
       dataOrder.setGiftState(2);
+      dataOrder.setApproveDate(new Timestamp(System.currentTimeMillis()));
       persistenceService.updateOrSave(dataOrder);
 
         return CodeRe.correct("处理成功");
@@ -144,6 +187,9 @@ public class OrderService implements IOrderService {
         }
        String wxappid =  operator.getWxAppid();
        DataOrder order =  persistenceService.get(DataOrder.class,orderno);
+       if(!operator.getUsername().equals(order.getCreateUserId()))
+       return CodeRe.error("您无权操作次订单");
+
        int giftState;
        try {
          giftState = order.getGiftState();
@@ -169,7 +215,13 @@ public class OrderService implements IOrderService {
       if(map.get("status").equals("0")){
           CodeRe.error((String)map.get("message"));
       }
+      order.setSendDate(new Timestamp(System.currentTimeMillis()));
+      persistenceService.updateOrSave(order);
 
         return CodeRe.correct("success");
+    }
+
+    private WxOperator getWxOperator(){
+       return (WxOperator) SecurityUtils.getSubject().getPrincipal();
     }
 }

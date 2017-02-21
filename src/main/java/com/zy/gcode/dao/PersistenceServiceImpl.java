@@ -1,5 +1,6 @@
 package com.zy.gcode.dao;
 
+import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.utils.Page;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -22,38 +23,39 @@ public class PersistenceServiceImpl implements PersistenceService {
     @Autowired
     SessionFactory sessionFactory;
 
-    public<T> T load(Class<T> clazz, Serializable id) {
-        return (T)session().load(clazz,id);
+    public <T> T load(Class<T> clazz, Serializable id) {
+        return (T) session().load(clazz, id);
     }
 
-    public<T> T get(Class<T> clazz, Serializable id) {
-        return (T)session().get(clazz,id);
+    public <T> T get(Class<T> clazz, Serializable id) {
+        return (T) session().get(clazz, id);
     }
 
     public void updateOrSave(Object object) {
         session().saveOrUpdate(object);
     }
 
-    private Session session(){
+    private Session session() {
         return sessionFactory.getCurrentSession();
     }
 
-    public<T> List<T> getList(Class<T> clazz, Page page) {
+    public <T> List<T> getList(Class<T> clazz, Page page) {
         Criteria criteria = session().createCriteria(clazz);
-        return  criteria.setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
+        return criteria.setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
     }
 
-    public<T> List<T> getList( DetachedCriteria criteria) {
-       return criteria.getExecutableCriteria(session()).list();
+    public <T> List<T> getList(DetachedCriteria criteria) {
+        return criteria.getExecutableCriteria(session()).list();
     }
-    public<T> List<T> getListAndSetCount(Class<T> clazz,DetachedCriteria criteria, Page page) {
-        if(page !=null){
-        Long l  =  (Long)criteria.getExecutableCriteria(session()).setProjection(Projections.rowCount()).uniqueResult();
-        page.setCount(l.intValue());
-        criteria.setProjection(null);
-        return  criteria.getExecutableCriteria(session()).setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
+
+    public <T> List<T> getListAndSetCount(Class<T> clazz, DetachedCriteria criteria, Page page) {
+        if (page != null) {
+            Long l = (Long) criteria.getExecutableCriteria(session()).setProjection(Projections.rowCount()).uniqueResult();
+            page.setCount(l.intValue());
+            criteria.setProjection(null);
+            return criteria.getExecutableCriteria(session()).setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
         }
-       return criteria.getExecutableCriteria(session()).list();
+        return criteria.getExecutableCriteria(session()).list();
     }
 
     public void remove(Object id) {
@@ -77,7 +79,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     @Override
     public Object max(Class clazz, String column) {
 
-        return Optional.of( session().createCriteria(clazz).setProjection(Projections.max(column)).uniqueResult()).get();
+        return Optional.of(session().createCriteria(clazz).setProjection(Projections.max(column)).uniqueResult()).get();
     }
 
     @Override
@@ -87,13 +89,19 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     @Override
     public <T> T getOneByColumn(Class<T> clazz, String column, Object value) {
-     return (T)session().createCriteria(clazz).add(Restrictions.eq(column,value)).uniqueResult();
+        return (T) session().createCriteria(clazz).add(Restrictions.eq(column, value)).uniqueResult();
 
     }
 
     @Override
     public int count(Class clazz) {
-        Long l= (Long)session().createCriteria(clazz).setProjection(Projections.rowCount()).uniqueResult();
+        Long l = (Long) session().createCriteria(clazz).setProjection(Projections.rowCount()).uniqueResult();
         return l.intValue();
+    }
+
+    @Override
+    public <T> List<T> getListByIn(Class<T> tClass, String column, Object[] objs) {
+      return session().createCriteria(tClass)
+        .add(Restrictions.in(column,objs)).list();
     }
 }
