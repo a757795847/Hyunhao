@@ -162,15 +162,17 @@ public class OrderService implements IOrderService {
             dataNos[i]=orderList.get(i).getOrderNumber();
         }
         List<DataOrder> dataOrderList = persistenceService.getListByIn(DataOrder.class,"orderNumber", dataNos);
+        List<String> inconsequenceNos = new ArrayList<>();
        for(DataOrder dataOrder:orderList){
            DataOrder containOrder = getContainsOrder(dataOrderList,dataOrder);
-           if(containOrder!=null&&containOrder.getCreateUserId().equals(userId)){
+           if(containOrder!=null&&!containOrder.getCreateUserId().equals(userId)){
+               inconsequenceNos.add(containOrder.getId());
                continue;
            }
            dataOrder.setCreateUserId(userId);
            persistenceService.save(dataOrder);
        }
-        return CodeRe.correct("success");
+        return CodeRe.correct(inconsequenceNos);
     }
 
     @Override

@@ -7,15 +7,12 @@ import com.zy.gcode.pojo.WxOperator;
 import com.zy.gcode.service.IOrderService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.Page;
-import com.zy.gcode.utils.Timing;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
@@ -141,10 +138,13 @@ public class OrderController {
      * @return
      */
     @RequestMapping("importCsv")
-    public @ResponseBody  String importCsv(@RequestBody List<DataOrder> orderList){
+    public @ResponseBody  Object importCsv(@RequestBody List<DataOrder> orderList){
         WxOperator operator = (WxOperator)SecurityUtils.getSubject().getPrincipal();
       CodeRe codeRe =  orderService.saveOrderList(orderList,operator.getUsername());
-      return codeRe.getMessage().toString();
+      if(codeRe.isError()){
+          return ControllerStatus.error(codeRe.getErrorMessage());
+      }
+      return ControllerStatus.ok((List)codeRe.getMessage());
     }
 
     /**
