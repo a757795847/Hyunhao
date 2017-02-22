@@ -29,19 +29,6 @@ public class MiddleController {
     }
 
 
-
-    @RequestMapping("testa")
-    public String testa(){
-
-        return "redirect:/html/a.html";
-    }
-    @RequestMapping("testaa")
-    public @ResponseBody String testaa(){
-
-        return "redirect:/html/a.html";
-    }
-
-
     @RequestMapping("token")
     public  String token(String code,HttpSession session,String state,String zyid){
       Map map  = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/access/getoken/"+code+"/"+zyid);

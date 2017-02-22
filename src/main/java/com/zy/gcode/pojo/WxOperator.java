@@ -1,6 +1,7 @@
 package com.zy.gcode.pojo;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by admin5 on 17/2/15.
@@ -11,7 +12,10 @@ public class WxOperator {
     private Timestamp insertTime;
     private String name;
     private String wxAppid;
-
+    private String role;
+    private Timestamp updateTime;
+    private String isEnable;
+    private Date expireTime;
     public String getWxAppid() {
         return wxAppid;
     }
@@ -52,4 +56,35 @@ public class WxOperator {
         this.name = name;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Timestamp getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getIsEnable() {
+        return isEnable;
+    }
+
+    public void setIsEnable(String isEnable) {
+        this.isEnable = isEnable;
+    }
+
+    public Date getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(Date expireTiem) {
+        this.expireTime = expireTiem;
+    }
 }

@@ -63,7 +63,7 @@ public class DaoTest {
     @Test
     public void test(){
 
-       System.out.println(persistenceService.getOneByColumn(DataOrder.class,"orderNumber","24423067612233391"));
+       System.out.println(persistenceService.getOneByColumn(DataOrder.class,"orderNumber","24423067612233391")==null);
     }
     @Test
     public void dome(){
@@ -71,7 +71,7 @@ public class DaoTest {
         }
     @Test
     public void utils(){
-       //persistenceService.updateOrSave();
+       System.out.println(persistenceService.get(DataOrder.class,"2943278005233010")==null);
     }
 
     @Test

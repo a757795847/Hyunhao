@@ -1,6 +1,9 @@
 package com.zy.gcode.controller;
 
+import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
+import com.zy.gcode.service.IOperatorService;
+import com.zy.gcode.service.OperatorService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -8,6 +11,7 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +27,9 @@ import java.util.Map;
 @RequestMapping("operator")
 @Controller
 public class OperatorController {
+
+    @Autowired
+    IOperatorService operatorService;
 
     @RequestMapping("login")
     public @ResponseBody
@@ -45,8 +52,12 @@ public class OperatorController {
     }
 
     @RequestMapping("register")
-    public String register(String nick,String password,String username){
-        return  null;
+    public @ResponseBody Object register(String nick,String password,String username){
+       CodeRe codeRe = operatorService.registerOperator(nick,username,password);
+       if(codeRe.isError()){
+           ControllerStatus.error(codeRe.getErrorMessage());
+       }
+       return  ControllerStatus.ok((String)codeRe.getMessage());
     }
 
 

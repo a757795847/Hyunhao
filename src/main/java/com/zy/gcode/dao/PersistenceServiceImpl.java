@@ -88,9 +88,17 @@ public class PersistenceServiceImpl implements PersistenceService {
     }
 
     @Override
-    public <T> T getOneByColumn(Class<T> clazz, String column, Object value) {
-        return (T) session().createCriteria(clazz).add(Restrictions.eq(column, value)).uniqueResult();
+    public <T> T getOneByColumn(Class<T> clazz,String... values) {
+        int len = values.length;
+        if(len%2!=0){
+          throw new IllegalArgumentException();
+        }
 
+       Criteria criteria =  session().createCriteria(clazz);
+        for(int i = 0 ; i< len ;i+=2){
+            criteria.add(Restrictions.eq(values[i],values[i+1]));
+        }
+        return (T)criteria.uniqueResult();
     }
 
     @Override
@@ -104,4 +112,24 @@ public class PersistenceServiceImpl implements PersistenceService {
       return session().createCriteria(tClass)
         .add(Restrictions.in(column,objs)).list();
     }
+
+    @Override
+    public <T> List<T> getListByColumn(Class<T> clazz, String... values) {
+        int len = values.length;
+        if(len%2!=0){
+            throw new IllegalArgumentException();
+        }
+
+        Criteria criteria =  session().createCriteria(clazz);
+        for(int i = 0 ; i< len ;i+=2){
+            criteria.add(Restrictions.eq(values[i],values[i+1]));
+        }
+        return criteria.list();
+    }
+
+    @Override
+    public void delete(Class clazz, Serializable id) {
+        session().delete(get(clazz,id));
+    }
+
 }

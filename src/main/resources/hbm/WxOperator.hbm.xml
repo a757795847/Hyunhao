@@ -7,8 +7,12 @@
     <class name="com.zy.gcode.pojo.WxOperator" table="wx_operator" schema="jt_platform">
         <id name="username" column="username"/>
         <property name="password" column="password"/>
-        <property name="insertTime" column="insert_time"/>
+        <property insert="false" update="false" name="insertTime" column="insert_time"/>
         <property name="name" column="name"/>
         <property name="wxAppid" column="wx_appid"/>
+        <property name="expireTime" column="expire_time"/>
+        <property insert="false" update="false" name="updateTime" column="update_time"/>
+        <property name="role" column="role"/>
+        <property name="isEnable" column="is_enable"/>
     </class>
 </hibernate-mapping>

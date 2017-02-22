@@ -110,11 +110,11 @@ public class OrderService implements IOrderService {
             resultMap.put("order", dataOrder);
             DataOrder containOrder = getContainsOrder(existDataOrderList,dataOrder);
             if (containOrder!=null) {
-                if(!containOrder.getCreateUserId().equals(operator.getUsername())){
+          /*      if(!containOrder.getCreateUserId().equals(operator.getUsername())){
                     resultMap.put("state","-1"); //-1 表示解析的订单已存在，且不属于该运营者
                 }else {
                     resultMap.put("state", "0"); // 0 表示订单已存在,且属于当前运营者
-                }
+                }*/
             } else {
                 resultMap.put("state", "1"); // 1 表示订单不存在
             }

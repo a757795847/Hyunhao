@@ -37,9 +37,9 @@ public class PayController {
 
        CodeRe<String> codeRe = payService.pay(openid,100,wxAppid);
        if(codeRe.isError()){
-           return Constants.objectMapper.writeValueAsString(ControllerStatus.error(codeRe.getErrorMessage()));
+           return ControllerStatus.error(codeRe.getErrorMessage());
        }
-        return Constants.objectMapper.writeValueAsString(ControllerStatus.ok(codeRe.getMessage()));
+        return ControllerStatus.ok(codeRe.getMessage());
     }
 
     @RequestMapping("redinfo")
