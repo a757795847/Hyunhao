@@ -42,7 +42,7 @@ public class RedStrategyService implements IRedStrategyService {
     @Override
     public CodeRe listRedStrategy() {
         WxOperator operator = getOperator();
-        List list = persistenceService.getListByColumn(DataStrategy.class,"createUserId",operator.getUsername());
+        List list = persistenceService.getListByColumn(DataStrategy.class,"userId",operator.getUsername());
         return CodeRe.correct(list);
     }
 
