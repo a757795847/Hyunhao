@@ -42,5 +42,13 @@ public class RedStrategycontroller {
       }
       return ControllerStatus.ok((List)codeRe.getMessage());
     }
+    @RequestMapping("remove")
+    public @ResponseBody Object remove(@RequestBody Integer id){
+      CodeRe codeRe =  strategyService.deleteRedStrategy( id.longValue());
+      if(codeRe.isError()){
+          return ControllerStatus.error(codeRe.getErrorMessage());
+      }
+      return ControllerStatus.ok((String)codeRe.getMessage());
+    }
 
 }
