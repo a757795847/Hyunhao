@@ -205,7 +205,7 @@ public class CodeService implements ICodeService {
 
     @Override
     public CodeRe<WechatUserInfo> getUser(String zyid, String token) {
-       GeToken geToken = persistenceService.get(GeToken.class,zyid);
+       GeToken geToken = persistenceService.get(GeToken.class,token);
         Timestamp updatetime;
 
         try {
