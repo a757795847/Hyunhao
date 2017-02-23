@@ -23,6 +23,7 @@ public class UserCodeOAuthRequest extends AbstractOAuthRequest<String> {
     public static final String RESPONSETYPE = "response_type";
     public static final String SCOPE = "scope";
     public static final String STATE = "state";
+    public static final String COMPONENT_APPID = "component_appid";
     public UserCodeOAuthRequest(){
         super("https://open.weixin.qq.com/connect/oauth2/authorize");
     }

@@ -86,6 +86,7 @@ public class CodeService implements ICodeService {
         codeOAuthRequest.setParam(UserCodeOAuthRequest.RESPONSETYPE,"code");
             codeOAuthRequest.setParam(UserCodeOAuthRequest.SCOPE, wechatPublic.getScope());
             codeOAuthRequest.setParam(UserCodeOAuthRequest.STATE,geappid);
+            codeOAuthRequest.setParam(UserCodeOAuthRequest.COMPONENT_APPID,Constants.properties.get("platform.appid")+"#wechat_redirect");
 
         codeRe.setMessage(codeOAuthRequest.start());
         return codeRe;
