@@ -62,19 +62,6 @@ public class CodeService implements ICodeService {
             return CodeRe.error("回调地址错误");
         }
         persistenceService.updateOrSave(geCode);
-
-
-    /*    StringBuilder builder = new StringBuilder("https://open.weixin.qq.com/connect/oauth2/authorize").append("?");
-        builder.append("appid=").append(wxappid);
-        try {
-            builder.append("&redirect_uri=").append(URLEncoder.encode(Constants.CALL_BACK_URL,"utf-8"));
-            builder.append("&response_type=code&scope=").append(wechatPublic.getScope()).append("&state=").append(geappid);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return CodeRe.error("token回调地址有误!");
-        }
-        builder.append("&component_appid=").append(Constants.properties.get("platform.appid"));
-        builder.append("#wechat_redirect");*/
         UserCodeOAuthRequest codeOAuthRequest = new UserCodeOAuthRequest();
             codeOAuthRequest.setParam(UserCodeOAuthRequest.APPID,wxappid);
         try {
@@ -85,7 +72,7 @@ public class CodeService implements ICodeService {
         }
         codeOAuthRequest.setParam(UserCodeOAuthRequest.RESPONSETYPE,"code");
             codeOAuthRequest.setParam(UserCodeOAuthRequest.SCOPE, wechatPublic.getScope());
-            codeOAuthRequest.setParam(UserCodeOAuthRequest.STATE,geappid);
+            codeOAuthRequest.setParam(UserCodeOAuthRequest.STATE,code);
             codeOAuthRequest.setParam(UserCodeOAuthRequest.COMPONENT_APPID,Constants.properties.get("platform.appid")+"#wechat_redirect");
 
         codeRe.setMessage(codeOAuthRequest.start());
@@ -105,15 +92,6 @@ public class CodeService implements ICodeService {
         if(componetTokenCodeRe.isError()){
             return  componetTokenCodeRe;
         }
-
-       /* StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/component/access_token");
-        builder.append("?appid=").append(appid);
-        builder.append("&code=").append(code);
-        builder.append("&grant_type=authorization_code")
-                .append("&component_appid=").append(Constants.properties.getProperty("platform.appid"));
-        builder.append("&component_access_token=").append(componetTokenCodeRe.getMessage().getToken());
-
-        Map map = HttpClientUtils.mapGetSend(builder.toString());*/
         UserTokenOAuthRequest tokenOAuth = new UserTokenOAuthRequest();
         tokenOAuth.setParam(UserTokenOAuthRequest.APPID,appid);
         tokenOAuth.setParam(UserTokenOAuthRequest.CODE,code);
@@ -132,36 +110,13 @@ public class CodeService implements ICodeService {
         }
 
         WxToken wxToken = new WxToken();
-       /* if(map.containsKey("errcode")){
-            return CodeRe.error(map.get("errmsg").toString());
-        }
-        WxToken wxToken = new WxToken();
- *//*       &&map.containsKey("expires_in")&&map.containsKey("refresh_token")&&
-                map.containsKey("openid")&&map.containsKey("scope")*//*
-        if(map.containsKey("access_token")){
-            wxToken.setWxToken(map.get("access_token").toString());
-        }
-
-        if(map.containsKey("expires_in")){
-            wxToken.setExpires(Long.parseLong(map.get("expires_in").toString()));
-        }
-
-        if(map.containsKey("refresh_token")){
-            wxToken.setRefreshToken(map.get("refresh_token").toString());
-        }
-
-        if(map.containsKey("openid")){
-            wxToken.setUserOpenId(map.get("openid").toString());
-        }
-        if(map.containsKey("scope")){
-            wxToken.setScope(map.get("scope").toString());
-        }*/
         wxToken.setWxToken(accessToken.getAccessToken());
         wxToken.setExpires(accessToken.getExpiresIn().longValue());
         wxToken.setRefreshToken(accessToken.getRefreshToken());
         wxToken.setUserOpenId(accessToken.getOpenid());
         wxToken.setScope(accessToken.getScope());
         persistenceService.updateOrSave(wxToken);
+        //更新geCode 的openid值和wxToken值,翻遍客户端用gecode获取getoken时设定geToken属性
         geCode.setOpenid(wxToken.getUserOpenId());
         geCode.setWxToken(wxToken.getWxToken());
         persistenceService.updateOrSave(geCode);
@@ -222,7 +177,7 @@ public class CodeService implements ICodeService {
 
     @Override
     public CodeRe<GeToken> geToken(String geCodeM,String geappid) {
-        GeCode geCode =persistenceService.get(GeCode.class,geappid);
+        GeCode geCode =persistenceService.get(GeCode.class,geCodeM);
 
         Timestamp updatetime;
         try {
