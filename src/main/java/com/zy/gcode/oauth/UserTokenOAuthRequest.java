@@ -6,9 +6,9 @@ package com.zy.gcode.oauth;
 public class UserTokenOAuthRequest extends AbstractOAuthRequest {
 
     public static final String APPID = "appid";
-    public static final String grant_type = "grant_type";
-    public static final String component_appid = "component_appid";
-    public static final String component_access_token = "component_access_token";
+    public static final String GRANT_TYPE = "grant_type";
+    public static final String COMPONENT_APPID = "component_appid";
+    public static final String COMPONENT_ACCESS_TOKEN = "component_access_token";
 
 
     public UserTokenOAuthRequest(){

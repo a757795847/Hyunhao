@@ -40,6 +40,18 @@ public class RedStrategycontroller {
        return ControllerStatus.ok(codeRe.getMessage().toString());
 
     }
+    @RequestMapping("update")
+    public @ResponseBody Object update(@RequestBody Map map){
+        String name = (String)map.get("uname");
+        int money = (int)map.get("money");
+        long id = ((Integer)map.get("id")).longValue();
+       CodeRe codeRe =  strategyService.updateRedStrategy(id,name,money);
+       if(codeRe.isError()){
+           return ControllerStatus.error(codeRe.getErrorMessage());
+       }
+       return ControllerStatus.ok(codeRe.getMessage().toString());
+
+    }
 
     @RequestMapping("list")
     public @ResponseBody Object list(){
