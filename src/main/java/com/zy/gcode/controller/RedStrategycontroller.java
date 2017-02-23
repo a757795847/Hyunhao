@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +34,13 @@ public class RedStrategycontroller {
 
     }
 
-    //@RequestMapping("list")
+    @RequestMapping("list")
+    public @ResponseBody Object list(){
+      CodeRe codeRe =  strategyService.listRedStrategy();
+      if(codeRe.isError()){
+          return  ControllerStatus.error(codeRe.getErrorMessage());
+      }
+      return ControllerStatus.ok((List)codeRe.getMessage());
+    }
 
 }
