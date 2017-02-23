@@ -224,7 +224,7 @@ public class OrderService implements IOrderService {
         /*String openid,String count,String wxAppid*/
 
       Map map =  HttpClientUtils.mapGetSend("http://open.izhuiyou.com/pay/send","openid",order.getWeixinId(),
-                "count",String.valueOf(count),"wxAppid",wxappid,"sign","13468794sagag");
+                "count",String.valueOf(count),"geAppid",wxappid,"sign","13468794sagag");
       if(map ==null){
           log.error("http请求错误");
           return CodeRe.error("红包发送失败");

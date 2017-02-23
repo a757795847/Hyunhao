@@ -6,12 +6,14 @@ import com.zy.gcode.pojo.DataStrategy;
 import com.zy.gcode.pojo.WxOperator;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Created by admin5 on 17/2/22.
  */
+@Component
 public class RedStrategyService implements IRedStrategyService {
     @Autowired
     PersistenceService persistenceService;
