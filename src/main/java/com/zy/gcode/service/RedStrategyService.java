@@ -65,6 +65,7 @@ public class RedStrategyService implements IRedStrategyService {
         }
         strategy.setName(name);
         strategy.setMoney(money);
+        strategy.setUpdateUserId(getOperator().getUsername());
 
         persistenceService.update(strategy);
         return CodeRe.correct("success");
