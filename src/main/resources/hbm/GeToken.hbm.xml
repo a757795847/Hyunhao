@@ -5,8 +5,8 @@
 <hibernate-mapping>
 
     <class name="com.zy.gcode.pojo.GeToken" table="ge_token" schema="jt_platform">
-        <id name="geAppid" column="ge_appid"/>
-        <property name="geTokenM" column="ge_tokenM"/>
+        <id name="geTokenM" column="ge_tokenM"/>
+        <property name="geAppid" column="ge_appid"/>
         <property name="geCodeM" column="ge_codeM"/>
         <property update="false" insert="false" name="insertTime" column="insert_time"/>
         <property update="false" insert="false" name="updateTime" column="update_time"/>

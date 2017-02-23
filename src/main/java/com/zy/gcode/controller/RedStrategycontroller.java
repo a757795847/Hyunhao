@@ -42,7 +42,7 @@ public class RedStrategycontroller {
     }
     @RequestMapping("update")
     public @ResponseBody Object update(@RequestBody Map map){
-        String name = (String)map.get("uname");
+        String name = (String)map.get("name");
         int money = (int)map.get("money");
         long id = ((Integer)map.get("id")).longValue();
        CodeRe codeRe =  strategyService.updateRedStrategy(id,name,money);
