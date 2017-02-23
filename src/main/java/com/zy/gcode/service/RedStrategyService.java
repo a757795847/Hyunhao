@@ -63,6 +63,7 @@ public class RedStrategyService implements IRedStrategyService {
         strategy.setName(name);
         strategy.setId(id);
         strategy.setMoney(money);
+        persistenceService.update(strategy);
         return CodeRe.correct("success");
     }
 }
