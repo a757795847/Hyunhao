@@ -2,6 +2,7 @@ package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
+import com.zy.gcode.oauth.UserCodeOAuthRequest;
 import com.zy.gcode.pojo.*;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;
@@ -56,7 +57,7 @@ public class CodeService implements ICodeService {
         persistenceService.updateOrSave(geCode);
 
 
-        StringBuilder builder = new StringBuilder("https://open.weixin.qq.com/connect/oauth2/authorize").append("?");
+    /*    StringBuilder builder = new StringBuilder("https://open.weixin.qq.com/connect/oauth2/authorize").append("?");
         builder.append("appid=").append(wxappid);
         try {
             builder.append("&redirect_uri=").append(URLEncoder.encode(Constants.CALL_BACK_URL,"utf-8"));
@@ -66,8 +67,20 @@ public class CodeService implements ICodeService {
             return CodeRe.error("token回调地址有误!");
         }
         builder.append("&component_appid=").append(Constants.properties.get("platform.appid"));
-        builder.append("#wechat_redirect");
-        codeRe.setMessage(builder.toString());
+        builder.append("#wechat_redirect");*/
+        UserCodeOAuthRequest codeOAuthRequest = new UserCodeOAuthRequest();
+            codeOAuthRequest.setParam(UserCodeOAuthRequest.APPID,wxappid);
+        try {
+            codeOAuthRequest.setParam(UserCodeOAuthRequest.REDIRECTURL,URLEncoder.encode(Constants.CALL_BACK_URL,"utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return CodeRe.error("该系统不支持utf-8");
+        }
+        codeOAuthRequest.setParam(UserCodeOAuthRequest.RESPONSETYPE,"code");
+            codeOAuthRequest.setParam(UserCodeOAuthRequest.SCOPE,appInterface.getScope());
+            codeOAuthRequest.setParam(UserCodeOAuthRequest.STATE,geappid);
+
+        codeRe.setMessage(codeOAuthRequest.build());
         return codeRe;
     }
 

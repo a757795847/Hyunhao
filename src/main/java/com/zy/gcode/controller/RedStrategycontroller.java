@@ -21,6 +21,13 @@ public class RedStrategycontroller {
     @Autowired
     IRedStrategyService strategyService;
 
+
+
+    @RequestMapping("home")
+    public String home(){
+        return "/views/publicNumber/redmanagement.html";
+    }
+
     @RequestMapping("add")
     public @ResponseBody Object add(@RequestBody Map map){
         String name = (String)map.get("name");
