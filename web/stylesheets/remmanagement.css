@@ -8,40 +8,51 @@
     width:25%;
 
 }
+.box{
+    padding:21px 40px;
 
+}
 #addred{
     width: 64px;
     padding: 4px;
-    border-radius:0;
-    background-color:#5ac28d;
-    border-color:#5ac28d;
+    border-radius:5px;
+    background-color:#428cbb;
+    border-color:#428cbb;
     color:#fff;
     float: right;
-    margin-right: 46px;
-    margin-top: 20px;
+
 
 
 }
 #addred:hover{
-    background-color:#00a65a;
-    border-color:#008d4c;
+    background-color:#3b6682;
+    border-color:#3b6682;
 
 
 }
-.label-success:hover{
-    background-color:#0bc570;
 
-
-}
 #myModal .modal-content{
     padding:0 5px;
-    width:350px;
+    width:420px;
     margin-left:200px;
+    border-radius: 7px;
 
-}  #myModal .modal-title{
+}
+#myModas .modal-content{
+    padding:0 5px;
+    width:420px;
+    margin-left:200px;
+    border-radius: 7px;
+
+}
+#myModal .modal-title{
        text-align:center;
 
    }
+#myModas .modal-title{
+    text-align:center;
+
+}
 .input-group{
     width:100%;
     margin-top:14px;
@@ -49,8 +60,79 @@
 #nub{
     width:90%;
 }
-.modal-footer button{
+#myModal .modal-footer button{
     padding:4px 12px;
+    background-color:#428cbb;
+    border-radius:5px;
+    border-color:#428cbb;
 
+}
+#myModas .modal-footer button{
+    padding:4px 12px;
+    background-color:#428cbb;
+    border-radius:5px;
+    border-color:#428cbb;
+
+}
+#myModal .modal-footer button:hover{
+    background-color:#3b6682;
+    border-color:#3b6682;
+}
+#myModas .modal-footer button:hover{
+    background-color:#3b6682;
+    border-color:#3b6682;
+}
+.detele{
+    background-color:#f96207;
+
+}
+.box .table tbody .edit{
+    background-color:rgb(66,203,254);
+}
+.modal-header {
+    padding: 6px 16px;
+}
+.modal-body{
+    padding:9 15px;
+    padding-right:48px;
+
+}
+#myModal .modal-body p{
+    color:rgb(116,116,116);
+    line-height:33px;
+    font-size:16px;
+    float:left;
+
+}
+#myModas .modal-body p{
+    color:rgb(116,116,116);
+    line-height:33px;
+    font-size:16px;
+    float:left;
+
+}
+#myModal .modal-body input{
+    color:rgb(116,116,116);
+   border:1px solid rgb(162,164,166);
+    float: left;
+    width: 219px;
+    margin-left: 25px;
+}
+#myModas .modal-body input{
+    color:rgb(116,116,116);
+    border:1px solid rgb(162,164,166);
+    float: left;
+    width: 219px;
+    margin-left: 25px;
+}
+#myModal .modal-body small{
+    color:rgb(116,116,116);
+    float: right;
+    margin-top: 5px;
+}
+#myModas .modal-body small{
+    color:rgb(116,116,116);
+    float: right;
+    margin-top: 5px;
 }
 

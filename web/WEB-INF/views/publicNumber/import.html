@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../../../stylesheets/jquery-jvectormap-1.2.2.css">
     <link rel="stylesheet" href="../../../stylesheets/AdminLTE.min.css">
     <link rel="stylesheet" href="../../../stylesheets/_all-skins.min.css">
+    <link rel="stylesheet" href="../../../stylesheets/words.css">
     <link rel="stylesheet" href="../../../stylesheets/general.css">
     <meta charset="UTF-8">
     <title>Title</title>
@@ -16,7 +17,7 @@
     <header class="main-header">
         <a href="/" class="logo">
             <span class="logo-lg">
-          <img src="../../images/B3F0F1AD70377E062920F9BA53902227.jpg" alt="">
+          <img src="../../../images/B3F0F1AD70377E062920F9BA53902227.jpg" alt="">
             <b>聚塔微客户管理平台</b></span>
         </a>
 
@@ -29,27 +30,27 @@
             </a>
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown wechatUserInfo wechatUserInfo-menu">
+                    <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="../../images/user2-160x160.jpg" class="wechatUserInfo-image" alt="User Image">
+                            <img src="../../../images/user2-160x160.jpg" class="user-image" alt="User Image">
                             <span class="hidden-xs">欢迎你${operator.name}</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="wechatUserInfo-header">
+                            <li class="user-header">
                                 <img src="../../images/user2-160x160.jpg" class="img-circle" alt="User Image">
                                 <p>
                                     <small>用户名</small>
                                     <span>gc243728357</span>
                                 </p>
                             </li>
-                            <li class="wechatUserInfo-body">
+                            <li class="user-body">
                                 <div class="row">
                                     <span style="margin-left:71px;">手机号</span>
                                     <span>-12345676878</span>
                                 </div>
                             </li>
 
-                            <li class="wechatUserInfo-footer">
+                            <li class="user-footer">
                                 <div class="pull-left">
                                     <span class="label label-info" id="modify">
                                     <a href="#">修改密码</a></span>
@@ -65,12 +66,11 @@
         </nav>
     </header>
     <aside class="main-sidebar">
-        <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-            <!-- Sidebar wechatUserInfo panel -->
-            <div class="wechatUserInfo-panel">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="../../images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <img src="../../../images/user2-160x160.jpg" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
                     <p>微信公众号</p>
@@ -84,13 +84,10 @@
               </span>
                 </div>
             </form>
-            <!-- /.search form -->
-            <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
-                <li class="header">MAIN NAVIGATION</li>
                 <li>
-                    <a href="Management.html">
-                        <i class="fa fa-weixin mr-housite"></i> <span>公众号列表</span>
+                    <a href="home">
+                        <i class="fa fa-weixin mr-housite"></i> <span>订单列表</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-green">new</small>
             </span>
@@ -98,26 +95,12 @@
                 </li>
                 <li class="active treeview">
                     <a href="proxylist.html">
-                        <i class="fa fa-dashboard"></i> <span>订单管理</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li class="active"><a href="proxylist.html"><i class="fa fa-circle-o"></i> 订单列表</a></li>
-                        <li><a href="index2.html"><i class="fa fa-circle-o"></i> 导入订单</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="redmanagement.html">
-                        <i class="fa fa-th-large mr-housite"></i> <span>红包管理</span>
-            <span class="pull-right-container">
-            </span>
+                        <i class="fa fa-dashboard"></i> <span>红包管理</span>
                     </a>
                 </li>
                 <li>
-                    <a href="../../proxy/billing.html">
-                        <i class="fa fa-pie-chart"></i><span>统计</span>
+                    <a href="../../../proxy/billing.html">
+                        <i class="fa fa-pie-chart"></i><span style="margin-left: 3px;">统计</span>
             <span class="pull-right-container">
             </span>
                     </a>
@@ -127,45 +110,43 @@
     </aside>
     <div class="content-wrapper">
         <section class="content">
-            <ol class="breadcrumb">
-                <li><a href=""><i class="fa fa-dashboard"></i>订单列表</a></li>
-                <li class="active"><a href="../../../order/toimport">导入订单</a></li>
-            </ol>
+            <section class="content-header">
+                <p style="font-size:20px;">导入订单
+                </p>
+                <ol class="breadcrumb">
+                    <li><a href="home"><i class="fa fa-dashboard"></i>订单列表</a></li>
+                    <li style="color:#777;">导入订单</li>
+                </ol>
+
+            </section>
             <div class="row">
+                <div class="father">
                 <form action="" method="post" target="" id="uploadForm"  enctype="multipart/form-data">
                     <input id="fileId" type="file" name="file" accept="text/csv" id="limit"/>
                     <input type="submit" name="submit" id="submit" value="文件上传" />
                 </form>
-
+                <button class="btn btn-block btn-default" id="click">确认导入</button>
+                </div>
+                <table class="table_top">
+                    <tr>
+                        <th><button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                        </button>全选</th>
+                        <td>订单号</td>
+                        <td>买家会员名</td>
+                        <td>订单创建时间</td>
+                        <td>订单付款时间</td>
+                        <td>买家支付宝账号</td>
+                        <td>付款金额</td>
+                        <td>收货人姓名</td>
+                        <td>收货地址</td>
+                        <td>收货人手机号</td>
+                    </tr>
+                </table>
 
                 <div class="table-responsive mailbox-messages">
 
+                     <div>
                                     <table class="table table-hover table-striped" id="Table">
-
-                                      <thead>
-
-
-                                      <th><button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
-
-                                         </button>全选</th>
-
-                                         <th>订单号</th>
-
-                                        <th>买家会员名</th>
-
-                                        <th>订单创建时间</th>
-                                        <th>订单付款时间</th>
-                                       <th>买家支付宝账号</th>
-                                        <th>付款金额</th>
-                                       <th>收货人姓名</th>
-
-                                       <th>收货地址</th>
-
-                                      <th>收货人手机号</th>
-
-                                       </tr>
-
-                                   </thead>
 
                                          <tbody id="dis">
 
@@ -175,9 +156,8 @@
                                     </tbody>
 
                                          </table>
-
+                    </div>
                                    </div>
-                       <button class="btn btn-block btn-default" id="click">确认导入</button>
 
 
 
@@ -194,6 +174,7 @@
 <script src="../../../javascripts/jquery-2.2.3.min.js"></script>
 <script src="../../../javascripts/bootstrap.min.js"></script>
 <script src="../../../javascripts/app.min.js"></script>
+<script src="../../../javascripts/icheck.min.js"></script>
 <script src="../../../javascripts/import.js"></script>
 <script>
 

@@ -11,7 +11,7 @@ $(".checkbox-toggle").click(function () {
     }
     $(this).data("clicks", !clicks);
 });
-
+var datas='';
 $("#submit").on("click",function(e){
     e.preventDefault();
 
@@ -24,10 +24,17 @@ $("#submit").on("click",function(e){
         processData: false,
         contentType: false
     }).done(function(res) {
+            datas=res.list;
         console.log(res);
       var tbody='';
         $.each(res.list,function(i,order){
-            tbody +='<tr><td><input type="checkbox" id="statistic"></td><td class="mailbox-date"><span>'+order.order.orderNumber+'</span></td>';
+            order_State=order.state;
+            var icon='';
+            if(order.state<1){
+
+                icon='<img src="../images/21133.jpg" class="Icon">';
+            }
+            tbody +='<tr><td><input type="checkbox" class="statistic" data-index="'+ i +'">'+icon+'</td><td class="mailbox-date"><span>'+order.order.orderNumber+'</span></td>';
             tbody +='<td class="mailbox-date"><span>'+order.order.buyerName+'</span></td>';
             tbody +='<td class="mailbox-date ltime""><span>'+order.order.orderCreateTime+'</span></td>';
             tbody +='<td class="mailbox-date ltime"><span>'+order.order.orderPayTime+'</span></td>';
@@ -41,15 +48,58 @@ $("#submit").on("click",function(e){
         });
         $("#Table").find("tbody").html(tbody);
 
-    }).fail(function(res) {});
 
+    }).fail(function(res) {});
+        
 
 
 
 
 });
 $("#click").on("click",function(){
-    
+    console.log(datas);
+    console.log(datas[0].order);
+    var checbox_index='';
+    var dataList=[];
+    for(var i=0;i<$('#dis').find('input[type=checkbox]').length;i++){
+        var sub=$('#dis').find('input[type=checkbox]').eq(i).is(":checked");
+        if(sub){
+            var checbox_index=$('#dis').find('input[type=checkbox]').eq(i).attr('data-index');
+            if(datas[checbox_index].state=1){
+                dataList.push(datas[checbox_index].order);
+                console.log("hu");
+            }
+
+        }
+    }
+
+
+    $.ajax({
+        type: 'post',
+        url: '/order/importCsv',
+        data: JSON.stringify(dataList),
+        dataType: 'json',
+        contentType: 'application/json;charset=UTF-8',
+        success: function (data) {
+            // console.log(data.list[0].giftState);
+            console.log(data);
+
+
+        },
+        error: function (jqXHR) {
+            if (jqXHR.status == 406) {
+
+            }
+        }
+
+    })
+
+
+    console.log(dataList);
+
+
+
+
 
 
 });

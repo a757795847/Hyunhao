@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="../../../stylesheets/words.css">
     <link rel="stylesheet" href="../../../stylesheets/remodal.css">
     <link rel="stylesheet" href="../../../stylesheets/remodal-default-theme.css">
-    <link rel="stylesheet" href="../../../stylesheets/fancySelect.css">
+    <link rel="stylesheet" href="../../../stylesheets/select2.min.css">
+    <link rel="stylesheet" href="../../../stylesheets/datepicker3.css">
+    <link rel="stylesheet" href="../../../stylesheets/daterangepicker.css">
     <link rel="stylesheet" href="../../../stylesheets/proxylist.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -74,7 +76,6 @@
         </nav>
     </header>
     <aside class="main-sidebar">
-        <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
             <!-- Sidebar wechatUserInfo panel -->
             <div class="wechatUserInfo-panel">
@@ -93,13 +94,10 @@
               </span>
                 </div>
             </form>
-            <!-- /.search form -->
-            <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
-                <li class="header">MAIN NAVIGATION</li>
                 <li>
-                    <a href="Management.html">
-                        <i class="fa fa-weixin mr-housite"></i> <span>公众号列表</span>
+                    <a href="home">
+                        <i class="fa fa-weixin mr-housite"></i> <span>订单列表</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-green">new</small>
             </span>
@@ -107,26 +105,12 @@
                 </li>
                 <li class="active treeview">
                     <a href="proxylist.html">
-                        <i class="fa fa-dashboard"></i> <span>订单管理</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li class="active"><a href="/order/home"><i class="fa fa-circle-o"></i> 订单列表</a></li>
-                        <li><a href="/order/import"><i class="fa fa-circle-o"></i> 导入订单</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="redmanagement.html">
-                        <i class="fa fa-th-large mr-housite"></i> <span>红包管理</span>
-            <span class="pull-right-container">
-            </span>
+                        <i class="fa fa-dashboard"></i> <span>红包管理</span>
                     </a>
                 </li>
                 <li>
                     <a href="../../../proxy/billing.html">
-                        <i class="fa fa-pie-chart"></i><span>统计</span>
+                        <i class="fa fa-pie-chart"></i><span style="margin-left: 3px;">统计</span>
             <span class="pull-right-container">
             </span>
                     </a>
@@ -136,56 +120,34 @@
     </aside>
     <div class="content-wrapper">
         <section class="content">
+            <section class="content-header">
+                <p style="font-size:20px;">订单列表
+                <small><a href="import">导入订单</a></small>
+                </p>
             <ol class="breadcrumb">
-                <li><a href=""><i class="fa fa-dashboard"></i>订单列表</a></li>
-                <li class="active"><a href="${basePath}/order/toimport">导入订单</a></li>
+                <li><i class="fa fa-dashboard"></i>订单列表</li>
             </ol>
+
+            </section>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
-                        <form action="" id="select">
-                        <select id="basic-usage-demo">
-                            <option value="">提交时间</option>
-                            <option>Lorem Ipsum</option>
-                            <option>Dolor Sit</option>
-                            <option>Vehicula Ornare</option>
-                            <option>Foo</option>
-                            <option>Bar</option>
-                            <option>Baz</option>
-                            <option>Qux</option>
-                            <option>Zoobie</option>
-                            <option>Frang</option>
-                        </select>
-
-                        <select id="basic-time-demo">
-                            <option value="">导入时间</option>
-                            <option>哈哈哈</option>
-                            <option>好地方地方</option>
-                            <option>可以</option>
-                            <option>Foo</option>
-                            <option>Bar</option>
-                            <option>Baz</option>
-                            <option>Qux</option>
-                            <option>Zoobie</option>
-                            <option>Frang</option>
-                        </select>
-                        <select id="basic-status-demo">
-                            <option value="">未申领</option>
+                        <div id="select">
+                            <input type="text" placeholder="导入日期" class="form-control" id="Import_date">
+                            <input type="text" placeholder="用户提交日期" class="form-control" id="user_date">
+                        <select id="basic-status-demo" style="width:161px;">
+                            <option value="未申领">未申领</option>
                             <option>申领中</option>
+                            <option>审核通过</option>
                         </select>
-                        <select id="basic-details-demo">
-                            <option value="">红包详情</option>
+                        <select id="basic-details-demo" style="width:161px;">
+                            <option value="红包详情">红包详情</option>
                             <option>Lorem Ipsum</option>
                             <option>Dolor Sit</option>
                             <option>Vehicula Ornare</option>
-                            <option>Foo</option>
-                            <option>Bar</option>
-                            <option>Baz</option>
-                            <option>Qux</option>
-                            <option>Zoobie</option>
-                            <option>Frang</option>
                         </select>
                             <button class="btn btn-block btn-default" id="filter">筛选</button>
+                            <button class="btn btn-block btn-default" id="batch">批量发送</button>
                             <div class="input-group input-group-sm" id="search">
                                 <input type="text" name="table_search" class="form-control pull-right" placeholder="订单号">
                                 <div class="input-group-btn">
@@ -193,7 +155,7 @@
                                 </div>
                             </div>
 
-                        </form>
+                        </div>
 <div class="table-responsive mailbox-messages">
 
     <table class="table table-hover table-striped" id="Table">
@@ -222,7 +184,7 @@
                     </div>
                 </div>
             <div>
-                <button class="btn btn-block btn-default" id="through">批量通过</button>
+
                 <div class="jqueryPage" id="jqueryPage">
                 </div>
             </section>
@@ -246,14 +208,124 @@
                     </small>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" id="clear">取消</button>
+                    <button class="btn btn-success" id="cancel">取消</button>
                     <button class="btn btn-success" data-dismiss="modal">确定</button>
                 </div>
             </div>
         </div>
     </div>
 
-<div class="remodal" data-remodal-id="modalt" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span> <span class="sr-only">Close</span></button>
+                <p class="modal-title">发送红包</p>
+            </div>
+            <div class="modal-body">
+                <p>发送给订单 <span></span></p>
+                <p class="select">选择红包</p>
+                <div class="order-discount-line" id="span">
+                    <div>
+                        <span data-id="111" class="text-color border-color">
+                           一元红包
+                        </span>
+                        <span class="text-color border-color">
+                           二元红包
+                        </span>
+                        <span class="text-color border-color">
+                          三元红包
+                        </span>
+                        <span class="text-color border-color">
+                            四元红包
+                        </span>
+                        <span class="text-color border-color">
+                           五元红包
+                        </span>
+                        <span class="text-color border-color">
+                            六元红包
+                        </span>
+                        <span class="text-color border-color">
+                            七元红包
+                        </span>
+                        <span class="text-color border-color">
+                           八元红包
+                        </span>
+
+                        <span class="text-color border-color">
+                           九元红包
+                        </span>
+                        <span class="text-color border-color">
+                            十元红包
+                        </span>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-dismiss="modal" id="send">发送</button>
+                <button class="btn btn-success" data-dismiss="modal" id="clear">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="isModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 2px solid rgb(238,238,238);">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span> <span class="sr-only">Close</span></button>
+                <p class="modal-title">订单详情</p>
+            </div>
+            <div class="modal-body">
+                <table class="table table-condensed">
+                    <tr>
+                        <td style="border-top:none;">订单号</td>
+                        <td style="border-top:none;" id="order_number">224325</td>
+                    </tr>
+                    <tr>
+                        <td>买家会员名</td>
+                        <td id="buyer_name">祖名豆腐干</td>
+                    </tr>
+                    <tr>
+                        <td>订单创建时间</td>
+                        <td id="order_create_time">2017-02-12</td>
+
+                    </tr>
+                    <tr>
+                        <td>订单付款时间</td>
+                        <td id="order_pay_time">2017-01-24</td>
+                    </tr>
+                    <tr>
+                        <td>买家支付宝账号</td>
+                        <td id="buyer_zhifubao">32534546</td>
+                    </tr>
+                    <tr>
+                        <td>付款金额</td>
+                        <td id="amount">123</td>
+                    </tr>
+                    <tr>
+                        <td>收货人姓名</td>
+                        <td id="receiver">祖名</td>
+                    </tr>
+                    <tr>
+                        <td style="line-height:37px;">收货人地址</td>
+                        <td id="receiver_address" style="font-size:10px;">西城大道</td>
+                    </tr>
+                    <tr>
+                        <td>收货人手机号</td>
+                        <td id="receiver_mobile">134892375</td>
+                    </tr>
+                    </table>
+            </div>
+            <div class="modal-footer" style="border-top: 2px solid rgb(238,238,238);padding: 6px 15px;">
+                <button class="btn btn-success" data-dismiss="modal" id="cancel">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div class="remodal" data-remodal-id="modalt" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
     <div class="gray-box fn-clear">
         <div class="title pre-title">
             <h2>选择红包类型</h2>
@@ -317,15 +389,18 @@
 
     </div>
 </div>
-    </div>
+    </div>-->
 
     <script src="../../../javascripts/jquery-2.2.3.min.js"></script>
     <script src="../../../javascripts/bootstrap.min.js"></script>
     <script src="../../../javascripts/app.min.js"></script>
     <script src="../../../javascripts/icheck.min.js"></script>
     <script src="../../../javascripts/jqueryPage.js"></script>
-    <script src="../../../javascripts/fancySelect.js"></script>
     <script src="../../../javascripts/remodal.js"></script>
+    <script src="../../../javascripts/select2.min.js"></script>
+    <script src="../../../javascripts/moment.min.js"></script>
+    <script src="../../../javascripts/bootstrap-datepicker.js"></script>
+    <script src="../../../javascripts/bootstrap-datepicker.zh-CN.js"></script>
     <script src="../../../javascripts/proxylist.js"></script>
 
 

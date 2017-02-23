@@ -9,11 +9,7 @@ body{
 
 
 }
-.breadcrumb li{
-    float:right;
-    margin-right:10px;
 
-}
 .breadcrumb li i{
     margin-right:5px;
 
@@ -31,12 +27,7 @@ body{
 .row{
     margin:0;
 }
-#submit{
-    margin-left:20px;
-    padding:5px;
-    border-radius:4px;
-    margin-top:-7px;
-}
+
 #uploadForm:after {
     content: ".";
     display: block;
@@ -44,13 +35,17 @@ body{
     clear: both;
     visibility: hidden;
 }
-.table.table-hover.table-striped td, th{
+#Table #dis td{
+    font-size:13px;
+    padding: 3px 0px;
+    vertical-align:middle;
     text-align:center;
-       line-height:14px;
+    line-height:14px;
     font-weight:normal;
-    width:150px;
+     width:121px!important;
 
 }
+
 
 .ltime{
     font-size:12px;
@@ -76,4 +71,60 @@ body{
     font-size:16px;
 
 }
+#submit {
+    margin-top:-5px;
+    margin: 0;
+    width: 90px;
+    padding: 3px;
+    margin-left: 10px;
+    border: 1px solid #aaa;
+    background-color: #fff;
+    border-radius: 6px;
+    color: #444;
 
+        }
+input{
+    outline:none;
+}
+#submit:hover{
+    background-color:#ebeff4;
+
+}
+#fileId {
+    line-height: 9px;
+}
+#click {
+    float: left;
+    margin-top: 30px;
+    width: 90px;
+    padding: 3px;
+    margin-left: 20px;
+    border: 1px solid #aaa;
+    background-color: #fff;
+    border-radius: 6px;
+    color: #444;
+
+}
+#click:hover{
+    background-color:#ebeff4;
+}
+.Icon{
+    margin-left:13px;
+}
+#uploadForm{
+    float:left;
+}
+.father:after{
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.table_top td{
+    width: 125px;
+    font-size: 13px;
+    padding: 3px 0px;
+    vertical-align: middle;
+    text-align: right;
+}
