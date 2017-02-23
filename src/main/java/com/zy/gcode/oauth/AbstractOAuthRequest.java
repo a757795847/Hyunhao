@@ -23,6 +23,14 @@ public abstract class AbstractOAuthRequest<T> {
         body.put(name,value);
     }
 
-     public  abstract T build();
+    protected String buildParams(){
+        StringBuilder builder = new StringBuilder(url).append("?");
+        params.forEach((k,v)-> {
+            builder.append(k).append("=").append(v).append("&");
+        });
+        return builder.substring(0,builder.length()-1);
+    }
+
+     public  abstract T start();
 
 }

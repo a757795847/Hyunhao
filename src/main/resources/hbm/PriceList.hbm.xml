@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.zy.gcode.pojo.PriceList" table="price_list" schema="jt_platform">
+        <id name="id" column="id"/>
+        <property name="username" column="username"/>
+        <property name="tappid" column="tappid"/>
+        <property name="money" column="money"/>
+        <property name="insert" column="insert"/>
+        <property name="createUserId" column="create_user_id"/>
+        <property name="updateUserId" column="update_user_id"/>
+    </class>
+</hibernate-mapping>

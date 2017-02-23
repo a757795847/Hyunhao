@@ -12,7 +12,7 @@
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
         <property name="jdbcUrl" value="jdbc:mysql://115.29.188.190:3306/jt_platform?characterEncoding=utf8"/>
-        <property name="user" value="jt_dev"></property>
+        <property name="wechatUserInfo" value="jt_dev"></property>
         <property name="password" value="*+YC!X+mLz%C(fA="></property>
         <property name="idleConnectionTestPeriod" value="2000"></property>
     </bean>

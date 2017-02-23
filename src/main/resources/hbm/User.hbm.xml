@@ -5,18 +5,14 @@
 <hibernate-mapping>
 
     <class name="com.zy.gcode.pojo.User" table="user" schema="jt_platform">
-        <id name="openId" column="open_id"/>
-        <property name="phone" column="phone"/>
-        <property name="nick" column="nick"/>
-        <property name="province" column="province"/>
-        <property name="city" column="city"/>
-        <property name="country" column="country"/>
-        <property name="headImgUrl" column="head_img_url"/>
-        <property name="privilege" column="privilege"/>
-        <property name="unionId" column="union_id"/>
-        <property name="sex" column="sex"/>
-        <property update="false" insert="false" name="insertTime" column="insert_time"/>
-        <property update="false" insert="false" name="updateTime" column="update_time"/>
-        <property name="appid" column="appid"/>
+        <id name="username" column="username"/>
+        <property name="password" column="password"/>
+        <property insert="false" update="false" name="insertTime" column="insert_time"/>
+        <property name="name" column="name"/>
+        <property name="wxAppid" column="wx_appid"/>
+        <property name="expireTime" column="expire_time"/>
+        <property insert="false" update="false" name="updateTime" column="update_time"/>
+        <property name="role" column="role"/>
+        <property name="isEnable" column="is_enable"/>
     </class>
 </hibernate-mapping>

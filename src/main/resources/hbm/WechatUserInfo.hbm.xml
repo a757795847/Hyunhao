@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.zy.gcode.pojo.WechatUserInfo" table="wechat_user_info" schema="jt_platform">
+        <id name="openId" column="open_id"/>
+        <property name="phone" column="phone"/>
+        <property name="nick" column="nick"/>
+        <property name="province" column="province"/>
+        <property name="city" column="city"/>
+        <property name="country" column="country"/>
+        <property name="headImgUrl" column="head_img_url"/>
+        <property name="privilege" column="privilege"/>
+        <property name="unionId" column="union_id"/>
+        <property name="sex" column="sex"/>
+        <property update="false" insert="false" name="insertTime" column="insert_time"/>
+        <property update="false" insert="false" name="updateTime" column="update_time"/>
+        <property name="appid" column="appid"/>
+    </class>
+</hibernate-mapping>

@@ -3,11 +3,14 @@ package com.zy.gcode.service;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.oauth.UserCodeOAuthRequest;
+import com.zy.gcode.oauth.UserTokenOAuthRequest;
 import com.zy.gcode.pojo.*;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;
 import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.UniqueStringGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -23,6 +26,9 @@ import java.util.Map;
  */
 @Component
 public class CodeService implements ICodeService {
+    Logger log = LoggerFactory.getLogger(CodeService.class);
+
+
     public final static long CODE_EXPIRS=100;
     @Autowired
     PersistenceService persistenceService;
@@ -31,14 +37,15 @@ public class CodeService implements ICodeService {
     AuthenticationService authenticationService;
 
     public CodeRe code(String geappid, String url,String state) {
+
         CodeRe codeRe = new CodeRe();
-        AppInterface appInterface = persistenceService.get(AppInterface.class, geappid);
+        WechatPublic wechatPublic = persistenceService.get(WechatPublic.class, geappid);
 
         String wxappid;
         try {
-            wxappid = appInterface.getWxAppid();
+            wxappid = wechatPublic.getWxAppid();
         } catch (NullPointerException e) {
-            return CodeRe.error("appInterface is empty!");
+            return CodeRe.error("wechatPublic is empty!");
         }
 
 
@@ -61,7 +68,7 @@ public class CodeService implements ICodeService {
         builder.append("appid=").append(wxappid);
         try {
             builder.append("&redirect_uri=").append(URLEncoder.encode(Constants.CALL_BACK_URL,"utf-8"));
-            builder.append("&response_type=code&scope=").append(appInterface.getScope()).append("&state=").append(geappid);
+            builder.append("&response_type=code&scope=").append(wechatPublic.getScope()).append("&state=").append(geappid);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return CodeRe.error("token回调地址有误!");
@@ -77,10 +84,10 @@ public class CodeService implements ICodeService {
             return CodeRe.error("该系统不支持utf-8");
         }
         codeOAuthRequest.setParam(UserCodeOAuthRequest.RESPONSETYPE,"code");
-            codeOAuthRequest.setParam(UserCodeOAuthRequest.SCOPE,appInterface.getScope());
+            codeOAuthRequest.setParam(UserCodeOAuthRequest.SCOPE, wechatPublic.getScope());
             codeOAuthRequest.setParam(UserCodeOAuthRequest.STATE,geappid);
 
-        codeRe.setMessage(codeOAuthRequest.build());
+        codeRe.setMessage(codeOAuthRequest.start());
         return codeRe;
     }
 
@@ -98,25 +105,38 @@ public class CodeService implements ICodeService {
             return  componetTokenCodeRe;
         }
 
-        StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/component/access_token");
+       /* StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/component/access_token");
         builder.append("?appid=").append(appid);
         builder.append("&code=").append(code);
         builder.append("&grant_type=authorization_code")
                 .append("&component_appid=").append(Constants.properties.getProperty("platform.appid"));
         builder.append("&component_access_token=").append(componetTokenCodeRe.getMessage().getToken());
 
-        Map map = HttpClientUtils.mapGetSend(builder.toString());
-        if(map == null){
-            return CodeRe.error("status error!");
+        Map map = HttpClientUtils.mapGetSend(builder.toString());*/
+        UserTokenOAuthRequest tokenOAuth = new UserTokenOAuthRequest();
+        tokenOAuth.setParam(UserTokenOAuthRequest.APPID,appid);
+        tokenOAuth.setParam(UserTokenOAuthRequest.CODE,code);
+        tokenOAuth.setParam(UserTokenOAuthRequest.GRANT_TYPE,"authorization_code");
+        tokenOAuth.setParam(UserTokenOAuthRequest.COMPONENT_APPID,Constants.properties.getProperty("platform.appid"));
+        tokenOAuth.setParam(UserTokenOAuthRequest.COMPONENT_ACCESS_TOKEN,componetTokenCodeRe.getMessage().getToken());
+        UserTokenOAuthRequest.AccessToken accessToken = tokenOAuth.start();
+
+        if(accessToken == null){
+            log.error("使用code 请求微信服务器失败！");
+            return CodeRe.error("服务器异常,请稍后再试!");
+        }
+        if(accessToken.isError()){
+            log.error(accessToken.getErrcode()+':'+accessToken.getErrmsg());
+            return CodeRe.error("服务器异常");
         }
 
-
-        if(map.containsKey("errcode")){
+        WxToken wxToken = new WxToken();
+       /* if(map.containsKey("errcode")){
             return CodeRe.error(map.get("errmsg").toString());
         }
         WxToken wxToken = new WxToken();
- /*       &&map.containsKey("expires_in")&&map.containsKey("refresh_token")&&
-                map.containsKey("openid")&&map.containsKey("scope")*/
+ *//*       &&map.containsKey("expires_in")&&map.containsKey("refresh_token")&&
+                map.containsKey("openid")&&map.containsKey("scope")*//*
         if(map.containsKey("access_token")){
             wxToken.setWxToken(map.get("access_token").toString());
         }
@@ -134,7 +154,12 @@ public class CodeService implements ICodeService {
         }
         if(map.containsKey("scope")){
             wxToken.setScope(map.get("scope").toString());
-        }
+        }*/
+        wxToken.setWxToken(accessToken.getAccessToken());
+        wxToken.setExpires(accessToken.getExpiresIn().longValue());
+        wxToken.setRefreshToken(accessToken.getRefreshToken());
+        wxToken.setUserOpenId(accessToken.getOpenid());
+        wxToken.setScope(accessToken.getScope());
         persistenceService.updateOrSave(wxToken);
         geCode.setOpenid(wxToken.getUserOpenId());
         geCode.setWxToken(wxToken.getWxToken());
@@ -143,15 +168,15 @@ public class CodeService implements ICodeService {
             return  CodeRe.error("token or openid is empty");
         }
 
-       User user = user(wxToken.getWxToken(),wxToken.getUserOpenId(),appid);
+       WechatUserInfo wechatUserInfo = user(wxToken.getWxToken(),wxToken.getUserOpenId(),appid);
 
-        if(user ==null){
-            return CodeRe.error("to get user from weixin is fail");
+        if(wechatUserInfo ==null){
+            return CodeRe.error("to get wechatUserInfo from weixin is fail");
         }
         return CodeRe.correct(geCode.getCallbackUrl()+"?code="+geCode.getGeCodeM()+"&state="+geCode.getState()+"&zyid="+geCode.getGeAppid());
     }
 
-    private User user(String token, String openid,String appid){
+    private WechatUserInfo user(String token, String openid, String appid){
         StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/userinfo?access_token=")
         .append(token).append("&openid=").append(openid).append("&lang=zh_CN");
         Map map = HttpClientUtils.mapGetSend(builder.toString());
@@ -159,39 +184,39 @@ public class CodeService implements ICodeService {
             return  null;
         }
 
-        User user = new User();
-        user.setOpenId(openid);
+        WechatUserInfo wechatUserInfo = new WechatUserInfo();
+        wechatUserInfo.setOpenId(openid);
 
         if(map.containsKey("nickname")){
-            user.setNick(map.get("nickname").toString());
+            wechatUserInfo.setNick(map.get("nickname").toString());
         }
 
         if(map.containsKey("sex")){
-            user.setSex(map.get("sex").toString());
+            wechatUserInfo.setSex(map.get("sex").toString());
         }
 
         if(map.containsKey("province")){
-            user.setProvince(map.get("province").toString());
+            wechatUserInfo.setProvince(map.get("province").toString());
         }
         if(map.containsKey("city")){
-            user.setCity(map.get("city").toString());
+            wechatUserInfo.setCity(map.get("city").toString());
         }
         if(map.containsKey("country")){
-            user.setCountry(map.get("country").toString());
+            wechatUserInfo.setCountry(map.get("country").toString());
         }
         if(map.containsKey("headimgurl")){
-            user.setHeadImgUrl(map.get("headimgurl").toString());
+            wechatUserInfo.setHeadImgUrl(map.get("headimgurl").toString());
         }
         if(map.containsKey("privilege")){
-            user.setPrivilege(map.get("privilege").toString());
+            wechatUserInfo.setPrivilege(map.get("privilege").toString());
         }
         if(map.containsKey("unionid")){
-            user.setUnionId(map.get("unionid").toString());
+            wechatUserInfo.setUnionId(map.get("unionid").toString());
         }
-        user.setAppid(appid);
-        persistenceService.updateOrSave(user);
+        wechatUserInfo.setAppid(appid);
+        persistenceService.updateOrSave(wechatUserInfo);
 
-        return user;
+        return wechatUserInfo;
     }
 
     @Override
@@ -223,7 +248,7 @@ public class CodeService implements ICodeService {
     }
 
     @Override
-    public CodeRe<User> getUser(String zyid,String token) {
+    public CodeRe<WechatUserInfo> getUser(String zyid, String token) {
        GeToken geToken = persistenceService.get(GeToken.class,zyid);
         Timestamp updatetime;
 
@@ -241,15 +266,15 @@ public class CodeService implements ICodeService {
 
        String openid = geToken.getOpenid();
 
-     User user = persistenceService.get(User.class,openid);
+     WechatUserInfo wechatUserInfo = persistenceService.get(WechatUserInfo.class,openid);
 
         try {
-            user.getUpdateTime();
+            wechatUserInfo.getUpdateTime();
         } catch (NullPointerException e) {
           return CodeRe.error("openid is invalid");
         }
 
-        return CodeRe.correct(user);
+        return CodeRe.correct(wechatUserInfo);
     }
 
 }

@@ -37,17 +37,17 @@ public class PayService implements IPayService {
     @Override
     public CodeRe pay(String id, int count,String geappid) {
 
-        AppInterface appInterface = persistenceService.get(AppInterface.class,geappid);
+        WechatPublic wechatPublic = persistenceService.get(WechatPublic.class,geappid);
 
 
 
-        PayCredential payCredential =  persistenceService.get(PayCredential.class,appInterface.getWxAppid());
+        PayCredential payCredential =  persistenceService.get(PayCredential.class, wechatPublic.getWxAppid());
 
         RedPayInfo payInfo = new RedPayInfo();
         payInfo.setNonce_str(UniqueStringGenerator.getUniqueCode());
         payInfo.setMch_billno(UniqueStringGenerator.wxbillno(payCredential.getMchid()));
         payInfo.setMch_id(payCredential.getMchid());
-        payInfo.setWxappid(appInterface.getWxAppid());
+        payInfo.setWxappid(wechatPublic.getWxAppid());
         payInfo.setSend_name("追游科技");
         payInfo.setRe_openid(id);
         payInfo.setTotal_num(1);
@@ -132,9 +132,9 @@ public class PayService implements IPayService {
     public CodeRe<RedStatus> payInfo(String billno,String token,String geappid) {
 
 
-        AppInterface appInterface = persistenceService.get(AppInterface.class,geappid);
+        WechatPublic wechatPublic = persistenceService.get(WechatPublic.class,geappid);
 
-      return redinfo(appInterface.getWxAppid(),billno);
+      return redinfo(wechatPublic.getWxAppid(),billno);
     }
 
     private CodeRe redinfo(String wxappid,String billno){

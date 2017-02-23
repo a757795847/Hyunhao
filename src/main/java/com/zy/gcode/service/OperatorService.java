@@ -2,14 +2,10 @@ package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
-import com.zy.gcode.pojo.DataStrategy;
-import com.zy.gcode.pojo.WxOperator;
-import org.apache.shiro.SecurityUtils;
+import com.zy.gcode.pojo.User;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 
 /**
@@ -26,7 +22,7 @@ public class OperatorService implements IOperatorService {
 
     @Override
     public CodeRe checkUsername(String username) {
-       WxOperator operator = persistenceService.get(WxOperator.class,username);
+       User operator = persistenceService.get(User.class,username);
         if(operator == null){
             return  CodeRe.correct("success");
         }
@@ -40,16 +36,16 @@ public class OperatorService implements IOperatorService {
 
     @Override
     public CodeRe registerOperator(String nick, String username, String password) {
-        WxOperator existOperator = persistenceService.get(WxOperator.class,username);
+        User existOperator = persistenceService.get(User.class,username);
         if(existOperator !=null){
           return CodeRe.error("用户名以存在!");
         }
 
-        WxOperator wxOperator = new WxOperator();
-        wxOperator.setUsername(username);
-        wxOperator.setName(nick);
-        wxOperator.setPassword(passwordService.encryptPassword(password));
-        persistenceService.save(wxOperator);
+        User user = new User();
+        user.setUsername(username);
+        user.setName(nick);
+        user.setPassword(passwordService.encryptPassword(password));
+        persistenceService.save(user);
         return CodeRe.correct("success");
     }
 

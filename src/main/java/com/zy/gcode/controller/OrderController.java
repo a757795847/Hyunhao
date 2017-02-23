@@ -3,7 +3,7 @@ package com.zy.gcode.controller;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.DataOrder;
-import com.zy.gcode.pojo.WxOperator;
+import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IOrderService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.Page;
@@ -44,8 +44,8 @@ public class OrderController {
     list(@RequestBody Map map){
         Page page = new Page();
         page.setCurrentPageIndex((Integer) map.get("currentPageIndex"));
-        WxOperator wxOperator =  (WxOperator) SecurityUtils.getSubject().getPrincipal();
-    return ControllerStatus.ok(orderService.getOrderByStatus((Integer) map.get("status"),page,wxOperator.getUsername()),page);
+        User user =  (User) SecurityUtils.getSubject().getPrincipal();
+    return ControllerStatus.ok(orderService.getOrderByStatus((Integer) map.get("status"),page, user.getUsername()),page);
     }
 
     /**
@@ -74,8 +74,8 @@ public class OrderController {
             return;
         }
         String[] strs =   name.split(":");
-        WxOperator wxOperator = (WxOperator)SecurityUtils.getSubject().getPrincipal();
-        if(wxOperator==null){
+        User user = (User)SecurityUtils.getSubject().getPrincipal();
+        if(user ==null){
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("如要访问，请先登录！");
             response.getWriter().flush();
@@ -83,7 +83,7 @@ public class OrderController {
             return;
         }
 
-        if(!strs[0].equals(wxOperator.getWxAppid())){
+        if(!strs[0].equals(user.getWxAppid())){
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("无法访问");
             response.getWriter().flush();
@@ -124,7 +124,7 @@ public class OrderController {
      */
     @RequestMapping(value = "parseCsv",method = RequestMethod.POST)
     public @ResponseBody  Object parseCsv(MultipartFile file){
-//      WxOperator operator = (WxOperator) SecurityUtils.getSubject().getSession().getAttribute("operator");
+//      User operator = (User) SecurityUtils.getSubject().getSession().getAttribute("operator");
        CodeRe codeRe =  orderService.handleCsv(file);
         if(codeRe.isError()){
             return  ControllerStatus.error(codeRe.getErrorMessage());
@@ -139,7 +139,7 @@ public class OrderController {
      */
     @RequestMapping("importCsv")
     public @ResponseBody  Object importCsv(@RequestBody List<DataOrder> orderList){
-        WxOperator operator = (WxOperator)SecurityUtils.getSubject().getPrincipal();
+        User operator = (User)SecurityUtils.getSubject().getPrincipal();
       CodeRe codeRe =  orderService.saveOrderList(orderList,operator.getUsername());
       if(codeRe.isError()){
           return ControllerStatus.error(codeRe.getErrorMessage());

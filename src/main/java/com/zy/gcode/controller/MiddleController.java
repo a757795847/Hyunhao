@@ -1,11 +1,10 @@
 package com.zy.gcode.controller;
 
-import com.zy.gcode.pojo.User;
+import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -40,8 +39,8 @@ public class MiddleController {
           if(map1.containsKey("status")&&map1.get("status").equals("1")){
              String str =  map1.get("userinfo").toString();
               try {
-                User user = Constants.objectMapper.readValue(str, User.class);
-                session.setAttribute("c_user",user);
+                WechatUserInfo wechatUserInfo = Constants.objectMapper.readValue(str, WechatUserInfo.class);
+                session.setAttribute("c_user", wechatUserInfo);
                 return "redirect:/view/wechat/home";
               } catch (IOException e) {
                   e.printStackTrace();

@@ -1,103 +1,43 @@
 package com.zy.gcode.pojo;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
- * Created by admin5 on 17/1/16.
+ * Created by admin5 on 17/2/15.
  */
 public class User {
-    private String openId;
-    private String phone;
-    private String nick;
-    private String province;
-    private String city;
-    private String country;
-    private String headImgUrl;
-    private String privilege;
-    private String unionId;
-    private String sex;
+    private String username;
+    private String password;
     private Timestamp insertTime;
+    private String name;
+    private String wxAppid;
+    private String role;
     private Timestamp updateTime;
-    private String appid;
-
-    public String getOpenId() {
-        return openId;
+    private String isEnable;
+    private Date expireTime;
+    public String getWxAppid() {
+        return wxAppid;
     }
 
-    public void setOpenId(String openId) {
-        this.openId = openId;
+    public void setWxAppid(String wxAppid) {
+        this.wxAppid = wxAppid;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getUsername() {
+        return username;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getNick() {
-        return nick;
+    public String getPassword() {
+        return password;
     }
 
-    public void setNick(String nick) {
-        this.nick = nick;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getHeadImgUrl() {
-        return headImgUrl;
-    }
-
-    public void setHeadImgUrl(String headImgUrl) {
-        this.headImgUrl = headImgUrl;
-    }
-
-    public String getPrivilege() {
-        return privilege;
-    }
-
-    public void setPrivilege(String privilege) {
-        this.privilege = privilege;
-    }
-
-    public String getUnionId() {
-        return unionId;
-    }
-
-    public void setUnionId(String unionId) {
-        this.unionId = unionId;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Timestamp getInsertTime() {
@@ -108,6 +48,22 @@ public class User {
         this.insertTime = insertTime;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public Timestamp getUpdateTime() {
         return updateTime;
     }
@@ -116,11 +72,19 @@ public class User {
         this.updateTime = updateTime;
     }
 
-    public String getAppid() {
-        return appid;
+    public String getIsEnable() {
+        return isEnable;
     }
 
-    public void setAppid(String appid) {
-        this.appid = appid;
+    public void setIsEnable(String isEnable) {
+        this.isEnable = isEnable;
+    }
+
+    public Date getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(Date expireTiem) {
+        this.expireTime = expireTiem;
     }
 }

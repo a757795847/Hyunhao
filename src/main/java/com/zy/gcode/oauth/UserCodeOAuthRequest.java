@@ -28,11 +28,7 @@ public class UserCodeOAuthRequest extends AbstractOAuthRequest<String> {
     }
 
     @Override
-    public String build() {
-        StringBuilder builder = new StringBuilder(url).append("?");
-        params.forEach((k,v)-> {
-            builder.append(k).append("=").append(v).append("&");
-        });
-        return builder.substring(0,builder.length()-1);
+    public String start() {
+       return buildParams();
     }
 }

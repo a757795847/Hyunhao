@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.zy.gcode.pojo.AppInterface" table="app_interface" schema="jt_platform">
+    <class name="com.zy.gcode.pojo.WechatPublic" table="wechat_public" schema="jt_platform">
         <id name="geAppid" column="ge_appid"/>
         <property name="wxAppid" column="wx_appid"/>
         <property name="secret" column="secret"/>
@@ -12,5 +12,6 @@
         <property name="scope" column="scope"/>
         <property update="false" insert="false" name="insertTime" column="insert_time"/>
         <property update="false" insert="false" name="updateTime" column="update_time"/>
+        <property name="username" column="username"/>
     </class>
 </hibernate-mapping>

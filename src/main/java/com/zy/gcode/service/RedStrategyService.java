@@ -3,7 +3,7 @@ package com.zy.gcode.service;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.DataStrategy;
-import com.zy.gcode.pojo.WxOperator;
+import com.zy.gcode.pojo.User;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class RedStrategyService implements IRedStrategyService {
 
     @Override
     public CodeRe addStrategy(String name, int money, String remark) {
-        WxOperator operator = getOperator();
+        User operator = getOperator();
         DataStrategy existStrategy =  persistenceService.getOneByColumn(DataStrategy.class,"name",name,"createUserId",operator.getUsername());
         if(existStrategy != null) {
             return CodeRe.error("红包名字重复");
@@ -42,13 +42,13 @@ public class RedStrategyService implements IRedStrategyService {
 
     @Override
     public CodeRe listRedStrategy() {
-        WxOperator operator = getOperator();
+        User operator = getOperator();
         List list = persistenceService.getListByColumn(DataStrategy.class,"userId",operator.getUsername());
         return CodeRe.correct(list);
     }
 
-    private WxOperator getOperator(){
-        return (WxOperator) SecurityUtils.getSubject().getPrincipal();
+    private User getOperator(){
+        return (User) SecurityUtils.getSubject().getPrincipal();
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.zy.gcode.security;
 
 import com.zy.gcode.dao.PersistenceService;
-import com.zy.gcode.pojo.WxOperator;
+import com.zy.gcode.pojo.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.AllowAllCredentialsMatcher;
@@ -9,7 +9,6 @@ import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.SimplePrincipalMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,15 +32,15 @@ public class ZyRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        WxOperator wxOperator = persistenceService.get(WxOperator.class, token.getPrincipal().toString());
+        User user = persistenceService.get(User.class, token.getPrincipal().toString());
         try {
-            wxOperator.getUsername();
+            user.getUsername();
         } catch (NullPointerException e) {
             throw new UnknownAccountException();
         }
-        System.out.println(wxOperator.getName());
-        SecurityUtils.getSubject().getSession(true).setAttribute("operator",wxOperator);
-        return new SimpleAuthenticationInfo(wxOperator, wxOperator.getPassword(), getName());
+        System.out.println(user.getName());
+        SecurityUtils.getSubject().getSession(true).setAttribute("operator", user);
+        return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
 
     }
 

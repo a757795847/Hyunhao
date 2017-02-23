@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 /**
  * Created by admin5 on 17/1/16.
  */
-public class AppInterface {
+public class WechatPublic {
     private String geAppid;
     private String wxAppid;
     private String secret;
@@ -13,6 +13,7 @@ public class AppInterface {
     private Timestamp insertTime;
     private Timestamp updateTime;
     private String scope;
+    private String username;
 
     public String getGeAppid() {
         return geAppid;
@@ -68,5 +69,13 @@ public class AppInterface {
 
     public void setScope(String scope) {
         this.scope = scope;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

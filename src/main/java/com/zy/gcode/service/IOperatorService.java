@@ -1,7 +1,6 @@
 package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
-import com.zy.gcode.pojo.WxOperator;
 
 /**
  * Created by admin5 on 17/2/17.

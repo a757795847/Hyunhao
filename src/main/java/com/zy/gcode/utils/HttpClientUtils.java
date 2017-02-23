@@ -52,6 +52,10 @@ public class HttpClientUtils {
         return null;
     }
 
+    public static boolean checkRespons(HttpResponse response){
+        return response.getStatusLine().getStatusCode()==200;
+    }
+
     /**
      * http get请求发送,参数可以通过可变字符串形式传入，形式为key，value的
      * 连续性结构

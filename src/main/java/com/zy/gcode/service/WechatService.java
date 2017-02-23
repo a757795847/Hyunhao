@@ -2,7 +2,7 @@ package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
-import com.zy.gcode.pojo.AppInterface;
+import com.zy.gcode.pojo.WechatPublic;
 import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.MediaMap;
 import com.zy.gcode.pojo.TokenConfig;
@@ -32,9 +32,9 @@ public class WechatService implements IWechatService {
     public CodeRe sumbit(final String image1,final String image2,final String image3,final String billno,final String openid,final String appid) {
         String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").toString();
         DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class,"orderNumber",billno);
-        AppInterface appInterface = persistenceService.getOneByColumn(AppInterface.class,"wxAppid",appid);
+        WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class,"wxAppid",appid);
 
-        if(appInterface==null){
+        if(wechatPublic ==null){
             return CodeRe.error("该微信公众号未录入系统");
         }
 
@@ -48,13 +48,13 @@ public class WechatService implements IWechatService {
         String dataPath = DateUtils.format(new Date(),"yyyyMM");
 
         if(image1!=null){
-            dataOrder.setCommentFile1(MzUtils.merge(dataPath,"/",appInterface.getGeAppid(),":",billno,"A"));
+            dataOrder.setCommentFile1(MzUtils.merge(dataPath,"/", wechatPublic.getGeAppid(),":",billno,"A"));
         }
         if(image2!=null){
-            dataOrder.setCommentFile2(MzUtils.merge(dataPath,"/",appInterface.getGeAppid(),":",billno,"B"));
+            dataOrder.setCommentFile2(MzUtils.merge(dataPath,"/", wechatPublic.getGeAppid(),":",billno,"B"));
         }
         if(image3 !=null){
-            dataOrder.setCommentFile3(MzUtils.merge(dataPath,"/",appInterface.getGeAppid(),":",billno,"C"));
+            dataOrder.setCommentFile3(MzUtils.merge(dataPath,"/", wechatPublic.getGeAppid(),":",billno,"C"));
         }
             CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessToken(appid);
             if(tokenConfigCodeRe.isError()){

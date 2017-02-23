@@ -2,6 +2,7 @@ package com.zy.gcode.utils;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.InputStream;
@@ -43,6 +44,7 @@ public abstract class Constants {
         }
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
     }
 
 

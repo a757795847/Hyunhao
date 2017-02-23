@@ -3,7 +3,7 @@ package com.zy.gcode.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
-import com.zy.gcode.pojo.User;
+import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.service.IAuthenticationService;
 import com.zy.gcode.service.IWechatService;
 import com.zy.gcode.utils.Constants;
@@ -36,9 +36,9 @@ public class WechatController {
     @RequestMapping("home")
     public String home(HttpServletRequest request) {
         HttpSession session = request.getSession(true);
-        User user = (User) session.getAttribute("c_user");
+        WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
 
-        if (user != null) {
+        if (wechatUserInfo != null) {
             Map<String, String> map = JsapiUtils.sign(authenticationService.getJsapiTicketByAppid("wx653d39223641bea7").getMessage().getToken(),
                     request.getRequestURL().toString());
             map.put("appid", "wx653d39223641bea7");
@@ -64,11 +64,11 @@ public class WechatController {
     @ResponseBody
     public Map submit(@RequestParam(required = false) String image1, @RequestParam(required = false) String image2,
                       @RequestParam(required = false) String image3, @RequestParam String billno, HttpSession session) throws IOException {
-        User user = (User) session.getAttribute("c_user");
-        if (user == null) {
+        WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
+        if (wechatUserInfo == null) {
             return ControllerStatus.error("登录过期");
         }
-        CodeRe<String> codeRe = wechatService.sumbit(image1, image2, image3, billno, user.getOpenId(), user.getAppid());
+        CodeRe<String> codeRe = wechatService.sumbit(image1, image2, image3, billno, wechatUserInfo.getOpenId(), wechatUserInfo.getAppid());
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }

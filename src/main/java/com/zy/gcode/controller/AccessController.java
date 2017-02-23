@@ -3,8 +3,7 @@ package com.zy.gcode.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.pojo.GeToken;
-import com.zy.gcode.pojo.User;
-import com.zy.gcode.service.CodeService;
+import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.service.ICodeService;
 import com.zy.gcode.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +70,7 @@ public class AccessController {
     public
     @ResponseBody
     Map guserinfo(String token,String zyid) {
-        CodeRe<User> codeRe = iCodeService.getUser(zyid,token);
+        CodeRe<WechatUserInfo> codeRe = iCodeService.getUser(zyid,token);
         if (codeRe.isError()) {
             return error(codeRe.getErrorMessage());
         }

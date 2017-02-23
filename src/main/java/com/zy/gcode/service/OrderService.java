@@ -4,7 +4,7 @@ import com.csvreader.CsvReader;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.DataOrder;
-import com.zy.gcode.pojo.WxOperator;
+import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.annocation.CsvPush;
 import com.zy.gcode.utils.*;
 import org.apache.shiro.SecurityUtils;
@@ -53,7 +53,7 @@ public class OrderService implements IOrderService {
             return CodeRe.error("上传文件不能为空");
         }
 
-        WxOperator operator = getWxOperator();
+        User operator = getWxOperator();
 
         if(operator == null){
             return CodeRe.error("登录过期!");
@@ -182,7 +182,7 @@ public class OrderService implements IOrderService {
       if(dataOrder.getGiftState()!=1){
         return   CodeRe.error("该红包未申领");
       }
-      WxOperator operator = getWxOperator();
+      User operator = getWxOperator();
       if(operator == null){
           return CodeRe.error("登录超时!");
       }
@@ -199,7 +199,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public CodeRe redSend(String orderno, int count) {
-        WxOperator operator = (WxOperator) SecurityUtils.getSubject().getSession().getAttribute("operator");
+        User operator = (User) SecurityUtils.getSubject().getSession().getAttribute("operator");
         if(operator ==null){
             CodeRe.error("操作超时,请重新登录!");
         }
@@ -239,7 +239,7 @@ public class OrderService implements IOrderService {
         return CodeRe.correct("success");
     }
 
-    private WxOperator getWxOperator(){
-       return (WxOperator) SecurityUtils.getSubject().getPrincipal();
+    private User getWxOperator(){
+       return (User) SecurityUtils.getSubject().getPrincipal();
     }
 }

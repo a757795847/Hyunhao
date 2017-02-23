@@ -2,7 +2,7 @@ package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
-import com.zy.gcode.pojo.AppInterface;
+import com.zy.gcode.pojo.WechatPublic;
 import com.zy.gcode.pojo.AuthorizationInfo;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.service.pay.WxXmlParser;
@@ -166,14 +166,14 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
-    public AppInterface allAppInterface(String id) {
-       AppInterface appInterface = persistenceService.get(AppInterface.class,id);
+    public WechatPublic allAppInterface(String id) {
+       WechatPublic wechatPublic = persistenceService.get(WechatPublic.class,id);
         try {
-            appInterface.getGeAppid();
+            wechatPublic.getGeAppid();
         } catch (NullPointerException e) {
            return null;
         }
-        return appInterface;
+        return wechatPublic;
     }
 
     @Override
@@ -223,11 +223,11 @@ public class AuthenticationService implements IAuthenticationService {
             updateTime = tokenConfig.getUpdateTime();
         } catch (Exception e) {
             tokenConfig = new TokenConfig();
-            AppInterface appInterface = persistenceService.getOneByColumn(AppInterface.class,"wxAppid",appid);
-            if(appInterface==null){
+            WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class,"wxAppid",appid);
+            if(wechatPublic ==null){
                 return CodeRe.error("appid 不存在");
             }
-          Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+appInterface.getSecret());
+          Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+ wechatPublic.getSecret());
             if(map.containsKey("errmsg")){
                 return CodeRe.error(map.get("errmsg").toString());
             }
@@ -239,11 +239,11 @@ public class AuthenticationService implements IAuthenticationService {
         }
 
         if(DateUtils.isOutOfDate(updateTime,tokenConfig.getExpiresIn())){
-            AppInterface appInterface = persistenceService.getOneByColumn(AppInterface.class,"wxAppid",appid);
-            if(appInterface==null){
+            WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class,"wxAppid",appid);
+            if(wechatPublic ==null){
                 return CodeRe.error("appid 不存在,获取wxaccesstoken");
             }
-            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+appInterface.getSecret());
+            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+ wechatPublic.getSecret());
             if(map.containsKey("errmsg")){
                 return CodeRe.error(map.get("errmsg").toString());
             }
