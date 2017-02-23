@@ -59,10 +59,14 @@ public class RedStrategyService implements IRedStrategyService {
 
     @Override
     public CodeRe updateRedStrategy(long id, String name, int money) {
-        DataStrategy strategy = new DataStrategy();
+        DataStrategy strategy = persistenceService.get(DataStrategy.class,id);
+        if(strategy == null){
+            return CodeRe.error("更新策略不存在");
+        }
         strategy.setName(name);
-        strategy.setId(id);
         strategy.setMoney(money);
+        strategy.setUpdateUserId(getOperator().getUsername());
+
         persistenceService.update(strategy);
         return CodeRe.correct("success");
     }
