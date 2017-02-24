@@ -16,5 +16,5 @@ public interface IOrderService {
     CodeRe handleCsv(MultipartFile multipartFile);
     CodeRe saveOrderList(List<DataOrder> orderList,String userId);
     CodeRe passAuditing(String uuid);
-    CodeRe redSend(String orderno,int count);
+    CodeRe redSend(String orderno,long strategyid);
 }

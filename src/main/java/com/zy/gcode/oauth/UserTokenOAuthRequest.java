@@ -25,16 +25,7 @@ public class UserTokenOAuthRequest extends AbstractOAuthRequest<UserTokenOAuthRe
 
     @Override
     public AccessToken start() {
-     HttpResponse response = HttpClientUtils.getSend(buildParams());
-      if(!HttpClientUtils.checkRespons(response)){
-          return null;
-      }
-        try {
-          return   Constants.objectMapper.readValue(response.getEntity().getContent(),AccessToken.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-           return null;
-        }
+         return getObj(AccessToken.class);
     }
 
 /*    public static void main(String[] args) throws Exception{
@@ -47,7 +38,7 @@ public class UserTokenOAuthRequest extends AbstractOAuthRequest<UserTokenOAuthRe
                 ",\"errcode\":1}",AccessToken.class)
         );}*/
 
-    public static class AccessToken{
+    public static  class AccessToken{
        /* "access_token":"ACCESS_TOKEN",
                 "expires_in":7200,
                 "refresh_token":"REFRESH_TOKEN",

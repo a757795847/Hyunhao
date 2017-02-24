@@ -1,5 +1,9 @@
 package com.zy.gcode.utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
 /**
@@ -17,5 +21,19 @@ public class MzUtils {
             strs[i]= strs[i].trim();
         }
         return  strs;
+    }
+
+    public static String inputStreamToString(InputStream inputStream){
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))){
+            StringBuilder builder = new StringBuilder();
+            String line;
+            while((line =reader.readLine())!=null){
+                builder.append(line);
+            }
+            return builder.toString();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
