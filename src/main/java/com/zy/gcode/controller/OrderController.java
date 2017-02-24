@@ -164,12 +164,12 @@ public class OrderController {
     @RequestMapping(value = "redSend",method = RequestMethod.POST )
     public @ResponseBody Object redSend(@RequestBody Map map){
         if(!map.containsKey("id")){
-            ControllerStatus.error("请传入订单id");
+           return ControllerStatus.error("请传入订单id");
         }
-        if(!map.containsKey("count")){
-            ControllerStatus.error("请传入红包大小");
+        if(!map.containsKey("strategyid")){
+         return    ControllerStatus.error("请选择红包策略");
         }
-      CodeRe codeRe =  orderService.redSend(map.get("id").toString(),Integer.valueOf(map.get("count").toString()));
+      CodeRe codeRe =  orderService.redSend(map.get("id").toString(),Integer.valueOf(map.get("strategyid").toString()).longValue());
         if(codeRe.isError()){
             return ControllerStatus.error(codeRe.getErrorMessage());
         }

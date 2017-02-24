@@ -6,14 +6,14 @@
     initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, wechatUserInfo-scalable=no" />
     <meta id="config-json" data-json='${jsonConfig}'/>
     <title>微信提交</title>
-    <link rel="stylesheet" href="../../stylesheets/weui.min.css">
-    <link rel="stylesheet" href="../../stylesheets/jquery-weui.min.css">
-    <link rel="stylesheet" href="../../stylesheets/submit.css">
+    <link rel="stylesheet" href="${request.contextPath}/stylesheets/weui.min.css">
+    <link rel="stylesheet" href="${request.contextPath}/stylesheets/jquery-weui.min.css">
+    <link rel="stylesheet" href="${request.contextPath}/stylesheets/submit.css">
 
 </head>
 <body>
     <div id="image">
-        <img src="../../images/304.png" alt="">
+        <img src="${request.contextPath}/images/304.png" alt="">
     </div>
     <div id="text">
         <p>提交成功</p>
@@ -22,7 +22,7 @@
     <div id="form" class="text-center">
         <div id="hide">
             <ul>
-                <li class="last" id="odd"><p><img src="../../images/7.png" alt=""></p><p>第一步:</p><p>上传图片</p></li>
+                <li class="last" id="odd"><p><img src="${request.contextPath}/images/7.png" alt=""></p><p>第一步:</p><p>上传图片</p></li>
             </ul>
         </div>
 
@@ -36,8 +36,8 @@
     </div>
 
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script src="../../javascripts/jquery.min.js"></script>
-<script src="../../javascripts/jquery-weui.min.js"></script>
-<script src="../../javascripts/submit.js"></script>
+<script src="${request.contextPath}/javascripts/jquery.min.js"></script>
+<script src="${request.contextPath}/javascripts/jquery-weui.min.js"></script>
+<script src="${request.contextPath}/javascripts/submit.js"></script>
 </body>
 </html>

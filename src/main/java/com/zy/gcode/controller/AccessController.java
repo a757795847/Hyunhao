@@ -41,10 +41,10 @@ public class AccessController {
         return "redirect:" + codeRe.getMessage();
     }
 
-    @RequestMapping("wxcode/{geappid}")
-    public String wxcode(@PathVariable("geappid") String geappid,@RequestParam("redirect_url") String callback,String state) throws UnsupportedEncodingException {
+    @RequestMapping("wxcode/{tAppid}")
+    public String wxcode(@PathVariable("tAppid") String tAppid,@RequestParam("redirect_url") String callback,String state) throws UnsupportedEncodingException {
         callback = URLDecoder.decode(callback, "utf-8");
-        CodeRe codeRe = iCodeService.code(geappid,callback,state);
+        CodeRe codeRe = iCodeService.code(tAppid,callback,state);
         if (codeRe.isError()) {
             return "redirect:" + callback;
         }
@@ -74,7 +74,6 @@ public class AccessController {
         if (codeRe.isError()) {
             return error(codeRe.getErrorMessage());
         }
-
 
         Map map = new HashMap(4);
         try {

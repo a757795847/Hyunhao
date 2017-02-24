@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("pay")
-public class PayController {
+public class PayController{
     @Autowired
     IPayService payService;
 

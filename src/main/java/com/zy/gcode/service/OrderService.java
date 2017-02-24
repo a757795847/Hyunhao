@@ -4,6 +4,7 @@ import com.csvreader.CsvReader;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.DataOrder;
+import com.zy.gcode.pojo.DataStrategy;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.annocation.CsvPush;
 import com.zy.gcode.utils.*;
@@ -30,7 +31,6 @@ import java.util.*;
  */
 @Component
 public class OrderService implements IOrderService {
-
     Logger log = LoggerFactory.getLogger(OrderService.class);
 
     int HANDLE_COUNT = 256;
@@ -56,6 +56,7 @@ public class OrderService implements IOrderService {
         User operator = getWxOperator();
 
         if(operator == null){
+            log.debug("当前session用户为空");
             return CodeRe.error("登录过期!");
         }
 
@@ -90,6 +91,7 @@ public class OrderService implements IOrderService {
             DataOrder dataOrder = new DataOrder();
             BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);//使用spring 包装bean设置csv读入属性到pojo
             String[] values = csvValueList.get(j);
+            log.debug("解析的订单:"+Arrays.toString(values));
             for (int i = 0; i < titles.length; i++) {
                 if (titles[i].equals("订单编号")) {
                     String str = values[i];
@@ -165,7 +167,7 @@ public class OrderService implements IOrderService {
         List<String> inconsequenceNos = new ArrayList<>();
        for(DataOrder dataOrder:orderList){
            DataOrder containOrder = getContainsOrder(dataOrderList,dataOrder);
-           if(containOrder!=null&&!containOrder.getCreateUserId().equals(userId)){
+           if(containOrder!=null){
                inconsequenceNos.add(containOrder.getId());
                continue;
            }
@@ -180,6 +182,7 @@ public class OrderService implements IOrderService {
 
       DataOrder dataOrder =   persistenceService.get(DataOrder.class,uuid);
       if(dataOrder.getGiftState()!=1){
+          log.debug("红包状态非等于1");
         return   CodeRe.error("该红包未申领");
       }
       User operator = getWxOperator();
@@ -187,6 +190,7 @@ public class OrderService implements IOrderService {
           return CodeRe.error("登录超时!");
       }
       if(!operator.getUsername().equals(dataOrder.getCreateUserId())){
+          log.debug("订单号的用户名与当前登录者用户名不符和");
           return CodeRe.error("您无此权限更改用户状态");
       }
 
@@ -198,7 +202,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public CodeRe redSend(String orderno, int count) {
+    public CodeRe redSend(String orderno, long strategyid) {
         User operator = (User) SecurityUtils.getSubject().getSession().getAttribute("operator");
         if(operator ==null){
             CodeRe.error("操作超时,请重新登录!");
@@ -217,14 +221,13 @@ public class OrderService implements IOrderService {
        if(giftState!=2){
            return CodeRe.error("订单未处于审核通过状态!");
        }
-
-       if(count < 100){
-           return  CodeRe.error("红包金额必须大于100");
-       }
+       DataStrategy strategy =  persistenceService.get(DataStrategy.class,strategyid);
         /*String openid,String count,String wxAppid*/
-
+        if(strategy == null){
+            return CodeRe.error("红包策略不存在");
+        }
       Map map =  HttpClientUtils.mapGetSend("http://open.izhuiyou.com/pay/send","openid",order.getWeixinId(),
-                "count",String.valueOf(count),"geAppid",wxappid,"sign","13468794sagag");
+                "count",String.valueOf(strategy.getMoney()),"geAppid",wxappid,"sign","13468794sagag");
       if(map ==null){
           log.error("http请求错误");
           return CodeRe.error("红包发送失败");

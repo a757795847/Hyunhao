@@ -41,7 +41,7 @@ public class MiddleController {
               try {
                 WechatUserInfo wechatUserInfo = Constants.objectMapper.readValue(str, WechatUserInfo.class);
                 session.setAttribute("c_user", wechatUserInfo);
-                return "redirect:/view/wechat/home";
+                return "redirect:"+state;
               } catch (IOException e) {
                   e.printStackTrace();
               }

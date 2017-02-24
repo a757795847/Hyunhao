@@ -3,6 +3,7 @@ package com.zy.gcode.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
+import com.zy.gcode.pojo.WechatPublic;
 import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.service.IAuthenticationService;
 import com.zy.gcode.service.IWechatService;
@@ -10,6 +11,7 @@ import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.wx.JsapiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,15 +35,17 @@ public class WechatController {
     @Autowired
     IWechatService wechatService;
 
-    @RequestMapping("home")
-    public String home(HttpServletRequest request) {
+    @RequestMapping("home/{tAppid}")
+    public String home(@PathVariable("tAppid") String tAppid, HttpServletRequest request) {
         HttpSession session = request.getSession(true);
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
 
+         WechatPublic wechatPublic = wechatService.getWechatPublic(tAppid);
+
         if (wechatUserInfo != null) {
-            Map<String, String> map = JsapiUtils.sign(authenticationService.getJsapiTicketByAppid("wx653d39223641bea7").getMessage().getToken(),
+            Map<String, String> map = JsapiUtils.sign(authenticationService.getJsapiTicketByAppid(wechatPublic.getWxAppid()).getMessage().getToken(),
                     request.getRequestURL().toString());
-            map.put("appid", "wx653d39223641bea7");
+            map.put("appid", wechatPublic.getWxAppid());
 
             try {
                 request.setAttribute("jsonConfig", Constants.objectMapper.writeValueAsString(map));
@@ -53,7 +57,8 @@ public class WechatController {
             return "/views/wechat/submit.html";
         }
         try {
-            return "redirect:http://open.izhuiyou.com/access/wxcode/ge111" + "?redirect_url=" + URLEncoder.encode("http://open.izhuiyou.com/middle/token", "utf-8");
+            return "redirect:http://open.izhuiyou.com/access/wxcode/"+tAppid + "?redirect_url="
+                    + URLEncoder.encode("http://open.izhuiyou.com/middle/token", "utf-8")+"&state="+URLEncoder.encode(request.getRequestURL().toString(),"utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
