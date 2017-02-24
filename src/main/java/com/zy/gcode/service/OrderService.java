@@ -167,7 +167,7 @@ public class OrderService implements IOrderService {
         List<String> inconsequenceNos = new ArrayList<>();
        for(DataOrder dataOrder:orderList){
            DataOrder containOrder = getContainsOrder(dataOrderList,dataOrder);
-           if(containOrder!=null&&!containOrder.getCreateUserId().equals(userId)){
+           if(containOrder!=null){
                inconsequenceNos.add(containOrder.getId());
                continue;
            }
