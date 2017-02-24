@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
@@ -37,7 +38,7 @@ public class CodeService implements ICodeService {
 
     @Autowired
     AuthenticationService authenticationService;
-
+    @Transactional
     public CodeRe code(String geappid, String url, String state) {
 
         WechatPublic wechatPublic = persistenceService.get(WechatPublic.class, geappid);
@@ -77,7 +78,7 @@ public class CodeService implements ICodeService {
         codeOAuthRequest.setParam(UserCodeOAuthRequest.COMPONENT_APPID, (String) Constants.properties.get("platform.appid")).setSuffix("#wechat_redirect");
         return CodeRe.correct(codeOAuthRequest.start());
     }
-
+    @Transactional
     public CodeRe token(String code, String state, String appid) {
 
         GeCode geCode = persistenceService.get(GeCode.class, state);
@@ -130,7 +131,7 @@ public class CodeService implements ICodeService {
         }
         return CodeRe.correct(geCode.getCallbackUrl() + "?code=" + geCode.getGeCodeM() + "&state=" + geCode.getState() + "&zyid=" + geCode.getGeAppid());
     }
-
+    @Transactional
     private WechatUserInfo user(String token, String openid, String appid) {
 
         UserInfoOAuthRequest infoOAuthRequest = new UserInfoOAuthRequest();
@@ -162,6 +163,7 @@ public class CodeService implements ICodeService {
     }
 
     @Override
+    @Transactional
     public CodeRe<GeToken> geToken(String geCodeM, String geappid) {
         GeCode geCode = persistenceService.get(GeCode.class, geCodeM);
 
@@ -190,6 +192,7 @@ public class CodeService implements ICodeService {
     }
 
     @Override
+    @Transactional
     public CodeRe<WechatUserInfo> getUser(String zyid, String token) {
         GeToken geToken = persistenceService.get(GeToken.class, token);
         Timestamp updatetime;

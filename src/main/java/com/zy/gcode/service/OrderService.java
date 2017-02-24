@@ -17,6 +17,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -41,13 +42,19 @@ public class OrderService implements IOrderService {
 
 
     @Override
-    public List<DataOrder> getOrderByStatus(int status, Page page,String userId) {
+    @Transactional
+    public List<DataOrder> getOrderByCondition(int status, Page page, String userId, Timestamp applyTime, Timestamp importTime) {
         DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
         criteria.add(Restrictions.eq("giftState", status)).add(Restrictions.eq("createUserId",userId));
+        if(importTime!=null)
+        criteria.add(Restrictions.eq("createDate",importTime));
+        if(applyTime!=null)
+        criteria.add(Restrictions.eq("applyDate",applyTime));
         return persistenceService.getListAndSetCount(DataOrder.class, criteria, page);
     }
 
     @Override
+    @Transactional
     public CodeRe handleCsv(MultipartFile multipartFile) {
         if(multipartFile.isEmpty()){
             return CodeRe.error("上传文件不能为空");
@@ -108,8 +115,6 @@ public class OrderService implements IOrderService {
 
         List<Map> resultList = new ArrayList<>(HANDLE_COUNT);
         dataOrderList.forEach(dataOrder -> {
-            Map resultMap = new HashMap(3);
-            resultMap.put("order", dataOrder);
             DataOrder containOrder = getContainsOrder(existDataOrderList,dataOrder);
             if (containOrder!=null) {
           /*      if(!containOrder.getCreateUserId().equals(operator.getUsername())){
@@ -118,9 +123,12 @@ public class OrderService implements IOrderService {
                     resultMap.put("state", "0"); // 0 表示订单已存在,且属于当前运营者
                 }*/
             } else {
+                Map resultMap = new HashMap(3);
+                resultMap.put("order", dataOrder);
                 resultMap.put("state", "1"); // 1 表示订单不存在
+                resultList.add(resultMap);
             }
-            resultList.add(resultMap);
+
         });
 
         return CodeRe.correct(resultList);
@@ -157,6 +165,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional
     public CodeRe saveOrderList(List<DataOrder> orderList,String userId) {
         int len = orderList.size();
         String[] dataNos = new String[len];
@@ -178,6 +187,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional
     public CodeRe passAuditing(String uuid) {
 
       DataOrder dataOrder =   persistenceService.get(DataOrder.class,uuid);
@@ -202,6 +212,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional
     public CodeRe redSend(String orderno, long strategyid) {
         User operator = (User) SecurityUtils.getSubject().getSession().getAttribute("operator");
         if(operator ==null){

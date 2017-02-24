@@ -6,13 +6,15 @@ import com.zy.gcode.utils.Page;
 import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by admin5 on 17/2/15.
  */
 public interface IOrderService {
-    List<DataOrder> getOrderByStatus(int status, Page page,String userId);
+    List<DataOrder> getOrderByCondition(int status, Page page, String userId, Timestamp applyTime, Timestamp importTime);
     CodeRe handleCsv(MultipartFile multipartFile);
     CodeRe saveOrderList(List<DataOrder> orderList,String userId);
     CodeRe passAuditing(String uuid);

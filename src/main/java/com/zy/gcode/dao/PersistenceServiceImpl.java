@@ -5,6 +5,7 @@ import com.zy.gcode.utils.Page;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -132,4 +133,8 @@ public class PersistenceServiceImpl implements PersistenceService {
         session().delete(get(clazz,id));
     }
 
+    @Override
+    public Transaction beginTransaction() {
+        return session().beginTransaction();
+    }
 }

@@ -13,6 +13,8 @@ import com.zy.gcode.utils.wx.AesException;
 import com.zy.gcode.utils.wx.WXBizMsgCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -22,7 +24,7 @@ import java.util.Map;
 /**
  * Created by admin5 on 17/1/21.
  */
-@Component
+@Service
 public class AuthenticationService implements IAuthenticationService {
     @Autowired
     PersistenceService persistenceService;
@@ -38,6 +40,7 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
+    @Transactional
     public CodeRe<AuthorizationInfo> saveServerToken(String content,String token) {
         try {
             Map<String,Map> map= Constants.objectMapper.readValue(content, Map.class);
@@ -78,6 +81,7 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
+    @Transactional
     public CodeRe<TokenConfig> componetToekn() {
         String componetAppid = Constants.properties.getProperty("platform.appid");
         TokenConfig componetToken =  persistenceService.get(TokenConfig.class,componetAppid);
@@ -110,7 +114,7 @@ public class AuthenticationService implements IAuthenticationService {
 
         return CodeRe.correct(componetToken);
     }
-
+    @Transactional
     public CodeRe<TokenConfig> getJsapiTicket(){
        CodeRe<TokenConfig> componetTokenCodeRe = componetToekn();
        if(componetTokenCodeRe.isError()){
@@ -150,6 +154,7 @@ public class AuthenticationService implements IAuthenticationService {
 
 
     @Override
+    @Transactional
     public String decrpt(String msg_signature, String timestamp, String nonce, String str) {
         TokenConfig tokenConfig = new TokenConfig();
         tokenConfig.setName("componentVerifyTicket");
@@ -166,6 +171,7 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
+    @Transactional
     public WechatPublic allAppInterface(String id) {
        WechatPublic wechatPublic = persistenceService.get(WechatPublic.class,id);
         try {
@@ -177,6 +183,7 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
+    @Transactional
     public CodeRe<TokenConfig> getJsapiTicketByAppid(String appid) {
         CodeRe<TokenConfig> wxAccessToken = getWxAccessToken(appid);
         if(wxAccessToken.isError()){
@@ -216,6 +223,7 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
+    @Transactional
     public CodeRe<TokenConfig> getWxAccessToken(String appid) {
         TokenConfig tokenConfig = persistenceService.get(TokenConfig.class,appid+"toekn");
         Timestamp updateTime;

@@ -9,6 +9,7 @@ import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.MzUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -26,6 +27,7 @@ public class WechatService implements IWechatService {
 
 
     @Override
+    @Transactional
     public CodeRe sumbit(final String image1,final String image2,final String image3,final String billno,final String openid,final String appid) {
         String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").toString();
         DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class,"orderNumber",billno);
@@ -104,6 +106,7 @@ public class WechatService implements IWechatService {
 
 
     @Override
+    @Transactional
     public WechatPublic getWechatPublic(String id) {
         return persistenceService.get(WechatPublic.class,id);
     }

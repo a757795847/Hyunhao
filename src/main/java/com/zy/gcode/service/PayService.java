@@ -17,6 +17,7 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class PayService implements IPayService {
     PersistenceService persistenceService;
 
     @Override
+    @Transactional
     public CodeRe pay(String id, int count,String geappid) {
 
         WechatPublic wechatPublic = persistenceService.get(WechatPublic.class,geappid);
@@ -129,6 +131,7 @@ public class PayService implements IPayService {
     }
 
     @Override
+    @Transactional
     public CodeRe<RedStatus> payInfo(String billno,String token,String geappid) {
 
 
@@ -238,6 +241,7 @@ public class PayService implements IPayService {
     }
 
     @Override
+    @Transactional
     public CodeRe circularGetPayInfo() {
 
         List<RedStatus> pushList = new ArrayList<>(512);

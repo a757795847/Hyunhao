@@ -1,5 +1,6 @@
 package com.zy.gcode.controller;
 
+import com.sun.tools.corba.se.idl.constExpr.Times;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.DataOrder;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +29,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("order")
 public class OrderController {
+
+    public final static String ZYAPPID = "zyappid1";
+
 
     @Autowired
     IOrderService orderService;
@@ -45,7 +50,16 @@ public class OrderController {
         Page page = new Page();
         page.setCurrentPageIndex((Integer) map.get("currentPageIndex"));
         User user =  (User) SecurityUtils.getSubject().getPrincipal();
-    return ControllerStatus.ok(orderService.getOrderByStatus((Integer) map.get("status"),page, user.getUsername()),page);
+        Timestamp importTime = null;
+        Timestamp applyTime = null;
+        if(map.containsKey("importTime")){
+            importTime = new Timestamp((long)map.get("importTime"));
+        }
+         if(map.containsKey("applyTime")){
+             applyTime = new Timestamp((long)map.get("applyTime"));
+        }
+
+    return ControllerStatus.ok(orderService.getOrderByCondition((Integer) map.get("status"),page, user.getUsername(),applyTime,importTime));
     }
 
     /**
@@ -63,9 +77,9 @@ public class OrderController {
      * @param response
      * @throws IOException
      */
-    @RequestMapping("picture/{name}")
-    public void picture(@PathVariable String name, HttpServletResponse response) throws IOException{
-        File file = new File(Constants.RED_PICTURE_PATH+"/"+name);
+    @RequestMapping("picture/{date}/{name}")
+    public void picture(@PathVariable String date,@PathVariable String name, HttpServletResponse response) throws IOException{
+        File file = new File(Constants.RED_PICTURE_PATH+"/"+date+"/"+name);
         if(!file.exists()){
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("文件不存在");
@@ -161,8 +175,13 @@ public class OrderController {
        return ControllerStatus.ok(codeRe.getMessage().toString());
     }
 
-    @RequestMapping(value = "redSend",method = RequestMethod.POST )
+    @RequestMapping(value = "redSend",method = RequestMethod.POST)
     public @ResponseBody Object redSend(@RequestBody Map map){
+        if(SecurityUtils.getSubject().isPermitted(ZYAPPID)){
+            ControllerStatus.error("无权访问");
+        }
+
+
         if(!map.containsKey("id")){
            return ControllerStatus.error("请传入订单id");
         }
@@ -176,6 +195,12 @@ public class OrderController {
         return ControllerStatus.ok(codeRe.getMessage().toString());
 
     }
+
+    @RequestMapping("test")
+    public @ResponseBody String test(){
+        return SecurityUtils.getSubject().isPermitted(ZYAPPID)+"";
+    }
+
 
 
 }
