@@ -86,8 +86,14 @@
     background-color:#f96207;
 
 }
+.detele:hover{
+    background-color: #fb8843;
+}
 .box .table tbody .edit{
     background-color:rgb(66,203,254);
+}
+.box .table tbody .edit:hover {
+  background-color:#67cdf3;
 }
 .modal-header {
     padding: 6px 16px;

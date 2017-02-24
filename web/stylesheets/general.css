@@ -122,9 +122,9 @@ input{
     visibility: hidden;
 }
 .table_top td{
-    width: 125px;
+    width: 121px;
     font-size: 13px;
     padding: 3px 0px;
     vertical-align: middle;
-    text-align: right;
+    text-align: center;
 }

@@ -345,22 +345,22 @@ select:after{
 .images li{
     float:left;
     margin-right:4px;
-    width:29px;
+    width:28px;
     height:10px;
 
 }
 .images li img{
     position:absolute;
-    width:100%;
     width:30px;
     height:27px;
 
 }
-.images li:hover{
+/*.images li:hover{
     z-index: 999;
-}
+}*/
+/*
 .images li img:hover{
     transform: scale(20.0, 14.0);
     transition: .3s transform;
     z-index: 1000;
-}
+}*/

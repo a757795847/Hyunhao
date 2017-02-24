@@ -69,9 +69,9 @@ function indexAjax(datas,pageState){
                 }
                 tbody +='<tr id="'+ order.id +'"><td><input type="checkbox" class="statistic"></td><td class="mailbox-date"><span>'+order.orderNumber+'</span></td>';
                 tbody +='<td class="mailbox-date"><span class="label label-success proxylist_details" data-index="'+ i +'">详情</span></td>';
-                tbody +='<td class="mailbox-date"><ul class="images"><li><img src="../images/125.jpg" alt=""></li>' +
-                    '<li><img src="../images/3.jpg" alt=""></li>' +
-                    '<li><img src="../images/125.jpg" alt=""></li></ul></td>';
+                tbody +='<td class="mailbox-date"><ul class="images"><li><img src="../images/125.jpg" alt="" class="tooltips"></li>' +
+                    '<li><img src="../images/3.jpg" alt="" class="tooltips"></li>' +
+                    '<li><img src="../images/125.jpg" alt="" class="tooltips"></li></ul></td>';
                 tbody +='<td class="mailbox-date"><span>'+order.applyDate+'</span></td>';
                 tbody +='<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">'+order.giftState+'</span></td>';
                 tbody +='<td class="mailbox-date"><span class="top">'+order.giftDetail+'</span></td>';
@@ -280,9 +280,9 @@ function filterAjax(datas,pageState){
                 }
                 tbody +='<tr id="'+ order.id +'"><td><input type="checkbox" id="statistic"></td><td class="mailbox-date"><span>'+order.orderNumber+'</span></td>';
                 tbody +='<td class="mailbox-date"><span class="label label-success proxylist_details" data-index="'+ i +'">详情</span></td>';
-                tbody +='<td class="mailbox-date"><ul class="images"><li><img src="../images/125.jpg" alt=""></li>' +
-                    '<li><img src="../images/3.jpg" alt=""></li>' +
-                    '<li><img src="../images/125.jpg" alt=""></li></ul></td>';
+                tbody +='<td class="mailbox-date"><ul class="images"><li><img src="../images/125.jpg" alt="" class="tooltips"></li>' +
+                    '<li><img src="../images/3.jpg" alt="" class="tooltips"></li>' +
+                    '<li><img src="../images/125.jpg" alt="" class="tooltips"></li></ul></td>';
                 tbody +='<td class="mailbox-date"><span>'+order.applyDate+'</span></td>';
                 tbody +='<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">'+order.giftState+'</span></td>';
                 tbody +='<td class="mailbox-date"><span class="top">'+order.giftDetail+'</span></td>';
@@ -355,3 +355,77 @@ $("#filter").on("click",function(){
 });
 
 
+
+
+
+
+
+this.tooltipsPreview = function(){
+    console.log(1);
+    var xOffset = 20;
+    var yOffset = 20;
+    var winHeight = $(window).height();
+    var winWidth = $(window).width();
+    var obj;
+    var objHeight = 0;
+    var objWidth = 0;
+
+    $(window).resize(function(){
+        winHeight = $(window).height();
+        winWidth =  $(window).width();
+    });
+
+    var setHover = function(e){
+        if(objHeight == 0) objHeight = $(obj).find('iframe').height();
+        var top = (e.pageY + yOffset);
+        var left = (e.pageX + xOffset);
+        if(e.pageY > winHeight/2) top = (e.pageY - objHeight - yOffset);
+        if(e.pageX > winWidth/2) left = (e.pageX - objWidth - xOffset);
+        $(obj).css({'top':top,'left':left});
+        if( $(obj).css('visibility') == 'hidden' ){
+            $(obj).css({'visibility':'visible'}).fadeIn('fast');
+        }
+    };
+
+    $('.tooltips').hover(function(e){
+
+            var pacList =[];
+            console.log('111');
+            for(var i=0;i<$(this).parent().parent().find('.tooltips').length; i++){
+              /*  var $(this).parent().find('.tooltips').eq(i).attr("src");*/
+                pacList.push($(this).parent().parent().find('.tooltips').eq(i).attr("src"));
+
+            }
+            console.log(pacList);
+         /*   var pic = $(this).attr('src') || $(this).attr('value') || $(this).attr('href');*/
+            if(!pacList) return;
+            var width = parseInt($(this).attr('_width'));
+            if(!width) width = 280;
+            objWidth = width + 2;
+            $('body').append('<div id="tooltips" style="position:absolute;top:0;left:0; border:1px solid #ddd;visibility:hidden;color:#fff;z-index:10001;">' +
+                '<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="'+ width +'" src="'+ pacList[0] +'" />' +
+                '<img style="position:absolute;left:290px;top:0;z-index:10003;border:1px solid #ddd;" height="500px";width="'+ width +'" src="'+ pacList[1] +'" />' +
+                '<img style="position:absolute;left:580px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="'+ width +'" src="'+ pacList[2] +'" />' +
+                '<iframe width="'+ objWidth +'" style="position:absolute;border:none;filter:alpha(opacity=0);-moz-opacity:0;-khtml-opacity: 0;opacity:0;z-index:10002;"></iframe></div>');
+            var top = (e.pageY + yOffset);
+            var left = (e.pageX + xOffset);
+            obj = $('#tooltips');
+            $(obj).find('img').load(function(){ //如果图片从缓存读取，有的浏览器（如chrome）这里不会执行，所以后面再加一个setHover
+                objHeight = $(this).height()+2;
+                $(obj).find('iframe').height( objHeight );
+                setHover(e);
+            });
+            setHover(e);
+        },
+        function(){
+            $(obj).remove();
+        });
+
+    $('.tooltips').on('mousemove',function(e){
+        setHover(e);
+    });
+};
+
+$(window).load(function(){
+    tooltipsPreview();
+});

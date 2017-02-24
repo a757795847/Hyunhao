@@ -53,13 +53,15 @@ $("#Table").on("click",'.edit',function () {
 $("#confirm_update").on("click",function () {
     var order_index =$(this).data("index");
     console.log(order_index);
-   var name_update=$("#name").val();
-    var nub_update=$("#nub").val();
+   var name_update=$("#name_update").val();
+
+    var nub_update=$("#nub_update").val();
     var datas={
         "id":parseInt(order_index),
         "name":name_update,
         "money":nub_update*100
     }
+    console.log(datas)
     $.ajax({
         type:'post',
         url:'/redstrategy/update',
@@ -68,6 +70,29 @@ $("#confirm_update").on("click",function () {
         contentType: 'application/json;charset=UTF-8',
         success:function (data) {
             console.log(data);
+        }
+
+
+
+
+    })
+
+
+});
+
+$("#Table").on("click",'.detele',function () {
+    var delete_index =$(this).prev().data("index");
+    console.log(delete_index);
+    $.ajax({
+        type:'detele',
+        url:'/redstrategy/remove',      
+        data: JSON.stringify(delete_index),
+        dataType: 'json',
+        contentType: 'application/json;charset=UTF-8',
+        success:function (data) {
+            console.log(data);
+            window.location.href="/redstrategy/home";
+
         }
 
 

@@ -83,7 +83,7 @@ $("#click").on("click",function(){
         success: function (data) {
             // console.log(data.list[0].giftState);
             console.log(data);
-
+            $('#imports').modal('show');
 
         },
         error: function (jqXHR) {
