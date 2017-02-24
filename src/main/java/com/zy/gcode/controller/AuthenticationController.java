@@ -36,8 +36,6 @@ public class AuthenticationController {
         if(codeRe.isError()){
             return "redirect:index.jsp?message="+codeRe.getErrorMessage();
         }
-    /*    String url = "https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token="+codeRe.getMessage().getToken();
-        Map<String,String> map=  HttpClientUtils.mapPostSend(url,"{\"component_appid\":\"wxa8febcce6444f95f\"}");*/
         PublicPreCodeRequest preCodeRequest = new PublicPreCodeRequest();
         preCodeRequest.setParam(PublicPreCodeRequest.PRA_COMPONENT_ACCESS_TOKEN,codeRe.getMessage().getToken());
         preCodeRequest.setBody(PublicPreCodeRequest.BAY_COMPONENT_APPID,Constants.properties.getProperty("platform.appid"));
@@ -61,18 +59,6 @@ public class AuthenticationController {
         if(componetTokenCodeRe.isError()){
             return  componetTokenCodeRe.getErrorMessage();
         }
-
-  /*    HttpResponse response = HttpClientUtils.postSend("https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token="+componetTokenCodeRe.getMessage().getToken(),
-                "{\"component_appid\":\""+ Constants.properties.getProperty("platform.appid")+"\" ,\"authorization_code\": \""+auth_code+"\"}");
-      StringBuilder content = new StringBuilder();
-      try(BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"utf-8"))){
-            String line;
-            while((line = reader.readLine())!=null){
-                content.append(line);
-            }
-      }catch (Exception e){
-            e.printStackTrace();
-      }*/
         PublicTokenRequest tokenRequest = new PublicTokenRequest();
         tokenRequest.setParam(PublicTokenRequest.PRA_COMPONENT_ACCESS_TOKEN,componetTokenCodeRe.getMessage().getToken())
                 .setBody(PublicTokenRequest.BAY_COMPONENT_APPID,Constants.properties.getProperty("platform.appid"))

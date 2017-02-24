@@ -2,10 +2,7 @@ package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
-import com.zy.gcode.pojo.WechatPublic;
-import com.zy.gcode.pojo.DataOrder;
-import com.zy.gcode.pojo.MediaMap;
-import com.zy.gcode.pojo.TokenConfig;
+import com.zy.gcode.pojo.*;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;
 import com.zy.gcode.utils.HttpClientUtils;
@@ -106,6 +103,8 @@ public class WechatService implements IWechatService {
     }
 
 
-
-
+    @Override
+    public WechatPublic getWechatPublic(String id) {
+        return persistenceService.get(WechatPublic.class,id);
+    }
 }
