@@ -2,20 +2,17 @@ package com.zy.gcode.controller;
 
 
 import com.zy.gcode.controller.delegate.CodeRe;
+import com.zy.gcode.oauth.PublicLoginRequest;
+import com.zy.gcode.oauth.PublicPreCodeRequest;
+import com.zy.gcode.oauth.PublicTokenRequest;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.service.IAuthenticationService;
 import com.zy.gcode.utils.Constants;
-import com.zy.gcode.utils.HttpClientUtils;
-import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Map;
 
 /**
  * Created by admin5 on 17/1/18.
@@ -37,12 +34,24 @@ public class AuthenticationController {
     public String authAppid(){
         CodeRe<TokenConfig> codeRe = authenticationService.componetToekn();
         if(codeRe.isError()){
-            return "error.jsp?message="+codeRe.getErrorMessage();
+            return "redirect:index.jsp?message="+codeRe.getErrorMessage();
         }
-        String url = "https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token="+codeRe.getMessage().getToken();
-        Map<String,String> map=  HttpClientUtils.mapPostSend(url,"{\"component_appid\":\"wxa8febcce6444f95f\"}");
-       return "redirect:https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid="+Constants.properties.getProperty("platform.appid")+
-               "&pre_auth_code="+map.get("pre_auth_code")+"&redirect_uri=http://open.izhuiyou.com/auth/code";
+    /*    String url = "https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token="+codeRe.getMessage().getToken();
+        Map<String,String> map=  HttpClientUtils.mapPostSend(url,"{\"component_appid\":\"wxa8febcce6444f95f\"}");*/
+        PublicPreCodeRequest preCodeRequest = new PublicPreCodeRequest();
+        preCodeRequest.setParam(PublicPreCodeRequest.PRA_COMPONENT_ACCESS_TOKEN,codeRe.getMessage().getToken());
+        preCodeRequest.setBody(PublicPreCodeRequest.BAY_COMPONENT_APPID,Constants.properties.getProperty("platform.appid"));
+        PublicPreCodeRequest.PreAuthCode preAuthCode =  preCodeRequest.start();
+        if(preAuthCode.isError()){
+            return "redirect:index.jsp?message="+preAuthCode.getErrmsg();
+        }
+
+        PublicLoginRequest loginRequest = new PublicLoginRequest();
+        loginRequest.setParam(PublicLoginRequest.PRA_COMPONENT_APPID,Constants.properties.getProperty("platform.appid"))
+                .setParam(PublicLoginRequest.PRA_PRE_AUTH_CODE,preAuthCode.getPreAuthCode())
+                .setParam(PublicLoginRequest.PRA_REDIRECT_URI,"http://open.izhuiyou.com/auth/code");
+
+       return "redirect:"+loginRequest.start();
 
     }
 
@@ -53,7 +62,7 @@ public class AuthenticationController {
             return  componetTokenCodeRe.getErrorMessage();
         }
 
-      HttpResponse response = HttpClientUtils.postSend("https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token="+componetTokenCodeRe.getMessage().getToken(),
+  /*    HttpResponse response = HttpClientUtils.postSend("https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token="+componetTokenCodeRe.getMessage().getToken(),
                 "{\"component_appid\":\""+ Constants.properties.getProperty("platform.appid")+"\" ,\"authorization_code\": \""+auth_code+"\"}");
       StringBuilder content = new StringBuilder();
       try(BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"utf-8"))){
@@ -63,9 +72,13 @@ public class AuthenticationController {
             }
       }catch (Exception e){
             e.printStackTrace();
-      }
+      }*/
+        PublicTokenRequest tokenRequest = new PublicTokenRequest();
+        tokenRequest.setParam(PublicTokenRequest.PRA_COMPONENT_ACCESS_TOKEN,componetTokenCodeRe.getMessage().getToken())
+                .setBody(PublicTokenRequest.BAY_COMPONENT_APPID,Constants.properties.getProperty("platform.appid"))
+                .setBody(PublicTokenRequest.BAY_AUTHORIZATION_CODE,auth_code);
 
-     CodeRe codeRe =  authenticationService.saveServerToken(content.toString(),componetTokenCodeRe.getMessage().getToken());
+     CodeRe codeRe =  authenticationService.saveServerToken(tokenRequest.start().toString(),componetTokenCodeRe.getMessage().getToken());
       if(codeRe.isError()){
           return  codeRe.getErrorMessage();
       }

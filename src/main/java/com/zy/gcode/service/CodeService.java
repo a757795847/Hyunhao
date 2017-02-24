@@ -92,8 +92,8 @@ public class CodeService implements ICodeService {
             return componetTokenCodeRe;
         }
         UserTokenOAuthRequest tokenOAuth = new UserTokenOAuthRequest();
-        tokenOAuth.setParam(UserTokenOAuthRequest.APPID, appid)
-                .setParam(UserTokenOAuthRequest.CODE, code)
+        tokenOAuth.setParam(UserTokenOAuthRequest.APPID,appid)
+                .setParam(UserTokenOAuthRequest.CODE,code)
                 .setParam(UserTokenOAuthRequest.GRANT_TYPE, "authorization_code")
                 .setParam(UserTokenOAuthRequest.COMPONENT_APPID, Constants.properties.getProperty("platform.appid"))
                 .setParam(UserTokenOAuthRequest.COMPONENT_ACCESS_TOKEN, componetTokenCodeRe.getMessage().getToken());
@@ -132,7 +132,6 @@ public class CodeService implements ICodeService {
     }
 
     private WechatUserInfo user(String token, String openid, String appid) {
-        WechatUserInfo wechatUserInfo = new WechatUserInfo();
 
         UserInfoOAuthRequest infoOAuthRequest = new UserInfoOAuthRequest();
         infoOAuthRequest.setParam(UserInfoOAuthRequest.ACCESS_TOKEN, token)
@@ -141,52 +140,21 @@ public class CodeService implements ICodeService {
         if(userInfo==null){
             return null;
         }
-
+        if(userInfo.isError()){
+            log.error("微信服务异常:"+userInfo.getErrmsg());
+            return null;
+        }
+        WechatUserInfo wechatUserInfo = new WechatUserInfo();
         wechatUserInfo.setOpenId(userInfo.getOpenid());
+        wechatUserInfo.setNick(userInfo.getNickname());
         wechatUserInfo.setSex(userInfo.getSex());
-        wechatUserInfo.setPrivilege(userInfo.getProvince());
+        wechatUserInfo.setProvince(userInfo.getProvince());
         wechatUserInfo.setCity(userInfo.getCity());
         wechatUserInfo.setCountry(userInfo.getCountry());
         wechatUserInfo.setHeadImgUrl(userInfo.getHeadimgurl());
         wechatUserInfo.setPrivilege(Arrays.toString(userInfo.getPrivilege()));
         wechatUserInfo.setUnionId(userInfo.getUnionid());
 
-     /*   StringBuilder builder = new StringBuilder("https://api.weixin.qq.com/sns/userinfo?access_token=")
-                .append(token).append("&openid=").append(openid).append("&lang=zh_CN");
-        Map map = HttpClientUtils.mapGetSend(builder.toString());
-        if (map == null) {
-            return null;
-        }
-
-
-        wechatUserInfo.setOpenId(openid);
-
-        if (map.containsKey("nickname")) {
-            wechatUserInfo.setNick(map.get("nickname").toString());
-        }
-
-        if (map.containsKey("sex")) {
-            wechatUserInfo.setSex(map.get("sex").toString());
-        }
-
-        if (map.containsKey("province")) {
-            wechatUserInfo.setProvince(map.get("province").toString());
-        }
-        if (map.containsKey("city")) {
-            wechatUserInfo.setCity(map.get("city").toString());
-        }
-        if (map.containsKey("country")) {
-            wechatUserInfo.setCountry(map.get("country").toString());
-        }
-        if (map.containsKey("headimgurl")) {
-            wechatUserInfo.setHeadImgUrl(map.get("headimgurl").toString());
-        }
-        if (map.containsKey("privilege")) {
-            wechatUserInfo.setPrivilege(map.get("privilege").toString());
-        }
-        if (map.containsKey("unionid")) {
-            wechatUserInfo.setUnionId(map.get("unionid").toString());
-        }*/
         wechatUserInfo.setAppid(appid);
         persistenceService.updateOrSave(wechatUserInfo);
 

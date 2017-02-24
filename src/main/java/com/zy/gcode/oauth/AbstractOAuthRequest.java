@@ -35,9 +35,9 @@ public abstract class AbstractOAuthRequest<T> {
         return this;
     }
 
-    public AbstractOAuthRequest setSuffix(String suffix){
+    public AbstractOAuthRequest setSuffix(String suffix) {
         this.suffix = suffix;
-        return  this;
+        return this;
     }
 
     protected String buildParams() {
@@ -45,22 +45,34 @@ public abstract class AbstractOAuthRequest<T> {
         params.forEach((k, v) -> {
             builder.append(k).append("=").append(v).append("&");
         });
-        if(suffix==null)
-        return builder.substring(0, builder.length() - 1);
-        return builder.substring(0, builder.length() - 1)+suffix;
-}
+        if (suffix == null)
+            return builder.substring(0, builder.length() - 1);
+        return builder.substring(0, builder.length() - 1) + suffix;
+    }
+    protected String buildBody(){
+        StringBuilder builder = new StringBuilder("{");
+        int len = body.size();
+        body.forEach((k,v)->{
+            builder.append("\"").append(k).append("\"").append(":")
+                    .append("\"").append(v).append("\"").append(",");
+        });
+
+
+        return  builder.substring(0,builder.length()-1)+"}";
+
+    }
 
     protected <T> T getObj(Class<T> clazz) {
         HttpResponse response = HttpClientUtils.getSend(buildParams());
-        if (!HttpClientUtils.checkRespons(response)) {
+        if (HttpClientUtils.checkRespons(response)) {
             return null;
         }
         String str = null;
         try {
-           str = MzUtils.inputStreamToString(response.getEntity().getContent());
+            str = MzUtils.inputStreamToString(response.getEntity().getContent());
             return Constants.objectMapper.readValue(str, clazz);
         } catch (IOException e) {
-            log.error("ObjectMapper解析出错:"+ str);
+            log.error("ObjectMapper解析出错:" + str);
             e.printStackTrace();
             return null;
         }

@@ -53,7 +53,7 @@ public class HttpClientUtils {
     }
 
     public static boolean checkRespons(HttpResponse response){
-        return response.getStatusLine().getStatusCode()==200;
+        return response.getStatusLine().getStatusCode()!=200;
     }
 
     /**
@@ -156,12 +156,12 @@ public class HttpClientUtils {
      * @return
      */
     public static HttpResponse postSend(String url, String... params) {
-        StringBuilder builder = new StringBuilder("{");
+
         int len = params.length;
         if(len%2!=0){
             throw new IllegalArgumentException();
         }
-
+        StringBuilder builder = new StringBuilder("{");
         for(int i =0;i < len ; i+=2){
             builder.append("\"").append(params[i]).append("\"").append(":")
                     .append("\"").append(params[i+1]).append("\"").append(",");
