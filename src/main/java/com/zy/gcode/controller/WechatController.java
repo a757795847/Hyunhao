@@ -57,7 +57,8 @@ public class WechatController {
             return "/views/wechat/submit.html";
         }
         try {
-            return "redirect:http://open.izhuiyou.com/access/wxcode/"+tAppid + "?redirect_url=" + URLEncoder.encode("http://open.izhuiyou.com/middle/token", "utf-8");
+            return "redirect:http://open.izhuiyou.com/access/wxcode/"+tAppid + "?redirect_url="
+                    + URLEncoder.encode("http://open.izhuiyou.com/middle/token", "utf-8")+"&state="+URLEncoder.encode(request.getRequestURL().toString(),"utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
