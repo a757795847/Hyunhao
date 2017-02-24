@@ -2,6 +2,7 @@ package com.zy.gcode.oauth;
 
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
+import com.zy.gcode.utils.MzUtils;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,9 +55,12 @@ public abstract class AbstractOAuthRequest<T> {
         if (!HttpClientUtils.checkRespons(response)) {
             return null;
         }
+        String str = null;
         try {
-            return Constants.objectMapper.readValue(response.getEntity().getContent(), clazz);
+           str = MzUtils.inputStreamToString(response.getEntity().getContent());
+            return Constants.objectMapper.readValue(str, clazz);
         } catch (IOException e) {
+            log.error("ObjectMapper解析出错:"+ str);
             e.printStackTrace();
             return null;
         }
