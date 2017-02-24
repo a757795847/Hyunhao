@@ -1,6 +1,7 @@
 package com.zy.gcode.oauth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zy.gcode.utils.Constants;
 
 /**
  * Created by admin5 on 17/2/23.
@@ -21,11 +22,7 @@ public class UserInfoOAuthRequest extends AbstractOAuthRequest<UserInfoOAuthRequ
 /*    public static void main(String[] args) throws  Exception{
         UserInfoOAuthRequest info = new UserInfoOAuthRequest();
         info.setParam(ACCESS_TOKEN,"1111");
-        System.out.println(Constants.objectMapper.readValue("{    \"openid\":\" OPENID\",    \"nickname\":\" NICKNAME\",    \"sex\":\"1\",\n" +
-                "                \"province\":\"PROVINCE\" ,  \"city\":\"CITY\",    \"country\":\"COUNTRY\",\n" +
-                "                \"headimgurl\":    \"http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46\",\n" +
-                "                \"privilege\":[ \"PRIVILEGE1\",\"PRIVILEGE2\"],\"unionid\": \"o6_bmasdasdsad6_2sgVt7hMZOPfL\" \n" +
-                "        }",UserInfo.class));
+        System.out.println(Constants.objectMapper.readValue("{\"openid\":\"ooBfdwNcoMaol2CF0zlcRUYkYE_Q\",\"nickname\":\"桂\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"杭州\",\"province\":\"浙江\",\"country\":\"中国\",\"headimgurl\":\"http:\\/\\/wx.qlogo.cn\\/mmopen\\/t7Grpf3YAiaDtC3sPADibEhITpkusZlOLnxzoub617SnqmAPXeAb2dPb36ic2lrqttTM0DS9HqJDnJ8VYlRzFf4I8JfcPBeL2fp\\/0\",\"privilege\":[]}",UserInfo.class));
     }*/
 
     public static class UserInfo {
@@ -37,6 +34,7 @@ public class UserInfoOAuthRequest extends AbstractOAuthRequest<UserInfoOAuthRequ
         private String openid;
         private String nickname;
         private String sex;
+        private String language;
         private String province;
         private String city;
         private String country;
@@ -146,6 +144,14 @@ public class UserInfoOAuthRequest extends AbstractOAuthRequest<UserInfoOAuthRequ
 
         public void setUnionid(String unionid) {
             this.unionid = unionid;
+        }
+
+        public String getLanguage() {
+            return language;
+        }
+
+        public void setLanguage(String language) {
+            this.language = language;
         }
     }
 }
