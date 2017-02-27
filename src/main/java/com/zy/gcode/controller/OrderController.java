@@ -53,10 +53,10 @@ public class OrderController {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         Timestamp importTime = null;
         Timestamp applyTime = null;
-        if (map.containsKey("importTime")) {
+        if (map.containsKey("importTime")&&map.get("importTime")!=null) {
             importTime = new Timestamp((long) map.get("importTime"));
         }
-        if (map.containsKey("applyTime")) {
+        if (map.containsKey("applyTime")&&map.get("applyTime")!=null) {
             applyTime = new Timestamp((long) map.get("applyTime"));
         }
 
