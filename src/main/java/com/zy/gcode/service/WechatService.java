@@ -31,9 +31,9 @@ public class WechatService implements IWechatService {
     public CodeRe sumbit(final String image1,final String image2,final String image3,final String billno,final String openid,final String appid) {
         String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").toString();
         DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class,"orderNumber",billno);
-        WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class,"wxAppid",appid);
+        WechatPublicServer wechatPublicServer = persistenceService.getOneByColumn(WechatPublicServer.class,"wxAppid",appid);
 
-        if(wechatPublic ==null){
+        if(wechatPublicServer ==null){
             return CodeRe.error("该微信公众号未录入系统");
         }
 
@@ -47,13 +47,13 @@ public class WechatService implements IWechatService {
         String dataPath = DateUtils.format(new Date(),"yyyyMM");
 
         if(image1!=null){
-            dataOrder.setCommentFile1(MzUtils.merge(dataPath,"/", wechatPublic.getGeAppid(),":",billno,"A"));
+            dataOrder.setCommentFile1(MzUtils.merge(dataPath,"/", wechatPublicServer.getTappid(),":",billno,"A"));
         }
         if(image2!=null){
-            dataOrder.setCommentFile2(MzUtils.merge(dataPath,"/", wechatPublic.getGeAppid(),":",billno,"B"));
+            dataOrder.setCommentFile2(MzUtils.merge(dataPath,"/", wechatPublicServer.getTappid(),":",billno,"B"));
         }
         if(image3 !=null){
-            dataOrder.setCommentFile3(MzUtils.merge(dataPath,"/", wechatPublic.getGeAppid(),":",billno,"C"));
+            dataOrder.setCommentFile3(MzUtils.merge(dataPath,"/", wechatPublicServer.getTappid(),":",billno,"C"));
         }
             CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessToken(appid);
             if(tokenConfigCodeRe.isError()){
@@ -107,7 +107,7 @@ public class WechatService implements IWechatService {
 
     @Override
     @Transactional
-    public WechatPublic getWechatPublic(String id) {
-        return persistenceService.get(WechatPublic.class,id);
+    public WechatPublicServer getWechatPublic(String id) {
+        return persistenceService.get(WechatPublicServer.class,id);
     }
 }

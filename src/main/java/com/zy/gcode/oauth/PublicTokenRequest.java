@@ -24,9 +24,7 @@ public class PublicTokenRequest extends AbstractOAuthRequest<String> {
     @Override
     public String start() {
        HttpResponse response = HttpClientUtils.postSend(buildParams(),buildBody());
-       if(HttpClientUtils.checkRespons(response)){
-           return null;
-       }
+       HttpClientUtils.checkRespons(response);
         try {
             return MzUtils.inputStreamToString(response.getEntity().getContent());
         } catch (IOException e) {

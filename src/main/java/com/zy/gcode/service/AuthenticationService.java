@@ -2,7 +2,8 @@ package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
-import com.zy.gcode.pojo.WechatPublic;
+import com.zy.gcode.oauth.PublicInfoRequest;
+import com.zy.gcode.pojo.WechatPublicServer;
 import com.zy.gcode.pojo.AuthorizationInfo;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.service.pay.WxXmlParser;
@@ -12,7 +13,6 @@ import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.wx.AesException;
 import com.zy.gcode.utils.wx.WXBizMsgCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +39,12 @@ public class AuthenticationService implements IAuthenticationService {
         }
     }
 
+    /**
+     * 存储认证给第三方平台的微信公众号的token等基本信息
+     * @param content
+     * @param token
+     * @return
+     */
     @Override
     @Transactional
     public CodeRe<AuthorizationInfo> saveServerToken(String content,String token) {
@@ -60,14 +66,14 @@ public class AuthenticationService implements IAuthenticationService {
                    builder.append(third.get("funcscope_category").get("id").toString()).append(",");
             }
             authorizationInfo.setFuncInfo(builder.substring(0,builder.length()-1));
-             Map map1 =  HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info?component_access_token="+token,
-                    "{" +
-                            "\"component_appid\":\""+Constants.properties.getProperty("platform.appid")+"\" ," +
-                            "\"authorizer_appid\": \""+authorizationInfo.getAuthorizerAppid()+"\"" +
-                            "}");
-             if(map1==null){
+            PublicInfoRequest infoRequest = new PublicInfoRequest();
+            infoRequest.setParam(PublicInfoRequest.PRA_COMPONENT_ACCESS_TOKEN,token)
+                    .setBody(PublicInfoRequest.BAY_COMPONENT_APPID,Constants.properties.getProperty("platform.appid"))
+                    .setBody(PublicInfoRequest.BAY_AUTHORIZER_APPID,authorizationInfo.getAuthorizerAppid());
+
+             Map map1 = infoRequest.start();
+             if(map1==null)
                  return CodeRe.error("获取公众号名称错误!");
-             }
              authorizationInfo.setUserName((String)(map1.get("user_name")));
              authorizationInfo.setNickName((String)(map1.get("nick_name")));
              authorizationInfo.setPrincipalName((String)(map1.get("principal_name")));
@@ -80,6 +86,10 @@ public class AuthenticationService implements IAuthenticationService {
         return null;
     }
 
+    /**
+     * 获取第三方平台的componetToken
+     * @return
+     */
     @Override
     @Transactional
     public CodeRe<TokenConfig> componetToekn() {
@@ -114,6 +124,11 @@ public class AuthenticationService implements IAuthenticationService {
 
         return CodeRe.correct(componetToken);
     }
+
+    /**
+     * 通过第三方的componetToken获取微信jssdk的ticket
+     * @return
+     */
     @Transactional
     public CodeRe<TokenConfig> getJsapiTicket(){
        CodeRe<TokenConfig> componetTokenCodeRe = componetToekn();
@@ -126,33 +141,35 @@ public class AuthenticationService implements IAuthenticationService {
         try {
           updateTime = tokenConfig.getUpdateTime();
         } catch (NullPointerException e) {
-           tokenConfig = new TokenConfig();
-           tokenConfig.setName(Constants.JSSDK_TICKET_NAME);
-            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+componetTokenCodeRe.getMessage().getToken()+"&type=jsapi");
-            if(map.containsKey("errmsg")){
-                if(!map.get("errmsg").equals("ok"))
-                return CodeRe.error((String)map.get("errmsg"));
-            }
-            tokenConfig.setToken(map.get("ticket").toString());
-            persistenceService.updateOrSave(tokenConfig);
-            return  CodeRe.correct(tokenConfig);
+            return getWechatPublicAccessToken(componetTokenCodeRe.getMessage().getToken());
         }
         if(DateUtils.isOutOfDate(updateTime,7200)){
-            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+componetTokenCodeRe.getMessage().getToken()+"&type=jsapi");
-            if(map.containsKey("errmsg")){
-                if(!map.get("errmsg").equals("ok"))
-                return CodeRe.error((String)map.get("errmsg"));
-            }
-            tokenConfig.setToken(map.get("ticket").toString());
-            persistenceService.updateOrSave(tokenConfig);
-            return  CodeRe.correct(tokenConfig);
-
+           return getWechatPublicAccessToken(componetTokenCodeRe.getMessage().getToken());
         }
 
       return CodeRe.correct(tokenConfig);
     }
+    private CodeRe<TokenConfig> getWechatPublicAccessToken(String componetToken){
+       TokenConfig tokenConfig = new TokenConfig();
+        tokenConfig.setName(Constants.JSSDK_TICKET_NAME);
+        Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+componetToken+"&type=jsapi");
+        if(map.containsKey("errmsg")){
+            if(!map.get("errmsg").equals("ok"))
+                return CodeRe.error((String)map.get("errmsg"));
+        }
+        tokenConfig.setToken(map.get("ticket").toString());
+        persistenceService.updateOrSave(tokenConfig);
+        return  CodeRe.correct(tokenConfig);
+    }
 
-
+    /**
+     * 更新第三方平台的ticket
+     * @param msg_signature
+     * @param timestamp
+     * @param nonce
+     * @param str
+     * @return
+     */
     @Override
     @Transactional
     public String decrpt(String msg_signature, String timestamp, String nonce, String str) {
@@ -165,21 +182,19 @@ public class AuthenticationService implements IAuthenticationService {
         } catch (AesException e) {
             e.printStackTrace();
         }
-
-
         return null;
     }
 
     @Override
     @Transactional
-    public WechatPublic allAppInterface(String id) {
-       WechatPublic wechatPublic = persistenceService.get(WechatPublic.class,id);
+    public WechatPublicServer getWechatPublic(String id) {
+       WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class,id);
         try {
-            wechatPublic.getGeAppid();
+            wechatPublicServer.getTappid();
         } catch (NullPointerException e) {
            return null;
         }
-        return wechatPublic;
+        return wechatPublicServer;
     }
 
     @Override
@@ -231,11 +246,11 @@ public class AuthenticationService implements IAuthenticationService {
             updateTime = tokenConfig.getUpdateTime();
         } catch (Exception e) {
             tokenConfig = new TokenConfig();
-            WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class,"wxAppid",appid);
-            if(wechatPublic ==null){
+            WechatPublicServer wechatPublicServer = persistenceService.getOneByColumn(WechatPublicServer.class,"wxAppid",appid);
+            if(wechatPublicServer ==null){
                 return CodeRe.error("appid 不存在");
             }
-          Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+ wechatPublic.getSecret());
+          Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+ wechatPublicServer.getSecret());
             if(map.containsKey("errmsg")){
                 return CodeRe.error(map.get("errmsg").toString());
             }
@@ -247,11 +262,11 @@ public class AuthenticationService implements IAuthenticationService {
         }
 
         if(DateUtils.isOutOfDate(updateTime,tokenConfig.getExpiresIn())){
-            WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class,"wxAppid",appid);
-            if(wechatPublic ==null){
+            WechatPublicServer wechatPublicServer = persistenceService.getOneByColumn(WechatPublicServer.class,"wxAppid",appid);
+            if(wechatPublicServer ==null){
                 return CodeRe.error("appid 不存在,获取wxaccesstoken");
             }
-            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+ wechatPublic.getSecret());
+            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+ wechatPublicServer.getSecret());
             if(map.containsKey("errmsg")){
                 return CodeRe.error(map.get("errmsg").toString());
             }
