@@ -272,9 +272,9 @@ function filterAjax(datas, pageState) {
                 }
                 tbody += '<tr id="' + order.id + '"><td><input type="checkbox" id="statistic"></td><td class="mailbox-date"><span>' + order.orderNumber + '</span></td>';
                 tbody += '<td class="mailbox-date"><span class="label label-success proxylist_details" data-index="' + i + '">详情</span></td>';
-                tbody += '<td class="mailbox-date"><ul class="images"><li><img src="'+order.commentFile2+'" alt="" class="tooltips"></li>' +
-                    '<li><img src="'+order.commentFile2+'" alt="" class="tooltips"></li>' +
-                    '<li><img src="'+order.commentFile3+'" alt="" class="tooltips"></li></ul></td>';
+                tbody += '<td class="mailbox-date"><ul class="images"><li><img src="/order/picture/'+order.commentFile1+'" alt="" class="tooltips"></li>' +
+                    '<li><img src="/order/picture/'+order.commentFile2+'" alt="" class="tooltips"></li>' +
+                    '<li><img src="/order/picture/'+order.commentFile3+'" alt="" class="tooltips"></li></ul></td>';
                 tbody += '<td class="mailbox-date" style="width:12%;"><span>' + curTime + '</span></td>';
                 tbody += '<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">' + order.giftState + '</span></td>';
                 tbody += '<td class="mailbox-date"><span class="top">' + order.giftDetail + '</span></td>';
@@ -329,15 +329,23 @@ $("#filter").on("click", function () {
     }
     var import_date=$("#Import_date").val();
     var user_date=$("#user_date").val();
+
     import_date=new Date(Date.parse(import_date.replace(/:\d{1,2}$/,' ')));
     import_date=import_date.getTime();
 
     user_date=new Date(Date.parse(user_date.replace(/:\d{1,2}$/,' ')));
     user_date=user_date.getTime();
-
+    if(import_date ==""){
+        filterAjax({status: state_r, currentPageIndex: 1,applyTime:user_date}, 1);
+    }
+    else if(user_date ==""){
+        filterAjax({status: state_r, currentPageIndex: 1,importTime:import_date}, 1);
+    }
+    else{
+        filterAjax({status: state_r, currentPageIndex: 1,importTime:import_date,applyTime:user_date}, 1);
+    }
 
     $(".pager").remove();
-    filterAjax({status: state_r, currentPageIndex: 1,importTime:import_date,applyTime:user_date}, 1);
 
 
 
