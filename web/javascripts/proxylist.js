@@ -71,9 +71,7 @@ function indexAjax(datas, pageState) {
                 }
                 tbody += '<tr id="' + order.id + '"><td><input type="checkbox" class="statistic"></td><td class="mailbox-date"><span>' + order.orderNumber + '</span></td>';
                 tbody += '<td class="mailbox-date"><span class="label label-success proxylist_details" data-index="' + i + '">详情</span></td>';
-                tbody += '<td class="mailbox-date"><ul class="images"><li><img src="../images/125.jpg" alt="" class="tooltips"></li>' +
-                    '<li><img src="../images/3.jpg" alt="" class="tooltips"></li>' +
-                    '<li><img src="../images/125.jpg" alt="" class="tooltips"></li></ul></td>';
+                tbody += '<td class="mailbox-date"></td>';
                 tbody += '<td class="mailbox-date"><span>' + curTime + '</span></td>';
                 tbody += '<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">' + order.giftState + '</span></td>';
                 tbody += '<td class="mailbox-date"><span class="top">' + order.giftDetail + '</span></td>';
@@ -270,11 +268,25 @@ function filterAjax(datas, pageState) {
                         order[key] = '';
                     }
                 }
+                var comment_file='';
+                if(order.commentFile3!=''){
+                    comment_file='<li><img src="http://open.izhuiyou.com/order/picture/'+order.commentFile1+'" alt="" class="tooltips"></li>';
+                     comment_file +='<li><img src="http://open.izhuiyou.com/order/picture/'+order.commentFile2+'" alt="" class="tooltips"></li>';
+                    comment_file +='<li><img src="http://open.izhuiyou.com/order/picture/'+order.commentFile3+'" alt="" class="tooltips"></li>';
+                    console.log("1");
+                }
+                 else if(order.commentFile2!=''){
+                    comment_file='<li><img src="http://open.izhuiyou.com/order/picture/'+order.commentFile1+'" alt="" class="tooltips"></li>';
+                    comment_file +='<li><img src="http://open.izhuiyou.com/order/picture/'+order.commentFile2+'" alt="" class="tooltips"></li>';
+                    console.log("2");
+                }else if(order.commentFile1!=''){
+                    comment_file='<li><img src="http://open.izhuiyou.com/order/picture/'+order.commentFile1+'" alt="" class="tooltips"></li>';
+                }else{
+                    comment_file='';
+                }
                 tbody += '<tr id="' + order.id + '"><td><input type="checkbox" id="statistic"></td><td class="mailbox-date"><span>' + order.orderNumber + '</span></td>';
                 tbody += '<td class="mailbox-date"><span class="label label-success proxylist_details" data-index="' + i + '">详情</span></td>';
-                tbody += '<td class="mailbox-date"><ul class="images"><li><img src="/order/picture/'+order.commentFile1+'" alt="" class="tooltips"></li>' +
-                    '<li><img src="/order/picture/'+order.commentFile2+'" alt="" class="tooltips"></li>' +
-                    '<li><img src="/order/picture/'+order.commentFile3+'" alt="" class="tooltips"></li></ul></td>';
+                tbody += '<td class="mailbox-date"><ul class="images">'+comment_file+'</ul></td>';
                 tbody += '<td class="mailbox-date" style="width:12%;"><span>' + curTime + '</span></td>';
                 tbody += '<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">' + order.giftState + '</span></td>';
                 tbody += '<td class="mailbox-date"><span class="top">' + order.giftDetail + '</span></td>';
@@ -440,11 +452,18 @@ $('#Table').on('mouseover', '.images', function () {
     }else{
         objTop = objTop +19;
     }
+    if(pacList.length==3){
+        pacText='<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[0] + '" />' +
+            '<img style="position:absolute;left:280px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[1] + '" />' +
+            '<img style="position:absolute;left:560px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[2] + '" />';
+    }else if(pacList.length==2){
+        pacText='<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[0] + '" />' +
+        '<img style="position:absolute;left:280px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[1] + '" />';
+    }else{
+        pacText='<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[0] + '"/>';
+    }
 
-
-    $('#tooltips').html('<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[0] + '" />' +
-        '<img style="position:absolute;left:280px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[1] + '" />' +
-        '<img style="position:absolute;left:560px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[2] + '" />')
+    $('#tooltips').html(pacText);
     $('#tooltips').css({
         'top':objTop,
         'left':objLeft +114,
