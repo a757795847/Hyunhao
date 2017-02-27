@@ -1,6 +1,5 @@
 package com.zy.gcode.controller;
 
-import com.sun.tools.corba.se.idl.constExpr.Times;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.DataOrder;
@@ -38,58 +37,62 @@ public class OrderController {
 
     /**
      * 分页获取用户信息
+     *
      * @param map
      * @return
      */
 
 
     @RequestMapping("list")
-    public @ResponseBody
+    public
+    @ResponseBody
     Map
-    list(@RequestBody Map map){
+    list(@RequestBody Map map) {
         Page page = new Page();
         page.setCurrentPageIndex((Integer) map.get("currentPageIndex"));
-        User user =  (User) SecurityUtils.getSubject().getPrincipal();
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
         Timestamp importTime = null;
         Timestamp applyTime = null;
-        if(map.containsKey("importTime")){
-            importTime = new Timestamp((long)map.get("importTime"));
+        if (map.containsKey("importTime")) {
+            importTime = new Timestamp((long) map.get("importTime"));
         }
-         if(map.containsKey("applyTime")){
-             applyTime = new Timestamp((long)map.get("applyTime"));
+        if (map.containsKey("applyTime")) {
+            applyTime = new Timestamp((long) map.get("applyTime"));
         }
 
-    return ControllerStatus.ok(orderService.getOrderByCondition((Integer) map.get("status"),page, user.getUsername(),applyTime,importTime));
+        return ControllerStatus.ok(orderService.getOrderByCondition((Integer) map.get("status"), page, user.getUsername(), applyTime, importTime));
     }
 
     /**
      * 返货订单首页
+     *
      * @return
      */
     @RequestMapping("home")
-    public String index(){
+    public String index() {
         return "/views/publicNumber/proxylist.html";
     }
 
     /**
      * 根据图片的名称访问图片
+     *
      * @param name
      * @param response
      * @throws IOException
      */
     @RequestMapping("picture/{date}/{name}")
-    public void picture(@PathVariable String date,@PathVariable String name, HttpServletResponse response) throws IOException{
-        File file = new File(Constants.RED_PICTURE_PATH+"/"+date+"/"+name);
-        if(!file.exists()){
+    public void picture(@PathVariable String date, @PathVariable String name, HttpServletResponse response) throws IOException {
+        File file = new File(Constants.RED_PICTURE_PATH + "/" + date + "/" + name);
+        if (!file.exists()) {
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("文件不存在");
             response.getWriter().flush();
             response.getWriter().close();
             return;
         }
-        String[] strs =   name.split(":");
-        User user = (User)SecurityUtils.getSubject().getPrincipal();
-        if(user ==null){
+        String[] strs = name.split(":");
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        if (user == null) {
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("如要访问，请先登录！");
             response.getWriter().flush();
@@ -97,7 +100,7 @@ public class OrderController {
             return;
         }
 
-        if(!strs[0].equals(user.getWxAppid())){
+        if (!strs[0].equals(user.getWxAppid())) {
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("无法访问");
             response.getWriter().flush();
@@ -111,8 +114,8 @@ public class OrderController {
             OutputStream outputStream = response.getOutputStream();
             response.setContentType("image/png");
             final byte[] tmp = new byte[4096];
-            while (( fileInputStream.read(tmp)) != -1) {
-               outputStream.write(tmp);
+            while ((fileInputStream.read(tmp)) != -1) {
+                outputStream.write(tmp);
             }
             outputStream.flush();
             outputStream.close();
@@ -124,72 +127,84 @@ public class OrderController {
 
     /**
      * 返回导入csv的页面
+     *
      * @return
      */
     @RequestMapping("import")
-    public String importCsv(){
+    public String importCsv() {
         return "/views/publicNumber/import.html";
     }
 
     /**
      * 解析csv但不导入
-      * @param file
+     *
+     * @param file
      * @return
      */
-    @RequestMapping(value = "parseCsv",method = RequestMethod.POST)
-    public @ResponseBody  Object parseCsv(MultipartFile file){
+    @RequestMapping(value = "parseCsv", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Object parseCsv(MultipartFile file) {
 //      User operator = (User) SecurityUtils.getSubject().getSession().getAttribute("operator");
-       CodeRe codeRe =  orderService.handleCsv(file);
-        if(codeRe.isError()){
-            return  ControllerStatus.error(codeRe.getErrorMessage());
+        CodeRe codeRe = orderService.handleCsv(file);
+        if (codeRe.isError()) {
+            return ControllerStatus.error(codeRe.getErrorMessage());
         }
-      return ControllerStatus.ok((List)codeRe.getMessage());
+        return ControllerStatus.ok((List) codeRe.getMessage());
     }
 
     /**
      * 根据前段传入的数组导入order数据到DB
+     *
      * @param orderList
      * @return
      */
     @RequestMapping("importCsv")
-    public @ResponseBody  Object importCsv(@RequestBody List<DataOrder> orderList){
-        User operator = (User)SecurityUtils.getSubject().getPrincipal();
-      CodeRe codeRe =  orderService.saveOrderList(orderList,operator.getUsername());
-      if(codeRe.isError()){
-          return ControllerStatus.error(codeRe.getErrorMessage());
-      }
-      return ControllerStatus.ok((List)codeRe.getMessage());
+    public
+    @ResponseBody
+    Object importCsv(@RequestBody List<DataOrder> orderList) {
+        User operator = (User) SecurityUtils.getSubject().getPrincipal();
+        CodeRe codeRe = orderService.saveOrderList(orderList, operator.getUsername());
+        if (codeRe.isError()) {
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
+        return ControllerStatus.ok((List) codeRe.getMessage());
     }
 
     /**
      * 根据指定的id，设置订单状态为审核通过
+     *
      * @param id
      * @return
      */
     @RequestMapping("passAuditing/{id}")
-    public @ResponseBody Map pass(@PathVariable String id){
-       CodeRe codeRe =  orderService.passAuditing(id);
-       if(codeRe.isError()){
-           return  ControllerStatus.error(codeRe.getErrorMessage());
-       }
-       return ControllerStatus.ok(codeRe.getMessage().toString());
+    public
+    @ResponseBody
+    Map pass(@PathVariable String id) {
+        CodeRe codeRe = orderService.passAuditing(id);
+        if (codeRe.isError()) {
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
+        return ControllerStatus.ok(codeRe.getMessage().toString());
     }
 
-    @RequestMapping(value = "redSend",method = RequestMethod.POST)
-    public @ResponseBody Object redSend(@RequestBody Map map){
-        if(SecurityUtils.getSubject().isPermitted(ZYAPPID)){
+    @RequestMapping(value = "redSend", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Object redSend(@RequestBody Map map) {
+        if (SecurityUtils.getSubject().isPermitted(ZYAPPID)) {
             ControllerStatus.error("无权访问");
         }
 
 
-        if(!map.containsKey("id")){
-           return ControllerStatus.error("请传入订单id");
+        if (!map.containsKey("id")) {
+            return ControllerStatus.error("请传入订单id");
         }
-        if(!map.containsKey("strategyid")){
-         return    ControllerStatus.error("请选择红包策略");
+        if (!map.containsKey("strategyid")) {
+            return ControllerStatus.error("请选择红包策略");
         }
-      CodeRe codeRe =  orderService.redSend(map.get("id").toString(),Integer.valueOf(map.get("strategyid").toString()).longValue());
-        if(codeRe.isError()){
+        CodeRe codeRe = orderService.redSend(map.get("id").toString(), Integer.valueOf(map.get("strategyid").toString()).longValue());
+        if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }
         return ControllerStatus.ok(codeRe.getMessage().toString());
@@ -197,10 +212,11 @@ public class OrderController {
     }
 
     @RequestMapping("test")
-    public @ResponseBody String test(){
-        return SecurityUtils.getSubject().isPermitted(ZYAPPID)+"";
+    public
+    @ResponseBody
+    String test() {
+        return SecurityUtils.getSubject().isPermitted(ZYAPPID) + "";
     }
-
 
 
 }
