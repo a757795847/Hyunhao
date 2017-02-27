@@ -4,8 +4,10 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.service.IOperatorService;
 import com.zy.gcode.service.OperatorService;
+import com.zy.gcode.utils.CodeImage;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.MzUtils;
+import org.apache.http.HttpResponse;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -19,7 +21,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,7 +93,17 @@ public class OperatorController {
     }
 
     @RequestMapping("verificationCode")
-    public @ResponseBody Object verificationCode(String phone, HttpSession session){
+    public @ResponseBody Object verificationCode(String phone,String code, HttpSession session){
+       ImageInfo imageInfo = (ImageInfo)session.getAttribute("imageInfo");
+       if(imageInfo==null){
+          return ControllerStatus.error("请输入验证码");
+       }
+
+
+       if((!imageInfo.content.equals(code))&&imageInfo.createTime<(System.currentTimeMillis()-120*1000)){
+           return ControllerStatus.error("验证码错误或过期!");
+       }
+
          CodeRe<String> codeRe =  operatorService.generateVerificationCode(phone);
          if(codeRe.isError()){
              return ControllerStatus.error(codeRe.getErrorMessage());
@@ -102,6 +117,26 @@ public class OperatorController {
     public String registerHome(){
         return "/views/proxy/register.html";
     }
+
+
+    @RequestMapping("getcodeImage")
+    public void getCodeImage(HttpServletResponse response, HttpSession session){
+        CodeImage codeImage = new CodeImage();
+        response.setContentType("image/jpeg");
+        //禁止图像缓存。
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        ImageInfo imageInfo = new ImageInfo(codeImage.getCode(),System.currentTimeMillis());
+        session.setAttribute("imageInfo",imageInfo);
+        try {
+            codeImage.write(response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
     private class VerificationInfo{
         public VerificationInfo(String verificationCode, long generationTime, String phone) {
             this.verificationCode = verificationCode;
@@ -112,6 +147,15 @@ public class OperatorController {
         String verificationCode;
         long generationTime;
         String phone;
+    }
+    private class  ImageInfo{
+        private String content;
+        private long createTime;
+
+        public ImageInfo(String content, long createTime) {
+            this.content = content;
+            this.createTime = createTime;
+        }
     }
 
 
