@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -20,8 +21,7 @@ import java.io.FileInputStream;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 /**
  * Created by admin5 on 17/1/18.
@@ -29,12 +29,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration({"classpath:applicationContext.xml","classpath:dispatcher-servlet.xml"})
-public class CodeControllerTest {
+public class ControllerTest {
 
     @Autowired
     private WebApplicationContext wac;
 
-    private MockMvc mockMvc;
+    protected MockMvc mockMvc;
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
@@ -45,6 +45,11 @@ public class CodeControllerTest {
        ParameterizedType clazz =  (ParameterizedType) OrderService.class.getDeclaredMethod("saveOrderList", List.class,String.class).getParameters()[0].getParameterizedType();
         System.out.println(clazz.getActualTypeArguments()[0]);
     }
+
+    protected void executePost(String url,String... params){
+       // this.mockMvc.perform()
+    }
+
    @Test
     public void file() throws Exception{
        File file = new File("/Users/admin5/play/ExportOrderList201612281719.csv");

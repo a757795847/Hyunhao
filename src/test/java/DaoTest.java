@@ -3,12 +3,17 @@ import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.IPayService;
+import com.zy.gcode.utils.DateUtils;
 import org.apache.shiro.authc.credential.PasswordService;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.StringType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -53,9 +58,12 @@ public class DaoTest {
     }
 
     @Test
+    @Transactional
     public void payService() throws Exception{
-    //  Constants.objectMapper.readValue("{openId=ooBfdwNcoMaol2CF0zlcRUYkYE_Q, phone=null, nick=桂, province=浙江, city=杭州, country=中国, headImgUrl=http://wx.qlogo.cn/mmopen/t7Grpf3YAiaDtC3sPADibEhITpkusZlOLnxzoub617SnqmAPXeAb2dPb36ic2lrqttTM0DS9HqJDnJ8VYlRzFf4I8JfcPBeL2fp/0, privilege=[], unionId=null, sex=1, insertTime=null, updateTime=null}".replace("=",":"), WechatUserInfo.class);
-    System.out.println("S767sdf5sdHUfy8Sj7edR86wsEr6dh5giYfu6Tr7g8h".length());
+        DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
+        criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
+                DateUtils.format(new Date(),"yyyyMMdd"),new StringType()));
+        persistenceService.getList(criteria).forEach(System.out::println);
     }
 
     public String te1(){

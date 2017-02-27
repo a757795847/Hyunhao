@@ -9,8 +9,10 @@ import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.annocation.CsvPush;
 import com.zy.gcode.utils.*;
 import org.apache.shiro.SecurityUtils;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
+import org.hibernate.internal.util.collections.ArrayHelper;
+import org.hibernate.type.AnyType;
+import org.hibernate.type.StringType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanWrapper;
@@ -47,9 +49,12 @@ public class OrderService implements IOrderService {
         DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
         criteria.add(Restrictions.eq("giftState", status)).add(Restrictions.eq("createUserId",userId));
         if(importTime!=null)
-        criteria.add(Restrictions.eq("createDate",importTime));
+        criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
+                DateUtils.format(importTime,"yyyyMMdd"),new StringType()));
         if(applyTime!=null)
-        criteria.add(Restrictions.eq("applyDate",applyTime));
+        criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
+                DateUtils.format(applyTime,"yyyyMMdd"),new StringType()));
+        criteria.addOrder(Order.asc("createDate"));
         return persistenceService.getListAndSetCount(DataOrder.class, criteria, page);
     }
 
@@ -181,6 +186,7 @@ public class OrderService implements IOrderService {
                continue;
            }
            dataOrder.setCreateUserId(userId);
+           dataOrder.setCreateDate(new Timestamp(System.currentTimeMillis()));
            persistenceService.save(dataOrder);
        }
         return CodeRe.correct(inconsequenceNos);
