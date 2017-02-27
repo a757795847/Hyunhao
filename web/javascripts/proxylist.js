@@ -56,14 +56,14 @@ function indexAjax(datas, pageState) {
                 }else{
                     order.giftState = "审核通过";
                 }
-                // for(var a=0;a<order.length;a++){
-                //     console.log(2)
-                //     if(order[a]==null){
-                //         console.log(1)
-                //         order[a]="";
-                //     }
-                //
-                // }
+
+                var curTime = new Date(parseInt(order.applyDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
+                console.log(order.applyDate);
+                if(order.applyDate==''||order.applyDate==null){
+                    console.log("144");
+                    curTime='';
+                }
+
                 for (var key in order) {
                     if (order[key] == null) {
                         order[key] = '';
@@ -74,7 +74,7 @@ function indexAjax(datas, pageState) {
                 tbody += '<td class="mailbox-date"><ul class="images"><li><img src="../images/125.jpg" alt="" class="tooltips"></li>' +
                     '<li><img src="../images/3.jpg" alt="" class="tooltips"></li>' +
                     '<li><img src="../images/125.jpg" alt="" class="tooltips"></li></ul></td>';
-                tbody += '<td class="mailbox-date"><span>' + order.applyDate + '</span></td>';
+                tbody += '<td class="mailbox-date"><span>' + curTime + '</span></td>';
                 tbody += '<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">' + order.giftState + '</span></td>';
                 tbody += '<td class="mailbox-date"><span class="top">' + order.giftDetail + '</span></td>';
                 tbody += '<td class="mailbox-date"><span>' + order.sendDate + '</span></td>';
@@ -260,7 +260,7 @@ function filterAjax(datas, pageState) {
                 }
 
                 var curTime = new Date(parseInt(order.applyDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
-                if(order.applyDate==''){
+                if(order.applyDate==''||order.applyDate==null){
                     curTime='';
                 }
                 console.log(curTime);
@@ -272,9 +272,9 @@ function filterAjax(datas, pageState) {
                 }
                 tbody += '<tr id="' + order.id + '"><td><input type="checkbox" id="statistic"></td><td class="mailbox-date"><span>' + order.orderNumber + '</span></td>';
                 tbody += '<td class="mailbox-date"><span class="label label-success proxylist_details" data-index="' + i + '">详情</span></td>';
-                tbody += '<td class="mailbox-date"><ul class="images"><li><img src="../images/125.jpg" alt="" class="tooltips"></li>' +
-                    '<li><img src="../images/3.jpg" alt="" class="tooltips"></li>' +
-                    '<li><img src="../images/125.jpg" alt="" class="tooltips"></li></ul></td>';
+                tbody += '<td class="mailbox-date"><ul class="images"><li><img src="'+order.commentFile2+'" alt="" class="tooltips"></li>' +
+                    '<li><img src="'+order.commentFile2+'" alt="" class="tooltips"></li>' +
+                    '<li><img src="'+order.commentFile3+'" alt="" class="tooltips"></li></ul></td>';
                 tbody += '<td class="mailbox-date" style="width:12%;"><span>' + curTime + '</span></td>';
                 tbody += '<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">' + order.giftState + '</span></td>';
                 tbody += '<td class="mailbox-date"><span class="top">' + order.giftDetail + '</span></td>';
@@ -318,10 +318,8 @@ function filterAjax(datas, pageState) {
 }
 
 $("#filter").on("click", function () {
-    console.log(1)
     var state_r = '';
     var receive = $("#basic-status-demo").val();
-    console.log(receive);
     if (receive == "未申领") {
         state_r = 0;
     } else if (receive == "申领中") {
@@ -329,9 +327,18 @@ $("#filter").on("click", function () {
     } else {
         state_r = 2;
     }
-    console.log(state_r);
+    var import_date=$("#Import_date").val();
+    var user_date=$("#user_date").val();
+    import_date=new Date(Date.parse(import_date.replace(/:\d{1,2}$/,' ')));
+    import_date=import_date.getTime();
+
+    user_date=new Date(Date.parse(user_date.replace(/:\d{1,2}$/,' ')));
+    user_date=user_date.getTime();
+
+
     $(".pager").remove();
-    filterAjax({status: state_r, currentPageIndex: 1}, 1);
+    filterAjax({status: state_r, currentPageIndex: 1,importTime:import_date,applyTime:user_date}, 1);
+
 
 
 });
@@ -435,7 +442,7 @@ $('#Table').on('mouseover', '.images', function () {
         'left':objLeft +114,
     })
     $('#tooltips').show();
-})
+});
 $('#Table').on('mouseout','.images',function(){
     $('#tooltips').hide();
 })
