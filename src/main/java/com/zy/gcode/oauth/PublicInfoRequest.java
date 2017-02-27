@@ -24,7 +24,7 @@ public class PublicInfoRequest extends AbstractOAuthRequest<Map> {
     public static final String BAY_AUTHORIZER_APPID="authorizer_appid";
 
 
-    public PublicInfoRequest(String url) {
+    public PublicInfoRequest() {
         super("https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info");
     }
 
