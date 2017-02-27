@@ -340,7 +340,7 @@ p{
     margin-left:11px;
 }
 
-.images:after{
+.image:after{
     content:".";
     display:block;
     height:0;
@@ -364,6 +364,7 @@ p{
 
 }
 #Table td{
+    height:35px;
     padding:0;
     vertical-align:middle;
 }
