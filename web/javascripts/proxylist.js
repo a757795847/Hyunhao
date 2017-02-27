@@ -25,9 +25,9 @@ $(".checkbox-toggle").click(function () {
     $(this).data("clicks", !clicks);
 });
 
-var dataList =[];
+var dataList = [];
 
-function indexAjax(datas,pageState){
+function indexAjax(datas, pageState) {
     $.ajax({
         type: 'post',
         url: '/order/list',
@@ -39,76 +39,70 @@ function indexAjax(datas,pageState){
             console.log(data);
             dataList = data.list;
 
-            var tbody='';
+            var tbody = '';
 
-            var than='';
-            var thao='';
-            $.each(data.list,function(i,order){
-                if(order.giftState==0){
-                    order.giftState="未申领";
-
-                }
-                if(order.giftState==1){
-                    order.giftState="审核中";
-                    than="通过";
-                    thao="驳回";
+            var than = '';
+            var thao = '';
+            $.each(data.list, function (i, order) {
+                if (order.giftState == 0) {
+                    order.giftState = "未申领";
 
                 }
-              // for(var a=0;a<order.length;a++){
-              //     console.log(2)
-              //     if(order[a]==null){
-              //         console.log(1)
-              //         order[a]="";
-              //     }
-              //
-              // }
-                for(var key in order){
-                    if(order[key] == null){
+                if (order.giftState == 1) {
+                    order.giftState = "审核中";
+                    than = "通过";
+                    thao = "驳回";
+
+                }else{
+                    order.giftState = "审核通过";
+                }
+
+                var curTime = new Date(parseInt(order.applyDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
+                console.log(order.applyDate);
+                if(order.applyDate==''||order.applyDate==null){
+                    console.log("144");
+                    curTime='';
+                }
+
+                for (var key in order) {
+                    if (order[key] == null) {
                         order[key] = '';
                     }
                 }
-                tbody +='<tr id="'+ order.id +'"><td><input type="checkbox" class="statistic"></td><td class="mailbox-date"><span>'+order.orderNumber+'</span></td>';
-                tbody +='<td class="mailbox-date"><span class="label label-success proxylist_details" data-index="'+ i +'">详情</span></td>';
-                tbody +='<td class="mailbox-date"><ul class="images"><li><img src="../images/125.jpg" alt="" class="tooltips"></li>' +
+                tbody += '<tr id="' + order.id + '"><td><input type="checkbox" class="statistic"></td><td class="mailbox-date"><span>' + order.orderNumber + '</span></td>';
+                tbody += '<td class="mailbox-date"><span class="label label-success proxylist_details" data-index="' + i + '">详情</span></td>';
+                tbody += '<td class="mailbox-date"><ul class="images"><li><img src="../images/125.jpg" alt="" class="tooltips"></li>' +
                     '<li><img src="../images/3.jpg" alt="" class="tooltips"></li>' +
                     '<li><img src="../images/125.jpg" alt="" class="tooltips"></li></ul></td>';
-                tbody +='<td class="mailbox-date"><span>'+order.applyDate+'</span></td>';
-                tbody +='<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">'+order.giftState+'</span></td>';
-                tbody +='<td class="mailbox-date"><span class="top">'+order.giftDetail+'</span></td>';
-                tbody +='<td class="mailbox-date"><span>'+order.sendDate+'</span></td>';
-                tbody +='<td class="mailbox-date"><span>'+order.recieveDate+'</span></td>';
-                tbody +='<td class="mailbox-date"><span class="label label-success order_confirm_btn" data-index="' + order.id + '" >'+than+'</span>';
-                tbody +='<span class="label label-success turn" data-toggle="modal" data-target="#myModal">'+thao+'</span></td></tr>';
-
-
+                tbody += '<td class="mailbox-date"><span>' + curTime + '</span></td>';
+                tbody += '<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">' + order.giftState + '</span></td>';
+                tbody += '<td class="mailbox-date"><span class="top">' + order.giftDetail + '</span></td>';
+                tbody += '<td class="mailbox-date"><span>' + order.sendDate + '</span></td>';
+                tbody += '<td class="mailbox-date"><span>' + order.recieveDate + '</span></td>';
+                tbody += '<td class="mailbox-date"><span class="label label-success order_confirm_btn" data-index="' + order.id + '" >' + than + '</span>';
+                tbody += '<span class="label label-success turn" data-toggle="modal" data-target="#myModal">' + thao + '</span></td></tr>';
 
 
             });
             $("#Table").find("tbody").html(tbody);
 
 
-
-
-
-
-            if(pageState == 1){
+            if (pageState == 1) {
                 $("#jqueryPage").pagination({
                     count: data.page.count, //总数
-                    size:data.page.pageSize, //每页数量
+                    size: data.page.pageSize, //每页数量
                     index: 1,//当前页
-                    lrCount:1,//当前页左右最多显示的数量
+                    lrCount: 1,//当前页左右最多显示的数量
                     lCount: 1,//最开始预留的数量
                     rCount: 1,//最后预留的数量
-                    callback: function (options){
-                        var index=options.index;
-                        indexAjax({status:1,currentPageIndex:index});
+                    callback: function (options) {
+                        var index = options.index;
+                        indexAjax({status: 1, currentPageIndex: index});
                         //options.count = 300;
                         //return options;
                     },
                 });
             }
-
-
 
 
         },
@@ -120,24 +114,24 @@ function indexAjax(datas,pageState){
 
     })
 }
-indexAjax({status:0,currentPageIndex:1},1);
+indexAjax({status: 0, currentPageIndex: 1}, 1);
 
-$("#Table").on('click','.order_confirm_btn',function(){
+$("#Table").on('click', '.order_confirm_btn', function () {
 
-    var orderIndex =$(this).data("index");
+    var orderIndex = $(this).data("index");
     var that = $(this);
     console.log(orderIndex);
     $.ajax({
         type: 'post',
-        url: '/order/passAuditing/'+orderIndex,
-        data: JSON.stringify({status:1,currentPageIndex:1}),
+        url: '/order/passAuditing/' + orderIndex,
+        data: JSON.stringify({status: 1, currentPageIndex: 1}),
         dataType: 'json',
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
-            if(data.status==1){
-                $('.'+orderIndex).html("审核通过");
+            if (data.status == 1) {
+                $('.' + orderIndex).html("审核通过");
                 // $(".label.label-success.turn").remove();
-                var link='<span class="label label-success turn" data-toggle="modal" data-target="#myModals">发送红包</span>';
+                var link = '<span class="label label-success turn" data-toggle="modal" data-target="#myModals">发送红包</span>';
                 console.log(that);
                 that.parent().html(link);
 
@@ -146,68 +140,67 @@ $("#Table").on('click','.order_confirm_btn',function(){
 
         }
     })
-    $('#send').attr('data-index',orderIndex);
+    $('#send').attr('data-index', orderIndex);
 });
 
-$("#send").on('click',function(){
-    var order_index =$(this).data("index");
-        console.log(order_index);
-    var Idx='';
+$("#send").on('click', function () {
+    var order_index = $(this).data("index");
+    console.log(order_index);
+    var Idx = '';
 
-    for(var i=0;i< $("#span").find('.text-color').length;i++){
+    for (var i = 0; i < $("#span").find('.text-color').length; i++) {
 
-        if($("#span").find('.text-color').eq(i).hasClass('actives')){
+        if ($("#span").find('.text-color').eq(i).hasClass('actives')) {
             console.log($('#span .text-color').eq(i).attr('class'))
-            Idx=(i+1)*100;
+            Idx = (i + 1) * 100;
         }
     }
 
 
     console.log(Idx);
-    var parameter={
-        "id":order_index,
-        "count":Idx
+    var parameter = {
+        "id": order_index,
+        "count": Idx
     }
-   $.ajax({
+    $.ajax({
         type: 'post',
-        url:"/order/redSend",
+        url: "/order/redSend",
         data: JSON.stringify(parameter),
         dataType: 'json',
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
-        $('#'+order_index+' #order_state span').html("红包发送成功");
-        $('#'+order_index+' .top').html(Idx/100+'元红包');
-        $('#'+order_index+' .turn').remove();
-       }
+            $('#' + order_index + ' #order_state span').html("红包发送成功");
+            $('#' + order_index + ' .top').html(Idx / 100 + '元红包');
+            $('#' + order_index + ' .turn').remove();
+        }
     })
 });
 
-$("#Table").on('click',".proxylist_details",function(){
-    var order_index =$(this).data("index");
-       /* data[order_index]*/
+$("#Table").on('click', ".proxylist_details", function () {
+    var order_index = $(this).data("index");
+    /* data[order_index]*/
     console.log(dataList);
     console.log(dataList[order_index]);
-        $("#order_number").html(dataList[order_index].orderNumber);
-        $("#buyer_name").html(dataList[order_index].buyerName);
-        $("#order_create_time").html(dataList[order_index].orderCreateTime);
-        $("#order_pay_time").html(dataList[order_index].orderPayTime);
-        $("#buyer_zhifubao").html(dataList[order_index].buyerZhifubao);
-        $("#amount").html(dataList[order_index].amount);
-        $("#receiver").html(dataList[order_index].receiver);
-        $("#receiver_address").html(dataList[order_index].receiverAddress);
-        $("#receiver_mobile").html(dataList[order_index].receiverMobile);
+    $("#order_number").html(dataList[order_index].orderNumber);
+    $("#buyer_name").html(dataList[order_index].buyerName);
+    $("#order_create_time").html(dataList[order_index].orderCreateTime);
+    $("#order_pay_time").html(dataList[order_index].orderPayTime);
+    $("#buyer_zhifubao").html(dataList[order_index].buyerZhifubao);
+    $("#amount").html(dataList[order_index].amount);
+    $("#receiver").html(dataList[order_index].receiver);
+    $("#receiver_address").html(dataList[order_index].receiverAddress);
+    $("#receiver_mobile").html(dataList[order_index].receiverMobile);
 
     $('#isModal').modal('show');
 
 
-
 });
 
 
- $(".order-discount-line .text-color.border-color").on("click",function(){
-                $(this).addClass("actives");
-                $(this).siblings().removeClass("actives");
- });
+$(".order-discount-line .text-color.border-color").on("click", function () {
+    $(this).addClass("actives");
+    $(this).siblings().removeClass("actives");
+});
 
 
 $("#basic-time-demo").select2();
@@ -215,32 +208,30 @@ $("#basic-status-demo").select2();
 $("#basic-details-demo").select2();
 
 
-$(".trigger").on('click',function(){
-   var sub=$(this).html();
-    if(sub=="导入时间"){
-        $("div.fancy-select ul.options").css('left','180px');
+$(".trigger").on('click', function () {
+    var sub = $(this).html();
+    if (sub == "导入时间") {
+        $("div.fancy-select ul.options").css('left', '180px');
 
-    }else if(sub=="未申领"){
-        $("div.fancy-select ul.options").css('left','360px');
+    } else if (sub == "未申领") {
+        $("div.fancy-select ul.options").css('left', '360px');
 
-    }else if(sub=="红包详情"){
-        $("div.fancy-select ul.options").css('left','540px');
+    } else if (sub == "红包详情") {
+        $("div.fancy-select ul.options").css('left', '540px');
 
-    }else{
-        $("div.fancy-select ul.options").css('left','0');
+    } else {
+        $("div.fancy-select ul.options").css('left', '0');
 
     }
 
 
-
-
 });
 
-$("#clear").click(function(){
+$("#clear").click(function () {
     $("#Text").val("");
 });
 
-function filterAjax(datas,pageState){
+function filterAjax(datas, pageState) {
     $.ajax({
         type: 'post',
         url: '/order/list',
@@ -252,69 +243,66 @@ function filterAjax(datas,pageState){
             console.log(data);
             dataList = data.list;
 
-            var tbody='';
-            var than='';
-            var thao='';
-            $.each(data.list,function(i,order){
-                if(order.giftState==0){
-                    order.giftState="未申领";
-                }
-                if(order.giftState==1){
-                    order.giftState="审核中";
-                    than="通过";
-                    thao="驳回";
+            var tbody = '';
+            var than = '';
+            var thao = '';
+            $.each(data.list, function (i, order) {
+                if (order.giftState == 0) {
+                    order.giftState = "未申领";
+                } else if (order.giftState == 1) {
+                    order.giftState = "审核中";
+                    than = "通过";
+                    thao = "驳回";
+
+                }else{
+                    order.giftState = "审核通过";
 
                 }
-                // for(var a=0;a<order.length;a++){
-                //     console.log(2)
-                //     if(order[a]==null){
-                //         console.log(1)
-                //         order[a]="";
-                //     }
-                //
-                // }
-                for(var key in order){
-                    if(order[key] == null){
+
+                var curTime = new Date(parseInt(order.applyDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
+                if(order.applyDate==''||order.applyDate==null){
+                    curTime='';
+                }
+                console.log(curTime);
+
+                for (var key in order) {
+                    if (order[key] == null) {
                         order[key] = '';
                     }
                 }
-                tbody +='<tr id="'+ order.id +'"><td><input type="checkbox" id="statistic"></td><td class="mailbox-date"><span>'+order.orderNumber+'</span></td>';
-                tbody +='<td class="mailbox-date"><span class="label label-success proxylist_details" data-index="'+ i +'">详情</span></td>';
-                tbody +='<td class="mailbox-date"><ul class="images"><li><img src="../images/125.jpg" alt="" class="tooltips"></li>' +
-                    '<li><img src="../images/3.jpg" alt="" class="tooltips"></li>' +
-                    '<li><img src="../images/125.jpg" alt="" class="tooltips"></li></ul></td>';
-                tbody +='<td class="mailbox-date"><span>'+order.applyDate+'</span></td>';
-                tbody +='<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">'+order.giftState+'</span></td>';
-                tbody +='<td class="mailbox-date"><span class="top">'+order.giftDetail+'</span></td>';
-                tbody +='<td class="mailbox-date"><span>'+order.sendDate+'</span></td>';
-                tbody +='<td class="mailbox-date"><span>'+order.recieveDate+'</span></td>';
-                tbody +='<td class="mailbox-date"><span class="label label-success order_confirm_btn" data-index="' + order.id + '" >'+than+'</span>';
-                tbody +='<span class="label label-success turn" data-toggle="modal" data-target="#myModal">'+thao+'</span></td></tr>';
-
-
+                tbody += '<tr id="' + order.id + '"><td><input type="checkbox" id="statistic"></td><td class="mailbox-date"><span>' + order.orderNumber + '</span></td>';
+                tbody += '<td class="mailbox-date"><span class="label label-success proxylist_details" data-index="' + i + '">详情</span></td>';
+                tbody += '<td class="mailbox-date"><ul class="images"><li><img src="'+order.commentFile2+'" alt="" class="tooltips"></li>' +
+                    '<li><img src="'+order.commentFile2+'" alt="" class="tooltips"></li>' +
+                    '<li><img src="'+order.commentFile3+'" alt="" class="tooltips"></li></ul></td>';
+                tbody += '<td class="mailbox-date" style="width:12%;"><span>' + curTime + '</span></td>';
+                tbody += '<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">' + order.giftState + '</span></td>';
+                tbody += '<td class="mailbox-date"><span class="top">' + order.giftDetail + '</span></td>';
+                tbody += '<td class="mailbox-date"><span>' + order.sendDate + '</span></td>';
+                tbody += '<td class="mailbox-date"><span>' + order.recieveDate + '</span></td>';
+                tbody += '<td class="mailbox-date"><span class="label label-success order_confirm_btn" data-index="' + order.id + '" >' + than + '</span>';
+                tbody += '<span class="label label-success turn" data-toggle="modal" data-target="#myModal">' + thao + '</span></td></tr>';
 
 
             });
             $("#Table").find("tbody").html(tbody);
 
-            if(pageState == 1){
+            if (pageState == 1) {
                 $("#jqueryPage").pagination({
                     count: data.page.count, //总数
-                    size:data.page.pageSize, //每页数量
+                    size: data.page.pageSize, //每页数量
                     index: 1,//当前页
-                    lrCount:1,//当前页左右最多显示的数量
+                    lrCount: 1,//当前页左右最多显示的数量
                     lCount: 1,//最开始预留的数量
                     rCount: 1,//最后预留的数量
-                    callback: function (options){
-                        var index=options.index;
-                        filterAjax({status:datas.status,currentPageIndex:index});
+                    callback: function (options) {
+                        var index = options.index;
+                        filterAjax({status: datas.status, currentPageIndex: index});
                         //options.count = 300;
                         //return options;
                     },
                 });
             }
-
-
 
 
         },
@@ -327,105 +315,134 @@ function filterAjax(datas,pageState){
     })
 
 
-
-
 }
 
-$("#filter").on("click",function(){
-    console.log(1)
-    var state_r='';
-    var receive=$("#basic-status-demo").val();
-    console.log(receive);
-    if(receive=="未申领"){
-        state_r=0;
-    }else if(receive=="申领中"){
-        state_r=1;
-    }else{
-        state_r=2;
+$("#filter").on("click", function () {
+    var state_r = '';
+    var receive = $("#basic-status-demo").val();
+    if (receive == "未申领") {
+        state_r = 0;
+    } else if (receive == "申领中") {
+        state_r = 1;
+    } else {
+        state_r = 2;
+    }
+    var import_date=$("#Import_date").val();
+    var user_date=$("#user_date").val();
+    import_date=new Date(Date.parse(import_date.replace(/:\d{1,2}$/,' ')));
+    import_date=import_date.getTime();
+
+    user_date=new Date(Date.parse(user_date.replace(/:\d{1,2}$/,' ')));
+    user_date=user_date.getTime();
+
+
+    $(".pager").remove();
+    filterAjax({status: state_r, currentPageIndex: 1,importTime:import_date,applyTime:user_date}, 1);
+
+
+
+});
+
+
+// this.tooltipsPreview = function(){
+//     console.log(1);
+//     var xOffset = 20;
+//     var yOffset = 20;
+//     var winHeight = $(window).height();
+//     var winWidth = $(window).width();
+//     var obj;
+//     var objHeight = 0;
+//     var objWidth = 0;
+//
+//     $(window).resize(function(){
+//         winHeight = $(window).height();
+//         winWidth =  $(window).width();
+//     });
+//
+//     var setHover = function(e){
+//         if(objHeight == 0) objHeight = $(obj).find('iframe').height();
+//         var top = (e.pageY + yOffset);
+//         var left = (e.pageX + xOffset);
+//         if(e.pageY > winHeight/2) top = (e.pageY - objHeight - yOffset);
+//         if(e.pageX > winWidth/2) left = (e.pageX - objWidth - xOffset);
+//         $(obj).css({'top':top,'left':left});
+//         if( $(obj).css('visibility') == 'hidden' ){
+//             $(obj).css({'visibility':'visible'}).fadeIn('fast');
+//         }
+//     };
+//
+//     $('.tooltips').hover(function(e){
+//
+//             var pacList =[];
+//             console.log('111');
+//             for(var i=0;i<$(this).parent().parent().find('.tooltips').length; i++){
+//               /*  var $(this).parent().find('.tooltips').eq(i).attr("src");*/
+//                 pacList.push($(this).parent().parent().find('.tooltips').eq(i).attr("src"));
+//
+//             }
+//             console.log(pacList);
+//          /*   var pic = $(this).attr('src') || $(this).attr('value') || $(this).attr('href');*/
+//             if(!pacList) return;
+//             var width = parseInt($(this).attr('_width'));
+//             if(!width) width = 280;
+//             objWidth = width + 2;
+//             $('body').append('<div id="tooltips" style="position:absolute;top:0;left:0; border:1px solid #ddd;visibility:hidden;color:#fff;z-index:10001;">' +
+//                 '<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="'+ width +'" src="'+ pacList[0] +'" />' +
+//                 '<img style="position:absolute;left:290px;top:0;z-index:10003;border:1px solid #ddd;" height="500px";width="'+ width +'" src="'+ pacList[1] +'" />' +
+//                 '<img style="position:absolute;left:580px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="'+ width +'" src="'+ pacList[2] +'" />' +
+//                 '<iframe width="'+ objWidth +'" style="position:absolute;border:none;filter:alpha(opacity=0);-moz-opacity:0;-khtml-opacity: 0;opacity:0;z-index:10002;"></iframe></div>');
+//             var top = (e.pageY + yOffset);
+//             var left = (e.pageX + xOffset);
+//             obj = $('#tooltips');
+//             $(obj).find('img').load(function(){ //如果图片从缓存读取，有的浏览器（如chrome）这里不会执行，所以后面再加一个setHover
+//                 objHeight = $(this).height()+2;
+//                 $(obj).find('iframe').height( objHeight );
+//                 setHover(e);
+//             });
+//             setHover(e);
+//         },
+//         function(){
+//             $(obj).remove();
+//         });
+//
+//     $('.tooltips').on('mousemove',function(e){
+//         setHover(e);
+//     });
+// };
+//
+// $(window).load(function(){
+//     tooltipsPreview();
+// });
+
+$('#Table').on('mouseover', '.images', function () {
+    var pacList = [];
+    for (var i = 0; i < $(this).find('.tooltips').length; i++) {
+        /*  var $(this).parent().find('.tooltips').eq(i).attr("src");*/
+        pacList.push($(this).find('.tooltips').eq(i).attr("src"));
 
     }
-    console.log(state_r);
-    $(".pager").remove();
-    filterAjax({status:state_r,currentPageIndex:1},1);
-
-
-
-
-
-});
-
-
-
-
-
-
-
-this.tooltipsPreview = function(){
-    console.log(1);
-    var xOffset = 20;
-    var yOffset = 20;
     var winHeight = $(window).height();
     var winWidth = $(window).width();
-    var obj;
-    var objHeight = 0;
-    var objWidth = 0;
+    var offset = $(this).offset();
+    var objTop = offset.top;
+    var objLeft = offset.left;
 
-    $(window).resize(function(){
-        winHeight = $(window).height();
-        winWidth =  $(window).width();
-    });
+    if(($(document).scrollTop() + winHeight) - objTop < 500){
+        objTop = objTop - 450;
+    }else{
+        objTop = objTop +19;
+    }
 
-    var setHover = function(e){
-        if(objHeight == 0) objHeight = $(obj).find('iframe').height();
-        var top = (e.pageY + yOffset);
-        var left = (e.pageX + xOffset);
-        if(e.pageY > winHeight/2) top = (e.pageY - objHeight - yOffset);
-        if(e.pageX > winWidth/2) left = (e.pageX - objWidth - xOffset);
-        $(obj).css({'top':top,'left':left});
-        if( $(obj).css('visibility') == 'hidden' ){
-            $(obj).css({'visibility':'visible'}).fadeIn('fast');
-        }
-    };
 
-    $('.tooltips').hover(function(e){
-
-            var pacList =[];
-            console.log('111');
-            for(var i=0;i<$(this).parent().parent().find('.tooltips').length; i++){
-              /*  var $(this).parent().find('.tooltips').eq(i).attr("src");*/
-                pacList.push($(this).parent().parent().find('.tooltips').eq(i).attr("src"));
-
-            }
-            console.log(pacList);
-         /*   var pic = $(this).attr('src') || $(this).attr('value') || $(this).attr('href');*/
-            if(!pacList) return;
-            var width = parseInt($(this).attr('_width'));
-            if(!width) width = 280;
-            objWidth = width + 2;
-            $('body').append('<div id="tooltips" style="position:absolute;top:0;left:0; border:1px solid #ddd;visibility:hidden;color:#fff;z-index:10001;">' +
-                '<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="'+ width +'" src="'+ pacList[0] +'" />' +
-                '<img style="position:absolute;left:290px;top:0;z-index:10003;border:1px solid #ddd;" height="500px";width="'+ width +'" src="'+ pacList[1] +'" />' +
-                '<img style="position:absolute;left:580px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="'+ width +'" src="'+ pacList[2] +'" />' +
-                '<iframe width="'+ objWidth +'" style="position:absolute;border:none;filter:alpha(opacity=0);-moz-opacity:0;-khtml-opacity: 0;opacity:0;z-index:10002;"></iframe></div>');
-            var top = (e.pageY + yOffset);
-            var left = (e.pageX + xOffset);
-            obj = $('#tooltips');
-            $(obj).find('img').load(function(){ //如果图片从缓存读取，有的浏览器（如chrome）这里不会执行，所以后面再加一个setHover
-                objHeight = $(this).height()+2;
-                $(obj).find('iframe').height( objHeight );
-                setHover(e);
-            });
-            setHover(e);
-        },
-        function(){
-            $(obj).remove();
-        });
-
-    $('.tooltips').on('mousemove',function(e){
-        setHover(e);
-    });
-};
-
-$(window).load(function(){
-    tooltipsPreview();
+    $('#tooltips').html('<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[0] + '" />' +
+        '<img style="position:absolute;left:280px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[1] + '" />' +
+        '<img style="position:absolute;left:560px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[2] + '" />')
+    $('#tooltips').css({
+        'top':objTop,
+        'left':objLeft +114,
+    })
+    $('#tooltips').show();
 });
+$('#Table').on('mouseout','.images',function(){
+    $('#tooltips').hide();
+})
