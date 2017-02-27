@@ -35,7 +35,7 @@ public class MiddleController {
           return "redirect:/error.html";
       }
       if(map.containsKey("status")&&map.get("status").equals("1")){
-           Map map1 = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/code/guserinfo?token="+map.get("access_token")+"&zyid="+zyid);
+           Map map1 = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/access/guserinfo?token="+map.get("access_token")+"&zyid="+zyid);
           if(map1.containsKey("status")&&map1.get("status").equals("1")){
              String str =  map1.get("userinfo").toString();
               try {
