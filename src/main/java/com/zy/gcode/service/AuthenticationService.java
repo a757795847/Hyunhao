@@ -74,6 +74,7 @@ public class AuthenticationService implements IAuthenticationService {
              Map map1 = infoRequest.start();
              if(map1==null)
                  return CodeRe.error("获取公众号名称错误!");
+             map1 = (Map)map1.get("authorizer_info");
              authorizationInfo.setUserName((String)(map1.get("user_name")));
              authorizationInfo.setNickName((String)(map1.get("nick_name")));
              authorizationInfo.setPrincipalName((String)(map1.get("principal_name")));
