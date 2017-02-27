@@ -110,12 +110,18 @@ public class OperatorController {
          }
          VerificationInfo verificationInfo = new VerificationInfo(codeRe.getMessage(),System.currentTimeMillis(),phone);
          session.setAttribute("verificationInfo",verificationInfo);
-         return ControllerStatus.ok(codeRe.getMessage());
+         return ControllerStatus.ok("success");
     }
 
     @RequestMapping("registerHome")
     public String registerHome(){
         return "/views/proxy/register.html";
+    }
+
+    @RequestMapping("logout")
+    public String logout(){
+        SecurityUtils.getSubject().logout();
+        return "redirect:/";
     }
 
 
@@ -157,6 +163,4 @@ public class OperatorController {
             this.createTime = createTime;
         }
     }
-
-
 }

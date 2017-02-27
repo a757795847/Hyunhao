@@ -7,5 +7,5 @@ import com.zy.gcode.utils.Page;
  * Created by admin5 on 17/2/27.
  */
 public interface IProxyService {
-    CodeRe getZyAppInfo(Page page);
+    CodeRe getZyAppInfo(String serverType,String isAuthentication,String zyappid,Page page);
 }
