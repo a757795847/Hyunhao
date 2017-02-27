@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Created by admin5 on 17/2/16.
@@ -35,5 +36,9 @@ public class MzUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean checkEntry(Map map,String name){
+        return map.containsKey(name)&&map.get(name)!=null;
     }
 }

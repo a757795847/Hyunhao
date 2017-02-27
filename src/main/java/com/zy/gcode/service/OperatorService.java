@@ -39,7 +39,7 @@ public class OperatorService implements IOperatorService {
 
     @Override
     @Transactional
-    public CodeRe registerOperator(String nick, String username, String password) {
+    public CodeRe registerOperator(String username, String password) {
         User existOperator = persistenceService.get(User.class,username);
         if(existOperator !=null){
           return CodeRe.error("用户名以存在!");
@@ -47,10 +47,14 @@ public class OperatorService implements IOperatorService {
 
         User user = new User();
         user.setUsername(username);
-        user.setName(nick);
         user.setPassword(passwordService.encryptPassword(password));
+        user.setRole("user");
         persistenceService.save(user);
         return CodeRe.correct("success");
     }
 
+    @Override
+    public CodeRe generateVerificationCode(String phone) {
+        return CodeRe.correct("1111");
+    }
 }
