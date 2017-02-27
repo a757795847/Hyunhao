@@ -53,8 +53,11 @@ public class DaoTest {
 
     @Test
     public void password(){
-  /*   List<DataOrder> dataOrderList =  persistenceService.getList(DataOrder.class);
-     dataOrderList.forEach(dataOrder->System.out.println(dataOrder.getOrderNumber()));*/
+          if(true){
+              System.out.println(1);
+          }else if(true){
+              System.out.println(2);
+          }
     }
 
     @Test

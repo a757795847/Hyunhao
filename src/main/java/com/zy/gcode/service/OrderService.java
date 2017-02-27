@@ -48,13 +48,22 @@ public class OrderService implements IOrderService {
     public List<DataOrder> getOrderByCondition(int status, Page page, String userId, Timestamp applyTime, Timestamp importTime) {
         DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
         criteria.add(Restrictions.eq("giftState", status)).add(Restrictions.eq("createUserId",userId));
-        if(importTime!=null)
-        criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
-                DateUtils.format(importTime,"yyyyMMdd"),new StringType()));
-        if(applyTime!=null)
-        criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
-                DateUtils.format(applyTime,"yyyyMMdd"),new StringType()));
-        criteria.addOrder(Order.asc("createDate"));
+        if(importTime!=null){
+            criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
+                    DateUtils.format(importTime,"yyyyMMdd"),new StringType()));
+        }
+
+        if(applyTime!=null){
+            criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.apply_date,'%Y%m%d')=?",
+                    DateUtils.format(applyTime,"yyyyMMdd"),new StringType()));
+        }
+
+        if(applyTime!=null){
+            criteria.addOrder(Order.desc("applyDate"));
+        }else if(importTime != null){
+            criteria.addOrder(Order.desc("createDate"));
+        }
+
         return persistenceService.getListAndSetCount(DataOrder.class, criteria, page);
     }
 
