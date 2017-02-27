@@ -8,20 +8,18 @@ import java.sql.Timestamp;
 public class WechatPublicServer {
     private String tappid;
     private String wxAppid;
-    private String secret;
-    private String customerId;
+    private String userId;
     private Timestamp insertTime;
     private Timestamp updateTime;
     private String scope;
-    private String username;
     private String zyappid;
 
     public String getTappid() {
         return tappid;
     }
 
-    public void setTappid(String geAppid) {
-        this.tappid = geAppid;
+    public void setTappid(String tappid) {
+        this.tappid = tappid;
     }
 
     public String getWxAppid() {
@@ -32,20 +30,12 @@ public class WechatPublicServer {
         this.wxAppid = wxAppid;
     }
 
-    public String getSecret() {
-        return secret;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public Timestamp getInsertTime() {
@@ -70,14 +60,6 @@ public class WechatPublicServer {
 
     public void setScope(String scope) {
         this.scope = scope;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getZyappid() {

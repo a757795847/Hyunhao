@@ -10,9 +10,12 @@
         <property insert="false" update="false" name="insertTime" column="insert_time"/>
         <property name="name" column="name"/>
         <property name="wxAppid" column="wx_appid"/>
-        <property name="expireTime" column="expire_time"/>
+        <property name="endTime" column="end_time"/>
         <property insert="false" update="false" name="updateTime" column="update_time"/>
         <property name="role" column="role"/>
         <property name="isEnable" column="is_enable"/>
+        <property name="isAuthentication" column="is_authentication"/>
+        <property name="phone" column="phone"/>
+        <property name="authenticationTime" column="authentication_time"/>
     </class>
 </hibernate-mapping>

@@ -60,5 +60,10 @@ public class OperatorController {
        return  ControllerStatus.ok((String)codeRe.getMessage());
     }
 
+    @RequestMapping
+    public String registerHome(){
+        return "/views/proxy/register.html";
+    }
+
 
 }

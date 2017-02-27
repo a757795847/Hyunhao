@@ -4,15 +4,10 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.zy.gcode.pojo.WechatPublicServer" table="wechat_public_server" schema="jt_platform">
-        <id name="tappid" column="tappid"/>
-        <property name="wxAppid" column="wx_appid"/>
+    <class name="com.zy.gcode.pojo.WechatPublic" table="wechat_public" schema="jt_platform">
+        <id name="wxAppid" column="wx_appid"/>
         <property name="secret" column="secret"/>
-        <property name="customerId" column="customer_id"/>
-        <property name="scope" column="scope"/>
-        <property update="false" insert="false" name="insertTime" column="insert_time"/>
-        <property update="false" insert="false" name="updateTime" column="update_time"/>
-        <property name="username" column="username"/>
-        <property name="zyappid" column="zyappid"/>
+        <property name="name" column="name"/>
+        <property name="headImage" column="head_image"/>
     </class>
 </hibernate-mapping>

@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.zy.gcode.pojo.WechatPublicServer" table="wechat_public_server" schema="jt_platform">
+        <id name="tappid" column="tappid"/>
+        <property name="wxAppid" column="wx_appid"/>
+        <property name="userId" column="user_id"/>
+        <property name="scope" column="scope"/>
+        <property update="false" insert="false" name="insertTime" column="insert_time"/>
+        <property update="false" insert="false" name="updateTime" column="update_time"/>
+        <property name="zyappid" column="zyappid"/>
+    </class>
+</hibernate-mapping>
