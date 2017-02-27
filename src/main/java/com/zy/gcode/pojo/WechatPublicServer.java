@@ -5,8 +5,8 @@ import java.sql.Timestamp;
 /**
  * Created by admin5 on 17/1/16.
  */
-public class WechatPublic {
-    private String geAppid;
+public class WechatPublicServer {
+    private String tappid;
     private String wxAppid;
     private String secret;
     private String customerId;
@@ -14,13 +14,14 @@ public class WechatPublic {
     private Timestamp updateTime;
     private String scope;
     private String username;
+    private String zyappid;
 
-    public String getGeAppid() {
-        return geAppid;
+    public String getTappid() {
+        return tappid;
     }
 
-    public void setGeAppid(String geAppid) {
-        this.geAppid = geAppid;
+    public void setTappid(String geAppid) {
+        this.tappid = geAppid;
     }
 
     public String getWxAppid() {
@@ -77,5 +78,13 @@ public class WechatPublic {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getZyappid() {
+        return zyappid;
+    }
+
+    public void setZyappid(String zyappid) {
+        this.zyappid = zyappid;
     }
 }

@@ -11,5 +11,6 @@
         <property name="insertime" column="insertime"/>
         <property name="endData" column="end_data"/>
         <property name="beginTime" column="begin_time"/>
+        <property name="zyappid" column="zyappid"/>
     </class>
 </hibernate-mapping>

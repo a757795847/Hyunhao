@@ -6,6 +6,7 @@ import com.zy.gcode.pojo.User;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -21,6 +22,7 @@ public class OperatorService implements IOperatorService {
     PasswordService passwordService;
 
     @Override
+    @Transactional
     public CodeRe checkUsername(String username) {
        User operator = persistenceService.get(User.class,username);
         if(operator == null){
@@ -30,11 +32,13 @@ public class OperatorService implements IOperatorService {
     }
 
     @Override
+    @Transactional
     public CodeRe topUp(String username, int count) {
         return null;
     }
 
     @Override
+    @Transactional
     public CodeRe registerOperator(String nick, String username, String password) {
         User existOperator = persistenceService.get(User.class,username);
         if(existOperator !=null){

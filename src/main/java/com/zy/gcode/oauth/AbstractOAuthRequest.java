@@ -64,9 +64,8 @@ public abstract class AbstractOAuthRequest<T> {
 
     protected <T> T getObj(Class<T> clazz) {
         HttpResponse response = HttpClientUtils.getSend(buildParams());
-        if (HttpClientUtils.checkRespons(response)) {
-            return null;
-        }
+       HttpClientUtils.checkRespons(response);
+
         String str = null;
         try {
             str = MzUtils.inputStreamToString(response.getEntity().getContent());

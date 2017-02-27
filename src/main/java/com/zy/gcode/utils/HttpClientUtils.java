@@ -52,8 +52,12 @@ public class HttpClientUtils {
         return null;
     }
 
-    public static boolean checkRespons(HttpResponse response){
-        return response.getStatusLine().getStatusCode()!=200;
+    public static void checkRespons(HttpResponse response){
+        if(response.getStatusLine().getStatusCode()!=200){
+            throw new IllegalStateException("http 返回吗费等与200");
+        }
+
+
     }
 
     /**

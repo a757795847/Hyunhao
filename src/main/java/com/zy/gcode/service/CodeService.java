@@ -8,12 +8,12 @@ import com.zy.gcode.oauth.UserTokenOAuthRequest;
 import com.zy.gcode.pojo.*;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;
-import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.UniqueStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
@@ -21,7 +21,6 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.*;
 import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Created by admin5 on 17/1/17.
@@ -37,16 +36,16 @@ public class CodeService implements ICodeService {
 
     @Autowired
     AuthenticationService authenticationService;
-
+    @Transactional
     public CodeRe code(String geappid, String url, String state) {
 
-        WechatPublic wechatPublic = persistenceService.get(WechatPublic.class, geappid);
+        WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, geappid);
 
         String wxappid;
         try {
-            wxappid = wechatPublic.getWxAppid();
+            wxappid = wechatPublicServer.getWxAppid();
         } catch (NullPointerException e) {
-            return CodeRe.error("wechatPublic is empty!");
+            return CodeRe.error("wechatPublicServer is empty!");
         }
 
 
@@ -72,12 +71,12 @@ public class CodeService implements ICodeService {
             return CodeRe.error("该系统不支持utf-8");
         }
         codeOAuthRequest.setParam(UserCodeOAuthRequest.RESPONSETYPE, "code");
-        codeOAuthRequest.setParam(UserCodeOAuthRequest.SCOPE, wechatPublic.getScope());
+        codeOAuthRequest.setParam(UserCodeOAuthRequest.SCOPE, wechatPublicServer.getScope());
         codeOAuthRequest.setParam(UserCodeOAuthRequest.STATE, code);
         codeOAuthRequest.setParam(UserCodeOAuthRequest.COMPONENT_APPID, (String) Constants.properties.get("platform.appid")).setSuffix("#wechat_redirect");
         return CodeRe.correct(codeOAuthRequest.start());
     }
-
+    @Transactional
     public CodeRe token(String code, String state, String appid) {
 
         GeCode geCode = persistenceService.get(GeCode.class, state);
@@ -130,7 +129,7 @@ public class CodeService implements ICodeService {
         }
         return CodeRe.correct(geCode.getCallbackUrl() + "?code=" + geCode.getGeCodeM() + "&state=" + geCode.getState() + "&zyid=" + geCode.getGeAppid());
     }
-
+    @Transactional
     private WechatUserInfo user(String token, String openid, String appid) {
 
         UserInfoOAuthRequest infoOAuthRequest = new UserInfoOAuthRequest();
@@ -162,6 +161,7 @@ public class CodeService implements ICodeService {
     }
 
     @Override
+    @Transactional
     public CodeRe<GeToken> geToken(String geCodeM, String geappid) {
         GeCode geCode = persistenceService.get(GeCode.class, geCodeM);
 
@@ -190,6 +190,7 @@ public class CodeService implements ICodeService {
     }
 
     @Override
+    @Transactional
     public CodeRe<WechatUserInfo> getUser(String zyid, String token) {
         GeToken geToken = persistenceService.get(GeToken.class, token);
         Timestamp updatetime;

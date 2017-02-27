@@ -34,22 +34,22 @@ public class DaoTest {
 
     @Test
     public void test(){
-
-       System.out.println(persistenceService.getOneByColumn(DataOrder.class,"orderNumber","24423067612233391")==null);
+/*
+       System.out.println(persistenceService.getOneByColumn(DataOrder.class,"orderNumber","24423067612233391")==null);*/
     }
-    @Test
+  /*  @Test
     public void dome(){
         System.out.println(persistenceService.count(DataOrder.class));
         }
     @Test
     public void utils(){
        System.out.println(persistenceService.get(DataOrder.class,"2943278005233010")==null);
-    }
+    }*/
 
     @Test
     public void password(){
-     List<DataOrder> dataOrderList =  persistenceService.getList(DataOrder.class);
-     dataOrderList.forEach(dataOrder->System.out.println(dataOrder.getOrderNumber()));
+  /*   List<DataOrder> dataOrderList =  persistenceService.getList(DataOrder.class);
+     dataOrderList.forEach(dataOrder->System.out.println(dataOrder.getOrderNumber()));*/
     }
 
     @Test

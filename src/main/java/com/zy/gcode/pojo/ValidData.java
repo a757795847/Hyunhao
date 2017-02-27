@@ -1,6 +1,8 @@
 package com.zy.gcode.pojo;
 
+
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by admin5 on 17/2/23.
@@ -9,9 +11,10 @@ public class ValidData {
     private long id;
     private String username;
     private String tappid;
-    private String insertime;
+    private Timestamp insertime;
     private Date endData;
     private Date beginTime;
+    private Long zyappid;
 
     public long getId() {
         return id;
@@ -37,11 +40,11 @@ public class ValidData {
         this.tappid = tappid;
     }
 
-    public String getInsertime() {
+    public Timestamp getInsertime() {
         return insertime;
     }
 
-    public void setInsertime(String insertime) {
+    public void setInsertime(Timestamp insertime) {
         this.insertime = insertime;
     }
 
@@ -61,31 +64,11 @@ public class ValidData {
         this.beginTime = beginTime;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ValidData validData = (ValidData) o;
-
-        if (id != validData.id) return false;
-        if (username != null ? !username.equals(validData.username) : validData.username != null) return false;
-        if (tappid != null ? !tappid.equals(validData.tappid) : validData.tappid != null) return false;
-        if (insertime != null ? !insertime.equals(validData.insertime) : validData.insertime != null) return false;
-        if (endData != null ? !endData.equals(validData.endData) : validData.endData != null) return false;
-        if (beginTime != null ? !beginTime.equals(validData.beginTime) : validData.beginTime != null) return false;
-
-        return true;
+    public Long getZyappid() {
+        return zyappid;
     }
 
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (username != null ? username.hashCode() : 0);
-        result = 31 * result + (tappid != null ? tappid.hashCode() : 0);
-        result = 31 * result + (insertime != null ? insertime.hashCode() : 0);
-        result = 31 * result + (endData != null ? endData.hashCode() : 0);
-        result = 31 * result + (beginTime != null ? beginTime.hashCode() : 0);
-        return result;
+    public void setZyappid(Long zyappid) {
+        this.zyappid = zyappid;
     }
 }

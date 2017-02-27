@@ -23,9 +23,8 @@ public class PublicPreCodeRequest extends AbstractOAuthRequest<PublicPreCodeRequ
     @Override
     public PreAuthCode start() {
        HttpResponse response = HttpClientUtils.postSend(buildParams(),buildBody());
-       if(HttpClientUtils.checkRespons(response)){
-           return null;
-       }
+       HttpClientUtils.checkRespons(response);
+
         try {
             return   Constants.objectMapper.readValue(response.getEntity().getContent(),PreAuthCode.class);
         } catch (IOException e) {

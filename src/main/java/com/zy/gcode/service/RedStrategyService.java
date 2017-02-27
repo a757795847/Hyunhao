@@ -7,6 +7,7 @@ import com.zy.gcode.pojo.User;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class RedStrategyService implements IRedStrategyService {
 
 
     @Override
+    @Transactional
     public CodeRe addStrategy(String name, int money, String remark) {
         User operator = getOperator();
         DataStrategy existStrategy =  persistenceService.getOneByColumn(DataStrategy.class,"name",name,"createUserId",operator.getUsername());
@@ -41,6 +43,7 @@ public class RedStrategyService implements IRedStrategyService {
     }
 
     @Override
+    @Transactional
     public CodeRe listRedStrategy() {
         User operator = getOperator();
         List list = persistenceService.getListByColumn(DataStrategy.class,"userId",operator.getUsername());
@@ -52,12 +55,14 @@ public class RedStrategyService implements IRedStrategyService {
     }
 
     @Override
+    @Transactional
     public CodeRe deleteRedStrategy(long id) {
         persistenceService.delete(DataStrategy.class,id);
         return CodeRe.correct("success");
     }
 
     @Override
+    @Transactional
     public CodeRe updateRedStrategy(long id, String name, int money) {
         DataStrategy strategy = persistenceService.get(DataStrategy.class,id);
         if(strategy == null){

@@ -1,62 +1,69 @@
 package com.zy.gcode.security;
 
-import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.User;
+import com.zy.gcode.pojo.ValidData;
+import com.zy.gcode.service.IUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authc.credential.AllowAllCredentialsMatcher;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by admin5 on 17/2/15.
  */
+@Component
 public class ZyRealm extends AuthorizingRealm {
     Logger log = LoggerFactory.getLogger(ZyRealm.class);
 
-    PersistenceService persistenceService;
+    IUserService userService;
+
+    public void setUserService(IUserService userService) {
+        this.userService = userService;
+    }
 
 
-    public void setPersistenceService(PersistenceService persistenceService) {
-        this.persistenceService = persistenceService;
+
+    @Autowired
+    public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
+        super.setCredentialsMatcher(credentialsMatcher);
     }
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        return null;
+       User user = (User)principals.getPrimaryPrincipal();
+       List<ValidData> validDataList = userService.getValidDateList(user.getUsername());
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        validDataList.forEach(validData -> {
+            if(validData.getEndData().after(new Date())){
+                simpleAuthorizationInfo.addStringPermission("zyappid"+validData.getZyappid().toString());
+                log.debug("权限:zyappid"+validData.getZyappid().toString());
+            }
+        });
+        return simpleAuthorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        User user = persistenceService.get(User.class, token.getPrincipal().toString());
+        User user = userService.getUser(token.getPrincipal().toString());
         try {
             user.getUsername();
         } catch (NullPointerException e) {
+            log.debug("登录失败！用户名:"+token.getPrincipal());
             throw new UnknownAccountException();
         }
-        System.out.println(user.getName());
         SecurityUtils.getSubject().getSession(true).setAttribute("operator", user);
         return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
 
-    }
-
-    protected void assertCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) throws AuthenticationException {
-        CredentialsMatcher cm = getCredentialsMatcher();
-        if (cm != null) {
-            if (!cm.doCredentialsMatch(token, info)) {
-                //not successful - throw an exception to indicate this:
-                String msg = "Submitted credentials for token [" + token + "] did not match the expected credentials.";
-                throw new IncorrectCredentialsException(msg);
-            }
-        } else {
-            throw new AuthenticationException("A CredentialsMatcher must be configured in order to verify " +
-                    "credentials during authentication.  If you do not wish for credentials to be examined, you " +
-                    "can configure an " + AllowAllCredentialsMatcher.class.getName() + " instance.");
-        }
     }
 
 }

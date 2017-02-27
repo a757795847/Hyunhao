@@ -1,6 +1,7 @@
 package com.zy.gcode.dao;
 
 import com.zy.gcode.utils.Page;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 
 import java.io.Serializable;
@@ -27,4 +28,5 @@ public interface PersistenceService {
     <T> List<T> getListByColumn(Class<T> clazz,String... values);
     <T> List<T> getListByIn(Class<T> tClass,String column,Object[] objs);
     void delete(Class clazz,Serializable id);
+    Transaction beginTransaction();
 }

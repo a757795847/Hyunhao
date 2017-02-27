@@ -17,6 +17,7 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,19 +36,20 @@ public class PayService implements IPayService {
     PersistenceService persistenceService;
 
     @Override
+    @Transactional
     public CodeRe pay(String id, int count,String geappid) {
 
-        WechatPublic wechatPublic = persistenceService.get(WechatPublic.class,geappid);
+        WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class,geappid);
 
 
 
-        PayCredential payCredential =  persistenceService.get(PayCredential.class, wechatPublic.getWxAppid());
+        PayCredential payCredential =  persistenceService.get(PayCredential.class, wechatPublicServer.getWxAppid());
 
         RedPayInfo payInfo = new RedPayInfo();
         payInfo.setNonce_str(UniqueStringGenerator.getUniqueCode());
         payInfo.setMch_billno(UniqueStringGenerator.wxbillno(payCredential.getMchid()));
         payInfo.setMch_id(payCredential.getMchid());
-        payInfo.setWxappid(wechatPublic.getWxAppid());
+        payInfo.setWxappid(wechatPublicServer.getWxAppid());
         payInfo.setSend_name("追游科技");
         payInfo.setRe_openid(id);
         payInfo.setTotal_num(1);
@@ -129,12 +131,13 @@ public class PayService implements IPayService {
     }
 
     @Override
+    @Transactional
     public CodeRe<RedStatus> payInfo(String billno,String token,String geappid) {
 
 
-        WechatPublic wechatPublic = persistenceService.get(WechatPublic.class,geappid);
+        WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class,geappid);
 
-      return redinfo(wechatPublic.getWxAppid(),billno);
+      return redinfo(wechatPublicServer.getWxAppid(),billno);
     }
 
     private CodeRe redinfo(String wxappid,String billno){
@@ -238,6 +241,7 @@ public class PayService implements IPayService {
     }
 
     @Override
+    @Transactional
     public CodeRe circularGetPayInfo() {
 
         List<RedStatus> pushList = new ArrayList<>(512);

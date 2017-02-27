@@ -3,7 +3,7 @@ package com.zy.gcode.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
-import com.zy.gcode.pojo.WechatPublic;
+import com.zy.gcode.pojo.WechatPublicServer;
 import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.service.IAuthenticationService;
 import com.zy.gcode.service.IWechatService;
@@ -40,12 +40,12 @@ public class WechatController {
         HttpSession session = request.getSession(true);
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
 
-         WechatPublic wechatPublic = wechatService.getWechatPublic(tAppid);
+         WechatPublicServer wechatPublicServer = wechatService.getWechatPublic(tAppid);
 
         if (wechatUserInfo != null) {
-            Map<String, String> map = JsapiUtils.sign(authenticationService.getJsapiTicketByAppid(wechatPublic.getWxAppid()).getMessage().getToken(),
+            Map<String, String> map = JsapiUtils.sign(authenticationService.getJsapiTicketByAppid(wechatPublicServer.getWxAppid()).getMessage().getToken(),
                     request.getRequestURL().toString());
-            map.put("appid", wechatPublic.getWxAppid());
+            map.put("appid", wechatPublicServer.getWxAppid());
 
             try {
                 request.setAttribute("jsonConfig", Constants.objectMapper.writeValueAsString(map));

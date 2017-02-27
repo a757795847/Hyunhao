@@ -27,21 +27,19 @@
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
-    <!-- 配置事务事务属性 -->
+  <!--  &lt;!&ndash; 配置事务事务属性 &ndash;&gt;
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="get*" read-only="true"/>
             <tx:method name="*"/>
         </tx:attributes>
     </tx:advice>
-    <!-- 配置事务切点，并把切点和事务属性关联起来 -->
+    &lt;!&ndash; 配置事务切点，并把切点和事务属性关联起来 &ndash;&gt;
     <aop:config proxy-target-class="true">
         <aop:pointcut expression="execution(* com.zy.gcode.service.*.*(..))" id="txPointcut"/>
-        <aop:pointcut expression="execution(* com.zy.gcode.security.*.*(..))" id="setxPointcut"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="setxPointcut"/>
-    </aop:config>
-
+    </aop:config>-->
+    <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager"/>
     <bean name="passwordService" class="org.apache.shiro.authc.credential.DefaultPasswordService">
         <property name="hashService">
             <bean class="org.apache.shiro.crypto.hash.DefaultHashService">
@@ -57,8 +55,8 @@
     </bean>
 
     <bean id="zyRealm" class="com.zy.gcode.security.ZyRealm">
-        <property name="persistenceService" ref="persistenceServiceImpl"/>
         <property name="credentialsMatcher" ref="passwordMatcher"/>
+        <property name="userService" ref="userService"/>
     </bean>
 
 
