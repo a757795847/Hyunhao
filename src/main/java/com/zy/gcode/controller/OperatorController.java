@@ -66,6 +66,7 @@ public class OperatorController {
        if(verificationInfo ==null){
           return ControllerStatus.error("请先填写验证码");
        }
+       session.removeAttribute("verificationInfo");
         if(!(MzUtils.checkEntry(map,"phone")&&MzUtils.checkEntry(map,"password"))){
             return ControllerStatus.error("用户名密码不能为空");
         }
@@ -98,9 +99,9 @@ public class OperatorController {
        if(imageInfo==null){
           return ControllerStatus.error("请输入验证码");
        }
+        session.removeAttribute("imageInfo");
 
-
-       if((!imageInfo.content.equals(code))&&imageInfo.createTime<(System.currentTimeMillis()-120*1000)){
+       if((!imageInfo.content.equals(code))||imageInfo.createTime<(System.currentTimeMillis()-120*1000)){
            return ControllerStatus.error("验证码错误或过期!");
        }
 

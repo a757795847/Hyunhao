@@ -42,7 +42,7 @@ public class OperatorService implements IOperatorService {
     public CodeRe registerOperator(String username, String password) {
         User existOperator = persistenceService.get(User.class,username);
         if(existOperator !=null){
-          return CodeRe.error("用户名以存在!");
+          return CodeRe.error("用户名已存在!");
         }
 
         User user = new User();
