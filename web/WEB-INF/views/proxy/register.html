@@ -10,7 +10,7 @@
 <div id="register">
     <div class="custom-panel">
         <div class="custom-header">
-            <img src="../../../images/121.jpg" alt="" class="logo">
+            <img src="../../../images/B3F0F1AD70377E062920F9BA53902227.jpg" alt="" class="logo">
             <br>
             <br>
             <h4 class="text-info" style="font-weight:bold;">开启微信公众号的神奇之旅</h4>
@@ -33,7 +33,7 @@
                 <div class="input-group" style="margin-bottom:10px;">
                     <input type="text" class="form-control" placeholder="输入短信验证码" id="Verification">
                     <span class="input-group-btn">
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="getcode">获取验证码</button>
+                        <button class="btn btn-primary" id="getcode">获取验证码</button>
                     </span>
                 </div>
                 <div class="text-right" style="margin-bottom: 30px;height:20px;">
@@ -47,7 +47,7 @@
                 </p>
                 <p class="text-center">已经有账号?</p>
                 <p class="text-center">
-                    <a href="login.html" class="text-info">登录</a>
+                    <a href="/login" class="text-info">登录</a>
                 </p>
 
             </div>
@@ -64,28 +64,44 @@
             </div>
             <div class="modal-body text-center">
                 <div class="center-block" style="width:270px;overflow:hidden;">
-                    <div class="pull-left">
-                        <a href="#">
-                            <img src="../../../images/121.jpg" alt="" style="width:130px;height:53px;">
-                        </a>
+                    <div class="pull-left" id="verification_code">
+                            <img src="/operator/getcodeImage" alt="" style="width:130px;height:53px;" class="Image">
                         <div class="text-muted small">点击图片刷新验证码</div>
                     </div>
                     <div class="pull-left">
-                        <input type="text" class="form-control" placeholder="输入左侧验证码" style="width:130px;margin-left:10px;height:56px;">
+                        <input type="text" class="form-control" placeholder="输入左侧验证码" style="width:130px;margin-left:10px;height:56px;"id="input_box">
                     </div>
 
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal" style="width:100px;">关闭</button>
-                <button class="btn btn-success" data-dismiss="modal" style="width:100px;">确认发送</button>
+                <button class="btn btn-default closure" data-dismiss="modal" style="width:100px;">关闭</button>
+                <button class="btn btn-success confirm" data-dismiss="modal" style="width:100px;">确认发送</button>
             </div>
         </div>
     </div>
 </div>
 
 
-<script><#include "../../javascripts/incHead.js" /></script>
+
+
+
+<div class="modal fade" id="lookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div>
+    <div class="sa-icon sa-error animateErrorIcon">
+      <span class="sa-x-mark animateXMark">
+        <span class="sa-line sa-left"></span>
+        <span class="sa-line sa-right"></span>
+      </span>
+</div>
+
+<h2>错误</h2>
+    <p style="display: block;" id="Prompt">请确认手机号！</p>
+    <button class="confirms" tabindex="1" data-dismiss="modal" style="display: inline-block; background-color: rgb(44, 162, 251); box-shadow: rgba(44, 162, 251, 0.8) 0px 0px 2px, rgba(0, 0, 0, 0.0470588) 0px 0px 0px 1px inset;">好的</button>
+
+</div>
+</div>
+
     <script src="../../../javascripts/jquery-2.2.3.min.js"></script>
     <script src="../../../javascripts/bootstrap.min.js"></script>
     <script src="../../../javascripts/register.js"></script>

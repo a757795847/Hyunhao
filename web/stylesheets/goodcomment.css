@@ -43,7 +43,7 @@ header{
     position:relative;
 
 }
-#background{
+.background{
     position:absolute;
     left:250px;
     top:-10px;
@@ -228,6 +228,24 @@ footer:after{
     color: #fff;
     line-height: 33px;
 
+}
+#banner .bannerRound {
+    position: absolute;
+    left: 625px;
+    bottom: 50px;
+}
+#banner .bannerRound li{
+    float: left;
+    border:1px solid #ffffff;
+    border-radius: 50%;
+    background: #ffffff;
+    width: 10px;
+    height: 10px;
+    opacity: 0.5;
+    margin-right: 10px;
+}
+#banner .bannerRound li.active{
+    opacity:1;
 }
 
 
