@@ -45,4 +45,9 @@ public class  ProxyController{
         return ControllerStatus.ok(codeRe.getMessage(),page);
     }
 
+    @RequestMapping("home")
+    public String home(){
+        return "/views/proxy/validityPeriod.html";
+    }
+
 }

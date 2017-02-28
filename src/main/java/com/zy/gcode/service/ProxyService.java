@@ -65,21 +65,11 @@ public class ProxyService implements IProxyService {
             map.put("phone", publicServer.getUserId());
             map.put("publicName", publicServer.getWxName());
             map.put("isAuthentication", publicServer.getIsAuthentication());
-             ApplicationInfo applicationInfo =  persistenceService.get(ApplicationInfo.class,publicServer.getZyappid());
+            ApplicationInfo applicationInfo =  persistenceService.get(ApplicationInfo.class,publicServer.getZyappid());
             map.put("zyappName",applicationInfo.getName());
             results.add(map);
         }
         return CodeRe.correct(results);
     }
-/*
-    private  String to9(Integer num){
-        StringBuilder builder = new StringBuilder();
-        do{
-
-        }
-
-
-        return to9(num/9)+num%9;
-    }*/
 
 }
