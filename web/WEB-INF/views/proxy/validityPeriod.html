@@ -2,330 +2,327 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>公众号使用期管理</title>
-    <link rel="stylesheet" href="${basePath}/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="${basePath}/stylesheets/font-awesome.min.css">
-    <link rel="stylesheet" href="${basePath}/stylesheets/jquery-jvectormap-1.2.2.css">
-    <link rel="stylesheet" href="${basePath}/stylesheets/AdminLTE.min.css">
-    <link rel="stylesheet" href="${basePath}/stylesheets/_all-skins.min.css">
-    <link rel="stylesheet" href="${basePath}/stylesheets/words.css">
-    <link rel="stylesheet" href="${basePath}/stylesheets/remodal.css">
-    <link rel="stylesheet" href="${basePath}/stylesheets/remodal-default-theme.css">
-    <link rel="stylesheet" href="${basePath}/stylesheets/fancySelect.css">
-    <link rel="stylesheet" href="${basePath}/stylesheets/validityPeriod.css">
-    <link rel="stylesheet" href="${basePath}/stylesheets/proxylist.css">
+    <title>公众号列表</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/font-awesome.min.css">
+    <link rel="stylesheet" href="/stylesheets/jquery-jvectormap-1.2.2.css">
+    <link rel="stylesheet" href="/stylesheets/AdminLTE.min.css">
+    <link rel="stylesheet" href="/stylesheets/_all-skins.min.css">
+    <link rel="stylesheet" href="/stylesheets/words.css">
+    <link rel="stylesheet" href="/stylesheets/remodal.css">
+    <link rel="stylesheet" href="/stylesheets/remodal-default-theme.css">
+    <link rel="stylesheet" href="/stylesheets/select2.min.css">
+    <link rel="stylesheet" href="/stylesheets/datepicker3.css">
+    <link rel="stylesheet" href="/stylesheets/daterangepicker.css">
+    <link rel="stylesheet" href="/stylesheets/proxylist.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
+<header class="main-header">
+    <a href="/" class="logo">
+            <span class="logo-lg">
+          <img src="/images/B3F0F1AD70377E062920F9BA53902227.jpg" alt="">
+            <b>聚塔微客户管理平台</b></span>
+    </a>
 
-<div class="wrapper">
-    <header class="main-header">
-
-        <a href="/" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>A</b>LT</span>
-            <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Admin</b>LTE</span>
+    <nav class="navbar navbar-static-top">
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
         </a>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="/images/user2-160x160.jpg" class="user-image" alt="User Image">
+                        <span class="hidden-xs">欢迎你${operator.name}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="user-header">
+                            <img src="/images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                            <p>
+                                <small>用户名</small>
+                                <span>gc243728357</span>
+                            </p>
+                        </li>
+                        <li class="user-body">
+                            <div class="row">
+                                <span style="margin-left:71px;">手机号</span>
+                                <span>-12345676878</span>
+                            </div>
+                        </li>
 
-        <nav class="navbar navbar-static-top">
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <!-- WechatUserInfo Account: style can be found in dropdown.less -->
-                    <li class="dropdown wechatUserInfo wechatUserInfo-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="${basePath}/images/user2-160x160.jpg" class="wechatUserInfo-image" alt="User Image">
-                            <span class="hidden-xs">欢迎你gc243728357</span>
-                        </a>
-                        <ul class="dropdown-menu">
-
-
-
-                            <!-- WechatUserInfo image -->
-                            <li class="wechatUserInfo-header">
-                                <img src="${basePath}/images/user2-160x160.jpg" class="img-circle" alt="User Image">
-                                <p>
-                                    <small>用户名</small>
-                                    <span>gc243728357</span>
-                                </p>
-                            </li>
-                            <!-- Menu Body -->
-                            <li class="wechatUserInfo-body">
-                                <div class="row">
-                                    <span style="margin-left:71px;">手机号</span>
-                                    <span>-12345676878</span>
-                                </div>
-                            </li>
-
-                            <li class="wechatUserInfo-footer">
-                                <div class="pull-left">
+                        <li class="user-footer">
+                            <div class="pull-left">
                                     <span class="label label-info" id="modify">
                                     <a href="#">修改密码</a></span>
-                                </div>
-                                <div class="pull-right">
-                                    <span class="label label-info"><a href="#" >退出</a></span>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                            </div>
+                            <div class="pull-right">
+                                <span class="label label-info"><a href="/operator/logout" >退出</a></span>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<aside class="main-sidebar">
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="/images/user2-160x160.jpg" class="img-circle" alt="User Image">
             </div>
-        </nav>
-    </header>
-    <aside class="main-sidebar">
-        <!-- sidebar: style can be found in sidebar.less -->
-        <section class="sidebar">
-            <!-- Sidebar wechatUserInfo panel -->
-            <div class="wechatUserInfo-panel">
-                <div class="pull-left image">
-                    <img src="${basePath}/images/user2-160x160.jpg" class="img-circle" alt="User Image">
-                </div>
-                <div class="pull-left info">
-                    <p>微信公众号</p>
-                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-                </div>
+            <div class="pull-left info">
+                <p>微信公众号</p>
+                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
-            <!-- search form -->
-            <form action="#" method="get" class="sidebar-form">
-                <div class="input-group">
+        </div>
+        <!-- search form -->
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
               <span class="input-group-btn">
               </span>
-                </div>
-            </form>
-            <!-- /.search form -->
-            <!-- sidebar menu: : style can be found in sidebar.less -->
-            <ul class="sidebar-menu">
-                <li class="header">MAIN NAVIGATION</li>
-                <li>
-                    <a href="">
-                        <i class="fa fa-weixin mr-housite"></i> <span>公众号使用期管理</span>
+            </div>
+        </form>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="home">
+                    <i class="fa fa-weixin mr-housite"></i> <span>订单列表</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-green">new</small>
             </span>
-                    </a>
-                </li>
-                <li class="active treeview">
-                    <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>购买管理</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="pages/widgets.html">
-                        <i class="fa fa-th-large mr-housite"></i> <span>信息管理</span>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="/redstrategy/home">
+                    <i class="fa fa-dashboard"></i> <span>红包管理</span>
+                </a>
+            </li>
+            <li>
+                <a href="/proxy/billing.html">
+                    <i class="fa fa-pie-chart"></i><span style="margin-left: 3px;">统计</span>
             <span class="pull-right-container">
             </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="billing.html">
-                        <i class="fa fa-pie-chart"></i><span>统计</span>
-            <span class="pull-right-container">
-            </span>
-                    </a>
-                </li>
-            </ul>
+                </a>
+            </li>
+        </ul>
+    </section>
+</aside>
+<div class="content-wrapper">
+    <section class="content">
+        <section class="content-header">
+            <p style="font-size:20px;">订单列表
+                <small><a href="import">导入订单</a></small>
+            </p>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-dashboard"></i>订单列表</li>
+            </ol>
+
         </section>
-    </aside>
-    <div class="content-wrapper">
-        <section class="content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box">
-                        <form action="" id="select">
-                            <select id="basic-usage-demo">
-                                <option value="">服务类型</option>
-                                <option>Lorem Ipsum</option>
-                                <option>Dolor Sit</option>
-                                <option>Vehicula Ornare</option>
-                                <option>Foo</option>
-                                <option>Bar</option>
-                                <option>Baz</option>
-                                <option>Qux</option>
-                                <option>Zoobie</option>
-                                <option>Frang</option>
-                            </select>
-
-                            <select id="basic-time-demo">
-                                <option value="">授权状态</option>
-                                <option>哈哈哈</option>
-                                <option>好地方地方</option>
-                                <option>可以</option>
-                                <option>Foo</option>
-                                <option>Bar</option>
-                                <option>Baz</option>
-                                <option>Qux</option>
-                                <option>Zoobie</option>
-                                <option>Frang</option>
-                            </select>
-                            <button class="btn btn-block btn-default" id="filter">筛选</button>
-                            <div class="input-group input-group-sm" id="search">
-                                <input type="text" name="table_search" class="form-control pull-right" placeholder="订单号">
-                                <div class="input-group-btn">
-                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div id="select">
+                        <input type="text" placeholder="导入日期" class="form-control" id="Import_date">
+                        <input type="text" placeholder="用户提交日期" class="form-control" id="user_date">
+                        <select id="basic-status-demo" style="width:161px;">
+                            <option value="未申领">未申领</option>
+                            <option>申领中</option>
+                            <option>审核通过</option>
+                        </select>
+                        <select id="basic-details-demo" style="width:161px;">
+                            <option value="红包详情">红包详情</option>
+                            <option>Lorem Ipsum</option>
+                            <option>Dolor Sit</option>
+                            <option>Vehicula Ornare</option>
+                        </select>
+                        <button class="btn btn-block btn-default" id="filter">筛选</button>
+                        <button class="btn btn-block btn-default" id="batch">批量发送</button>
+                        <div class="input-group input-group-sm" id="search">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="订单号">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                             </div>
-                        </form>
-                        <div class="table-responsive mailbox-messages">
-                            <table class="table table-hover table-striped">
-                                <thead>
-                                <th>ID</th>
-                                <th>商家手机号</th>
-                                <th>公众号</th>
-                                <th>授权状态</th>
-                                <th>服务类型</th>
-                                <th>服务起始</th>
-                                <th>服务结束</th>
-                                <th>操作</th>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td class="mailbox-date"><span>1224334</span></td>
-                                    <td class="mailbox-date"><span class="label label-success">1248723587</span></td>
-                                    <td class="mailbox-date"><span>悦读书店</span></td>
-                                    <td class="mailbox-date"><span>已开通</span></td>
-                                    <td class="mailbox-date"><span>服务中</span></td>
-                                    <td class="mailbox-date"><span>2017-01-05</一元返现></span></td>
-                                    <td class="mailbox-date"><span>2017-02-09</span></td>
-                                    <td class="mailbox-date"><span class="label label-success"><a href="#modalt">减时</a></span>
-                                        <span class="label label-success turn"><a href="#modalt">延期</a></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="mailbox-date"><span>1224334</span></td>
-                                    <td class="mailbox-date"><span class="label label-success">1248723587</span></td>
-                                    <td class="mailbox-date"><span>悦读书店</span></td>
-                                    <td class="mailbox-date"><span>已开通</span></td>
-                                    <td class="mailbox-date"><span>服务中</span></td>
-                                    <td class="mailbox-date"><span>2017-01-05</一元返现></span></td>
-                                    <td class="mailbox-date"><span>2017-02-09</span></td>
-                                    <td class="mailbox-date"><span class="label label-success"><a href="#modalt">减时</a></span>
-                                        <span class="label label-success turn"><a href="#modalt">延期</a></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="mailbox-date"><span>1224334</span></td>
-                                    <td class="mailbox-date"><span class="label label-success">1248723587</span></td>
-                                    <td class="mailbox-date"><span>悦读书店</span></td>
-                                    <td class="mailbox-date"><span>已开通</span></td>
-                                    <td class="mailbox-date"><span>服务中</span></td>
-                                    <td class="mailbox-date"><span>2017-01-05</一元返现></span></td>
-                                    <td class="mailbox-date"><span>2017-02-09</span></td>
-                                    <td class="mailbox-date"><span class="label label-success"><a href="#modalt">减时</a></span>
-                                        <span class="label label-success turn"><a href="#modalt">延期</a></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="mailbox-date"><span>1224334</span></td>
-                                    <td class="mailbox-date"><span class="label label-success">1248723587</span></td>
-                                    <td class="mailbox-date"><span>悦读书店</span></td>
-                                    <td class="mailbox-date"><span>已开通</span></td>
-                                    <td class="mailbox-date"><span>服务中</span></td>
-                                    <td class="mailbox-date"><span>2017-01-05</一元返现></span></td>
-                                    <td class="mailbox-date"><span>2017-02-09</span></td>
-                                    <td class="mailbox-date"><span class="label label-success"><a href="#modalt">减时</a></span>
-                                        <span class="label label-success turn"><a href="#modalt">延期</a></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="mailbox-date"><span>1224334</span></td>
-                                    <td class="mailbox-date"><span class="label label-success">1248723587</span></td>
-                                    <td class="mailbox-date"><span>悦读书店</span></td>
-                                    <td class="mailbox-date"><span>已开通</span></td>
-                                    <td class="mailbox-date"><span>服务中</span></td>
-                                    <td class="mailbox-date"><span>2017-01-05</一元返现></span></td>
-                                    <td class="mailbox-date"><span>2017-02-09</span></td>
-                                    <td class="mailbox-date"><span class="label label-success"><a href="#modalt">减时</a></span>
-                                        <span class="label label-success turn"><a href="#modalt">延期</a></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="mailbox-date"><span>1224334</span></td>
-                                    <td class="mailbox-date"><span class="label label-success">1248723587</span></td>
-                                    <td class="mailbox-date"><span>悦读书店</span></td>
-                                    <td class="mailbox-date"><span>已开通</span></td>
-                                    <td class="mailbox-date"><span>服务中</span></td>
-                                    <td class="mailbox-date"><span>2017-01-05</一元返现></span></td>
-                                    <td class="mailbox-date"><span>2017-02-09</span></td>
-                                    <td class="mailbox-date"><span class="label label-success"><a href="#modalt">减时</a></span>
-                                        <span class="label label-success turn"><a href="#modalt">延期</a></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="mailbox-date"><span>1224334</span></td>
-                                    <td class="mailbox-date"><span class="label label-success">1248723587</span></td>
-                                    <td class="mailbox-date"><span>悦读书店</span></td>
-                                    <td class="mailbox-date"><span>已开通</span></td>
-                                    <td class="mailbox-date"><span>服务中</span></td>
-                                    <td class="mailbox-date"><span>2017-01-05</一元返现></span></td>
-                                    <td class="mailbox-date"><span>2017-02-09</span></td>
-                                    <td class="mailbox-date"><span class="label label-success"><a href="#modalt">减时</a></span>
-                                        <span class="label label-success turn"><a href="#modalt">延期</a></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="mailbox-date"><span>1224334</span></td>
-                                    <td class="mailbox-date"><span class="label label-success">1248723587</span></td>
-                                    <td class="mailbox-date"><span>悦读书店</span></td>
-                                    <td class="mailbox-date"><span>已开通</span></td>
-                                    <td class="mailbox-date"><span>服务中</span></td>
-                                    <td class="mailbox-date"><span>2017-01-05</一元返现></span></td>
-                                    <td class="mailbox-date"><span>2017-02-09</span></td>
-                                    <td class="mailbox-date"><span class="label label-success"><a href="#modalt">减时</a></span>
-                                        <span class="label label-success turn"><a href="#modalt">延期</a></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="mailbox-date"><span>1224334</span></td>
-                                    <td class="mailbox-date"><span class="label label-success">1248723587</span></td>
-                                    <td class="mailbox-date"><span>悦读书店</span></td>
-                                    <td class="mailbox-date"><span>已开通</span></td>
-                                    <td class="mailbox-date"><span>服务中</span></td>
-                                    <td class="mailbox-date"><span>2017-01-05</一元返现></span></td>
-                                    <td class="mailbox-date"><span>2017-02-09</span></td>
-                                    <td class="mailbox-date"><span class="label label-success"><a href="#modalt">减时</a></span>
-                                        <span class="label label-success turn"><a href="#modalt">延期</a></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="mailbox-date"><span>1224334</span></td>
-                                    <td class="mailbox-date"><span class="label label-success">1248723587</span></td>
-                                    <td class="mailbox-date"><span>悦读书店</span></td>
-                                    <td class="mailbox-date"><span>已开通</span></td>
-                                    <td class="mailbox-date"><span>服务中</span></td>
-                                    <td class="mailbox-date"><span>2017-01-05</一元返现></span></td>
-                                    <td class="mailbox-date"><span>2017-02-09</span></td>
-                                    <td class="mailbox-date"><span class="label label-success"><a href="#modalt">减时</a></span>
-                                        <span class="label label-success turn"><a href="#modalt">延期</a></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="mailbox-date"><span>1224334</span></td>
-                                    <td class="mailbox-date"><span class="label label-success">1248723587</span></td>
-                                    <td class="mailbox-date"><span>悦读书店</span></td>
-                                    <td class="mailbox-date"><span>已开通</span></td>
-                                    <td class="mailbox-date"><span>服务中</span></td>
-                                    <td class="mailbox-date"><span>2017-01-05</一元返现></span></td>
-                                    <td class="mailbox-date"><span>2017-02-09</span></td>
-                                    <td class="mailbox-date"><span class="label label-success"><a href="#modalt">减时</a></span>
-                                        <span class="label label-success turn"><a href="#modalt">延期</a></span></td>
-                                </tr>
-
-                                </tbody>
-                            </table>
-                            <!-- /.table -->
-
-
                         </div>
+
+                    </div>
+                    <div class="table-responsive mailbox-messages">
+
+                        <table class="table table-hover table-striped" id="Table">
+                            <thead>
+                            <th><button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                            </button>全选</th>
+                            <th>订单号</th>
+                            <th>详情</th>
+                            <th>用户上传照片</th>
+                            <th>提交时间</th>
+                            <th>状态</th>
+                            <th>红包详情</th>
+                            <th>红包发放时间</th>
+                            <th>红包领取时间</th>
+                            <th>操作</th>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                        <!-- /.table -->
+
+
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+        <div>
+
+            <div class="jqueryPage" id="jqueryPage">
+            </div>
+    </section>
+</div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span> <span class="sr-only">Close</span></button>
+                <h5 class="modal-title">请填写驳回原因</h5>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <form action="">
+                        <textarea id="Text" cols="30" rows="4" maxlength="100"></textarea>
+                    </form>
+                </div>
+                <small class="text-muted" style="display: inline-block;">
+                    0/100
+                </small>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="cancel">取消</button>
+                <button class="btn btn-success" data-dismiss="modal">确定</button>
+            </div>
+        </div>
     </div>
 </div>
 
 
-<div class="remodal" data-remodal-id="modalt" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span> <span class="sr-only">Close</span></button>
+                <p class="modal-title">发送红包</p>
+            </div>
+            <div class="modal-body">
+                <p>发送给订单 <span></span></p>
+                <p class="select">选择红包</p>
+                <div class="order-discount-line" id="span">
+                    <div class="father">
+                        <span class="text-color border-color">
+                           一元红包
+                        </span>
+                        <span class="text-color border-color">
+                           二元红包
+                        </span>
+                        <span class="text-color border-color">
+                          三元红包
+                        </span>
+                        <span class="text-color border-color">
+                            四元红包
+                        </span>
+                        <span class="text-color border-color">
+                           五元红包
+                        </span>
+                        <span class="text-color border-color">
+                            六元红包
+                        </span>
+                        <span class="text-color border-color">
+                            七元红包
+                        </span>
+                        <span class="text-color border-color">
+                           八元红包
+                        </span>
+
+                        <span class="text-color border-color">
+                           九元红包
+                        </span>
+                        <span class="text-color border-color">
+                            十元红包
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-dismiss="modal" id="send">发送</button>
+                <button class="btn btn-success" data-dismiss="modal" id="clear">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="isModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 2px solid rgb(238,238,238);">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span> <span class="sr-only">Close</span></button>
+                <p class="modal-title">订单详情</p>
+            </div>
+            <div class="modal-body">
+                <table class="table table-condensed">
+                    <tr>
+                        <td style="border-top:none;">订单号</td>
+                        <td style="border-top:none;" id="order_number">224325</td>
+                    </tr>
+                    <tr>
+                        <td>买家会员名</td>
+                        <td id="buyer_name">祖名豆腐干</td>
+                    </tr>
+                    <tr>
+                        <td>订单创建时间</td>
+                        <td id="order_create_time">2017-02-12</td>
+
+                    </tr>
+                    <tr>
+                        <td>订单付款时间</td>
+                        <td id="order_pay_time">2017-01-24</td>
+                    </tr>
+                    <tr>
+                        <td>买家支付宝账号</td>
+                        <td id="buyer_zhifubao">32534546</td>
+                    </tr>
+                    <tr>
+                        <td>付款金额</td>
+                        <td id="amount">123</td>
+                    </tr>
+                    <tr>
+                        <td>收货人姓名</td>
+                        <td id="receiver">祖名</td>
+                    </tr>
+                    <tr>
+                        <td style="line-height:37px;">收货人地址</td>
+                        <td id="receiver_address" style="font-size:10px;">西城大道</td>
+                    </tr>
+                    <tr>
+                        <td>收货人手机号</td>
+                        <td id="receiver_mobile">134892375</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer" style="border-top: 2px solid rgb(238,238,238);padding: 6px 15px;">
+                <button class="btn btn-success" data-dismiss="modal" id="cancel">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="tooltips"></div>
+<!--<div class="remodal" data-remodal-id="modalt" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
     <div class="gray-box fn-clear">
         <div class="title pre-title">
-            <h2>延期</h2>
+            <h2>选择红包类型</h2>
         </div>
         <div class="box-inner ui-goods-cart">
 
@@ -334,54 +331,48 @@
 
                 </div>
 
-                <div class="box-inner">
-                    <div class="order-discount-line">
-                        <div class="form-group">
-                            <label>输入手机号</label>
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="glyphicon glyphicon-phone"></i>
-                                </div>
-                                <input type="text" class="form-control pull-right" id="phonenumber">
-                            </div>
-                            <!-- /.input group -->
-                        </div>
-                        <div class="form-group">
-                            <label>当前结束时间</label>
-                            <p>1997-01-23</p>
-                        </div>
-                        <div class="form-group">
-                            <label>减时到</label>
-                            <p>1997-01-20</p>
-                        </div>
+                <div class="box-in  r">
+                    <div class="order-discount-line" id="span">
+                        <div>
+                        <span data-id="111" class="text-color border-color" >
+                           一元红包
+                        </span>
+                        <span class="text-color border-color">
+                           二元红包
+                        </span>
+                        <span class="text-color border-color">
+                          三元红包
+                        </span>
+                        <span class="text-color border-color">
+                            四元红包
+                        </span>
+                        <span class="text-color border-color">
+                           五元红包
+                        </span>
+                        <span class="text-color border-color">
+                            六元红包
+                        </span>
+                        <span class="text-color border-color">
+                            七元红包
+                        </span>
+                        <span class="text-color border-color">
+                           八元红包
+                        </span>
 
-                        <div class="form-group">
-                            <label>减去服务时长(30天为1周期)</label>
-                            <ul class="duration">
-                                <li>1</li>
-                                <li>2</li>
-                                <li>3</li>
-                                <li>4</li>
-                                <li>5</li>
-                                <li>6</li>
-                                <li>7</li>
-                                <li>8</li>
-                                <li>9</li>
-                                <li>10</li>
-                                <li>11</li>
-                                <li>12</li>
-                            </ul>
-                        </div>
-                        <p class="Label">
-                            <label>已选择 <b>0</b>个周期</label> <label>服务结束时间:</label><b>0000-00-00</b>
-                        </p>
+                        <span class="text-color border-color">
+                           九元红包
+                        </span>
+                        <span class="text-color border-color">
+                            十元红包
+                        </span>
+                            <span style="clear:both"></span>
                     </div>
-
+                        <span class="both"></span>
                 </div>
                 <div class="box-inner">
                     <div class="last-payment vouchers-wrapper fn-clear abc">
-                        <a href="">确定</a>
-                        <a href="">取消</a>
+                        <a id="confim_l" data-remodal-action="confirm" class="remodal-confirm">确认</a>
+                        <a data-remodal-action="cancel" class="remodal-cancel">取消</a>
                     </div>
 
                 </div>
@@ -392,19 +383,19 @@
 
     </div>
 </div>
+    </div>-->
 
-<script src="${basePath}/javascripts/jquery-2.2.3.min.js"></script>
-<script src="${basePath}/javascripts/bootstrap.min.js"></script>
-<script src="${basePath}/javascripts/app.min.js"></script>
-<script src="${basePath}/javascripts/icheck.min.js"></script>
-<script src="${basePath}/javascripts/jqueryPage.js"></script>
-<script src="${basePath}/javascripts/fancySelect.js"></script>
-<script src="${basePath}/javascripts/remodal.js"></script>
-<script src="${basePath}/javascripts/vaildityPreiod.js"></script>
-
-
-
-
+<script src="/javascripts/jquery-2.2.3.min.js"></script>
+<script src="/javascripts/bootstrap.min.js"></script>
+<script src="/javascripts/app.min.js"></script>
+<script src="/javascripts/icheck.min.js"></script>
+<script src="/javascripts/jqueryPage.js"></script>
+<script src="/javascripts/remodal.js"></script>
+<script src="/javascripts/select2.min.js"></script>
+<script src="/javascripts/moment.min.js"></script>
+<script src="/javascripts/bootstrap-datepicker.js"></script>
+<script src="/javascripts/bootstrap-datepicker.zh-CN.js"></script>
+<script src="/javascripts/proxylist.js"></script>
 
 
 </body>

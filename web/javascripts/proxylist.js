@@ -1,3 +1,4 @@
+//日期控件
 $(function () {
     $('#Import_date').datepicker({
         autoclose: true
@@ -10,7 +11,7 @@ $(function () {
     });
 });
 
-
+//checkbox 全选
 $(".checkbox-toggle").click(function () {
     var clicks = $(this).data('clicks');
     if (clicks) {
@@ -26,7 +27,7 @@ $(".checkbox-toggle").click(function () {
 });
 
 var dataList = [];
-
+//显示页面获取列表
 function indexAjax(datas, pageState) {
     $.ajax({
         type: 'post',
@@ -44,11 +45,13 @@ function indexAjax(datas, pageState) {
             var than = '';
             var thao = '';
             $.each(data.list, function (i, order) {
+                console.log(order.giftState);
                 if (order.giftState == 0) {
                     order.giftState = "未申领";
 
+
                 }
-                if (order.giftState == 1) {
+                else if (order.giftState == 1) {
                     order.giftState = "审核中";
                     than = "通过";
                     thao = "驳回";
@@ -113,6 +116,7 @@ function indexAjax(datas, pageState) {
 }
 indexAjax({status: 0, currentPageIndex: 1}, 1);
 
+//点击通过按钮
 $("#Table").on('click', '.order_confirm_btn', function () {
 
     var orderIndex = $(this).data("index");
@@ -128,7 +132,7 @@ $("#Table").on('click', '.order_confirm_btn', function () {
             if (data.status == 1) {
                 $('.' + orderIndex).html("审核通过");
                 // $(".label.label-success.turn").remove();
-                var link = '<span class="label label-success turn" data-toggle="modal" data-target="#myModals">发送红包</span>';
+                var link = '<span class="label label-success turn">发送红包</span>';
                 console.log(that);
                 that.parent().html(link);
 
@@ -139,7 +143,44 @@ $("#Table").on('click', '.order_confirm_btn', function () {
     })
     $('#send').attr('data-index', orderIndex);
 });
+//显示红包策略
+var date_lists=[];
+$("#Table").on("click",".label.label-success.turn",function(){
+    console.log("1");
+    $.ajax({
+       type:'post',
+        url:'/redstrategy/list',
+        dataType: 'json',
+        contentType: 'application/json;charset=UTF-8',
+        success: function (data) {
+            console.log(data);
+            date_lists=data.list;
+            var tbody='';
+            for(var i=0;i<data.list.length;i++){
+                tbody +='<span class="text-color border-color" data-index="' + data.list[i] .id + '">'+data.list[i].name+'</span>';
+            }
 
+            $("#span").find('.father').html(tbody);
+            }
+
+        })
+
+
+
+    $("#myModals").modal('show');
+
+    })
+
+
+
+
+$("#span").on("click",'.text-color.border-color', function () {
+    $(this).addClass("actives");
+    $(this).siblings().removeClass("actives");
+});
+
+
+//选择红包并发送红包
 $("#send").on('click', function () {
     var order_index = $(this).data("index");
     console.log(order_index);
@@ -149,16 +190,18 @@ $("#send").on('click', function () {
 
         if ($("#span").find('.text-color').eq(i).hasClass('actives')) {
             console.log($('#span .text-color').eq(i).attr('class'))
-            Idx = (i + 1) * 100;
+            Idx = date_lists[i].id;
         }
     }
+
 
 
     console.log(Idx);
     var parameter = {
         "id": order_index,
-        "count": Idx
+        "strategyid": Idx
     }
+    console.log(parameter);
     $.ajax({
         type: 'post',
         url: "/order/redSend",
@@ -166,12 +209,14 @@ $("#send").on('click', function () {
         dataType: 'json',
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
+            console.log(data);
             $('#' + order_index + ' #order_state span').html("红包发送成功");
             $('#' + order_index + ' .top').html(Idx / 100 + '元红包');
             $('#' + order_index + ' .turn').remove();
         }
     })
 });
+//点击详情显示弹框
 
 $("#Table").on('click', ".proxylist_details", function () {
     var order_index = $(this).data("index");
@@ -194,12 +239,9 @@ $("#Table").on('click', ".proxylist_details", function () {
 });
 
 
-$(".order-discount-line .text-color.border-color").on("click", function () {
-    $(this).addClass("actives");
-    $(this).siblings().removeClass("actives");
-});
 
 
+//下拉框
 $("#basic-time-demo").select2();
 $("#basic-status-demo").select2();
 $("#basic-details-demo").select2();
@@ -227,7 +269,7 @@ $(".trigger").on('click', function () {
 $("#clear").click(function () {
     $("#Text").val("");
 });
-
+//点击筛选 重新显示列表
 function filterAjax(datas, pageState) {
     $.ajax({
         type: 'post',
@@ -432,7 +474,7 @@ $("#filter").on("click", function () {
 // $(window).load(function(){
 //     tooltipsPreview();
 // });
-
+//鼠标悬停 图片放大
 $('#Table').on('mouseover', '.images', function () {
     var pacList = [];
     for (var i = 0; i < $(this).find('.tooltips').length; i++) {

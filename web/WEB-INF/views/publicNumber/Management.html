@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="../../../stylesheets/_all-skins.min.css">
     <link rel="stylesheet" href="../../../stylesheets/words.css">
     <link rel="stylesheet" href="../../../stylesheets/main.css">
-    <link rel="stylesheet" href="../../../stylesheets/welcome.css">
     <link rel="stylesheet" href="../../../stylesheets/remodal.css">
     <link rel="stylesheet" href="../../../stylesheets/remodal-default-theme.css">
     <link rel="stylesheet" href="../../../stylesheets/datepicker3.css">
@@ -21,12 +20,10 @@
 
 <div class="wrapper">
     <header class="main-header">
-
         <a href="/" class="logo">
-
-            <span class="logo-mini"><b>A</b>LT</span>
-            <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Admin</b>LTE</span>
+            <span class="logo-lg">
+          <img src="../../../images/B3F0F1AD70377E062920F9BA53902227.jpg" alt="">
+            <b>聚塔微客户管理平台</b></span>
         </a>
 
         <nav class="navbar navbar-static-top">
@@ -38,36 +35,33 @@
             </a>
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <!-- WechatUserInfo Account: style can be found in dropdown.less -->
-                    <li class="dropdown wechatUserInfo wechatUserInfo-menu">
+                    <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="../../../images/user2-160x160.jpg" class="wechatUserInfo-image" alt="User Image">
-                            <span class="hidden-xs">欢迎你gc243728357</span>
+                            <img src="../../../images/user2-160x160.jpg" class="user-image" alt="User Image">
+                            <span class="hidden-xs">欢迎你${operator.name}</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <!-- WechatUserInfo image -->
-                            <li class="wechatUserInfo-header">
+                            <li class="user-header">
                                 <img src="../../../images/user2-160x160.jpg" class="img-circle" alt="User Image">
                                 <p>
                                     <small>用户名</small>
-                                        <span>gc243728357</span>
+                                    <span>gc243728357</span>
                                 </p>
                             </li>
-                            <!-- Menu Body -->
-                            <li class="wechatUserInfo-body">
+                            <li class="user-body">
                                 <div class="row">
-                                   <span style="margin-left:71px;">手机号</span>
-                                   <span>-12345676878</span>
+                                    <span style="margin-left:71px;">手机号</span>
+                                    <span>-12345676878</span>
                                 </div>
                             </li>
 
-                            <li class="wechatUserInfo-footer">
+                            <li class="user-footer">
                                 <div class="pull-left">
                                     <span class="label label-info" id="modify">
                                     <a href="#">修改密码</a></span>
                                 </div>
                                 <div class="pull-right">
-                                    <span class="label label-info"><a href="#" >退出</a></span>
+                                    <span class="label label-info"><a href="/operator/logout" >退出</a></span>
                                 </div>
                             </li>
                         </ul>
@@ -77,16 +71,15 @@
         </nav>
     </header>
     <aside class="main-sidebar">
-        <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-            <!-- Sidebar wechatUserInfo panel -->
-            <div class="wechatUserInfo-panel">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
                 <div class="pull-left image">
                     <img src="../../../images/user2-160x160.jpg" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
                     <p>微信公众号</p>
-                    <a href="#"><i class="fa fa-circle text-success"></i>Online</a>
+                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
             <!-- search form -->
@@ -96,45 +89,28 @@
               </span>
                 </div>
             </form>
-            <!-- /.search form -->
-            <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
-                <li class="header">MAIN NAVIGATION</li>
                 <li>
-                    <a href="">
-                        <i class="fa fa-weixin mr-housite"></i> <span>公众号列表</span>
+                    <a href="home">
+                        <i class="fa fa-weixin mr-housite"></i> <span>订单列表</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-green">new</small>
             </span>
                     </a>
                 </li>
-                <li class="active treeview">
-                    <a href="proxylist.html">
-                        <i class="fa fa-dashboard"></i><span>订单管理</span>
-                <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li class="active"><a href="proxylist.html"><i class="fa fa-circle-o"></i> 订单列表</a></li>
-                        <li><a href="index2.html"><i class="fa fa-circle-o"></i> 导入订单</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="redmanagement.html">
-                        <i class="fa fa-th-large mr-housite"></i><span>红包管理</span>
-                    <span class="pull-right-container">
-            </span>
+                <li class="treeview">
+                    <a href="/redstrategy/home">
+                        <i class="fa fa-dashboard"></i> <span>红包管理</span>
                     </a>
                 </li>
                 <li>
                     <a href="../../../proxy/billing.html">
-                        <i class="fa fa-pie-chart"></i><span>统计</span>
+                        <i class="fa fa-pie-chart"></i><span style="margin-left: 3px;">统计</span>
             <span class="pull-right-container">
             </span>
                     </a>
                 </li>
-                </ul>
+            </ul>
         </section>
     </aside>
     <div class="content-wrapper row">
@@ -159,11 +135,11 @@
                                 <div class="media-body">
                                     <p>添加方式1：微信公众号授权登录</p>
                                     <small class="text-muted">适用于公众号未注册本平台的情况，需成为该公众号的微信平台管理员</small>
-                                    <a href="#modal"><button class="pull-right btn btn-success btn-housite" type="button"
+                                   <button class="pull-right btn btn-success btn-housite" type="button"
                                             style="position: absolute; top: 50%; margin-top: -17px; right: 10px;width:100px;
-                                            background-color: #fff;outline-color: #5ac28d;">
+                                            background-color: #fff;outline-color: #5ac28d;" data-toggle="modal" data-target="#myModela">
 
-                                        开始授权</button></a>
+                                        开始授权</button>
                                 </div>
                             </div>
                         </div>
@@ -272,15 +248,15 @@
                     </small>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" data-dismiss="modal">添加公众号</button>
+                    <button class="btn btn-success" data-dismiss="modal" >添加公众号</button>
                 </div>
             </div>
         </div>
     </div>
 
 
-    <div class="remodal" data-remodal-id="modal" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
-        <button data-remodal-action="close" class="remodal-close" aria-label="Close"></button>
+    <div class="modal fade" id="myModela" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-content">
         <div class="sa-icon sa-warning pulseWarning">
             <span class="sa-body pulseWarningIns"></span>
             <span class="sa-dot pulseWarningIns"></span>
@@ -288,14 +264,16 @@
         </div>
         <div>
             <h2 id="modal1Title">确认</h2>
+            <img src="../../../images/1924FCE8B738410EDCB2A968F35ACDBB.jpg" alt="">
             <p id="modal1Desc">
-                即将前往公众号授权页面,确认授权吗?
+                即将前往公众号授权页面,享受比微信公众号更强大的功能
             </p>
         </div>
         <br>
-        <button data-remodal-action="cancel" class="remodal-cancel">取消</button>
-        <button data-remodal-action="confirm" class="remodal-confirm">确认</button>
+        <button data-remodal-action="cancel" class="remodal-cancel" data-dismiss="modal">取消</button>
+
     </div>
+        </div>
 
     <div class="remodal" data-remodal-id="modalt" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
     <div class="gray-box fn-clear">

@@ -38,10 +38,12 @@ ul,li{
 
 }
 
+/*
 .fa.fa-dashboard{
     margin-right:6px;
 
 }
+*/
 
 
 .redfrom{
@@ -264,9 +266,34 @@ ul,li{
         bottom: 10px;
         background-color: #F8BB86;
     }
-    .remodal{
-        width:34%;
+    #myModela .modal-content{
+        padding: 15px;
+        text-align: center;
+        width: 33%;
+        border-radius: 6px;
+        margin: 0 auto;
+        position: relative;
+        top: 21%;
     }
+    #myModela img{
+        margin:10px;
+    }
+
+    #modal1Desc{
+        color:rgb(152,152,152);
+        margin:0;
+    }
+    .remodal-cancel{
+        padding: 9px 0;
+        min-width: 92px;
+        border-radius: 6px;
+        font-size: 16px;
+        background-color: rgb(191,191,191);
+    }
+    .remodal-cancel:hover{
+        background-color: rgb(150, 149, 149);
+    }
+
  #myModal .modal-content{
      width:300px;
      margin-left:200px;

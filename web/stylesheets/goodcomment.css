@@ -249,3 +249,41 @@ footer:after{
 }
 
 
+.advisory {
+    padding-bottom: 20px;
+    padding-top: 12px;
+    border-radius: 5px;
+    background-color: #fff;
+    right: 0;
+    top: 100px;
+    width: 134px;
+    position: fixed;
+}
+.top_adv{
+    text-align: center;
+    font-size: 15px;
+    color: #fff;
+    background-color: rgb(152,152,152);
+}
+.center_adv {
+    text-align: center;
+}
+.center_adv img{
+    width:106px;
+}
+.bottom_adv {
+    border-radius:4px;
+    color: #fff;
+    margin: 0 auto;
+    width: 100px;
+    text-align: center;
+    background-color: rgb(211, 54, 69);
+
+}
+
+
+
+
+}
+
+
