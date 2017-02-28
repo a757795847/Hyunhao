@@ -13,6 +13,7 @@ public class WechatPublicServer {
     private Timestamp updateTime;
     private String scope;
     private String zyappid;
+    private String isAuthentication;
 
     public String getTappid() {
         return tappid;
@@ -68,5 +69,13 @@ public class WechatPublicServer {
 
     public void setZyappid(String zyappid) {
         this.zyappid = zyappid;
+    }
+
+    public String getIsAuthentication() {
+        return isAuthentication;
+    }
+
+    public void setIsAuthentication(String isAuthentication) {
+        this.isAuthentication = isAuthentication;
     }
 }

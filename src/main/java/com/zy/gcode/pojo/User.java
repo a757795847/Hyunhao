@@ -15,10 +15,14 @@ public class User {
     private String role;
     private Timestamp updateTime;
     private String isEnable;
-    private Date endTime;
-    private String phone;
-    private String isAuthentication;
-    private String authenticationTime;
+    private Date expireTime;
+    public String getWxAppid() {
+        return wxAppid;
+    }
+
+    public void setWxAppid(String wxAppid) {
+        this.wxAppid = wxAppid;
+    }
 
     public String getUsername() {
         return username;
@@ -52,14 +56,6 @@ public class User {
         this.name = name;
     }
 
-    public String getWxAppid() {
-        return wxAppid;
-    }
-
-    public void setWxAppid(String wxAppid) {
-        this.wxAppid = wxAppid;
-    }
-
     public String getRole() {
         return role;
     }
@@ -84,35 +80,11 @@ public class User {
         this.isEnable = isEnable;
     }
 
-    public Date getEndTime() {
-        return endTime;
+    public Date getExpireTime() {
+        return expireTime;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getIsAuthentication() {
-        return isAuthentication;
-    }
-
-    public void setIsAuthentication(String isAuthentication) {
-        this.isAuthentication = isAuthentication;
-    }
-
-    public String getAuthenticationTime() {
-        return authenticationTime;
-    }
-
-    public void setAuthenticationTime(String authenticationTime) {
-        this.authenticationTime = authenticationTime;
+    public void setExpireTime(Date expireTiem) {
+        this.expireTime = expireTiem;
     }
 }

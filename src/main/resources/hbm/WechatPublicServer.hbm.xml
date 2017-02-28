@@ -12,5 +12,6 @@
         <property update="false" insert="false" name="insertTime" column="insert_time"/>
         <property update="false" insert="false" name="updateTime" column="update_time"/>
         <property name="zyappid" column="zyappid"/>
+        <property name="isAuthentication" column="is_authentication"/>
     </class>
 </hibernate-mapping>

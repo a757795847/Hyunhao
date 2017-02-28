@@ -42,6 +42,7 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     public <T> List<T> getList(Class<T> clazz, Page page) {
         Criteria criteria = session().createCriteria(clazz);
+        page.setCount(count(clazz));
         return criteria.setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
     }
 
@@ -103,7 +104,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     }
 
     @Override
-    public int count(Class clazz) {
+    public Integer count(Class clazz) {
         Long l = (Long) session().createCriteria(clazz).setProjection(Projections.rowCount()).uniqueResult();
         return l.intValue();
     }

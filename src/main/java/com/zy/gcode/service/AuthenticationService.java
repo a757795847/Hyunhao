@@ -4,9 +4,8 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.oauth.PublicInfoRequest;
 import com.zy.gcode.pojo.WechatPublic;
-import com.zy.gcode.pojo.WechatPublicServer;
-import com.zy.gcode.pojo.AuthorizationInfo;
 import com.zy.gcode.pojo.TokenConfig;
+import com.zy.gcode.pojo.WechatPublicServer;
 import com.zy.gcode.service.pay.WxXmlParser;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;
@@ -48,7 +47,7 @@ public class AuthenticationService implements IAuthenticationService {
      */
     @Override
     @Transactional
-    public CodeRe<AuthorizationInfo> saveServerToken(String content,String token) {
+    public CodeRe<WechatPublic> saveServerToken(String content,String token) {
         try {
             Map<String,Map> map= Constants.objectMapper.readValue(content, Map.class);
             if(map.containsKey("errmsg")){
@@ -56,36 +55,36 @@ public class AuthenticationService implements IAuthenticationService {
             }
 
             Map child = map.get("authorization_info");
-            AuthorizationInfo authorizationInfo = new AuthorizationInfo();
-            authorizationInfo.setAuthorizerAppid(child.get("authorizer_appid").toString());
-            authorizationInfo.setAuthorizerAccessToken(child.get("authorizer_access_token").toString());
-            authorizationInfo.setExpiresIn(Long.parseLong(child.get("expires_in").toString()));
-            authorizationInfo.setAuthorizerRefreshToken(child.get("authorizer_refresh_token").toString());
+            WechatPublic wechatPublic = new WechatPublic();
+            wechatPublic.setWxAppid(child.get("authorizer_appid").toString());
+            wechatPublic.setAccessToken(child.get("authorizer_access_token").toString());
+            wechatPublic.setExpiresIn(Integer.parseInt((child.get("expires_in").toString())));
+            wechatPublic.setRefeshToken(child.get("authorizer_refresh_token").toString());
             List<Map<String,Map>> funs = (List)child.get("func_info");
             StringBuilder builder = new StringBuilder();
             for(Map<String,Map> third:funs){
                    builder.append(third.get("funcscope_category").get("id").toString()).append(",");
             }
-            authorizationInfo.setFuncInfo(builder.substring(0,builder.length()-1));
+            wechatPublic.setFuncInfo(builder.substring(0,builder.length()-1));
             PublicInfoRequest infoRequest = new PublicInfoRequest();
             infoRequest.setParam(PublicInfoRequest.PRA_COMPONENT_ACCESS_TOKEN,token)
                     .setBody(PublicInfoRequest.BAY_COMPONENT_APPID,Constants.properties.getProperty("platform.appid"))
-                    .setBody(PublicInfoRequest.BAY_AUTHORIZER_APPID,authorizationInfo.getAuthorizerAppid());
+                    .setBody(PublicInfoRequest.BAY_AUTHORIZER_APPID,wechatPublic.getWxAppid());
 
              Map map1 = infoRequest.start();
              if(map1==null)
                  return CodeRe.error("获取公众号名称错误!");
              map1 = (Map)map1.get("authorizer_info");
-             authorizationInfo.setUserName((String)(map1.get("user_name")));
-             authorizationInfo.setNickName((String)(map1.get("nick_name")));
-             authorizationInfo.setPrincipalName((String)(map1.get("principal_name")));
+             wechatPublic.setUserName((String)(map1.get("user_name")));
+             wechatPublic.setNickName((String)(map1.get("nick_name")));
+             wechatPublic.setCompanyName((String)(map1.get("principal_name")));
 
-            persistenceService.updateOrSave(authorizationInfo);
-            return CodeRe.correct(authorizationInfo);
+            persistenceService.updateOrSave(wechatPublic);
+            return CodeRe.correct(wechatPublic);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return CodeRe.error("系统异常");
     }
 
     /**

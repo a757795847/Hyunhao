@@ -21,7 +21,7 @@ public interface PersistenceService {
     void update(Object object);
     void add(Object object);
     void updateOrSave(Object object);
-    int count(Class clazz);
+    Integer count(Class clazz);
     void save(Object obj);
     Object max(Class clazz,String column);
     <T> T getOneByColumn(Class<T> clazz,String... values);
