@@ -3,6 +3,7 @@ package com.zy.gcode.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
+import com.zy.gcode.pojo.WechatPublicServer;
 import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.service.IAuthenticationService;
 import com.zy.gcode.service.IWechatService;

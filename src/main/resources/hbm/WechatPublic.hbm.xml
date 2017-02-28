@@ -21,6 +21,6 @@
         <property name="insertTime" column="insert_time"/>
         <property name="createUserId" column="create_user_id"/>
         <property name="updateTime" column="update_time"/>
-        <property name="expiresIn" column="expires_int"/>
+        <property name="expiresIn" column="expires_in"/>
     </class>
 </hibernate-mapping>

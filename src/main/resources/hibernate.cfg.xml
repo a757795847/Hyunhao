@@ -11,13 +11,6 @@
 
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
-<!--
-        <mapping resource="/hbm/WechatPublicServer.hbm.xml"/>
-        <mapping resource="/hbm/Customer.hbm.xml"/>
-        <mapping resource="/hbm/GeCode.hbm.xml"/>
-        <mapping resource="/hbm/GeToken.hbm.xml"/>
-        <mapping resource="/hbm/WechatUserInfo.hbm.xml"/>
-        <mapping resource="/hbm/WxToken.hbm.xml"/>-->
 
     </session-factory>
 </hibernate-configuration>

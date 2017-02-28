@@ -1,6 +1,7 @@
 package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
+import com.zy.gcode.pojo.WechatPublicServer;
 
 /**
  * Created by admin5 on 17/2/14.

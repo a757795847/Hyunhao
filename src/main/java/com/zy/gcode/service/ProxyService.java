@@ -8,6 +8,8 @@ import com.zy.gcode.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by admin5 on 17/2/27.
  */
@@ -19,7 +21,7 @@ public class ProxyService implements IProxyService{
 
     @Override
     public CodeRe getZyAppInfo(String serverType, String isAuthentication, String zyappid, Page page) {
-        persistenceService.getList(WechatPublicServer.class,page);
+      List<WechatPublicServer> wechatPublicServerList =  persistenceService.getList(WechatPublicServer.class,page);
         return null;
     }
 }
