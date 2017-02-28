@@ -18,9 +18,9 @@
         <property name="userName" column="user_name"/>
         <property name="nickName" column="nick_name"/>
         <property name="companyName" column="company_name"/>
-        <property name="insertTime" column="insert_time"/>
+        <property name="insertTime" insert="false" update="false" column="insert_time"/>
         <property name="createUserId" column="create_user_id"/>
-        <property name="updateTime" column="update_time"/>
+        <property name="updateTime" insert="false" update="false" column="update_time"/>
         <property name="expiresIn" column="expires_in"/>
     </class>
 </hibernate-mapping>

@@ -55,7 +55,10 @@ public class AuthenticationService implements IAuthenticationService {
             }
 
             Map child = map.get("authorization_info");
-            WechatPublic wechatPublic = new WechatPublic();
+            WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class,"wxAppid",child.get("authorizer_appid").toString());
+            if(wechatPublic==null){
+                wechatPublic =new WechatPublic();
+            }
             wechatPublic.setWxAppid(child.get("authorizer_appid").toString());
             wechatPublic.setAccessToken(child.get("authorizer_access_token").toString());
             wechatPublic.setExpiresIn(Integer.parseInt((child.get("expires_in").toString())));
@@ -247,7 +250,7 @@ public class AuthenticationService implements IAuthenticationService {
             updateTime = tokenConfig.getUpdateTime();
         } catch (Exception e) {
             tokenConfig = new TokenConfig();
-            WechatPublic wechatPublic = persistenceService.get(WechatPublic.class,appid);
+            WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class,"wxAppid",appid);
             if(wechatPublic ==null){
                 return CodeRe.error("appid 不存在");
             }
