@@ -14,6 +14,11 @@ public class WechatPublicServer {
     private String scope;
     private String zyappid;
     private String isAuthentication;
+    private String createUserId;
+    private String wxName;
+    private Timestamp beginTime;
+    private Timestamp endTime;
+
 
     public String getTappid() {
         return tappid;
@@ -77,5 +82,37 @@ public class WechatPublicServer {
 
     public void setIsAuthentication(String isAuthentication) {
         this.isAuthentication = isAuthentication;
+    }
+
+    public String getCreateUserId() {
+        return createUserId;
+    }
+
+    public void setCreateUserId(String createUserId) {
+        this.createUserId = createUserId;
+    }
+
+    public String getWxName() {
+        return wxName;
+    }
+
+    public void setWxName(String wxName) {
+        this.wxName = wxName;
+    }
+
+    public Timestamp getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Timestamp beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
     }
 }

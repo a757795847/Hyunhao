@@ -13,5 +13,9 @@
         <property update="false" insert="false" name="updateTime" column="update_time"/>
         <property name="zyappid" column="zyappid"/>
         <property name="isAuthentication" column="is_authentication"/>
+        <property name="wxName" column="wx_name"/>
+        <property name="createUserId" column="create_user_id"/>
+        <property name="beginTime" column="begin_time"/>
+        <property name="endTime" column="end_time"/>
     </class>
 </hibernate-mapping>
