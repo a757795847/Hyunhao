@@ -25,6 +25,11 @@ public class RedStrategyService implements IRedStrategyService {
     public CodeRe addStrategy(String name, int money, String remark) {
         User operator = getOperator();
         DataStrategy existStrategy =  persistenceService.getOneByColumn(DataStrategy.class,"name",name,"createUserId",operator.getUsername());
+
+        if(persistenceService.count(DataStrategy.class,"createUserId",operator.getUsername())>10){
+            return CodeRe.error("红包策略最多只能有10个");
+        }
+
         if(existStrategy != null) {
             return CodeRe.error("红包名字重复");
         }

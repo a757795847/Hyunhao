@@ -5,9 +5,22 @@
 <hibernate-mapping>
 
     <class name="com.zy.gcode.pojo.WechatPublic" table="wechat_public" schema="jt_platform">
-        <id name="wxAppid" column="wx_appid"/>
+        <id name="id" column="id">
+        <generator class="native"/>
+        </id>
+        <property name="wxAppid" column="wx_appid"/>
         <property name="secret" column="secret"/>
         <property name="name" column="name"/>
         <property name="headImage" column="head_image"/>
+        <property name="accessToken" column="access_token"/>
+        <property name="refeshToken" column="refesh_token"/>
+        <property name="funcInfo" column="func_info"/>
+        <property name="userName" column="user_name"/>
+        <property name="nickName" column="nick_name"/>
+        <property name="companyName" column="company_name"/>
+        <property name="insertTime" insert="false" update="false" column="insert_time"/>
+        <property name="createUserId" column="create_user_id"/>
+        <property name="updateTime" insert="false" update="false" column="update_time"/>
+        <property name="expiresIn" column="expires_in"/>
     </class>
 </hibernate-mapping>

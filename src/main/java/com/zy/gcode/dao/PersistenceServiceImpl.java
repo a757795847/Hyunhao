@@ -42,6 +42,7 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     public <T> List<T> getList(Class<T> clazz, Page page) {
         Criteria criteria = session().createCriteria(clazz);
+        page.setCount(count(clazz));
         return criteria.setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize()).list();
     }
 
@@ -102,20 +103,20 @@ public class PersistenceServiceImpl implements PersistenceService {
         return (T)criteria.uniqueResult();
     }
 
-    @Override
-    public int count(Class clazz) {
-        Long l = (Long) session().createCriteria(clazz).setProjection(Projections.rowCount()).uniqueResult();
-        return l.intValue();
-    }
 
     @Override
-    public <T> List<T> getListByIn(Class<T> tClass, String column, Object[] objs) {
+    public <T> List<T> getListByIn(Class<T> tClass, String column, Object... objs) {
       return session().createCriteria(tClass)
         .add(Restrictions.in(column,objs)).list();
     }
 
     @Override
-    public <T> List<T> getListByColumn(Class<T> clazz, String... values) {
+    public <T> List<T> getListByColumn(Class<T> clazz, Object... values) {
+            return getListByColumn(clazz,null,values);
+    }
+
+    @Override
+    public <T> List<T> getListByColumn(Class<T> clazz, Page page, Object... values) {
         int len = values.length;
         if(len%2!=0){
             throw new IllegalArgumentException();
@@ -123,7 +124,15 @@ public class PersistenceServiceImpl implements PersistenceService {
 
         Criteria criteria =  session().createCriteria(clazz);
         for(int i = 0 ; i< len ;i+=2){
-            criteria.add(Restrictions.eq(values[i],values[i+1]));
+            if(values[i]==null||values[i+1]==null)
+                continue;
+            criteria.add(Restrictions.eq((String)values[i],values[i+1]));
+        }
+        if(page!=null){
+           Long l =  (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
+            page.setCount(l.intValue());
+            criteria.setProjection(null);
+            criteria.setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize());
         }
         return criteria.list();
     }
@@ -134,7 +143,22 @@ public class PersistenceServiceImpl implements PersistenceService {
     }
 
     @Override
-    public Transaction beginTransaction() {
-        return session().beginTransaction();
+    public Integer count(Class clazz) {
+        Long l = (Long) session().createCriteria(clazz).setProjection(Projections.rowCount()).uniqueResult();
+        return l.intValue();
+    }
+
+    @Override
+    public Integer count(Class clazz, Object[] objs) {
+        int len = objs.length;
+        if(len%2!=0){
+            throw new IllegalArgumentException();
+        }
+         Criteria criteria=  session().createCriteria(clazz);
+        for(int i = 0 ; i <objs.length;i+=2){
+            criteria.add(Restrictions.eq((String)objs[i],objs[i+1]));
+        }
+        Long l = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+        return l.intValue();
     }
 }

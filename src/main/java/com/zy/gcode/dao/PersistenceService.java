@@ -21,12 +21,14 @@ public interface PersistenceService {
     void update(Object object);
     void add(Object object);
     void updateOrSave(Object object);
-    int count(Class clazz);
+    Integer count(Class clazz);
     void save(Object obj);
     Object max(Class clazz,String column);
     <T> T getOneByColumn(Class<T> clazz,String... values);
-    <T> List<T> getListByColumn(Class<T> clazz,String... values);
-    <T> List<T> getListByIn(Class<T> tClass,String column,Object[] objs);
+    <T> List<T> getListByColumn(Class<T> clazz,Object... values);
+    <T> List<T> getListByColumn(Class<T> clazz,Page page,Object... values);
+    <T> List<T> getListByIn(Class<T> tClass,String column,Object... objs);
     void delete(Class clazz,Serializable id);
-    Transaction beginTransaction();
+    Integer count(Class clazz,Object... objs);
+
 }

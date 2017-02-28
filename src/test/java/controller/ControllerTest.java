@@ -1,6 +1,7 @@
 package controller;
 
 import com.zy.gcode.service.OrderService;
+import com.zy.gcode.utils.Constants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.ParameterizedType;
-import java.util.List;
+import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -46,8 +47,17 @@ public class ControllerTest {
         System.out.println(clazz.getActualTypeArguments()[0]);
     }
 
-    protected void executePost(String url,String... params){
-       // this.mockMvc.perform()
+    protected void jsonPost(String url,Object... params) throws Exception{
+       this.mockMvc.perform(post(url).content(buildBody(params)).contentType(MediaType.APPLICATION_JSON))
+       .andDo(MockMvcResultHandlers.print());
+    }
+
+    private String buildBody(Object[] body) throws Exception{
+        Map map = new HashMap();
+        for(int i = 0 ; i < body.length;i+=2){
+            map.put(body[i],body[i+1]);
+        }
+        return Constants.objectMapper.writeValueAsString(map);
     }
 
    @Test

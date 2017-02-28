@@ -900,196 +900,255 @@
       <Position>8</Position>
       <DataType>char(1)|0</DataType>
     </column>
-    <column id="208" parent="19" name="expire_time">
+    <column id="208" parent="19" name="end_time">
       <Position>9</Position>
-      <DataType>date|0</DataType>
+      <DataType>datetime|0</DataType>
     </column>
-    <key id="209" parent="19" name="PRIMARY">
+    <column id="209" parent="19" name="phone">
+      <Position>10</Position>
+      <DataType>varchar(45)|0</DataType>
+    </column>
+    <column id="210" parent="19" name="is_authentication">
+      <Position>11</Position>
+      <DataType>char(1)|0</DataType>
+    </column>
+    <column id="211" parent="19" name="authentication_time">
+      <Position>12</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <key id="212" parent="19" name="PRIMARY">
       <ColNames>username</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="210" parent="20" name="id">
+    <column id="213" parent="20" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="211" parent="20" name="username">
+    <column id="214" parent="20" name="username">
       <Position>2</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="212" parent="20" name="tappid">
+    <column id="215" parent="20" name="tappid">
       <Position>3</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="213" parent="20" name="insertime">
+    <column id="216" parent="20" name="insertime">
       <Position>4</Position>
       <DataType>timestamp|0</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <column id="214" parent="20" name="end_data">
+    <column id="217" parent="20" name="end_data">
       <Position>5</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="215" parent="20" name="begin_time">
+    <column id="218" parent="20" name="begin_time">
       <Position>6</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="216" parent="20" name="zyappid">
+    <column id="219" parent="20" name="zyappid">
       <Position>7</Position>
       <DataType>bigint(20)|0</DataType>
     </column>
-    <key id="217" parent="20" name="PRIMARY">
+    <key id="220" parent="20" name="PRIMARY">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="218" parent="21" name="wx_appid">
+    <column id="221" parent="21" name="wx_appid">
       <Position>1</Position>
       <DataType>varchar(45)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="219" parent="21" name="secret">
+    <column id="222" parent="21" name="secret">
       <Position>2</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="220" parent="21" name="name">
+    <column id="223" parent="21" name="name">
       <Position>3</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="221" parent="21" name="head_image">
+    <column id="224" parent="21" name="head_image">
       <Position>4</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <key id="222" parent="21" name="PRIMARY">
-      <ColNames>wx_appid</ColNames>
+    <column id="225" parent="21" name="access_token">
+      <Position>5</Position>
+      <DataType>varchar(128)|0</DataType>
+    </column>
+    <column id="226" parent="21" name="refesh_token">
+      <Position>6</Position>
+      <DataType>varchar(128)|0</DataType>
+    </column>
+    <column id="227" parent="21" name="func_info">
+      <Position>7</Position>
+      <DataType>varchar(128)|0</DataType>
+    </column>
+    <column id="228" parent="21" name="user_name">
+      <Position>8</Position>
+      <DataType>varchar(64)|0</DataType>
+    </column>
+    <column id="229" parent="21" name="nick_name">
+      <Position>9</Position>
+      <DataType>varchar(64)|0</DataType>
+    </column>
+    <column id="230" parent="21" name="company_name">
+      <Position>10</Position>
+      <DataType>varchar(64)|0</DataType>
+    </column>
+    <column id="231" parent="21" name="id">
+      <Position>11</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="232" parent="21" name="insert_time">
+      <Position>12</Position>
+      <DataType>datetime|0</DataType>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    </column>
+    <column id="233" parent="21" name="create_user_id">
+      <Position>13</Position>
+      <DataType>varchar(64)|0</DataType>
+    </column>
+    <column id="234" parent="21" name="update_time">
+      <Position>14</Position>
+      <DataType>datetime|0</DataType>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    </column>
+    <key id="235" parent="21" name="PRIMARY">
+      <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="223" parent="22" name="tappid">
+    <column id="236" parent="22" name="tappid">
       <Position>1</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="224" parent="22" name="wx_appid">
+    <column id="237" parent="22" name="wx_appid">
       <Position>2</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="225" parent="22" name="user_id">
+    <column id="238" parent="22" name="user_id">
       <Position>3</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="226" parent="22" name="insert_time">
+    <column id="239" parent="22" name="insert_time">
       <Position>4</Position>
       <DataType>timestamp|0</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <column id="227" parent="22" name="update_time">
+    <column id="240" parent="22" name="update_time">
       <Position>5</Position>
       <DataType>timestamp|0</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <column id="228" parent="22" name="scope">
+    <column id="241" parent="22" name="scope">
       <Position>6</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="229" parent="22" name="zyappid">
+    <column id="242" parent="22" name="zyappid">
       <Position>7</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <key id="230" parent="22" name="PRIMARY">
+    <column id="243" parent="22" name="is_authentication">
+      <Position>8</Position>
+      <DataType>varchar(1)|0</DataType>
+    </column>
+    <key id="244" parent="22" name="PRIMARY">
       <ColNames>tappid</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="231" parent="23" name="open_id">
+    <column id="245" parent="23" name="open_id">
       <Position>1</Position>
       <DataType>varchar(32)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="232" parent="23" name="phone">
+    <column id="246" parent="23" name="phone">
       <Position>2</Position>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="233" parent="23" name="nick">
+    <column id="247" parent="23" name="nick">
       <Position>3</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="234" parent="23" name="province">
+    <column id="248" parent="23" name="province">
       <Position>4</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="235" parent="23" name="country">
+    <column id="249" parent="23" name="country">
       <Position>5</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="236" parent="23" name="city">
+    <column id="250" parent="23" name="city">
       <Position>6</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="237" parent="23" name="head_img_url">
+    <column id="251" parent="23" name="head_img_url">
       <Position>7</Position>
       <DataType>varchar(240)|0</DataType>
     </column>
-    <column id="238" parent="23" name="privilege">
+    <column id="252" parent="23" name="privilege">
       <Position>8</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="239" parent="23" name="union_id">
+    <column id="253" parent="23" name="union_id">
       <Position>9</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="240" parent="23" name="sex">
+    <column id="254" parent="23" name="sex">
       <Position>10</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <column id="241" parent="23" name="insert_time">
+    <column id="255" parent="23" name="insert_time">
       <Position>11</Position>
       <DataType>timestamp|0</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <column id="242" parent="23" name="update_time">
+    <column id="256" parent="23" name="update_time">
       <Position>12</Position>
       <DataType>timestamp|0</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <column id="243" parent="23" name="appid">
+    <column id="257" parent="23" name="appid">
       <Position>13</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <key id="244" parent="23" name="PRIMARY">
+    <key id="258" parent="23" name="PRIMARY">
       <ColNames>open_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="245" parent="24" name="user_open_id">
+    <column id="259" parent="24" name="user_open_id">
       <Position>1</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="246" parent="24" name="wx_token">
+    <column id="260" parent="24" name="wx_token">
       <Position>2</Position>
       <DataType>varchar(200)|0</DataType>
     </column>
-    <column id="247" parent="24" name="insert_time">
+    <column id="261" parent="24" name="insert_time">
       <Position>3</Position>
       <DataType>timestamp|0</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <column id="248" parent="24" name="update_time">
+    <column id="262" parent="24" name="update_time">
       <Position>4</Position>
       <DataType>timestamp|0</DataType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <column id="249" parent="24" name="expires">
+    <column id="263" parent="24" name="expires">
       <Position>5</Position>
       <DataType>bigint(20)|0</DataType>
     </column>
-    <column id="250" parent="24" name="refresh_token">
+    <column id="264" parent="24" name="refresh_token">
       <Position>6</Position>
       <DataType>varchar(200)|0</DataType>
     </column>
-    <column id="251" parent="24" name="scope">
+    <column id="265" parent="24" name="scope">
       <Position>7</Position>
       <DataType>varchar(45)|0</DataType>
     </column>
-    <key id="252" parent="24" name="PRIMARY">
+    <key id="266" parent="24" name="PRIMARY">
       <ColNames>user_open_id</ColNames>
       <Primary>1</Primary>
     </key>

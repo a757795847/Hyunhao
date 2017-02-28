@@ -52,14 +52,6 @@ public class User {
         this.name = name;
     }
 
-    public String getWxAppid() {
-        return wxAppid;
-    }
-
-    public void setWxAppid(String wxAppid) {
-        this.wxAppid = wxAppid;
-    }
-
     public String getRole() {
         return role;
     }
@@ -82,6 +74,14 @@ public class User {
 
     public void setIsEnable(String isEnable) {
         this.isEnable = isEnable;
+    }
+
+    public String getWxAppid() {
+        return wxAppid;
+    }
+
+    public void setWxAppid(String wxAppid) {
+        this.wxAppid = wxAppid;
     }
 
     public Date getEndTime() {
