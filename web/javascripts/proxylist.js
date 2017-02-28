@@ -60,7 +60,6 @@ function indexAjax(datas, pageState) {
                 var curTime = new Date(parseInt(order.applyDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
                 console.log(order.applyDate);
                 if(order.applyDate==''||order.applyDate==null){
-                    console.log("144");
                     curTime='';
                 }
 

@@ -50,11 +50,11 @@ $("#Table").on("click",'.edit',function () {
 
 });
 //编辑后上传
+
 $("#confirm_update").on("click",function () {
     var order_index =$(this).data("index");
     console.log(order_index);
    var name_update=$("#name_update").val();
-
     var nub_update=$("#nub_update").val();
     var datas={
         "id":parseInt(order_index),
@@ -70,6 +70,7 @@ $("#confirm_update").on("click",function () {
         contentType: 'application/json;charset=UTF-8',
         success:function (data) {
             console.log(data);
+            window.location.href="/redstrategy/home";
         }
 
 
@@ -83,7 +84,7 @@ $("#confirm_update").on("click",function () {
 $("#Table").on("click",'.detele',function () {
     var delete_index =$(this).prev().data("index");
     console.log(delete_index);
-    $.ajax({
+    $.ajax({    
         type:'detele',
         url:'/redstrategy/remove',      
         data: JSON.stringify(delete_index),
