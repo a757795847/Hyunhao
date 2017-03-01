@@ -8,4 +8,8 @@ import com.zy.gcode.utils.Page;
  */
 public interface IProxyService {
     CodeRe getZyAppInfo(String serverType,String isAuthentication,String zyappid,Page page);
+    CodeRe topUp(String tappid,int count);
+    CodeRe topDown(String tappid,int count);
+    CodeRe setAppPrice(String appid,int count);
+
 }

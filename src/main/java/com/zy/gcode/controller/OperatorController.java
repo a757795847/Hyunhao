@@ -66,14 +66,10 @@ public class OperatorController {
        if(verificationInfo ==null){
           return ControllerStatus.error("请先填写验证码");
        }
-       session.removeAttribute("verificationInfo");
+
         if(!(MzUtils.checkEntry(map,"phone")&&MzUtils.checkEntry(map,"password"))){
             return ControllerStatus.error("用户名密码不能为空");
         }
-        if(!MzUtils.checkEntry(map,"verificationCode")){
-            return ControllerStatus.error("验证码为空");
-        }
-
        if(!verificationInfo.phone.equals(map.get("phone"))){
            return ControllerStatus.error("验证码错误");
        }
@@ -81,9 +77,7 @@ public class OperatorController {
        if(verificationInfo.generationTime<(System.currentTimeMillis()-120*1000)){
            return ControllerStatus.error("验证码过期");
        }
-       if(!verificationInfo.verificationCode.equals(map.get("verificationCode"))){
-           return ControllerStatus.error("验证码错误");
-       }
+        session.removeAttribute("verificationInfo");
 
 
         CodeRe codeRe = operatorService.registerOperator(map.get("phone").toString(),map.get("password").toString());
@@ -99,11 +93,11 @@ public class OperatorController {
        if(imageInfo==null){
           return ControllerStatus.error("请输入验证码");
        }
-        session.removeAttribute("imageInfo");
 
        if((!imageInfo.content.equals(code))||imageInfo.createTime<(System.currentTimeMillis()-120*1000)){
            return ControllerStatus.error("验证码错误或过期!");
        }
+        session.removeAttribute("imageInfo");
 
          CodeRe<String> codeRe =  operatorService.generateVerificationCode(phone);
          if(codeRe.isError()){

@@ -11,6 +11,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
@@ -63,7 +64,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     public void remove(Object id) {
         session().delete(id);
     }
-
+    @Transactional
     public void update(Object object) {
         session().update(object);
 
@@ -85,8 +86,8 @@ public class PersistenceServiceImpl implements PersistenceService {
     }
 
     @Override
-    public void save(Object obj) {
-        session().save(obj);
+    public Serializable save(Object obj) {
+       return session().save(obj);
     }
 
     @Override

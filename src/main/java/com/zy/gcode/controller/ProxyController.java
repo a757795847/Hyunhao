@@ -1,15 +1,22 @@
 package com.zy.gcode.controller;
 
+import com.sun.tools.internal.jxc.ap.Const;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
+import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IProxyService;
+import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.Page;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +30,7 @@ public class  ProxyController{
     @Autowired
     IProxyService proxyService;
 
-/*    @RequestMapping
+/*  @RequestMapping
     public  String home(){
         return null;
     }*/
@@ -48,6 +55,24 @@ public class  ProxyController{
     @RequestMapping("home")
     public String home(){
         return "/views/proxy/validityPeriod.html";
+    }
+
+    @RequestMapping("uploadPayQR")
+    public @ResponseBody Object uploadPayQR(MultipartFile alipay,MultipartFile wechatPay,String count){
+       User user = (User)SecurityUtils.getSubject().getPrincipal();
+        try {
+            if(alipay.isEmpty()||wechatPay.isEmpty()){
+                ControllerStatus.error("请上传微信和支付宝二维码");
+            }
+
+            alipay.transferTo(new File(Constants.PAY_QR_PATH+"/"+"alipay"+user.getUsername()));
+            alipay.transferTo(new File(Constants.PAY_QR_PATH+"/"+"wecpay"+user.getUsername()));
+            proxyService.setAppPrice("1",Integer.parseInt(count));
+            return ControllerStatus.ok("上传成功");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ControllerStatus.error("系统异常，上传失败！");
+        }
     }
 
 }

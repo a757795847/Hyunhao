@@ -49,6 +49,7 @@ public class ZyRealm extends AuthorizingRealm {
                 log.debug("权限:zyappid"+validData.getZyappid().toString());
             }
         });
+        simpleAuthorizationInfo.addRole(user.getRole());
         return simpleAuthorizationInfo;
     }
 

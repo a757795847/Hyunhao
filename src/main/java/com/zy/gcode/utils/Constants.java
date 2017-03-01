@@ -30,6 +30,8 @@ public abstract class Constants {
 
     public final static String RED_CSV_PATH="/Users/admin3/Downloads";
 
+    public final static String PAY_QR_PATH = "/Users/admin5/Downloads";
+
     /**
      * 商户号
      */
