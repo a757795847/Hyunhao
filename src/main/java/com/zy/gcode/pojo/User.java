@@ -2,6 +2,7 @@ package com.zy.gcode.pojo;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by admin5 on 17/2/15.
@@ -19,6 +20,7 @@ public class User {
     private String phone;
     private String isAuthentication;
     private String authenticationTime;
+    private List<WechatPublicServer> wechatPublicServerList;
 
     public String getUsername() {
         return username;
@@ -114,5 +116,18 @@ public class User {
 
     public void setAuthenticationTime(String authenticationTime) {
         this.authenticationTime = authenticationTime;
+    }
+
+    public WechatPublicServer getWechatPublicServerList(String zyappid) {
+        for(WechatPublicServer publicServer:wechatPublicServerList){
+            if(publicServer.getZyappid().equals(zyappid)){
+                return publicServer;
+            }
+        }
+        throw new NullPointerException();
+    }
+
+    public void setWechatPublicServerList(List<WechatPublicServer> wechatPublicServerList) {
+        this.wechatPublicServerList = wechatPublicServerList;
     }
 }

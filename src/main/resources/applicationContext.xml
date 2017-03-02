@@ -102,7 +102,7 @@
             <value>
                 /order/**=authe
                 /redstrategy/**=authe
-                /proxy/**=role[admin]
+                /proxy/**=role[proxy]
             </value>
         </property>
     </bean>

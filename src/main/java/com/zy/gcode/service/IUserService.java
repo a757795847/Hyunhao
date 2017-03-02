@@ -2,6 +2,7 @@ package com.zy.gcode.service;
 
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.pojo.ValidData;
+import com.zy.gcode.pojo.WechatPublicServer;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ import java.util.List;
 public interface IUserService {
     User getUser(String username);
     List<ValidData> getValidDateList(String username);
+    List<WechatPublicServer> getPublicServerList(String username);
 }

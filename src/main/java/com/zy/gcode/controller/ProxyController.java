@@ -30,10 +30,6 @@ public class ProxyController {
     @Autowired
     IProxyService proxyService;
 
-    /*  @RequestMapping
-        public  String home(){
-            return null;
-        }*/
     @RequestMapping("list")
     public
     @ResponseBody
@@ -74,7 +70,7 @@ public class ProxyController {
             return ControllerStatus.ok("上传成功");
         } catch (IOException e) {
             e.printStackTrace();
-            return ControllerStatus.error("系统异常，上传失败！");
+            return ControllerStatus.error("系统异常，上传失败!");
         }
     }
 

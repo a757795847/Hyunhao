@@ -2,6 +2,7 @@ package com.zy.gcode.controller;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
+import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IOperatorService;
 import com.zy.gcode.service.OperatorService;
 import com.zy.gcode.utils.CodeImage;
@@ -56,7 +57,14 @@ public class OperatorController {
             return ControllerStatus.error("密码不正确");
         }
         Map result = new HashMap(2);
-        result.put("url","/order/home");
+        User user =(User)subject.getPrincipal();
+        if(user.getRole().equals("proxy")){
+            result.put("url","/proxy/home");
+        }else {
+            result.put("url","/order/home");
+        }
+
+
         return ControllerStatus.ok(result);
     }
 
