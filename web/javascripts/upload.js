@@ -40,6 +40,7 @@ $(function(){
             contentType: false
         }).done(function(res) {
             console.log(res);
+            console.log(res);
 
 
 
