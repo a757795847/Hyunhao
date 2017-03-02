@@ -1,0 +1,142 @@
+body{
+    font-family:"Helvetica","PingFang SC",'HanHei SC',"Lantinghei SC","Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","\5FAE\8F6F\96C5\9ED1",STHeiti,"WenQuanYi Micro Hei",SimSun,sans-serif;
+
+}
+* {
+    margin: 0;
+    list-style: none;
+    padding: 0;
+}
+p{
+    maring:0;
+    padding:0;
+
+}
+#select {
+    margin:20px;
+    height: 30px;
+}
+
+#filter{
+    float: left;
+    width: 60px;
+    padding: 3px;
+    margin-left: 24px;
+    border:1px solid rgb(66,140,187);
+    background-color:rgb(66,140,187);
+    border-radius: 6px;
+    color:#fff;
+
+}
+#span{
+    margin-bottom:20px;
+
+}
+#send,#filter:hover{
+    border:1px solid #51aae2;
+    background-color:#51aae2;
+    color:#fff;
+
+}
+#search .form-control.pull-right{
+    width:200px;
+
+}
+#select:after{
+    content:".";
+    display:block;
+    height:0;
+    clear:both;
+    visibility:hidden;
+}
+.select2-container--open .select2-dropdown{
+    left:-10px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+    color: #444;
+    line-height: 22px;
+}
+.select2-container{
+    float:left;
+    margin-left:10px;
+    width:161px;
+}
+#Table{
+    margin-top:20px;
+}
+#Table td{
+    height:35px;
+    padding:0;
+    vertical-align:middle;
+}
+.table.table-hover.table-striped td,th{
+    width:11%;
+    text-align:center;
+}
+#myModal .modal-content{
+    border-radius:7px;
+    width:475px;
+}
+#myModal .modal-header{
+    padding: 10px 22px;
+    border-bottom: 1px solid rgb(175,177,180);
+}
+#myModal .modal-body{
+    padding:15px 22px;
+}
+
+.lists{
+    text-align: center;
+    color:rgb(41,204,254);
+    margin-top:10px;
+    float:left;
+    width:21%;
+    font-size:17px;
+    padding:1px 0;
+    border:1px solid rgb(41,204,254);
+    margin-left:10px;
+
+
+}
+.lactive{
+    color:#fff;
+    background-color:rgb(41,204,254);
+}
+#myModal ul li:hover{
+    color:#fff;
+    background-color:rgb(41,204,254);
+}
+
+.pull-left{
+    float:left;
+}
+.pull-right{
+    float:right;
+}
+.father:after{
+    content:".";
+    display:block;
+    height:0;
+    clear:both;
+    visibility:hidden;
+}
+#myModal span{
+    margin-left:3px;
+}
+
+#myModal .btn-success.pull-right{
+    width: 77px;
+    border-radius: 6px;
+    background-color: rgb(191,191,191);
+    border: none;
+}
+#myModal .btn-success.pull-left{
+    width: 77px;
+    border-radius: 6px;
+    background-color: rgb(66,140,187);
+    border: none;
+}
+
+#nub{
+    color:red;
+}

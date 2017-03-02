@@ -9,12 +9,7 @@
     <link rel="stylesheet" href="/stylesheets/AdminLTE.min.css">
     <link rel="stylesheet" href="/stylesheets/_all-skins.min.css">
     <link rel="stylesheet" href="/stylesheets/words.css">
-    <link rel="stylesheet" href="/stylesheets/remodal.css">
-    <link rel="stylesheet" href="/stylesheets/remodal-default-theme.css">
-    <link rel="stylesheet" href="/stylesheets/select2.min.css">
-    <link rel="stylesheet" href="/stylesheets/datepicker3.css">
-    <link rel="stylesheet" href="/stylesheets/daterangepicker.css">
-    <link rel="stylesheet" href="/stylesheets/validtyPeriod.css">
+    <link rel="stylesheet" href="/stylesheets/upload.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <header class="main-header">
@@ -23,7 +18,6 @@
           <img src="/images/B3F0F1AD70377E062920F9BA53902227.jpg" alt="">
             <b>聚塔微客户管理平台</b></span>
     </a>
-
     <nav class="navbar navbar-static-top">
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
@@ -113,6 +107,13 @@
             </span>
                 </a>
             </li>
+            <li>
+                <a href="">
+                    <i class="fa fa-fw fa-qrcode"></i><span style="margin-left: 3px;">上传二维码</span>
+            <span class="pull-right-container">
+            </span>
+                </a>
+            </li>
         </ul>
     </section>
 </aside>
@@ -121,62 +122,9 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
-                    <div id="select">
-                        <select id="basic-status-demo" style="width:161px;">
-                            <option value="全部">全部</option>
-                            <option>已授权</option>
-                            <option>未授权</option>
-                            <option>异常</option>
-                        </select>
-                        <select id="basic-details-demo" style="width:161px;">
-                            <option value="全部">全部</option>
-                            <option>服务中</option>
-                            <option>服务停用</option>
-                            <option>异常</option>
-                        </select>
-                        <select id="basic-application-demo" style="width:161px;">
-                            <option value="应用名称">应用名称</option>
-                            <option>安生</option>
-                            <option>Dolor Sit</option>
-                            <option>Vehicula Ornare</option>
-                        </select>
-                        <button class="btn btn-block btn-default" id="filter">筛选</button>
-                        <div class="input-group input-group-sm" id="search">
-                            <input type="text" name="table_search" class="form-control pull-right" placeholder="订单号">
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="table-responsive mailbox-messages">
-
-                        <table class="table table-hover table-striped" id="Table">
-                            <thead>
-                            <th>ID</th>
-                            <th>商家手机号</th>
-                            <th>公众号</th>
-                            <th>授权状态</th>
-                            <th>应用名称</th>
-                            <th>服务类型</th>
-                            <th>服务起始</th>
-                            <th>服务结束</th>
-                            <th>操作</th>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                        <!-- /.table -->
-
 
                     </div>
                 </div>
-            </div>
-        </div>
-        <div>
-
-            <div class="jqueryPage" id="jqueryPage">
             </div>
     </section>
 </div>
@@ -189,25 +137,25 @@
                 <h4 class="modal-title">选择减去服务时长</h4>
             </div>
             <div class="modal-body">
-              <p>手机号: <span id="moblie">1427632847</span></p>
-              <p>当前结束时间: <span id="this_time">2017-03-01</span></p>
-              <p>减时到: <span>0000-00-00</span></p>
+                <p>手机号: <span id="moblie">1427632847</span></p>
+                <p>当前结束时间: <span id="this_time">2017-03-01</span></p>
+                <p>减时到: <span>0000-00-00</span></p>
                 <div class="father">
-                <p class="pull-left">减去服务时长</p>
-                <ul class="pull-left" style="margin-left:20px; width:320px; margin-top:-13px;"id="ul_change">
-                    <li class="lists">1</li>
-                    <li class="lists">2</li>
-                    <li class="lists">3</li>
-                    <li class="lists">4</li>
-                    <li class="lists">5</li>
-                    <li class="lists">6</li>
-                    <li class="lists">7</li>
-                    <li class="lists">8</li>
-                    <li class="lists">9</li>
-                    <li class="lists">10</li>
-                    <li class="lists">11</li>
-                    <li class="lists">12</li>
-                </ul>
+                    <p class="pull-left">减去服务时长</p>
+                    <ul class="pull-left" style="margin-left:20px; width:320px; margin-top:-13px;"id="ul_change">
+                        <li class="lists">1</li>
+                        <li class="lists">2</li>
+                        <li class="lists">3</li>
+                        <li class="lists">4</li>
+                        <li class="lists">5</li>
+                        <li class="lists">6</li>
+                        <li class="lists">7</li>
+                        <li class="lists">8</li>
+                        <li class="lists">9</li>
+                        <li class="lists">10</li>
+                        <li class="lists">11</li>
+                        <li class="lists">12</li>
+                    </ul>
                 </div>
                 <span>已选择 <span id="nub">0</span>周期</span>
                 <span style="margin-left:100px;">服务结束时间:</span><span>0000-00-00</span>
@@ -226,13 +174,7 @@
 <script src="/javascripts/jquery-2.2.3.min.js"></script>
 <script src="/javascripts/bootstrap.min.js"></script>
 <script src="/javascripts/app.min.js"></script>
-<script src="/javascripts/jqueryPage.js"></script>
-<script src="/javascripts/remodal.js"></script>
-<script src="/javascripts/select2.min.js"></script>
-<script src="/javascripts/moment.min.js"></script>
-<script src="/javascripts/bootstrap-datepicker.js"></script>
-<script src="/javascripts/bootstrap-datepicker.zh-CN.js"></script>
-<script src="/javascripts/validtyPeriod.js"></script>
+<script src="/javascripts/upload.js"></script>
 
 
 </body>

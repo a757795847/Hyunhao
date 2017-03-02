@@ -82,7 +82,7 @@ function indexAjax(datas, pageState) {
                 tbody += '<td class="mailbox-date"><span class="label label-success order_confirm_btn" data-index="' + order.id + '" >' + than + '</span>';
                 tbody += '<span class="label label-success turn" data-toggle="modal" data-target="#myModal">' + thao + '</span></td></tr>';
 
-
+            
             });
             $("#Table").find("tbody").html(tbody);
 
