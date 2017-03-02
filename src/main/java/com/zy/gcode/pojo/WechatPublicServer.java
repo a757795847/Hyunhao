@@ -1,6 +1,7 @@
 package com.zy.gcode.pojo;
 
 import java.sql.Timestamp;
+import java.sql.Date;
 
 /**
  * Created by admin5 on 17/1/16.
@@ -16,9 +17,9 @@ public class WechatPublicServer {
     private String isAuthentication;
     private String createUserId;
     private String wxName;
-    private Timestamp beginTime;
-    private Timestamp endTime;
-
+    private Date beginTime;
+    private Date endTime;
+    private Long validDateId;
 
     public String getTappid() {
         return tappid;
@@ -100,19 +101,27 @@ public class WechatPublicServer {
         this.wxName = wxName;
     }
 
-    public Timestamp getBeginTime() {
+    public Date getBeginTime() {
         return beginTime;
     }
 
-    public void setBeginTime(Timestamp beginTime) {
+    public void setBeginTime(Date beginTime) {
         this.beginTime = beginTime;
     }
 
-    public Timestamp getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Timestamp endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Long getValidDateId() {
+        return validDateId;
+    }
+
+    public void setValidDateId(Long validDateId) {
+        this.validDateId = validDateId;
     }
 }

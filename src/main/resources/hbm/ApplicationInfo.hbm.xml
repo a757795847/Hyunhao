@@ -7,5 +7,6 @@
     <class name="com.zy.gcode.pojo.ApplicationInfo" table="application_info" schema="jt_platform">
         <id name="id" column="id"/>
         <property name="name" column="name"/>
+        <property name="price" column="price"/>
     </class>
 </hibernate-mapping>

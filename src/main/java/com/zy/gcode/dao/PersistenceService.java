@@ -3,6 +3,7 @@ package com.zy.gcode.dao;
 import com.zy.gcode.utils.Page;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
@@ -22,7 +23,7 @@ public interface PersistenceService {
     void add(Object object);
     void updateOrSave(Object object);
     Integer count(Class clazz);
-    void save(Object obj);
+    Serializable save(Object obj);
     Object max(Class clazz,String column);
     <T> T getOneByColumn(Class<T> clazz,String... values);
     <T> List<T> getListByColumn(Class<T> clazz,Object... values);

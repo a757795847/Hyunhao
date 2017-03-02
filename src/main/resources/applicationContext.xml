@@ -82,6 +82,10 @@
           class="org.apache.shiro.web.filter.authc.PassThruAuthenticationFilter">
         <property name="loginUrl" value="/login"/>
     </bean>
+    <bean id="roleFilter" class="org.apache.shiro.web.filter.authz.RolesAuthorizationFilter">
+        <property name="loginUrl" value="/login"/>
+        <property name="unauthorizedUrl" value="/unAuthorization"/>
+    </bean>
     <bean id="anonymousFilter" class="org.apache.shiro.web.filter.authc.AnonymousFilter"/>
     <!-- Shiro的Web过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
@@ -91,12 +95,14 @@
             <map>
                 <entry key="authe" value-ref="userFilter"/>
                 <entry key="anon" value-ref="anonymousFilter"/>
+                <entry key="role" value-ref="roleFilter"/>
             </map>
         </property>
         <property name="filterChainDefinitions">
             <value>
                 /order/**=authe
                 /redstrategy/**=authe
+                /proxy/**=role[admin]
             </value>
         </property>
     </bean>

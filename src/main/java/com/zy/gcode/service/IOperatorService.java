@@ -8,6 +8,5 @@ import com.zy.gcode.controller.delegate.CodeRe;
 public interface IOperatorService {
     CodeRe registerOperator(String username,String password);
     CodeRe checkUsername(String username);
-    CodeRe topUp(String username,int count);
     CodeRe generateVerificationCode(String phone);
 }

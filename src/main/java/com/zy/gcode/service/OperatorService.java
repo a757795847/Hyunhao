@@ -31,17 +31,13 @@ public class OperatorService implements IOperatorService {
         return CodeRe.error("user is exist");
     }
 
-    @Override
-    @Transactional
-    public CodeRe topUp(String username, int count) {
-        return null;
-    }
+
 
     @Override
     @Transactional
     public CodeRe registerOperator(String username, String password) {
         User existOperator = persistenceService.get(User.class,username);
-        if(existOperator !=null){
+        if(existOperator != null){
           return CodeRe.error("用户名已存在!");
         }
 

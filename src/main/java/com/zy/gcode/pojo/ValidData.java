@@ -8,7 +8,7 @@ import java.sql.Timestamp;
  * Created by admin5 on 17/2/23.
  */
 public class ValidData {
-    private long id;
+    private Long id;
     private String username;
     private String tappid;
     private Timestamp insertime;
