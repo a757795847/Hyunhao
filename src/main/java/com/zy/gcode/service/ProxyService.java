@@ -148,6 +148,7 @@ public class ProxyService implements IProxyService {
     }
 
     @Override
+    @Transactional
     public CodeRe setAppPrice(String appid, int count) {
        ApplicationInfo applicationInfo =  persistenceService.get(ApplicationInfo.class,appid);
        if(applicationInfo==null){
