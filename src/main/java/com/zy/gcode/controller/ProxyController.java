@@ -6,6 +6,7 @@ import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IProxyService;
 import com.zy.gcode.utils.Constants;
+import com.zy.gcode.utils.MzUtils;
 import com.zy.gcode.utils.Page;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,15 +65,19 @@ public class  ProxyController{
             if(alipay.isEmpty()||wechatPay.isEmpty()){
                 ControllerStatus.error("请上传微信和支付宝二维码");
             }
-
-            alipay.transferTo(new File(Constants.PAY_QR_PATH+"/"+"alipay"+user.getUsername()));
-            alipay.transferTo(new File(Constants.PAY_QR_PATH+"/"+"wecpay"+user.getUsername()));
+            alipay.transferTo(new File(MzUtils.merge(Constants.PAY_QR_PATH,"/","alipay",user.getUsername())));
+            alipay.transferTo(new File(MzUtils.merge(Constants.PAY_QR_PATH,"/","wecpay",user.getUsername())));
             proxyService.setAppPrice("1",Integer.parseInt(count));
             return ControllerStatus.ok("上传成功");
         } catch (IOException e) {
             e.printStackTrace();
             return ControllerStatus.error("系统异常，上传失败！");
         }
+    }
+
+    @RequestMapping("QRUploadHome")
+    public String QRUploadHome(){
+        return "/views/publicNumber/upload.html";
     }
 
 }
