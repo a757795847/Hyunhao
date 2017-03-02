@@ -19,18 +19,49 @@ public abstract class Constants {
     /**
      *微信token 回调url
      */
+
+    /**
+     * 获取code成功后的回调url
+     */
+
     public final static String CALL_BACK_URL="http://open.izhuiyou.com/access/wxaccess_token";
 
+    /**
+     * 微信js_ticket的字段名
+     */
 
     public final static String JSSDK_TICKET_NAME="jssdk_ticket";
 
+    /**
+     * 微信服务好的ticket的字段名
+     */
+
     public  final static String COMPONENTVERIFYTICKET = "componentverifyticket";
+
+    /**
+     * 返现截图存放的路径
+     */
 
     public final static String RED_PICTURE_PATH="/opt/zy/Pictures";
 
+    /**
+     * 上传的csv存放路径
+     */
+
     public final static String RED_CSV_PATH="/Users/admin3/Downloads";
 
+    /**
+     * 支付二维码存放路径
+     */
+
     public final static String PAY_QR_PATH = "/Users/admin5/Downloads";
+
+    /**
+     * 这个应用的id
+     */
+
+    public final static String ZYAPPID = "zyappid1";
+
 
     /**
      * 商户号
@@ -47,11 +78,6 @@ public abstract class Constants {
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-    }
-
-
-    static {
-
     }
 
 

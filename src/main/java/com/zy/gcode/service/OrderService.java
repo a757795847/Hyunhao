@@ -42,6 +42,8 @@ public class OrderService implements IOrderService {
     @Autowired
     PersistenceService persistenceService;
 
+    @Autowired
+    IMultipartService multipartService;
 
     @Override
     @Transactional
@@ -233,7 +235,12 @@ public class OrderService implements IOrderService {
         if(operator ==null){
             CodeRe.error("操作超时,请重新登录!");
         }
-       String wxappid =  operator.getWxAppid();
+      CodeRe<String> muCodeRe =  multipartService.getTappidByApp(operator.getUsername(),Constants.ZYAPPID);
+        if(muCodeRe.isError()){
+            return muCodeRe;
+        }
+
+        String wxappid =  muCodeRe.getMessage();
        DataOrder order =  persistenceService.get(DataOrder.class,orderno);
        if(!operator.getUsername().equals(order.getCreateUserId()))
        return CodeRe.error("您无权操作次订单");

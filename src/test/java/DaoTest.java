@@ -41,7 +41,7 @@ public class DaoTest {
     PasswordService passwordService;
 
     @Test
-    public void test(){
+    public void test() {
 /*
        System.out.println(persistenceService.getOneByColumn(DataOrder.class,"orderNumber","24423067612233391")==null);*/
     }
@@ -55,7 +55,7 @@ public class DaoTest {
     }*/
 
     @Test
-    public void password(){
+    public void password() {
         ApplicationInfo applicationInfo = new ApplicationInfo();
         applicationInfo.setId("11");
         applicationInfo.setPrice(111);
@@ -63,29 +63,30 @@ public class DaoTest {
             persistenceService.update(applicationInfo);
         } catch (HibernateOptimisticLockingFailureException e) {
 
-           // e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
     @Test
     @Transactional
-    public void payService() throws Exception{
+    public void payService() throws Exception {
         DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
         criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
-                DateUtils.format(new Date(),"yyyyMMdd"),new StringType()));
+                DateUtils.format(new Date(), "yyyyMMdd"), new StringType()));
         persistenceService.getList(criteria).forEach(System.out::println);
     }
 
-    public String te1(){
+    public String te1() {
         System.out.println("t1");
-return "return";
+        return "return";
     }
-    public String te(){
-        try{
+
+    public String te() {
+        try {
             return te1();
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("catch");
-        }finally {
+        } finally {
             System.out.println("finally");
         }
         return null;

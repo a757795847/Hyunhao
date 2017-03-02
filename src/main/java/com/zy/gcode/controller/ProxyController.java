@@ -1,6 +1,5 @@
 package com.zy.gcode.controller;
 
-import com.sun.tools.internal.jxc.ap.Const;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.User;
@@ -26,48 +25,52 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("proxy")
-public class  ProxyController{
+public class ProxyController {
 
     @Autowired
     IProxyService proxyService;
 
-/*  @RequestMapping
-    public  String home(){
-        return null;
-    }*/
+    /*  @RequestMapping
+        public  String home(){
+            return null;
+        }*/
     @RequestMapping("list")
-    public @ResponseBody Object list(@RequestBody Map map){
+    public
+    @ResponseBody
+    Object list(@RequestBody Map map) {
         Page page = new Page();
-        page.setCurrentPageIndex((int)map.get("currentPageIndex"));
-        String zyappid = (String)map.get("zyappid");
+        page.setCurrentPageIndex((int) map.get("currentPageIndex"));
+        String zyappid = (String) map.get("zyappid");
         String isAuthentication = null;
-        if(map.containsKey("isAuthentication")){
+        if (map.containsKey("isAuthentication")) {
             isAuthentication = String.valueOf(map.get("isAuthentication"));
         }
-        String serverType =null;
-        if(map.containsKey("serverType")){
+        String serverType = null;
+        if (map.containsKey("serverType")) {
             serverType = String.valueOf(map.get("serverType"));
         }
 
-       CodeRe<List> codeRe = proxyService.getZyAppInfo(serverType,isAuthentication,zyappid,page);
-        return ControllerStatus.ok(codeRe.getMessage(),page);
+        CodeRe<List> codeRe = proxyService.getZyAppInfo(serverType, isAuthentication, zyappid, page);
+        return ControllerStatus.ok(codeRe.getMessage(), page);
     }
 
     @RequestMapping("home")
-    public String home(){
+    public String home() {
         return "/views/proxy/validityPeriod.html";
     }
 
     @RequestMapping("uploadPayQR")
-    public @ResponseBody Object uploadPayQR(MultipartFile alipay,MultipartFile wechatPay,String count){
-       User user = (User)SecurityUtils.getSubject().getPrincipal();
+    public
+    @ResponseBody
+    Object uploadPayQR(MultipartFile alipay, MultipartFile wechatPay, String count) {
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
         try {
-            if(alipay.isEmpty()||wechatPay.isEmpty()){
+            if (alipay.isEmpty() || wechatPay.isEmpty()) {
                 ControllerStatus.error("请上传微信和支付宝二维码");
             }
-            alipay.transferTo(new File(MzUtils.merge(Constants.PAY_QR_PATH,"/","alipay",user.getUsername())));
-            alipay.transferTo(new File(MzUtils.merge(Constants.PAY_QR_PATH,"/","wecpay",user.getUsername())));
-            proxyService.setAppPrice("1",Integer.parseInt(count));
+            alipay.transferTo(new File(MzUtils.merge(Constants.PAY_QR_PATH, "/", "alipay", user.getUsername())));
+            alipay.transferTo(new File(MzUtils.merge(Constants.PAY_QR_PATH, "/", "wecpay", user.getUsername())));
+            proxyService.setAppPrice("1", Integer.parseInt(count));
             return ControllerStatus.ok("上传成功");
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,7 +79,7 @@ public class  ProxyController{
     }
 
     @RequestMapping("QRUploadHome")
-    public String QRUploadHome(){
+    public String QRUploadHome() {
         return "/views/publicNumber/upload.html";
     }
 

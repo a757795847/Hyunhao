@@ -23,13 +23,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 用于处理用户订单相关
  * Created by admin5 on 17/2/15.
  */
 @Controller
 @RequestMapping("order")
 public class OrderController {
 
-    public final static String ZYAPPID = "zyappid1";
 
 
     @Autowired
@@ -188,11 +188,17 @@ public class OrderController {
         return ControllerStatus.ok(codeRe.getMessage().toString());
     }
 
+    /**
+     * 审核通过后红包发送
+     * @param map
+     * @return
+     */
+
     @RequestMapping(value = "redSend", method = RequestMethod.POST)
     public
     @ResponseBody
     Object redSend(@RequestBody Map map) {
-        if (SecurityUtils.getSubject().isPermitted(ZYAPPID)) {
+        if (SecurityUtils.getSubject().isPermitted(Constants.ZYAPPID)) {
             ControllerStatus.error("无权访问");
         }
 
@@ -215,7 +221,7 @@ public class OrderController {
     public
     @ResponseBody
     String test() {
-        return SecurityUtils.getSubject().isPermitted(ZYAPPID) + "";
+        return SecurityUtils.getSubject().isPermitted(Constants.ZYAPPID) + "";
     }
 
 
