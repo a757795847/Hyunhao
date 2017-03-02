@@ -54,7 +54,7 @@ public abstract class Constants {
      * 支付二维码存放路径
      */
 
-    public final static String PAY_QR_PATH = "/Users/admin5/Downloads";
+    public final static String PAY_QR_PATH = "/Users/admin3/Downloads";
 
     /**
      * 这个应用的id

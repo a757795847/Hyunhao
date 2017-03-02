@@ -123,6 +123,29 @@
             <div class="col-xs-12">
                 <div class="box">
 
+                    <div class="father">
+                        <form action="" method="post" target="" id="uploadForm"  enctype="multipart/form-data">
+                            <a href="#" id="upfile_list">
+                                点击上传支付宝码
+                                <input type="file" name="alipay" class="upfile" id="tops"/>
+                            </a>
+                            <a href="#" id="upfile_kich" style="margin-left:80px;">
+                                点击上传微信码
+                                <input type="file" name="wechatPay"class="upfile" id="bottoms"/>
+                            </a>
+                            <div class="input-group input-group-sm" id="search" style="width:200px;margin-top:30px;">
+                                <input type="text" name="table_search" name="count" class="form-control pull-right" placeholder="单价100元/周期">
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-default" style="width:46px;text-align:center;">编辑</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="btn_tuies">
+                        <button class="btn btn-block btn-default" id="click">确认</button>
+                        <button class="btn btn-block btn-default" id="cancel">取消</button>
+                    </div>
+                    </div>
+
                     </div>
                 </div>
             </div>

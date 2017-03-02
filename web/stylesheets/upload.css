@@ -1,0 +1,41 @@
+.father a{display:inline-block; width:140px; height:140px; background:#fff; position:relative; overflow:hidden;text-align: center;
+    color: #bfbfbf;
+    line-height: 140px; border:1px solid #ddd;}
+.father .upfile{position:absolute; right:0; top:0; font-size:100px; opacity:0; filter:alpha(opacity=0);}
+
+.father{
+    margin:40px;
+    padding-bottom:20px;
+}
+#click{
+    margin-left:20px;
+    float:left;
+width: 77px;
+background-color: rgb(66,140,187);
+border-radius: 5px;
+color: #fff;
+border: none;
+}
+#cancel{
+    margin-top:0;
+    float:left;
+    margin-left:40px;
+    width: 77px;
+    background-color: rgb(66,140,187);
+    border-radius: 5px;
+    color: #fff;
+    border: none;
+}
+.btn_tuies{
+    margin-top:30px;
+    line-height:37px;
+    margin-bottom:20px;
+}
+.btn_tuies:after{
+    content:".";
+    display:block;
+    height:0;
+    clear:both;
+    visibility:hidden;
+
+}
