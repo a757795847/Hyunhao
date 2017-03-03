@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 
@@ -67,16 +64,8 @@ public class ProxyController {
             if (alipay.isEmpty() || wechatPay.isEmpty()) {
                 ControllerStatus.error("请上传微信和支付宝二维码");
             }
-
-            FileOutputStream outputStream =  new FileOutputStream(new File(MzUtils.merge(Constants.PAY_QR_PATH, "/", "alipay", user.getUsername())));
-            outputStream.write(alipay.getBytes());
-            FileOutputStream outputStream1 =  new FileOutputStream(new File(MzUtils.merge(Constants.PAY_QR_PATH, "/", "wecpay", user.getUsername())));
-            outputStream1.write(wechatPay.getBytes());
-            proxyService.setAppPrice("1", Integer.parseInt(count));
-            outputStream.flush();
-            outputStream1.flush();
-            outputStream.close();
-            outputStream1.close();
+            alipay.transferTo(new File(MzUtils.merge(Constants.PAY_QR_PATH, "/", "alipay", user.getUsername())));
+            wechatPay.transferTo(new File(MzUtils.merge(Constants.PAY_QR_PATH, "/", "wecpay", user.getUsername())));
             return ControllerStatus.ok("上传成功");
         } catch (IOException e) {
             e.printStackTrace();
