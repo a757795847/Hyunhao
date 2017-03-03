@@ -34,7 +34,7 @@ public class WechatService implements IWechatService {
     public CodeRe sumbit(final String image1, final String image2, final String image3, final String billno, final String openid, final String appid) {
         String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").toString();
         DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class, "orderNumber", billno);
-        WechatPublicServer wechatPublicServer = persistenceService.getOneByColumn(WechatPublicServer.class, "wxAppid", appid);
+        WechatPublicServer wechatPublicServer = persistenceService.getOneByColumn(WechatPublicServer.class, "wxAppid", appid,"zyappid",Constants.ZYAPPID);
 
         if (wechatPublicServer == null) {
             return CodeRe.error("该微信公众号未录入系统");

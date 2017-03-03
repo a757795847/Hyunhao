@@ -33,6 +33,6 @@ public class MultipartService implements IMultipartService {
             return CodeRe.error("不存在的服务");
         }
 
-        return CodeRe.correct(wechatPublicServers.get(0).getWxAppid());
+        return CodeRe.correct(wechatPublicServers.get(0).getTappid());
     }
 }
