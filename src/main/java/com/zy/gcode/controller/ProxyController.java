@@ -66,6 +66,7 @@ public class ProxyController {
             }
             alipay.transferTo(new File(MzUtils.merge(Constants.PAY_QR_PATH, "/", "alipay", user.getUsername())));
             wechatPay.transferTo(new File(MzUtils.merge(Constants.PAY_QR_PATH, "/", "wecpay", user.getUsername())));
+            proxyService.setAppPrice(Constants.ZYAPPID,Integer.parseInt(count));
             return ControllerStatus.ok("上传成功");
         } catch (IOException e) {
             e.printStackTrace();
