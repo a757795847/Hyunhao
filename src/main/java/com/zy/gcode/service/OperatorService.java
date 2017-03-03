@@ -54,6 +54,7 @@ public class OperatorService implements IOperatorService {
     }
 
     @Override
+    @Transactional
     public CodeRe updatePassword(String username, String password) {
         User user = persistenceService.get(User.class, username);
         if (user == null) {
