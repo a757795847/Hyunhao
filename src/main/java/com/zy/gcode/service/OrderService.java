@@ -9,9 +9,9 @@ import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.annocation.CsvPush;
 import com.zy.gcode.utils.*;
 import org.apache.shiro.SecurityUtils;
-import org.hibernate.criterion.*;
-import org.hibernate.internal.util.collections.ArrayHelper;
-import org.hibernate.type.AnyType;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.StringType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,20 +49,20 @@ public class OrderService implements IOrderService {
     @Transactional
     public List<DataOrder> getOrderByCondition(int status, Page page, String userId, Timestamp applyTime, Timestamp importTime) {
         DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
-        criteria.add(Restrictions.eq("giftState", status)).add(Restrictions.eq("createUserId",userId));
-        if(importTime!=null){
+        criteria.add(Restrictions.eq("giftState", status)).add(Restrictions.eq("createUserId", userId));
+        if (importTime != null) {
             criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
-                    DateUtils.format(importTime,"yyyyMMdd"),new StringType()));
+                    DateUtils.format(importTime, "yyyyMMdd"), new StringType()));
         }
 
-        if(applyTime!=null){
+        if (applyTime != null) {
             criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.apply_date,'%Y%m%d')=?",
-                    DateUtils.format(applyTime,"yyyyMMdd"),new StringType()));
+                    DateUtils.format(applyTime, "yyyyMMdd"), new StringType()));
         }
 
-        if(applyTime!=null){
+        if (applyTime != null) {
             criteria.addOrder(Order.desc("applyDate"));
-        }else if(importTime != null){
+        } else if (importTime != null) {
             criteria.addOrder(Order.desc("createDate"));
         }
 
@@ -71,22 +71,22 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public CodeRe handleCsv(MultipartFile multipartFile){
-        if(multipartFile.isEmpty()){
+    public CodeRe handleCsv(MultipartFile multipartFile) {
+        if (multipartFile.isEmpty()) {
             return CodeRe.error("上传文件不能为空");
         }
 
         User operator = getWxOperator();
 
-        if(operator == null){
+        if (operator == null) {
             log.debug("当前session用户为空");
             return CodeRe.error("登录过期!");
         }
 
         Date date = new Date();
-        File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/",DateUtils.format(date,"yyyyMM"),"/", operator.getUsername(), ":",
+        File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/", DateUtils.format(date, "yyyyMM"), "/", operator.getUsername(), ":",
                 DateUtils.format(date, "yyyyMMddhhmmss")));
-        if(!file.getParentFile().exists()){
+        if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
         CsvReader csvReader;
@@ -94,9 +94,9 @@ public class OrderService implements IOrderService {
         try {
             multipartFile.transferTo(file);
             csvReader = new CsvReader(file.getAbsolutePath(), ',', Charset.forName("GBK"));
-            int count =1;
+            int count = 1;
             while (csvReader.readRecord()) {
-                if(count>HANDLE_MOST_COUNT){ //判断是否大于每次csv解析条数上线
+                if (count > HANDLE_MOST_COUNT) { //判断是否大于每次csv解析条数上线
                     break;
                 }
                 csvValueList.add(csvReader.getValues());
@@ -114,12 +114,12 @@ public class OrderService implements IOrderService {
             DataOrder dataOrder = new DataOrder();
             BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);//使用spring 包装bean设置csv读入属性到pojo
             String[] values = csvValueList.get(j);
-            log.debug("解析的订单:"+Arrays.toString(values));
+            log.debug("解析的订单:" + Arrays.toString(values));
             for (int i = 0; i < titles.length; i++) {
                 if (titles[i].equals("订单编号")) {
                     String str = values[i];
                     //因为csv订单号格式有问题，所以进行特别处理
-                    values[i] = str.substring(2,str.length()-1);
+                    values[i] = str.substring(2, str.length() - 1);
                     orderNoList.add(values[i]);
                 }
                 beanWrapper.setPropertyValue(title2Value.get(titles[i]), values[i]);
@@ -127,12 +127,12 @@ public class OrderService implements IOrderService {
             dataOrderList.add((DataOrder) beanWrapper.getWrappedInstance());
         }
 
-        List<DataOrder> existDataOrderList = persistenceService.getListByIn(DataOrder.class,"orderNumber",orderNoList.toArray());
+        List<DataOrder> existDataOrderList = persistenceService.getListByIn(DataOrder.class, "orderNumber", orderNoList.toArray());
 
         List<Map> resultList = new ArrayList<>(HANDLE_COUNT);
         dataOrderList.forEach(dataOrder -> {
-            DataOrder containOrder = getContainsOrder(existDataOrderList,dataOrder);
-            if (containOrder!=null) {
+            DataOrder containOrder = getContainsOrder(existDataOrderList, dataOrder);
+            if (containOrder != null) {
           /*      if(!containOrder.getCreateUserId().equals(operator.getUsername())){
                     resultMap.put("state","-1"); //-1 表示解析的订单已存在，且不属于该运营者
                 }else {
@@ -152,19 +152,19 @@ public class OrderService implements IOrderService {
 
     /**
      * 如果集合中存在订单号与传入参数相等的订单，则返回单号相等的订单，否则返回null
+     *
      * @param list
      * @param dataOrder
      * @return
      */
-    private DataOrder getContainsOrder(List<DataOrder> list,DataOrder dataOrder){
-        for(DataOrder order:list){
-            if(order.getOrderNumber().equals(dataOrder.getOrderNumber())){
+    private DataOrder getContainsOrder(List<DataOrder> list, DataOrder dataOrder) {
+        for (DataOrder order : list) {
+            if (order.getOrderNumber().equals(dataOrder.getOrderNumber())) {
                 return order;
             }
         }
         return null;
     }
-
 
 
     private Map<String, String> getCsvMap() {
@@ -182,24 +182,24 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public CodeRe saveOrderList(List<DataOrder> orderList,String userId) {
+    public CodeRe saveOrderList(List<DataOrder> orderList, String userId) {
         int len = orderList.size();
         String[] dataNos = new String[len];
-        for(int i = 0 ; i < len;i++){
-            dataNos[i]=orderList.get(i).getOrderNumber();
+        for (int i = 0; i < len; i++) {
+            dataNos[i] = orderList.get(i).getOrderNumber();
         }
-        List<DataOrder> dataOrderList = persistenceService.getListByIn(DataOrder.class,"orderNumber", dataNos);
+        List<DataOrder> dataOrderList = persistenceService.getListByIn(DataOrder.class, "orderNumber", dataNos);
         List<String> inconsequenceNos = new ArrayList<>();
-       for(DataOrder dataOrder:orderList){
-           DataOrder containOrder = getContainsOrder(dataOrderList,dataOrder);
-           if(containOrder!=null){
-               inconsequenceNos.add(containOrder.getId());
-               continue;
-           }
-           dataOrder.setCreateUserId(userId);
-           dataOrder.setCreateDate(new Timestamp(System.currentTimeMillis()));
-           persistenceService.save(dataOrder);
-       }
+        for (DataOrder dataOrder : orderList) {
+            DataOrder containOrder = getContainsOrder(dataOrderList, dataOrder);
+            if (containOrder != null) {
+                inconsequenceNos.add(containOrder.getId());
+                continue;
+            }
+            dataOrder.setCreateUserId(userId);
+            dataOrder.setCreateDate(new Timestamp(System.currentTimeMillis()));
+            persistenceService.save(dataOrder);
+        }
         return CodeRe.correct(inconsequenceNos);
     }
 
@@ -207,23 +207,23 @@ public class OrderService implements IOrderService {
     @Transactional
     public CodeRe passAuditing(String uuid) {
 
-      DataOrder dataOrder =   persistenceService.get(DataOrder.class,uuid);
-      if(dataOrder.getGiftState()!=1){
-          log.debug("红包状态非等于1");
-        return   CodeRe.error("该红包未申领");
-      }
-      User operator = getWxOperator();
-      if(operator == null){
-          return CodeRe.error("登录超时!");
-      }
-      if(!operator.getUsername().equals(dataOrder.getCreateUserId())){
-          log.debug("订单号的用户名与当前登录者用户名不符和");
-          return CodeRe.error("您无此权限更改用户状态");
-      }
+        DataOrder dataOrder = persistenceService.get(DataOrder.class, uuid);
+        if (dataOrder.getGiftState() != 1) {
+            log.debug("红包状态非等于1");
+            return CodeRe.error("该红包未申领");
+        }
+        User operator = getWxOperator();
+        if (operator == null) {
+            return CodeRe.error("登录超时!");
+        }
+        if (!operator.getUsername().equals(dataOrder.getCreateUserId())) {
+            log.debug("订单号的用户名与当前登录者用户名不符和");
+            return CodeRe.error("您无此权限更改用户状态");
+        }
 
-      dataOrder.setGiftState(2);
-      dataOrder.setApproveDate(new Timestamp(System.currentTimeMillis()));
-      persistenceService.updateOrSave(dataOrder);
+        dataOrder.setGiftState(2);
+        dataOrder.setApproveDate(new Timestamp(System.currentTimeMillis()));
+        persistenceService.updateOrSave(dataOrder);
 
         return CodeRe.correct("处理成功");
     }
@@ -232,50 +232,50 @@ public class OrderService implements IOrderService {
     @Transactional
     public CodeRe redSend(String orderno, long strategyid) {
         User operator = (User) SecurityUtils.getSubject().getSession().getAttribute("operator");
-        if(operator ==null){
+        if (operator == null) {
             CodeRe.error("操作超时,请重新登录!");
         }
-      CodeRe<String> muCodeRe =  multipartService.getTappidByApp(operator.getUsername(),Constants.ZYAPPID);
-        if(muCodeRe.isError()){
+        CodeRe<String> muCodeRe = multipartService.getTappidByApp(operator.getUsername(), Constants.ZYAPPID);
+        if (muCodeRe.isError()) {
             return muCodeRe;
         }
 
-        String wxappid =  muCodeRe.getMessage();
-       DataOrder order =  persistenceService.get(DataOrder.class,orderno);
-       if(!operator.getUsername().equals(order.getCreateUserId()))
-       return CodeRe.error("您无权操作次订单");
+        String wxappid = muCodeRe.getMessage();
+        DataOrder order = persistenceService.get(DataOrder.class, orderno);
+        if (!operator.getUsername().equals(order.getCreateUserId()))
+            return CodeRe.error("您无权操作次订单");
 
-       int giftState;
-       try {
-         giftState = order.getGiftState();
-       }catch (NullPointerException e){
-           return CodeRe.error("订单不存在!");
-       }
-       if(giftState!=2){
-           return CodeRe.error("订单未处于审核通过状态!");
-       }
-       DataStrategy strategy =  persistenceService.get(DataStrategy.class,strategyid);
+        int giftState;
+        try {
+            giftState = order.getGiftState();
+        } catch (NullPointerException e) {
+            return CodeRe.error("订单不存在!");
+        }
+        if (giftState != 2) {
+            return CodeRe.error("订单未处于审核通过状态!");
+        }
+        DataStrategy strategy = persistenceService.get(DataStrategy.class, strategyid);
         /*String openid,String count,String wxAppid*/
-        if(strategy == null){
+        if (strategy == null) {
             return CodeRe.error("红包策略不存在");
         }
-      Map map =  HttpClientUtils.mapGetSend("http://open.izhuiyou.com/pay/send","openid",order.getWeixinId(),
-                "count",String.valueOf(strategy.getMoney()),"geAppid",wxappid,"sign","13468794sagag");
-      if(map ==null){
-          log.error("http请求错误");
-          return CodeRe.error("红包发送失败");
-      }
+        Map map = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/pay/send", "openid", order.getWeixinId(),
+                "count", String.valueOf(strategy.getMoney()), "geAppid", wxappid, "sign", "13468794sagag");
+        if (map == null) {
+            log.error("http请求错误");
+            return CodeRe.error("红包发送失败");
+        }
 
-      if(map.get("status").equals("0")){
-         return CodeRe.error((String)map.get("message"));
-      }
-      order.setSendDate(new Timestamp(System.currentTimeMillis()));
-      persistenceService.updateOrSave(order);
-
+        if (map.get("status").equals("0")) {
+            return CodeRe.error((String) map.get("message"));
+        }
+        order.setGiftState(3);
+        order.setSendDate(new Timestamp(System.currentTimeMillis()));
+        persistenceService.updateOrSave(order);
         return CodeRe.correct("success");
     }
 
-    private User getWxOperator(){
-       return (User) SecurityUtils.getSubject().getPrincipal();
+    private User getWxOperator() {
+        return (User) SecurityUtils.getSubject().getPrincipal();
     }
 }

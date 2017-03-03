@@ -3,11 +3,9 @@ package com.zy.gcode.service;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.utils.Page;
-import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,8 +13,12 @@ import java.util.List;
  */
 public interface IOrderService {
     List<DataOrder> getOrderByCondition(int status, Page page, String userId, Timestamp applyTime, Timestamp importTime);
+
     CodeRe handleCsv(MultipartFile multipartFile);
-    CodeRe saveOrderList(List<DataOrder> orderList,String userId);
+
+    CodeRe saveOrderList(List<DataOrder> orderList, String userId);
+
     CodeRe passAuditing(String uuid);
-    CodeRe redSend(String orderno,long strategyid);
+
+    CodeRe redSend(String orderno, long strategyid);
 }

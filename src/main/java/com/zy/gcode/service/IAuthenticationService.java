@@ -10,13 +10,17 @@ import com.zy.gcode.pojo.WechatPublicServer;
  */
 public interface IAuthenticationService {
     CodeRe<WechatPublic> saveServerToken(String content, String token);
+
     CodeRe<TokenConfig> componetToekn();
-    String decrpt(String msg_signature,String timestamp,String nonce,String str);
+
+    String decrpt(String msg_signature, String timestamp, String nonce, String str);
+
     WechatPublicServer getWechatPublic(String id);
 
     CodeRe<TokenConfig> getJsapiTicket();
 
     CodeRe<TokenConfig> getJsapiTicketByAppid(String appid);
+
     CodeRe<TokenConfig> getWxAccessToken(String appid);
 
 }

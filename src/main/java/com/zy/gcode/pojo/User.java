@@ -119,8 +119,8 @@ public class User {
     }
 
     public WechatPublicServer getWechatPublicServerList(String zyappid) {
-        for(WechatPublicServer publicServer:wechatPublicServerList){
-            if(publicServer.getZyappid().equals(zyappid)){
+        for (WechatPublicServer publicServer : wechatPublicServerList) {
+            if (publicServer.getZyappid().equals(zyappid)) {
                 return publicServer;
             }
         }

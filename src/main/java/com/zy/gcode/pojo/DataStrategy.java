@@ -1,6 +1,5 @@
 package com.zy.gcode.pojo;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**

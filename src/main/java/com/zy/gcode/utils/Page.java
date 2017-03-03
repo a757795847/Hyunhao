@@ -42,7 +42,7 @@ public class Page {
 
     public int getPageCount() {
 
-        return count%pageSize==0?count/pageSize:count/pageSize+1;
+        return count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
     }
 
     public void setPageCount(int pageCount) {
@@ -51,7 +51,7 @@ public class Page {
 
     public int getStartIndex() {
 
-        return (currentPageIndex-1)*pageSize;
+        return (currentPageIndex - 1) * pageSize;
     }
 
     public void setStartIndex(int startIndex) {

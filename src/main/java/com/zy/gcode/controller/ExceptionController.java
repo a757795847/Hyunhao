@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ExceptionController {
     @RequestMapping("error")
-    public @ResponseBody String error(String message){
+    public
+    @ResponseBody
+    String error(String message) {
         return message;
     }
 }

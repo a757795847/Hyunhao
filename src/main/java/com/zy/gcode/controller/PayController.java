@@ -15,51 +15,59 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("pay")
-public class PayController{
+public class PayController {
     @Autowired
     IPayService payService;
 
     @RequestMapping("index")
-    public @ResponseBody String index(){
+    public
+    @ResponseBody
+    String index() {
         return "welcome pay index!";
     }
 
     /**
      * 发送红包接口
+     *
      * @param openid
      * @param count
-     * @param geAppid  数据库中生成的appid
+     * @param geAppid 数据库中生成的appid
      * @param sign
      * @return
      * @throws Exception
      */
     @RequestMapping("send")
-    public @ResponseBody Object send(String openid,String count,String geAppid,String sign) throws Exception{
-        if(!sign.equals("13468794sagag")){
-           return Constants.objectMapper.writeValueAsString(ControllerStatus.error("签名错误"));
+    public
+    @ResponseBody
+    Object send(String openid, String count, String geAppid, String sign) throws Exception {
+        if (!sign.equals("13468794sagag")) {
+            return Constants.objectMapper.writeValueAsString(ControllerStatus.error("签名错误"));
         }
 
-       CodeRe<String> codeRe = payService.pay(openid,100,geAppid);
-       if(codeRe.isError()){
-           return ControllerStatus.error(codeRe.getErrorMessage());
-       }
+        CodeRe<String> codeRe = payService.pay(openid, 100, geAppid);
+        if (codeRe.isError()) {
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
         return ControllerStatus.ok(codeRe.getMessage());
     }
 
     /**
      * 获取红包详细信息
+     *
      * @param billno
      * @param access_token
      * @param zyid
      * @return
      */
     @RequestMapping("redinfo")
-    public @ResponseBody Object redinfo(String billno,String access_token,String zyid){
-      CodeRe<RedStatus> redStatusCodeRe = payService.payInfo(billno,access_token,zyid);
-      if (redStatusCodeRe.isError()){
-        return redStatusCodeRe.getErrorMessage();
-      }
-      return  redStatusCodeRe.getMessage();
+    public
+    @ResponseBody
+    Object redinfo(String billno, String access_token, String zyid) {
+        CodeRe<RedStatus> redStatusCodeRe = payService.payInfo(billno, access_token, zyid);
+        if (redStatusCodeRe.isError()) {
+            return redStatusCodeRe.getErrorMessage();
+        }
+        return redStatusCodeRe.getMessage();
     }
 
 

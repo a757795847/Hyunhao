@@ -49,22 +49,23 @@ public abstract class AbstractOAuthRequest<T> {
             return builder.substring(0, builder.length() - 1);
         return builder.substring(0, builder.length() - 1) + suffix;
     }
-    protected String buildBody(){
+
+    protected String buildBody() {
         StringBuilder builder = new StringBuilder("{");
         int len = body.size();
-        body.forEach((k,v)->{
+        body.forEach((k, v) -> {
             builder.append("\"").append(k).append("\"").append(":")
                     .append("\"").append(v).append("\"").append(",");
         });
 
 
-        return  builder.substring(0,builder.length()-1)+"}";
+        return builder.substring(0, builder.length() - 1) + "}";
 
     }
 
     protected <T> T getObj(Class<T> clazz) {
         HttpResponse response = HttpClientUtils.getSend(buildParams());
-       HttpClientUtils.checkRespons(response);
+        HttpClientUtils.checkRespons(response);
 
         String str = null;
         try {

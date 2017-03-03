@@ -1,7 +1,6 @@
 package com.zy.gcode.oauth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zy.gcode.utils.Constants;
 
 /**
  * Created by admin5 on 17/2/23.
@@ -11,13 +10,13 @@ public class UserInfoOAuthRequest extends AbstractOAuthRequest<UserInfoOAuthRequ
     public static final String ACCESS_TOKEN = "access_token";
     public static final String OPENID = "openid";
 
-    public UserInfoOAuthRequest(){
+    public UserInfoOAuthRequest() {
         super("https://api.weixin.qq.com/sns/userinfo");
     }
 
     @Override
     public UserInfo start() {
-     return  getObj(UserInfo.class);
+        return getObj(UserInfo.class);
     }
 /*    public static void main(String[] args) throws  Exception{
         UserInfoOAuthRequest info = new UserInfoOAuthRequest();
@@ -26,11 +25,11 @@ public class UserInfoOAuthRequest extends AbstractOAuthRequest<UserInfoOAuthRequ
     }*/
 
     public static class UserInfo {
-   /*     {    "openid":" OPENID",    " nickname": NICKNAME,    "sex":"1",
-                "province":"PROVINCE"    "city":"CITY",    "country":"COUNTRY",
-                "headimgurl":    "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46",
-                "privilege":[ "PRIVILEGE1" "PRIVILEGE2"     ],
-        }*/
+        /*     {    "openid":" OPENID",    " nickname": NICKNAME,    "sex":"1",
+                     "province":"PROVINCE"    "city":"CITY",    "country":"COUNTRY",
+                     "headimgurl":    "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46",
+                     "privilege":[ "PRIVILEGE1" "PRIVILEGE2"     ],
+             }*/
         private String openid;
         private String nickname;
         private String sex;
@@ -41,8 +40,8 @@ public class UserInfoOAuthRequest extends AbstractOAuthRequest<UserInfoOAuthRequ
         private String headimgurl;
         private String[] privilege;
         private String unionid;
-      /*  {"errcode":40003,"errmsg":" invalid openid "}*/
-        private  Integer errcode;
+        /*  {"errcode":40003,"errmsg":" invalid openid "}*/
+        private Integer errcode;
         private String errmsg;
         @JsonIgnore
         private boolean error;

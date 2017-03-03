@@ -7,7 +7,8 @@ import org.springframework.util.Base64Utils;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -18,9 +19,9 @@ public class UniqueStringGenerator {
     private static int generateCount = 0;
 
 
-
     private static Random random = new Random();
     private static AtomicInteger integer = new AtomicInteger(100);
+
     private UniqueStringGenerator() {
 
     }
@@ -29,28 +30,29 @@ public class UniqueStringGenerator {
     public static synchronized String getUniqueCode() {
         if (generateCount > 999999)
             generateCount = 0;
-        String uniqueNumber = Integer.toString(random.nextInt(1000000)+generateCount);
+        String uniqueNumber = Integer.toString(random.nextInt(1000000) + generateCount);
         generateCount++;
         return toBase64(uniqueNumber);
     }
+
     public static synchronized String getUniqueToken() {
-        String uniqueNumber = Long.toString(System.currentTimeMillis())+Integer.toString(generateCount);
+        String uniqueNumber = Long.toString(System.currentTimeMillis()) + Integer.toString(generateCount);
         generateCount++;
         return toBase64(uniqueNumber);
     }
 
 
-    private static String toBase64(String str){
-            return Base64Utils.encodeToString(Md5Crypt.apr1Crypt(str,"zykjss").getBytes()).replace("=","A").substring(17);
+    private static String toBase64(String str) {
+        return Base64Utils.encodeToString(Md5Crypt.apr1Crypt(str, "zykjss").getBytes()).replace("=", "A").substring(17);
     }
 
-    public static  String wxbillno(String mchId){
+    public static String wxbillno(String mchId) {
         String beg = String.valueOf(System.currentTimeMillis()).substring(6);
-       int i =  integer.getAndIncrement();
-        if(i>=999){
+        int i = integer.getAndIncrement();
+        if (i >= 999) {
             integer.set(100);
         }
-        return mchId + DateUtils.format(new Date(),"yyyyMMdd")+beg+i;
+        return mchId + DateUtils.format(new Date(), "yyyyMMdd") + beg + i;
     }
 
     public static String getMd5(String plainText) {
@@ -83,10 +85,10 @@ public class UniqueStringGenerator {
 
     public static String SHA1(String str) {
         System.out.println(str);
-        if (null == str || 0 == str.length()){
+        if (null == str || 0 == str.length()) {
             return null;
         }
-        char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                 'a', 'b', 'c', 'd', 'e', 'f'};
         try {
             MessageDigest mdTemp = MessageDigest.getInstance("SHA1");

@@ -12,31 +12,32 @@ import java.io.IOException;
  */
 public class PublicPreCodeRequest extends AbstractOAuthRequest<PublicPreCodeRequest.PreAuthCode> {
 
-     public static final String PRA_COMPONENT_ACCESS_TOKEN = "component_access_token";
-     public static final String BAY_COMPONENT_APPID = "component_appid";
+    public static final String PRA_COMPONENT_ACCESS_TOKEN = "component_access_token";
+    public static final String BAY_COMPONENT_APPID = "component_appid";
 
 
-    public PublicPreCodeRequest(){
+    public PublicPreCodeRequest() {
         super("https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode");
     }
 
     @Override
     public PreAuthCode start() {
-       HttpResponse response = HttpClientUtils.postSend(buildParams(),buildBody());
-       HttpClientUtils.checkRespons(response);
+        HttpResponse response = HttpClientUtils.postSend(buildParams(), buildBody());
+        HttpClientUtils.checkRespons(response);
 
         try {
-            return   Constants.objectMapper.readValue(response.getEntity().getContent(),PreAuthCode.class);
+            return Constants.objectMapper.readValue(response.getEntity().getContent(), PreAuthCode.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return null;
     }
-    public static class PreAuthCode{
+
+    public static class PreAuthCode {
         private String preAuthCode;
         private Integer expiresIn;
-        private  Integer errcode;
+        private Integer errcode;
         private String errmsg;
         @JsonIgnore
         private boolean error;

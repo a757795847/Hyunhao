@@ -7,9 +7,6 @@ import org.apache.shiro.authc.credential.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import sun.misc.Unsafe;
-
-import java.lang.reflect.Field;
 
 
 /**
@@ -27,21 +24,20 @@ public class OperatorService implements IOperatorService {
     @Override
     @Transactional
     public CodeRe checkUsername(String username) {
-       User operator = persistenceService.get(User.class,username);
-        if(operator == null){
-            return  CodeRe.correct("success");
+        User operator = persistenceService.get(User.class, username);
+        if (operator == null) {
+            return CodeRe.correct("success");
         }
         return CodeRe.error("user is exist");
     }
 
 
-
     @Override
     @Transactional
     public CodeRe registerOperator(String username, String password) {
-        User existOperator = persistenceService.get(User.class,username);
-        if(existOperator != null){
-          return CodeRe.error("用户名已存在!");
+        User existOperator = persistenceService.get(User.class, username);
+        if (existOperator != null) {
+            return CodeRe.error("用户名已存在!");
         }
 
         User user = new User();
@@ -59,12 +55,12 @@ public class OperatorService implements IOperatorService {
 
     @Override
     public CodeRe updatePassword(String username, String password) {
-       User user =  persistenceService.get(User.class,username);
-       if(user == null){
-           return CodeRe.error("重复的用户名");
-       }
-       user.setPassword(passwordService.encryptPassword(password));
-       persistenceService.update(user);
+        User user = persistenceService.get(User.class, username);
+        if (user == null) {
+            return CodeRe.error("重复的用户名");
+        }
+        user.setPassword(passwordService.encryptPassword(password));
+        persistenceService.update(user);
         return CodeRe.correct("success");
     }
 }

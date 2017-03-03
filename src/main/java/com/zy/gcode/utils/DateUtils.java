@@ -11,10 +11,14 @@ import java.util.Map;
  * Created by admin5 on 17/1/20.
  */
 public class DateUtils {
-    /** 锁对象 */
+    /**
+     * 锁对象
+     */
     private static final Object lockObj = new Object();
 
-    /** 存放不同的日期模板格式的sdf的Map */
+    /**
+     * 存放不同的日期模板格式的sdf的Map
+     */
     private static Map<String, ThreadLocal<SimpleDateFormat>> sdfMap = new HashMap<String, ThreadLocal<SimpleDateFormat>>();
 
     /**
@@ -33,7 +37,7 @@ public class DateUtils {
                 if (tl == null) {
 
                     // 这里是关键,使用ThreadLocal<SimpleDateFormat>替代原来直接new SimpleDateFormat
-                    tl = ThreadLocal.withInitial(()->new SimpleDateFormat(pattern));
+                    tl = ThreadLocal.withInitial(() -> new SimpleDateFormat(pattern));
                     sdfMap.put(pattern, tl);
                 }
             }
@@ -57,8 +61,8 @@ public class DateUtils {
         return getSdf(pattern).parse(dateStr);
     }
 
-    public static boolean isOutOfDate(Timestamp date, long expirs){
-       Date date1 = new Date(System.currentTimeMillis()-(expirs-10)*1000);
+    public static boolean isOutOfDate(Timestamp date, long expirs) {
+        Date date1 = new Date(System.currentTimeMillis() - (expirs - 10) * 1000);
         return date.before(date1);
     }
 

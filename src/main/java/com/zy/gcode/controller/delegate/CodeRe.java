@@ -2,8 +2,6 @@ package com.zy.gcode.controller.delegate;
 
 import org.springframework.util.StringUtils;
 
-import javax.naming.OperationNotSupportedException;
-
 /**
  * Created by admin5 on 17/1/18.
  */
@@ -16,11 +14,11 @@ public class CodeRe<T> {
         return isError;
     }
 
-    public static<A> CodeRe<A> correct(A t){
+    public static <A> CodeRe<A> correct(A t) {
         return new CodeRe(t);
     }
 
-    public static CodeRe error(String message){
+    public static CodeRe error(String message) {
         return new CodeRe(message);
     }
 
@@ -42,13 +40,13 @@ public class CodeRe<T> {
 
     public void setError(String error) {
         this.error = error;
-        if(!StringUtils.isEmpty(error)){
-            this.isError=true;
+        if (!StringUtils.isEmpty(error)) {
+            this.isError = true;
         }
     }
 
     public T getMessage() {
-        if(isError()){
+        if (isError()) {
             throw new IllegalStateException();
         }
 

@@ -22,52 +22,61 @@ public class RedStrategycontroller {
     IRedStrategyService strategyService;
 
 
-
     @RequestMapping("home")
-    public String home(){
+    public String home() {
         return "/views/publicNumber/redmanagement.html";
     }
 
     @RequestMapping("add")
-    public @ResponseBody Object add(@RequestBody Map map){
-        String name = (String)map.get("name");
-        int money = (int)map.get("money");
+    public
+    @ResponseBody
+    Object add(@RequestBody Map map) {
+        String name = (String) map.get("name");
+        int money = (int) map.get("money");
 
-       CodeRe codeRe =  strategyService.addStrategy(name,money,null);
-       if(codeRe.isError()){
-           return ControllerStatus.error(codeRe.getErrorMessage());
-       }
-       return ControllerStatus.ok(codeRe.getMessage().toString());
+        CodeRe codeRe = strategyService.addStrategy(name, money, null);
+        if (codeRe.isError()) {
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
+        return ControllerStatus.ok(codeRe.getMessage().toString());
 
     }
+
     @RequestMapping("update")
-    public @ResponseBody Object update(@RequestBody Map map){
-        String name = (String)map.get("name");
-        int money = (int)map.get("money");
-        long id = ((Integer)map.get("id")).longValue();
-       CodeRe codeRe =  strategyService.updateRedStrategy(id,name,money);
-       if(codeRe.isError()){
-           return ControllerStatus.error(codeRe.getErrorMessage());
-       }
-       return ControllerStatus.ok(codeRe.getMessage().toString());
+    public
+    @ResponseBody
+    Object update(@RequestBody Map map) {
+        String name = (String) map.get("name");
+        int money = (int) map.get("money");
+        long id = ((Integer) map.get("id")).longValue();
+        CodeRe codeRe = strategyService.updateRedStrategy(id, name, money);
+        if (codeRe.isError()) {
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
+        return ControllerStatus.ok(codeRe.getMessage().toString());
 
     }
 
     @RequestMapping("list")
-    public @ResponseBody Object list(){
-      CodeRe codeRe =  strategyService.listRedStrategy();
-      if(codeRe.isError()){
-          return  ControllerStatus.error(codeRe.getErrorMessage());
-      }
-      return ControllerStatus.ok((List)codeRe.getMessage());
+    public
+    @ResponseBody
+    Object list() {
+        CodeRe codeRe = strategyService.listRedStrategy();
+        if (codeRe.isError()) {
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
+        return ControllerStatus.ok((List) codeRe.getMessage());
     }
+
     @RequestMapping("remove")
-    public @ResponseBody Object remove(@RequestBody Integer id){
-      CodeRe codeRe =  strategyService.deleteRedStrategy( id.longValue());
-      if(codeRe.isError()){
-          return ControllerStatus.error(codeRe.getErrorMessage());
-      }
-      return ControllerStatus.ok((String)codeRe.getMessage());
+    public
+    @ResponseBody
+    Object remove(@RequestBody Integer id) {
+        CodeRe codeRe = strategyService.deleteRedStrategy(id.longValue());
+        if (codeRe.isError()) {
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
+        return ControllerStatus.ok((String) codeRe.getMessage());
     }
 
 }

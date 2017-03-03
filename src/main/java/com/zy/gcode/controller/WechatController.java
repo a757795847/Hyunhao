@@ -40,7 +40,7 @@ public class WechatController {
         HttpSession session = request.getSession(true);
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
 
-         WechatPublicServer wechatPublicServer = wechatService.getWechatPublic(tAppid);
+        WechatPublicServer wechatPublicServer = wechatService.getWechatPublic(tAppid);
 
         if (wechatUserInfo != null) {
             Map<String, String> map = JsapiUtils.sign(authenticationService.getJsapiTicketByAppid(wechatPublicServer.getWxAppid()).getMessage().getToken(),
@@ -57,8 +57,8 @@ public class WechatController {
             return "/views/wechat/submit.html";
         }
         try {
-            return "redirect:http://open.izhuiyou.com/access/wxcode/"+tAppid + "?redirect_url="
-                    + URLEncoder.encode("http://open.izhuiyou.com/middle/token", "utf-8")+"&state="+URLEncoder.encode(request.getRequestURL().toString(),"utf-8");
+            return "redirect:http://open.izhuiyou.com/access/wxcode/" + tAppid + "?redirect_url="
+                    + URLEncoder.encode("http://open.izhuiyou.com/middle/token", "utf-8") + "&state=" + URLEncoder.encode(request.getRequestURL().toString(), "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

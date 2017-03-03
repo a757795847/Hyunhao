@@ -22,18 +22,18 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public User getUser(String username) {
-        return persistenceService.get(User.class,username);
+        return persistenceService.get(User.class, username);
     }
 
     @Override
     @Transactional
     public List<ValidData> getValidDateList(String username) {
-        return persistenceService.getListByColumn(ValidData.class,"username",username);
+        return persistenceService.getListByColumn(ValidData.class, "username", username);
     }
 
     @Override
     @Transactional
     public List<WechatPublicServer> getPublicServerList(String username) {
-        return persistenceService.getListByColumn(WechatPublicServer.class,"userId",username);
+        return persistenceService.getListByColumn(WechatPublicServer.class, "userId", username);
     }
 }

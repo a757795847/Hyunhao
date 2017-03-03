@@ -5,14 +5,14 @@ import java.util.List;
 /**
  * Created by admin5 on 17/2/13.
  */
-public class BatchRe<T> extends CodeRe<List>{
+public class BatchRe<T> extends CodeRe<List> {
     private List<String> errorList;
     private List<T> tlist;
 
     @Override
     public boolean isError() {
-        if(tlist.isEmpty()||(!errorList.isEmpty())){
-            return  false;
+        if (tlist.isEmpty() || (!errorList.isEmpty())) {
+            return false;
         }
         return true;
     }

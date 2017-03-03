@@ -1,11 +1,6 @@
 package com.zy.gcode.oauth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zy.gcode.utils.Constants;
-import com.zy.gcode.utils.HttpClientUtils;
-import org.apache.http.HttpResponse;
-
-import java.io.IOException;
 
 /**
  * Created by admin5 on 17/2/23.
@@ -19,13 +14,13 @@ public class UserTokenOAuthRequest extends AbstractOAuthRequest<UserTokenOAuthRe
     public static final String COMPONENT_ACCESS_TOKEN = "component_access_token";
 
 
-    public UserTokenOAuthRequest(){
+    public UserTokenOAuthRequest() {
         super("https://api.weixin.qq.com/sns/oauth2/component/access_token");
     }
 
     @Override
     public AccessToken start() {
-         return getObj(AccessToken.class);
+        return getObj(AccessToken.class);
     }
 
 /*    public static void main(String[] args) throws Exception{
@@ -38,26 +33,26 @@ public class UserTokenOAuthRequest extends AbstractOAuthRequest<UserTokenOAuthRe
                 ",\"errcode\":1}",AccessToken.class)
         );}*/
 
-    public static  class AccessToken{
-       /* "access_token":"ACCESS_TOKEN",
-                "expires_in":7200,
-                "refresh_token":"REFRESH_TOKEN",
-                "openid":"OPENID",
-                "scope":"SCOPE"
-                {"errcode":40029,"errmsg":"invalid code"}*/
-       public AccessToken(){
+    public static class AccessToken {
+        /* "access_token":"ACCESS_TOKEN",
+                 "expires_in":7200,
+                 "refresh_token":"REFRESH_TOKEN",
+                 "openid":"OPENID",
+                 "scope":"SCOPE"
+                 {"errcode":40029,"errmsg":"invalid code"}*/
+        public AccessToken() {
 
-       }
+        }
 
-       private String accessToken;
-       private Integer expiresIn;
-       private String refreshToken;
-       private String openid;
-       private String scope;
-       private Integer errcode;
-       private String errmsg;
-       @JsonIgnore
-       private boolean error;
+        private String accessToken;
+        private Integer expiresIn;
+        private String refreshToken;
+        private String openid;
+        private String scope;
+        private Integer errcode;
+        private String errmsg;
+        @JsonIgnore
+        private boolean error;
 
         public String getAccessToken() {
             return accessToken;

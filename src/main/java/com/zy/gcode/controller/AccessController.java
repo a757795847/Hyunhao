@@ -9,7 +9,10 @@ import com.zy.gcode.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -33,7 +36,7 @@ public class AccessController {
         if (StringUtils.isEmpty(code)) {
             return "redirect:error.html?message=code is empty";
         }
-        CodeRe<String> codeRe = iCodeService.token(code,state,appid);
+        CodeRe<String> codeRe = iCodeService.token(code, state, appid);
         if (codeRe.isError()) {
             return "redirect:/index.jsp?message=" + codeRe.getErrorMessage();
         }
@@ -42,9 +45,9 @@ public class AccessController {
     }
 
     @RequestMapping("wxcode/{tAppid}")
-    public String wxcode(@PathVariable("tAppid") String tAppid,@RequestParam("redirect_url") String callback,String state) throws UnsupportedEncodingException {
+    public String wxcode(@PathVariable("tAppid") String tAppid, @RequestParam("redirect_url") String callback, String state) throws UnsupportedEncodingException {
         callback = URLDecoder.decode(callback, "utf-8");
-        CodeRe codeRe = iCodeService.code(tAppid,callback,state);
+        CodeRe codeRe = iCodeService.code(tAppid, callback, state);
         if (codeRe.isError()) {
             return "redirect:" + callback;
         }
@@ -54,14 +57,14 @@ public class AccessController {
     @RequestMapping("getoken/{code}/{geappid}")
     public
     @ResponseBody
-    Map wxtoken(@PathVariable String code,@PathVariable String geappid) {
-        CodeRe<GeToken> codeRe = iCodeService.geToken(code,geappid);
+    Map wxtoken(@PathVariable String code, @PathVariable String geappid) {
+        CodeRe<GeToken> codeRe = iCodeService.geToken(code, geappid);
         if (codeRe.isError()) {
             return error(codeRe.getErrorMessage());
         }
         Map map = new HashMap(4);
-        map.put("access_token",codeRe.getMessage().getGeTokenM());
-        map.put("openid",codeRe.getMessage().getOpenid());
+        map.put("access_token", codeRe.getMessage().getGeTokenM());
+        map.put("openid", codeRe.getMessage().getOpenid());
         map.put("expirs", 7000);
         return ok(map);
     }
@@ -69,8 +72,8 @@ public class AccessController {
     @RequestMapping("guserinfo")
     public
     @ResponseBody
-    Map guserinfo(String token,String zyid) {
-        CodeRe<WechatUserInfo> codeRe = iCodeService.getUser(zyid,token);
+    Map guserinfo(String token, String zyid) {
+        CodeRe<WechatUserInfo> codeRe = iCodeService.getUser(zyid, token);
         if (codeRe.isError()) {
             return error(codeRe.getErrorMessage());
         }

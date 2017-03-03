@@ -24,31 +24,31 @@ public abstract class Constants {
      * 获取code成功后的回调url
      */
 
-    public final static String CALL_BACK_URL="http://open.izhuiyou.com/access/wxaccess_token";
+    public final static String CALL_BACK_URL = "http://open.izhuiyou.com/access/wxaccess_token";
 
     /**
      * 微信js_ticket的字段名
      */
 
-    public final static String JSSDK_TICKET_NAME="jssdk_ticket";
+    public final static String JSSDK_TICKET_NAME = "jssdk_ticket";
 
     /**
      * 微信服务好的ticket的字段名
      */
 
-    public  final static String COMPONENTVERIFYTICKET = "componentverifyticket";
+    public final static String COMPONENTVERIFYTICKET = "componentverifyticket";
 
     /**
      * 返现截图存放的路径
      */
 
-    public final static String RED_PICTURE_PATH="/opt/zy/Pictures";
+    public final static String RED_PICTURE_PATH = "/opt/zy/Pictures";
 
     /**
      * 上传的csv存放路径
      */
 
-    public final static String RED_CSV_PATH="/Users/admin5/Downloads";
+    public final static String RED_CSV_PATH = "/Users/admin5/Downloads";
 
     /**
      * 支付二维码存放路径
@@ -66,9 +66,10 @@ public abstract class Constants {
     /**
      * 商户号
      */
-    public  static  final String MCH_ID="1426499802";
+    public static final String MCH_ID = "1426499802";
+
     static {
-        try(InputStream inputStream = new ClassPathResource("config.properties").getInputStream()) {
+        try (InputStream inputStream = new ClassPathResource("config.properties").getInputStream()) {
             properties.load(inputStream);
         } catch (Exception e) {
             System.err.println("error 配置文件加载错误!");

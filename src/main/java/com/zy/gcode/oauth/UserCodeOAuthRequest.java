@@ -1,13 +1,5 @@
 package com.zy.gcode.oauth;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-
-import java.beans.PropertyDescriptor;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by admin5 on 17/2/23.
  */
@@ -24,12 +16,13 @@ public class UserCodeOAuthRequest extends AbstractOAuthRequest<String> {
     public static final String SCOPE = "scope";
     public static final String STATE = "state";
     public static final String COMPONENT_APPID = "component_appid";
-    public UserCodeOAuthRequest(){
+
+    public UserCodeOAuthRequest() {
         super("https://open.weixin.qq.com/connect/oauth2/authorize");
     }
 
     @Override
     public String start() {
-       return buildParams();
+        return buildParams();
     }
 }

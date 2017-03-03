@@ -97,7 +97,7 @@ public class ProxyService implements IProxyService {
         Serializable id = persistenceService.save(validData);
         publicServer.setEndTime(validData.getEndData());
         publicServer.setBeginTime(validData.getBeginTime());
-        publicServer.setValidDateId((Long)id);
+        publicServer.setValidDateId((Long) id);
         persistenceService.update(publicServer);
         return CodeRe.correct("重新开通成功");
     }
@@ -150,12 +150,12 @@ public class ProxyService implements IProxyService {
     @Override
     @Transactional
     public CodeRe setAppPrice(String appid, int count) {
-       ApplicationInfo applicationInfo =  persistenceService.get(ApplicationInfo.class,appid);
-       if(applicationInfo==null){
-           return CodeRe.error("不存在的app");
-       }
-       applicationInfo.setPrice(count);
-       persistenceService.update(applicationInfo);
+        ApplicationInfo applicationInfo = persistenceService.get(ApplicationInfo.class, appid);
+        if (applicationInfo == null) {
+            return CodeRe.error("不存在的app");
+        }
+        applicationInfo.setPrice(count);
+        persistenceService.update(applicationInfo);
         return CodeRe.error("success");
     }
 

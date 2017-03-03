@@ -18,18 +18,20 @@ import java.util.TreeMap;
 public class RedPagCatchTask extends TimerTask {
     ApplicationContext applicationContext;
 
-    public RedPagCatchTask(ApplicationContext applicationContext){
+    public RedPagCatchTask(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
+
     IPayService payService = applicationContext.getBean(IPayService.class);
+
     @Override
     public void run() {
-       BatchRe<RedStatus> batchRe =  (BatchRe)payService.circularGetPayInfo();
+        BatchRe<RedStatus> batchRe = (BatchRe) payService.circularGetPayInfo();
         Map map = new TreeMap();
-        map.put("list",batchRe.getTlist());
-        map.put("error",batchRe.getErrorList());
+        map.put("list", batchRe.getTlist());
+        map.put("error", batchRe.getErrorList());
         try {
-            HttpClientUtils.postSend(Constants.properties.getProperty("callback.redinfo"),Constants.objectMapper.writeValueAsString(map));
+            HttpClientUtils.postSend(Constants.properties.getProperty("callback.redinfo"), Constants.objectMapper.writeValueAsString(map));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

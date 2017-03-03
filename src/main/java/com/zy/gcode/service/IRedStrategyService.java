@@ -7,7 +7,10 @@ import com.zy.gcode.controller.delegate.CodeRe;
  */
 public interface IRedStrategyService {
     CodeRe addStrategy(String name, int money, String remark);
+
     CodeRe listRedStrategy();
+
     CodeRe deleteRedStrategy(long id);
-    CodeRe updateRedStrategy(long id,String name,int money);
+
+    CodeRe updateRedStrategy(long id, String name, int money);
 }

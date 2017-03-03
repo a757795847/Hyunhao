@@ -13,15 +13,15 @@ public class PublicInfoRequest extends AbstractOAuthRequest<Map> {
     /**
      * 服务访问token
      */
-    public static final String PRA_COMPONENT_ACCESS_TOKEN="component_access_token";
+    public static final String PRA_COMPONENT_ACCESS_TOKEN = "component_access_token";
     /**
      * 服务appid
      */
-    public static final String BAY_COMPONENT_APPID="component_appid";
+    public static final String BAY_COMPONENT_APPID = "component_appid";
     /**
      * 授权方appid
      */
-    public static final String BAY_AUTHORIZER_APPID="authorizer_appid";
+    public static final String BAY_AUTHORIZER_APPID = "authorizer_appid";
 
 
     public PublicInfoRequest() {
@@ -30,6 +30,6 @@ public class PublicInfoRequest extends AbstractOAuthRequest<Map> {
 
     @Override
     public Map start() {
-        return HttpClientUtils.mapPostSend(buildParams(),buildBody());
+        return HttpClientUtils.mapPostSend(buildParams(), buildBody());
     }
 }

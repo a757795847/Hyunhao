@@ -24,19 +24,19 @@ public class RedStrategyService implements IRedStrategyService {
     @Transactional
     public CodeRe addStrategy(String name, int money, String remark) {
         User operator = getOperator();
-        DataStrategy existStrategy =  persistenceService.getOneByColumn(DataStrategy.class,"name",name,"createUserId",operator.getUsername());
+        DataStrategy existStrategy = persistenceService.getOneByColumn(DataStrategy.class, "name", name, "createUserId", operator.getUsername());
 
-        if(persistenceService.count(DataStrategy.class,"createUserId",operator.getUsername())>10){
+        if (persistenceService.count(DataStrategy.class, "createUserId", operator.getUsername()) > 10) {
             return CodeRe.error("红包策略最多只能有10个");
         }
 
-        if(existStrategy != null) {
+        if (existStrategy != null) {
             return CodeRe.error("红包名字重复");
         }
         DataStrategy strategy = new DataStrategy();
         strategy.setName(name);
-        if(money <100){
-            return  CodeRe.error("红包金额必须大于1元");
+        if (money < 100) {
+            return CodeRe.error("红包金额必须大于1元");
         }
 
         strategy.setMoney(money);
@@ -51,26 +51,26 @@ public class RedStrategyService implements IRedStrategyService {
     @Transactional
     public CodeRe listRedStrategy() {
         User operator = getOperator();
-        List list = persistenceService.getListByColumn(DataStrategy.class,"userId",operator.getUsername());
+        List list = persistenceService.getListByColumn(DataStrategy.class, "userId", operator.getUsername());
         return CodeRe.correct(list);
     }
 
-    private User getOperator(){
+    private User getOperator() {
         return (User) SecurityUtils.getSubject().getPrincipal();
     }
 
     @Override
     @Transactional
     public CodeRe deleteRedStrategy(long id) {
-        persistenceService.delete(DataStrategy.class,id);
+        persistenceService.delete(DataStrategy.class, id);
         return CodeRe.correct("success");
     }
 
     @Override
     @Transactional
     public CodeRe updateRedStrategy(long id, String name, int money) {
-        DataStrategy strategy = persistenceService.get(DataStrategy.class,id);
-        if(strategy == null){
+        DataStrategy strategy = persistenceService.get(DataStrategy.class, id);
+        if (strategy == null) {
             return CodeRe.error("更新策略不存在");
         }
         strategy.setName(name);

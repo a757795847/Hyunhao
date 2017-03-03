@@ -31,7 +31,6 @@ import java.util.Map;
 public class OrderController {
 
 
-
     @Autowired
     IOrderService orderService;
 
@@ -53,14 +52,14 @@ public class OrderController {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         Timestamp importTime = null;
         Timestamp applyTime = null;
-        if (map.containsKey("importTime")&&map.get("importTime")!=null) {
+        if (map.containsKey("importTime") && map.get("importTime") != null) {
             importTime = new Timestamp((long) map.get("importTime"));
         }
-        if (map.containsKey("applyTime")&&map.get("applyTime")!=null) {
+        if (map.containsKey("applyTime") && map.get("applyTime") != null) {
             applyTime = new Timestamp((long) map.get("applyTime"));
         }
 
-        return ControllerStatus.ok(orderService.getOrderByCondition((Integer) map.get("status"), page, user.getUsername(), applyTime, importTime),page);
+        return ControllerStatus.ok(orderService.getOrderByCondition((Integer) map.get("status"), page, user.getUsername(), applyTime, importTime), page);
     }
 
     /**
@@ -190,6 +189,7 @@ public class OrderController {
 
     /**
      * 审核通过后红包发送
+     *
      * @param map
      * @return
      */

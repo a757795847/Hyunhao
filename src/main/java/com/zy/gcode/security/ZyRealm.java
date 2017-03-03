@@ -32,7 +32,6 @@ public class ZyRealm extends AuthorizingRealm {
     }
 
 
-
     @Autowired
     public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
         super.setCredentialsMatcher(credentialsMatcher);
@@ -40,13 +39,13 @@ public class ZyRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-       User user = (User)principals.getPrimaryPrincipal();
-       List<ValidData> validDataList = userService.getValidDateList(user.getUsername());
+        User user = (User) principals.getPrimaryPrincipal();
+        List<ValidData> validDataList = userService.getValidDateList(user.getUsername());
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         validDataList.forEach(validData -> {
-            if(validData.getEndData().after(new Date())){
-                simpleAuthorizationInfo.addStringPermission("zyappid"+validData.getZyappid().toString());
-                log.debug("权限:zyappid"+validData.getZyappid().toString());
+            if (validData.getEndData().after(new Date())) {
+                simpleAuthorizationInfo.addStringPermission("zyappid" + validData.getZyappid().toString());
+                log.debug("权限:zyappid" + validData.getZyappid().toString());
             }
         });
         simpleAuthorizationInfo.addRole(user.getRole());
@@ -59,7 +58,7 @@ public class ZyRealm extends AuthorizingRealm {
         try {
             user.getUsername();
         } catch (NullPointerException e) {
-            log.debug("登录失败！用户名:"+token.getPrincipal());
+            log.debug("登录失败！用户名:" + token.getPrincipal());
             throw new UnknownAccountException();
         }
         user.setWechatPublicServerList(userService.getPublicServerList(user.getUsername()));

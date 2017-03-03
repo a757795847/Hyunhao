@@ -1,11 +1,9 @@
 package com.zy.gcode.dao;
 
-import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.utils.Page;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -64,6 +62,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     public void remove(Object id) {
         session().delete(id);
     }
+
     @Transactional
     public void update(Object object) {
         session().update(object);
@@ -87,50 +86,50 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     @Override
     public Serializable save(Object obj) {
-       return session().save(obj);
+        return session().save(obj);
     }
 
     @Override
-    public <T> T getOneByColumn(Class<T> clazz,String... values) {
+    public <T> T getOneByColumn(Class<T> clazz, String... values) {
         int len = values.length;
-        if(len%2!=0){
-          throw new IllegalArgumentException();
+        if (len % 2 != 0) {
+            throw new IllegalArgumentException();
         }
 
-       Criteria criteria =  session().createCriteria(clazz);
-        for(int i = 0 ; i< len ;i+=2){
-            criteria.add(Restrictions.eq(values[i],values[i+1]));
+        Criteria criteria = session().createCriteria(clazz);
+        for (int i = 0; i < len; i += 2) {
+            criteria.add(Restrictions.eq(values[i], values[i + 1]));
         }
-        return (T)criteria.uniqueResult();
+        return (T) criteria.uniqueResult();
     }
 
 
     @Override
     public <T> List<T> getListByIn(Class<T> tClass, String column, Object... objs) {
-      return session().createCriteria(tClass)
-        .add(Restrictions.in(column,objs)).list();
+        return session().createCriteria(tClass)
+                .add(Restrictions.in(column, objs)).list();
     }
 
     @Override
     public <T> List<T> getListByColumn(Class<T> clazz, Object... values) {
-            return getListByColumn(clazz,null,values);
+        return getListByColumn(clazz, null, values);
     }
 
     @Override
     public <T> List<T> getListByColumn(Class<T> clazz, Page page, Object... values) {
         int len = values.length;
-        if(len%2!=0){
+        if (len % 2 != 0) {
             throw new IllegalArgumentException();
         }
 
-        Criteria criteria =  session().createCriteria(clazz);
-        for(int i = 0 ; i< len ;i+=2){
-            if(values[i]==null||values[i+1]==null)
+        Criteria criteria = session().createCriteria(clazz);
+        for (int i = 0; i < len; i += 2) {
+            if (values[i] == null || values[i + 1] == null)
                 continue;
-            criteria.add(Restrictions.eq((String)values[i],values[i+1]));
+            criteria.add(Restrictions.eq((String) values[i], values[i + 1]));
         }
-        if(page!=null){
-           Long l =  (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
+        if (page != null) {
+            Long l = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
             page.setCount(l.intValue());
             criteria.setProjection(null);
             criteria.setFirstResult(page.getStartIndex()).setMaxResults(page.getPageSize());
@@ -140,7 +139,7 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     @Override
     public void delete(Class clazz, Serializable id) {
-        session().delete(get(clazz,id));
+        session().delete(get(clazz, id));
     }
 
     @Override
@@ -152,12 +151,12 @@ public class PersistenceServiceImpl implements PersistenceService {
     @Override
     public Integer count(Class clazz, Object[] objs) {
         int len = objs.length;
-        if(len%2!=0){
+        if (len % 2 != 0) {
             throw new IllegalArgumentException();
         }
-         Criteria criteria=  session().createCriteria(clazz);
-        for(int i = 0 ; i <objs.length;i+=2){
-            criteria.add(Restrictions.eq((String)objs[i],objs[i+1]));
+        Criteria criteria = session().createCriteria(clazz);
+        for (int i = 0; i < objs.length; i += 2) {
+            criteria.add(Restrictions.eq((String) objs[i], objs[i + 1]));
         }
         Long l = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
         return l.intValue();

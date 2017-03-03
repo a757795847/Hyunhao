@@ -1,9 +1,7 @@
 package com.zy.gcode.pojo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.sql.Timestamp;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by admin5 on 17/1/16.

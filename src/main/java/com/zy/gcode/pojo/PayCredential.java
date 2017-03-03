@@ -1,7 +1,5 @@
 package com.zy.gcode.pojo;
 
-import java.util.Arrays;
-
 /**
  * Created by admin5 on 17/2/9.
  */

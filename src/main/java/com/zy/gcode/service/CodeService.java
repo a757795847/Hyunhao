@@ -16,10 +16,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.io.*;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.sql.*;
+import java.sql.Timestamp;
 import java.util.Arrays;
 
 /**
@@ -36,6 +36,7 @@ public class CodeService implements ICodeService {
 
     @Autowired
     AuthenticationService authenticationService;
+
     @Transactional
     public CodeRe code(String geappid, String url, String state) {
 
@@ -76,6 +77,7 @@ public class CodeService implements ICodeService {
         codeOAuthRequest.setParam(UserCodeOAuthRequest.COMPONENT_APPID, (String) Constants.properties.get("platform.appid")).setSuffix("#wechat_redirect");
         return CodeRe.correct(codeOAuthRequest.start());
     }
+
     @Transactional
     public CodeRe token(String code, String state, String appid) {
 
@@ -91,8 +93,8 @@ public class CodeService implements ICodeService {
             return componetTokenCodeRe;
         }
         UserTokenOAuthRequest tokenOAuth = new UserTokenOAuthRequest();
-        tokenOAuth.setParam(UserTokenOAuthRequest.APPID,appid)
-                .setParam(UserTokenOAuthRequest.CODE,code)
+        tokenOAuth.setParam(UserTokenOAuthRequest.APPID, appid)
+                .setParam(UserTokenOAuthRequest.CODE, code)
                 .setParam(UserTokenOAuthRequest.GRANT_TYPE, "authorization_code")
                 .setParam(UserTokenOAuthRequest.COMPONENT_APPID, Constants.properties.getProperty("platform.appid"))
                 .setParam(UserTokenOAuthRequest.COMPONENT_ACCESS_TOKEN, componetTokenCodeRe.getMessage().getToken());
@@ -129,6 +131,7 @@ public class CodeService implements ICodeService {
         }
         return CodeRe.correct(geCode.getCallbackUrl() + "?code=" + geCode.getGeCodeM() + "&state=" + geCode.getState() + "&zyid=" + geCode.getGeAppid());
     }
+
     @Transactional
     private WechatUserInfo user(String token, String openid, String appid) {
 
@@ -136,11 +139,11 @@ public class CodeService implements ICodeService {
         infoOAuthRequest.setParam(UserInfoOAuthRequest.ACCESS_TOKEN, token)
                 .setParam(UserInfoOAuthRequest.OPENID, openid).setSuffix("&lang=zh_CN").start();
         UserInfoOAuthRequest.UserInfo userInfo = infoOAuthRequest.start();
-        if(userInfo==null){
+        if (userInfo == null) {
             return null;
         }
-        if(userInfo.isError()){
-            log.error("微信服务异常:"+userInfo.getErrmsg());
+        if (userInfo.isError()) {
+            log.error("微信服务异常:" + userInfo.getErrmsg());
             return null;
         }
         WechatUserInfo wechatUserInfo = new WechatUserInfo();

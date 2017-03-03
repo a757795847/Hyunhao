@@ -7,6 +7,7 @@ import com.zy.gcode.pojo.WechatPublicServer;
  * Created by admin5 on 17/2/14.
  */
 public interface IWechatService {
-    CodeRe sumbit(String image1,String image2,String image3,String billno,String openid,String appid);
+    CodeRe sumbit(String image1, String image2, String image3, String billno, String openid, String appid);
+
     WechatPublicServer getWechatPublic(String id);
 }

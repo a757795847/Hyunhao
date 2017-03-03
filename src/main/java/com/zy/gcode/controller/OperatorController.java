@@ -36,26 +36,27 @@ public class OperatorController {
     IOperatorService operatorService;
 
     @RequestMapping("login")
-    public @ResponseBody
-    Map login(@RequestBody Map map){
-        String username = (String)map.get("username");
-        String password = (String)map.get("password");
-      Subject subject = SecurityUtils.getSubject();
-      UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username,password);
+    public
+    @ResponseBody
+    Map login(@RequestBody Map map) {
+        String username = (String) map.get("username");
+        String password = (String) map.get("password");
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
         try {
             subject.login(usernamePasswordToken);
         } catch (UnknownAccountException e) {
-           return ControllerStatus.error("用户名不存在");
-        }catch (IncorrectCredentialsException e){
+            return ControllerStatus.error("用户名不存在");
+        } catch (IncorrectCredentialsException e) {
             subject.getSession().removeAttribute("operator");
             return ControllerStatus.error("密码不正确");
         }
         Map result = new HashMap(2);
-        User user =(User)subject.getPrincipal();
-        if(user.getRole().equals("proxy")){
-            result.put("url","/proxy/home");
-        }else {
-            result.put("url","/order/home");
+        User user = (User) subject.getPrincipal();
+        if (user.getRole().equals("proxy")) {
+            result.put("url", "/proxy/home");
+        } else {
+            result.put("url", "/order/home");
         }
 
 
@@ -63,90 +64,96 @@ public class OperatorController {
     }
 
     @RequestMapping("register")
-    public @ResponseBody Object register(@RequestBody Map map,HttpSession session){
-       VerificationInfo verificationInfo = (VerificationInfo)session.getAttribute("verificationInfo");
-       if(verificationInfo ==null){
-          return ControllerStatus.error("请先填写验证码");
-       }
+    public
+    @ResponseBody
+    Object register(@RequestBody Map map, HttpSession session) {
+        VerificationInfo verificationInfo = (VerificationInfo) session.getAttribute("verificationInfo");
+        if (verificationInfo == null) {
+            return ControllerStatus.error("请先填写验证码");
+        }
 
-        if(!(MzUtils.checkEntry(map,"phone")&&MzUtils.checkEntry(map,"password"))){
+        if (!(MzUtils.checkEntry(map, "phone") && MzUtils.checkEntry(map, "password"))) {
             return ControllerStatus.error("用户名密码不能为空");
         }
-       if(!verificationInfo.verificationCode.equals(map.get("verificationCode"))){
-           return ControllerStatus.error("验证码错误");
-       }
+        if (!verificationInfo.verificationCode.equals(map.get("verificationCode"))) {
+            return ControllerStatus.error("验证码错误");
+        }
 
-       if(verificationInfo.generationTime<(System.currentTimeMillis()-120*1000)){
-           return ControllerStatus.error("验证码过期");
-       }
+        if (verificationInfo.generationTime < (System.currentTimeMillis() - 120 * 1000)) {
+            return ControllerStatus.error("验证码过期");
+        }
         session.removeAttribute("verificationInfo");
 
 
-        CodeRe codeRe = operatorService.registerOperator(map.get("phone").toString(),map.get("password").toString());
-       if(codeRe.isError()){
-          return ControllerStatus.error(codeRe.getErrorMessage());
-       }
-       return  ControllerStatus.ok((String)codeRe.getMessage());
+        CodeRe codeRe = operatorService.registerOperator(map.get("phone").toString(), map.get("password").toString());
+        if (codeRe.isError()) {
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
+        return ControllerStatus.ok((String) codeRe.getMessage());
     }
 
     @RequestMapping("checkUsername/{username}")
-    public @ResponseBody Object checkUsername(@PathVariable String username){
-       CodeRe codeRe = operatorService.checkUsername(username);
-       if(codeRe.isError()){
-           return ControllerStatus.error();
-       }
-       return ControllerStatus.ok();
+    public
+    @ResponseBody
+    Object checkUsername(@PathVariable String username) {
+        CodeRe codeRe = operatorService.checkUsername(username);
+        if (codeRe.isError()) {
+            return ControllerStatus.error();
+        }
+        return ControllerStatus.ok();
     }
 
     @RequestMapping("verificationCode")
-    public @ResponseBody Object verificationCode(String phone,String code, HttpSession session){
-       ImageInfo imageInfo = (ImageInfo)session.getAttribute("imageInfo");
-       if(imageInfo==null){
-          return ControllerStatus.error("请输入验证码");
-       }
+    public
+    @ResponseBody
+    Object verificationCode(String phone, String code, HttpSession session) {
+        ImageInfo imageInfo = (ImageInfo) session.getAttribute("imageInfo");
+        if (imageInfo == null) {
+            return ControllerStatus.error("请输入验证码");
+        }
 
-       if((!imageInfo.content.equals(code))||imageInfo.createTime<(System.currentTimeMillis()-120*1000)){
-           return ControllerStatus.error("验证码错误或过期!");
-       }
-        VerificationInfo periousVerificationInfo = (VerificationInfo)session.getAttribute("verificationInfo");
-       if(periousVerificationInfo!=null&&periousVerificationInfo.generationTime<(System.currentTimeMillis()-60*1000)){
-           return ControllerStatus.error("请60秒后再发送");
-       }
+        if ((!imageInfo.content.equals(code)) || imageInfo.createTime < (System.currentTimeMillis() - 120 * 1000)) {
+            return ControllerStatus.error("验证码错误或过期!");
+        }
+        VerificationInfo periousVerificationInfo = (VerificationInfo) session.getAttribute("verificationInfo");
+        if (periousVerificationInfo != null && periousVerificationInfo.generationTime < (System.currentTimeMillis() - 60 * 1000)) {
+            return ControllerStatus.error("请60秒后再发送");
+        }
 
 
         session.removeAttribute("imageInfo");
 
-         CodeRe<String> codeRe =  operatorService.generateVerificationCode(phone);
-         if(codeRe.isError()){
-             return ControllerStatus.error(codeRe.getErrorMessage());
-         }
-         VerificationInfo verificationInfo = new VerificationInfo(codeRe.getMessage(),System.currentTimeMillis(),phone);
-         session.setAttribute("verificationInfo",verificationInfo);
-         return ControllerStatus.ok("success");
+        CodeRe<String> codeRe = operatorService.generateVerificationCode(phone);
+        if (codeRe.isError()) {
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
+        VerificationInfo verificationInfo = new VerificationInfo(codeRe.getMessage(), System.currentTimeMillis(), phone);
+        session.setAttribute("verificationInfo", verificationInfo);
+        return ControllerStatus.ok("success");
     }
 
     @RequestMapping("registerHome")
-    public String registerHome(){
+    public String registerHome() {
         return "/views/proxy/register.html";
     }
 
     @RequestMapping("logout")
-    public String logout(){
+    public String logout() {
         SecurityUtils.getSubject().logout();
         return "redirect:/";
     }
 
 
     @RequestMapping("getcodeImage")
-    public void getCodeImage(HttpServletResponse response, HttpSession session){
+    public void getCodeImage(HttpServletResponse response, HttpSession session) {
         CodeImage codeImage = new CodeImage();
         response.setContentType("image/jpeg");
         //禁止图像缓存。
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
-        ImageInfo imageInfo = new ImageInfo(codeImage.getCode(),System.currentTimeMillis());
-        session.setAttribute("imageInfo",imageInfo);
+        ImageInfo imageInfo = new ImageInfo(codeImage.getCode(), System.currentTimeMillis());
+        session.setAttribute("imageInfo", imageInfo);
         try {
             codeImage.write(response.getOutputStream());
             response.flushBuffer();
@@ -157,37 +164,39 @@ public class OperatorController {
     }
 
     @RequestMapping("/forgetHome")
-    public String forgetHome(){
+    public String forgetHome() {
         return "/views/proxy/forget.html";
     }
 
 
     @RequestMapping("updatePassword")
-    public @ResponseBody Object updatePassword(@RequestBody Map map,HttpSession session){
-        VerificationInfo verificationInfo = (VerificationInfo)session.getAttribute("verificationInfo");
-        if(verificationInfo ==null){
+    public
+    @ResponseBody
+    Object updatePassword(@RequestBody Map map, HttpSession session) {
+        VerificationInfo verificationInfo = (VerificationInfo) session.getAttribute("verificationInfo");
+        if (verificationInfo == null) {
             return ControllerStatus.error("请先填写验证码");
         }
 
-        if(!(MzUtils.checkEntry(map,"phone")&&MzUtils.checkEntry(map,"password"))){
+        if (!(MzUtils.checkEntry(map, "phone") && MzUtils.checkEntry(map, "password"))) {
             return ControllerStatus.error("用户名密码不能为空");
         }
-        if(!verificationInfo.verificationCode.equals(map.get("verificationCode"))){
+        if (!verificationInfo.verificationCode.equals(map.get("verificationCode"))) {
             return ControllerStatus.error("验证码错误");
         }
 
-        if(verificationInfo.generationTime<(System.currentTimeMillis()-120*1000)){
+        if (verificationInfo.generationTime < (System.currentTimeMillis() - 120 * 1000)) {
             return ControllerStatus.error("验证码过期");
         }
         session.removeAttribute("verificationInfo");
-      CodeRe codeRe =  operatorService.updatePassword(map.get("phone").toString(),map.get("password").toString());
-      if(codeRe.isError()){
-          return ControllerStatus.error(codeRe.getErrorMessage());
-      }
+        CodeRe codeRe = operatorService.updatePassword(map.get("phone").toString(), map.get("password").toString());
+        if (codeRe.isError()) {
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
         return ControllerStatus.ok(codeRe.getMessage().toString());
     }
 
-    private class VerificationInfo{
+    private class VerificationInfo {
         public VerificationInfo(String verificationCode, long generationTime, String phone) {
             this.verificationCode = verificationCode;
             this.generationTime = generationTime;
@@ -198,7 +207,8 @@ public class OperatorController {
         long generationTime;
         String phone;
     }
-    private class  ImageInfo{
+
+    private class ImageInfo {
         private String content;
         private long createTime;
 
