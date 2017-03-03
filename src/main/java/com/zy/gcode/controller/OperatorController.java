@@ -117,7 +117,7 @@ public class OperatorController {
             return ControllerStatus.error("验证码错误或过期!");
         }
         VerificationInfo periousVerificationInfo = (VerificationInfo) session.getAttribute("verificationInfo");
-        if (periousVerificationInfo != null && periousVerificationInfo.generationTime < (System.currentTimeMillis() - 60 * 1000)) {
+        if (periousVerificationInfo != null && periousVerificationInfo.generationTime > (System.currentTimeMillis() - 60 * 1000)) {
             return ControllerStatus.error("请60秒后再发送");
         }
 
