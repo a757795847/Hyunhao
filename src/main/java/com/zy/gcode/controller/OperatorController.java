@@ -108,6 +108,12 @@ public class OperatorController {
        if((!imageInfo.content.equals(code))||imageInfo.createTime<(System.currentTimeMillis()-120*1000)){
            return ControllerStatus.error("验证码错误或过期!");
        }
+        VerificationInfo periousVerificationInfo = (VerificationInfo)session.getAttribute("verificationInfo");
+       if(periousVerificationInfo!=null&&periousVerificationInfo.generationTime<(System.currentTimeMillis()-60*1000)){
+           return ControllerStatus.error("请60秒后再发送");
+       }
+
+
         session.removeAttribute("imageInfo");
 
          CodeRe<String> codeRe =  operatorService.generateVerificationCode(phone);
@@ -148,6 +154,11 @@ public class OperatorController {
             e.printStackTrace();
         }
 
+    }
+
+    @RequestMapping("/forgetHome")
+    public String forgetHome(){
+        return "/views/proxy/forget.html";
     }
 
 
