@@ -7,6 +7,9 @@ import org.apache.shiro.authc.credential.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import sun.misc.Unsafe;
+
+import java.lang.reflect.Field;
 
 
 /**
@@ -52,5 +55,16 @@ public class OperatorService implements IOperatorService {
     @Override
     public CodeRe generateVerificationCode(String phone) {
         return CodeRe.correct("1111");
+    }
+
+    @Override
+    public CodeRe updatePassword(String username, String password) {
+       User user =  persistenceService.get(User.class,username);
+       if(user == null){
+           return CodeRe.error("重复的用户名");
+       }
+       user.setPassword(passwordService.encryptPassword(password));
+       persistenceService.update(user);
+        return CodeRe.correct("success");
     }
 }

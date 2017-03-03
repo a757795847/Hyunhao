@@ -1,5 +1,7 @@
 package com.zy.gcode.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
 import java.sql.Date;
 
@@ -17,6 +19,7 @@ public class WechatPublicServer {
     private String isAuthentication;
     private String createUserId;
     private String wxName;
+
     private Date beginTime;
     private Date endTime;
     private Long validDateId;

@@ -9,4 +9,5 @@ public interface IOperatorService {
     CodeRe registerOperator(String username,String password);
     CodeRe checkUsername(String username);
     CodeRe generateVerificationCode(String phone);
+    CodeRe updatePassword(String username,String password);
 }

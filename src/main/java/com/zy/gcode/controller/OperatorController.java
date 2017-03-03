@@ -18,9 +18,11 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -78,7 +80,7 @@ public class OperatorController {
         if(!(MzUtils.checkEntry(map,"phone")&&MzUtils.checkEntry(map,"password"))){
             return ControllerStatus.error("用户名密码不能为空");
         }
-       if(!verificationInfo.phone.equals(map.get("phone"))){
+       if(!verificationInfo.verificationCode.equals(map.get("verificationCode"))){
            return ControllerStatus.error("验证码错误");
        }
 
@@ -90,9 +92,18 @@ public class OperatorController {
 
         CodeRe codeRe = operatorService.registerOperator(map.get("phone").toString(),map.get("password").toString());
        if(codeRe.isError()){
-           ControllerStatus.error(codeRe.getErrorMessage());
+          return ControllerStatus.error(codeRe.getErrorMessage());
        }
        return  ControllerStatus.ok((String)codeRe.getMessage());
+    }
+
+    @RequestMapping("checkUsername/{username}")
+    public @ResponseBody Object checkUsername(@PathVariable String username){
+       CodeRe codeRe = operatorService.checkUsername(username);
+       if(codeRe.isError()){
+           return ControllerStatus.error();
+       }
+       return ControllerStatus.ok();
     }
 
     @RequestMapping("verificationCode")
@@ -146,6 +157,33 @@ public class OperatorController {
         }
 
     }
+
+
+    @RequestMapping("updatePassword")
+    public @ResponseBody Object updatePassword(@RequestBody Map map,HttpSession session){
+        VerificationInfo verificationInfo = (VerificationInfo)session.getAttribute("verificationInfo");
+        if(verificationInfo ==null){
+            return ControllerStatus.error("请先填写验证码");
+        }
+
+        if(!(MzUtils.checkEntry(map,"phone")&&MzUtils.checkEntry(map,"password"))){
+            return ControllerStatus.error("用户名密码不能为空");
+        }
+        if(!verificationInfo.verificationCode.equals(map.get("verificationCode"))){
+            return ControllerStatus.error("验证码错误");
+        }
+
+        if(verificationInfo.generationTime<(System.currentTimeMillis()-120*1000)){
+            return ControllerStatus.error("验证码过期");
+        }
+        session.removeAttribute("verificationInfo");
+      CodeRe codeRe =  operatorService.updatePassword(map.get("phone").toString(),map.get("password").toString());
+      if(codeRe.isError()){
+          return ControllerStatus.error(codeRe.getErrorMessage());
+      }
+        return ControllerStatus.ok(codeRe.getMessage().toString());
+    }
+
     private class VerificationInfo{
         public VerificationInfo(String verificationCode, long generationTime, String phone) {
             this.verificationCode = verificationCode;
@@ -166,4 +204,5 @@ public class OperatorController {
             this.createTime = createTime;
         }
     }
+
 }
