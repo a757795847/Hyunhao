@@ -1,7 +1,7 @@
-.father a{display:inline-block; width:140px; height:140px; background:#fff; position:relative; overflow:hidden;text-align: center;
+.father a{display:inline-block; width:140px; height:140px; background:#fff; position:relative; text-align: center;
     color: #bfbfbf;
     line-height: 140px; border:1px solid #ddd;}
-.father .upfile{position:absolute; right:0; top:0; font-size:100px; opacity:0; filter:alpha(opacity=0);}
+.father .upfile{position:absolute; right:0; top:0;width:140px;height:140px; font-size:100px; opacity:0; filter:alpha(opacity=0);}
 
 .father{
     margin:40px;
@@ -37,5 +37,12 @@ border: none;
     height:0;
     clear:both;
     visibility:hidden;
+
+}
+.father .images_go,.images_li{
+    width: 140px;
+    height: 140px;
+    position: absolute;
+
 
 }
