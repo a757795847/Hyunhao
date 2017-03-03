@@ -10,6 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -195,6 +196,25 @@ public class OperatorController {
         }
         return ControllerStatus.ok(codeRe.getMessage().toString());
     }
+
+    @RequestMapping("checkVerificationCode/{code}")
+    public @ResponseBody Object checkVerificationCode(@PathVariable String code){
+        Session session = SecurityUtils.getSubject().getSession();
+        VerificationInfo verificationInfo = (VerificationInfo) session.getAttribute("verificationInfo");
+        if (verificationInfo == null) {
+            return ControllerStatus.error("请先填写验证码");
+        }
+        if (!verificationInfo.verificationCode.equals(code)) {
+            return ControllerStatus.error("验证码错误");
+        }
+
+        if (verificationInfo.generationTime < (System.currentTimeMillis() - 120 * 1000)) {
+            return ControllerStatus.error("验证码过期");
+        }
+        return ControllerStatus.ok();
+
+    }
+
 
     private class VerificationInfo {
         public VerificationInfo(String verificationCode, long generationTime, String phone) {

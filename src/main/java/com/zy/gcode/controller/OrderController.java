@@ -99,7 +99,7 @@ public class OrderController {
             return;
         }
 
-        if (!strs[0].equals(user.getWxAppid())) {
+        if (!strs[0].equals(user.getWechatPublicServerList(Constants.ZYAPPID).getTappid())) {
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("无法访问");
             response.getWriter().flush();
