@@ -45,7 +45,6 @@ function indexAjax(datas, pageState) {
             var than = '';
             var thao = '';
             $.each(data.list, function (i, order) {
-                console.log(order.giftState);
                 if (order.giftState == 0) {
                     order.giftState = "未申领";
 
@@ -56,14 +55,21 @@ function indexAjax(datas, pageState) {
                     than = "通过";
                     thao = "驳回";
 
-                }else{
+                }else if(order.giftState == 2){
                     order.giftState = "审核通过";
+                }else{
+                    order.giftState = "红包已发送";
                 }
 
                 var curTime = new Date(parseInt(order.applyDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
-                console.log(order.applyDate);
+
+                var sendTime = new Date(parseInt(order.sendDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
+                console.log(sendTime)
                 if(order.applyDate==''||order.applyDate==null){
                     curTime='';
+                }
+                if(order.sendDate==''||order.sendDate==null){
+                    sendTime="";
                 }
 
                 for (var key in order) {
@@ -77,7 +83,7 @@ function indexAjax(datas, pageState) {
                 tbody += '<td class="mailbox-date"><span>' + curTime + '</span></td>';
                 tbody += '<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">' + order.giftState + '</span></td>';
                 tbody += '<td class="mailbox-date"><span class="top">' + order.giftDetail + '</span></td>';
-                tbody += '<td class="mailbox-date"><span>' + order.sendDate + '</span></td>';
+                tbody += '<td class="mailbox-date"><span>' + sendTime + '</span></td>';
                 tbody += '<td class="mailbox-date"><span>' + order.recieveDate + '</span></td>';
                 tbody += '<td class="mailbox-date"><span class="label label-success order_confirm_btn" data-index="' + order.id + '" >' + than + '</span>';
                 tbody += '<span class="label label-success turn" data-toggle="modal" data-target="#myModal">' + thao + '</span></td></tr>';
@@ -97,7 +103,7 @@ function indexAjax(datas, pageState) {
                     rCount: 1,//最后预留的数量
                     callback: function (options) {
                         var index = options.index;
-                        indexAjax({status: 1, currentPageIndex: index});
+                        indexAjax({status: [1], currentPageIndex: index});
                         //options.count = 300;
                         //return options;
                     },
@@ -114,7 +120,7 @@ function indexAjax(datas, pageState) {
 
     })
 }
-indexAjax({status: 0, currentPageIndex: 1}, 1);
+indexAjax({status: [0], currentPageIndex: 1}, 1);
 
 //点击通过按钮
 $("#Table").on('click', '.order_confirm_btn', function () {
@@ -296,14 +302,20 @@ function filterAjax(datas, pageState) {
                     than = '<span class="label label-success order_confirm_btn" data-index="' + order.id + '" >通过</span>';
                     thao = '<span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span>';
 
-                }else{
+                }else if(order.giftState == 2){
                     order.giftState = "审核通过";
                     thao='<span class="label label-success turn" data-index="' + order.id + '" >发送红包</span>';
+                }else{
+                    order.giftState = "红包已发送";
                 }
 
                 var curTime = new Date(parseInt(order.applyDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
+                var sendTime = new Date(parseInt(order.sendDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
                 if(order.applyDate==''||order.applyDate==null){
                     curTime='';
+                }
+                if(order.sendDate==''||order.sendDate==null){
+                    sendTime='';
                 }
                 console.log(curTime);
 
@@ -334,7 +346,7 @@ function filterAjax(datas, pageState) {
                 tbody += '<td class="mailbox-date" style="width:12%;"><span>' + curTime + '</span></td>';
                 tbody += '<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">' + order.giftState + '</span></td>';
                 tbody += '<td class="mailbox-date"><span class="top">' + order.giftDetail + '</span></td>';
-                tbody += '<td class="mailbox-date"><span>' + order.sendDate + '</span></td>';
+                tbody += '<td class="mailbox-date"><span>' + sendTime + '</span></td>';
                 tbody += '<td class="mailbox-date"><span>' + order.recieveDate + '</span></td>';
                 tbody += '<td class="mailbox-date">'+than+'';
                 tbody += ''+thao+'</td></tr>';
@@ -380,8 +392,10 @@ $("#filter").on("click", function () {
         state_r = 0;
     } else if (receive == "申领中") {
         state_r = 1;
-    } else {
+    } else if(receive == "审核通过"){
         state_r = 2;
+    }else{
+        state_r = 3;
     }
     var import_date=$("#Import_date").val();
     var user_date=$("#user_date").val();
@@ -392,15 +406,15 @@ $("#filter").on("click", function () {
     user_date=new Date(Date.parse(user_date.replace(/:\d{1,2}$/,' ')));
     user_date=user_date.getTime();
     if(import_date ==""){
-        filterAjax({status: state_r, currentPageIndex: 1,applyTime:user_date}, 1);
+        filterAjax({status: [state_r], currentPageIndex: 1,applyTime:user_date}, 1);
     }
     else if(user_date ==""){
-        filterAjax({status: state_r, currentPageIndex: 1,importTime:import_date}, 1);
+        filterAjax({status: [state_r], currentPageIndex: 1,importTime:import_date}, 1);
     }
     else{
-        filterAjax({status: state_r, currentPageIndex: 1,importTime:import_date,applyTime:user_date}, 1);
+        filterAjax({status: [state_r], currentPageIndex: 1,importTime:import_date,applyTime:user_date}, 1);
     }
-
+    console.log([state_r]);
     $(".pager").remove();
 
 
