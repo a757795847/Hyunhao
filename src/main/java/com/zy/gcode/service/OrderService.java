@@ -47,9 +47,9 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public List<DataOrder> getOrderByCondition(int status, Page page, String userId, Timestamp applyTime, Timestamp importTime) {
+    public List<DataOrder> getOrderByCondition(List<Integer> status, Page page, String userId, Timestamp applyTime, Timestamp importTime) {
         DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
-        criteria.add(Restrictions.eq("giftState", status)).add(Restrictions.eq("createUserId", userId));
+        criteria.add(Restrictions.in("giftState", status)).add(Restrictions.eq("createUserId", userId));
         if (importTime != null) {
             criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
                     DateUtils.format(importTime, "yyyyMMdd"), new StringType()));
