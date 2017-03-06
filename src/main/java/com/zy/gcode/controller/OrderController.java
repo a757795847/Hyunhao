@@ -37,12 +37,9 @@ public class OrderController {
 
     /**
      * 分页获取用户信息
-     *
      * @param map
      * @return
      */
-
-
     @RequestMapping("list")
     public
     @ResponseBody
