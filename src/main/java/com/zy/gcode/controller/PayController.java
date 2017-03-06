@@ -56,15 +56,14 @@ public class PayController {
      * 获取红包详细信息
      *
      * @param billno
-     * @param access_token
      * @param zyid
      * @return
      */
     @RequestMapping("redinfo")
     public
     @ResponseBody
-    Object redinfo(String billno, String access_token, String zyid) {
-        CodeRe<RedStatus> redStatusCodeRe = payService.payInfo(billno, access_token, zyid);
+    Object redinfo(String billno, String zyid) {
+        CodeRe<RedStatus> redStatusCodeRe = payService.payInfo(billno, zyid);
         if (redStatusCodeRe.isError()) {
             return redStatusCodeRe.getErrorMessage();
         }

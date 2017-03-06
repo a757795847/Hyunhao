@@ -9,7 +9,7 @@ import com.zy.gcode.pojo.RedStatus;
 public interface IPayService {
     CodeRe pay(String id, int count, String geappid);
 
-    CodeRe<RedStatus> payInfo(String billno, String token, String geappid);
+    CodeRe<RedStatus> payInfo(String billno, String geappid);
 
     CodeRe circularGetPayInfo();
 }

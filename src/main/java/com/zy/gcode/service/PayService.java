@@ -135,7 +135,7 @@ public class PayService implements IPayService {
 
     @Override
     @Transactional
-    public CodeRe<RedStatus> payInfo(String billno, String token, String geappid) {
+    public CodeRe<RedStatus> payInfo(String billno, String geappid) {
 
 
         WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, geappid);
