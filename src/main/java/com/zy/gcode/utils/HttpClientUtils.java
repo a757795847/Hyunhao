@@ -266,7 +266,7 @@ public class HttpClientUtils {
                 KeyStore keyStore = KeyStore.getInstance("PKCS12");
                 keyStore.load(stream, mechid.toCharArray());
                 SSLContext sslcontext = SSLContexts.custom()
-                        .loadKeyMaterial(keyStore, Constants.MCH_ID.toCharArray())
+                        .loadKeyMaterial(keyStore, mechid.toCharArray())
                         .build();
                 HttpClient httpClient1 = HttpClientBuilder.create().setMaxConnPerRoute(2).setSSLContext(sslcontext).build();
                 stringHttpClientMap.put(mechid, httpClient1);

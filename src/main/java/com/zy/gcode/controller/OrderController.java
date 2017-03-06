@@ -110,8 +110,10 @@ public class OrderController {
 
         FileInputStream fileInputStream = new FileInputStream(file);
         try {
+            file.lastModified();
             OutputStream outputStream = response.getOutputStream();
             response.setContentType("image/png");
+            response.setHeader("Cache-Control","max-age=3600");
             final byte[] tmp = new byte[4096];
             while ((fileInputStream.read(tmp)) != -1) {
                 outputStream.write(tmp);
@@ -119,6 +121,7 @@ public class OrderController {
             outputStream.flush();
             outputStream.close();
         } finally {
+
             fileInputStream.close();
 
         }

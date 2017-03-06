@@ -6,12 +6,12 @@ import java.util.Map;
 
 /**
  * Created by admin5 on 17/2/27.
- * 用于获取授权公众号的基本信息
+ * 于获取授权公众号的基本信息
  */
 public class PublicInfoRequest extends AbstractOAuthRequest<Map> {
 
     /**
-     * 服务访问token
+     * 第三方的token,可以通过{@link }
      */
     public static final String PRA_COMPONENT_ACCESS_TOKEN = "component_access_token";
     /**

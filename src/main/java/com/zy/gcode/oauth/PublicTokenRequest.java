@@ -23,7 +23,7 @@ public class PublicTokenRequest extends AbstractOAuthRequest<String> {
 
     @Override
     public String start() {
-        HttpResponse response = HttpClientUtils.postSend(buildParams(), buildBody());
+        HttpResponse response  = HttpClientUtils.postSend(buildParams(), buildBody());
         HttpClientUtils.checkRespons(response);
         try {
             return MzUtils.inputStreamToString(response.getEntity().getContent());

@@ -20,10 +20,22 @@ public class UniqueStringGenerator {
 
 
     private static Random random = new Random();
-    private static AtomicInteger integer = new AtomicInteger(100);
+    private static AtomicInteger value = new AtomicInteger(100);
 
     private UniqueStringGenerator() {
 
+    }
+
+    private static int currentIncrement() {
+        int v;
+        do {
+            v = value.get();
+            if(v >999){
+                value.set(100);
+            }
+
+        } while (!value.compareAndSet(v, v + 1));
+        return v + 1;
     }
 
 
@@ -48,10 +60,7 @@ public class UniqueStringGenerator {
 
     public static String wxbillno(String mchId) {
         String beg = String.valueOf(System.currentTimeMillis()).substring(6);
-        int i = integer.getAndIncrement();
-        if (i >= 999) {
-            integer.set(100);
-        }
+        int i = currentIncrement() ;
         return mchId + DateUtils.format(new Date(), "yyyyMMdd") + beg + i;
     }
 

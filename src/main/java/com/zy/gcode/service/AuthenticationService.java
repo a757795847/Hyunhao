@@ -195,6 +195,11 @@ public class AuthenticationService implements IAuthenticationService {
         return null;
     }
 
+    /**
+     * 通过tappid获取jssdkticket
+     * @param id
+     * @return
+     */
     @Override
     @Transactional
     public WechatPublicServer getWechatPublic(String id) {

@@ -52,7 +52,6 @@ public abstract class AbstractOAuthRequest<T> {
 
     protected String buildBody() {
         StringBuilder builder = new StringBuilder("{");
-        int len = body.size();
         body.forEach((k, v) -> {
             builder.append("\"").append(k).append("\"").append(":")
                     .append("\"").append(v).append("\"").append(",");
