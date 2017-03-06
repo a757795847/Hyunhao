@@ -160,7 +160,7 @@ public class PayService implements IPayService {
             builder.append(objs[i].toString()).append("=")
                     .append(map.get(objs[i])).append("&");
         }
-        builder.append("key=").append(payCredential.getCredentialPath());
+        builder.append("key=").append(payCredential.getKey());
         info.setSign(UniqueStringGenerator.getMd5(builder.toString()));
 
         HttpResponse response = HttpClientUtils.paySSLSend(payCredential.getMchid(), payCredential.getCredentialPath(),

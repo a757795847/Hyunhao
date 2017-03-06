@@ -3,6 +3,8 @@ package com.zy.gcode.service;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.User;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -56,7 +58,7 @@ public class OperatorService implements IOperatorService {
     @Override
     @Transactional
     public CodeRe updatePassword(String username, String password) {
-        User user = persistenceService.get(User.class, username);
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
         if (user == null) {
             return CodeRe.error("重复的用户名");
         }
@@ -66,7 +68,7 @@ public class OperatorService implements IOperatorService {
     }
 
     @Override
-    public String encryptedPassword(String password) {
-        return passwordService.encryptPassword(password);
+    public boolean passwordIsTrue(String oldPassword, String newPassword) {
+        return passwordService.passwordsMatch(oldPassword,newPassword);
     }
 }

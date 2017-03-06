@@ -221,7 +221,7 @@ public class OperatorController {
        if(!map.containsKey("oldpassword")){
            return ControllerStatus.error("旧密码不能为空");
        }
-       if(!user.getPassword().equals(operatorService.encryptedPassword(map.get("oldpassword").toString()))) {
+       if(!operatorService.passwordIsTrue(map.get("oldpassword").toString(),user.getPassword())) {
            return ControllerStatus.error("旧密码错误");
        }
 
