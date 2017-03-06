@@ -14,5 +14,5 @@ public interface IOperatorService {
 
     CodeRe updatePassword(String username, String password);
 
-    String encryptedPassword(String password);
+    boolean passwordIsTrue(String oldPassword,String newPassword);
 }
