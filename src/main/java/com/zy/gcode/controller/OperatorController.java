@@ -215,6 +215,28 @@ public class OperatorController {
 
     }
 
+    @RequestMapping("innerUpdatePassword")
+    public @ResponseBody Object innerUpdatePassword(@RequestBody Map map){
+       User user = (User) SecurityUtils.getSubject().getPrincipal();
+       if(!map.containsKey("oldpassword")){
+           return ControllerStatus.error("旧密码不能为空");
+       }
+       if(!user.getPassword().equals(operatorService.encryptedPassword(map.get("oldpassword").toString()))) {
+           return ControllerStatus.error("旧密码错误");
+       }
+
+
+       if(map.get("newpassword")==null&&map.get("newpassword").toString().length()==0){
+           return ControllerStatus.error();
+       }
+      CodeRe codeRe =  operatorService.updatePassword(user.getUsername(),map.get("newpassword").toString());
+
+       if(codeRe.isError()){
+           return ControllerStatus.error(codeRe.getErrorMessage());
+       }
+       return  ControllerStatus.ok();
+    }
+
 
     private class VerificationInfo {
         public VerificationInfo(String verificationCode, long generationTime, String phone) {

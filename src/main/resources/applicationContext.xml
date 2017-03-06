@@ -103,6 +103,7 @@
                 /order/**=authe
                 /redstrategy/**=authe
                 /proxy/**=role[proxy]
+                /operator/innerUpdatePassword=authe
             </value>
         </property>
     </bean>

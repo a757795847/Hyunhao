@@ -64,4 +64,9 @@ public class OperatorService implements IOperatorService {
         persistenceService.update(user);
         return CodeRe.correct("success");
     }
+
+    @Override
+    public String encryptedPassword(String password) {
+        return passwordService.encryptPassword(password);
+    }
 }

@@ -13,4 +13,6 @@ public interface IOperatorService {
     CodeRe generateVerificationCode(String phone);
 
     CodeRe updatePassword(String username, String password);
+
+    String encryptedPassword(String password);
 }
