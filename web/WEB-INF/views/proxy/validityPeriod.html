@@ -55,8 +55,8 @@
 
                         <li class="user-footer">
                             <div class="pull-left">
-                                    <span class="label label-info" id="modify">
-                                    <a href="#">修改密码</a></span>
+                                    <span class="label label-info" id="modify" data-toggle="modal" data-target="#change_password">
+                                   修改密码</span>
                             </div>
                             <div class="pull-right">
                                 <span class="label label-info"><a href="/operator/logout" >退出</a></span>
@@ -89,7 +89,7 @@
         </form>
         <ul class="sidebar-menu">
             <li>
-                <a href="home">
+                <a href="/proxy/home"">
                     <i class="fa fa-weixin mr-housite"></i> <span>公众号使用期管理</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-green">new</small>
@@ -97,18 +97,25 @@
                 </a>
             </li>
             <li class="treeview">
-                <a href="/redstrategy/home">
+                <a href="">
                     <i class="fa fa-dashboard"></i> <span>购买管理</span>
                 </a>
             </li>
             <li class="treeview">
-                <a href="/redstrategy/home">
+                <a href="">
                     <i class="fa fa-fw fa-folder-open"></i> <span>信息管理</span>
                 </a>
             </li>
             <li>
-                <a href="/proxy/billing.html">
+                <a href="">
                     <i class="fa fa-pie-chart"></i><span style="margin-left: 3px;">统计</span>
+            <span class="pull-right-container">
+            </span>
+                </a>
+            </li>
+            <li>
+                <a href="/proxy/QRUploadHome">
+                    <i class="fa fa-fw fa-qrcode"></i><span style="margin-left: 3px;">上传二维码</span>
             <span class="pull-right-container">
             </span>
                 </a>
@@ -216,6 +223,28 @@
                 <button class="btn btn-success pull-right" id="cancel">取消</button>
                 <button class="btn btn-success pull-left" data-dismiss="modal">确定</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="change_password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <img src="../../../images/B3F0F1AD70377E062920F9BA53902227.jpg" alt="">
+            <h4>重置密码</h4>
+            <input class="form-control"type="password" maxlength="10" name="password"
+                   placeholder="请输入原密码">
+            <input class="form-control"type="password" maxlength="10" name="password"
+                   placeholder="请输入新密码">
+            <input class="form-control"type="password" maxlength="10" name="password"
+                   placeholder="请再次输入新密码">
+
+            <div class="modal-header">
+                <button class="btn btn-success" data-dismiss="modal" id="send" style="background-color:rgb(66,140,187);color:#fff;">确定</button>
+                <button class="btn btn-success" data-dismiss="modal" id="clear">关闭</button>
+
+            </div>
+
         </div>
     </div>
 </div>

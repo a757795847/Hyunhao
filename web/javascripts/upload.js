@@ -8,6 +8,7 @@ $(function(){
     }
     function addfile(){
         showimg(window.URL.createObjectURL(this.files[0]));
+        console.log(this.files[0]);
   /*      $(this).hide();*/
         $('#tops').bind('change',addfile);
     }
@@ -32,6 +33,12 @@ $(function(){
     
     
     $("#click").on("click",function(e){
+        if($("#count").val("")){
+            $("#uploadModal h2").html("请编辑单价");
+            $(".sa-x-mark.animateXMark").css("display","block");
+            $("#uploadModal img").css("display","none");
+            $("#uploadModal").modal("show");
+        }
         console.log($('#upfile_list').html());
         e.preventDefault();
         console.log(new FormData($('#uploadForm')[0]));
@@ -45,7 +52,12 @@ $(function(){
             contentType: false
         }).done(function(res) {
             console.log(res);
-
+            $("#uploadModal h2").html(res.message);
+            if(status=0){
+                $(".sa-icon").css("display","block");
+                $("#uploadModal img").css("display","none");
+            }
+        $("#uploadModal").modal("show");
 
 
 

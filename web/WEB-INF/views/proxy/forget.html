@@ -11,7 +11,7 @@
 <div id="login">
     <div class="custom-panel">
     <div class="custom-header">
-        <img src="../../../images/121.jpg" class="logo"/>
+        <img src="../../../images/B3F0F1AD70377E062920F9BA53902227.jpg" class="logo"/>
     <br>
     <br>
         <h4 style="font-weight:bold;" class="text-info">重置密码</h4>
@@ -19,11 +19,11 @@
     </div>
     <div class="custom-body">
         <div class="mb-housite">
-            <input type="text" class="form-control" placeholder="输入你注册的手机号">
+            <input type="text" class="form-control" placeholder="输入你注册的手机号" id="phone_pre">
         </div>
         <br>
         <p class="text-center">
-            <button class="btn btn-primary btn-block">下一步</button>
+            <button class="btn btn-primary btn-block" id="next_step">下一步</button>
         </p>
 
     </div>
@@ -31,8 +31,53 @@
 </div>
 </div>
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">请输入下方验证码，完成短信发送验证</h4>
+            </div>
+            <div class="modal-body text-center">
+                <div class="center-block" style="width:270px;overflow:hidden;">
+                    <div class="pull-left" id="verification_code">
+                        <img src="/operator/getcodeImage" alt="" style="width:130px;height:53px;" class="Image">
+                        <div class="text-muted small">点击图片刷新验证码</div>
+                    </div>
+                    <div class="pull-left">
+                        <input type="text" class="form-control" placeholder="输入左侧验证码" style="width:130px;margin-left:10px;height:56px;border-radius: 0;
+    border:1px solid #f2f2f2;"id="input_box">
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default closure" data-dismiss="modal" style="width:100px;border:1px solid #f2f2f2;
+    color: #444952;border-radius:0;font-size:14px;">关闭</button>
+                <button class="btn btn-success confirm" data-dismiss="modal" style="width:100px;background-color: #5ac28d;border-color: #5ac28d;color: #fff;border-radius:0;">确认发送</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="change_ok" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div>
+        <img src="../../../images/ok.jpg" alt="">
+        <div class="sa-icon sa-error animateErrorIcon">
+             <span class="sa-x-mark animateXMark">
+        <span class="sa-line sa-left"></span>
+        <span class="sa-line sa-right"></span>
+                </span>
+        </div>
+
+        <h2>修改成功</h2>
+        <button class="confirms" tabindex="1" data-dismiss="modal" style="display: inline-block; background-color: rgb(44, 162, 251); box-shadow: rgba(44, 162, 251, 0.8) 0px 0px 2px, rgba(0, 0, 0, 0.0470588) 0px 0px 0px 1px inset;">好的</button>
+
+    </div>
+</div>
 
 <script src="../../../javascripts/jquery-2.2.3.min.js"></script>
 <script src="../../../javascripts/bootstrap.min.js"></script>
+<script src="../../../javascripts/forget.js"></script>
 </body>
 </html>

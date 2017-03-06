@@ -16,20 +16,16 @@ function indexAjax(datas, pageState) {
             var tbody='';
             $.each(data.list, function (i, order) {
                 console.log(order.beginTime);
-                order.beginTime=order.beginTime-86400000*30;
-                console.log(order.beginTime);
                 var authorization='';
-                var curTime = new Date(parseInt(order.beginTime)).toLocaleString().replace(/:\d{1,2}$/,' ');
-                var endTime = new Date(parseInt(order.endTime)).toLocaleString().replace(/:\d{1,2}$/,' ');
-                endTime = endTime.replace(/:\d{1,2}$/,' ');
-                var end_time= new Date(endTime).getTime();
-                console.log(end_time);
-                if(order.beginTime==''){
+            /*    var curTime = new Date(parseInt(order.beginTime)).toLocaleString().replace(/:\d{1,2}$/,' ');
+                var endTime = new Date(parseInt(order.endTime)).toLocaleString().replace(/:\d{1,2}$/,' ');*/
+
+              /*  if(order.beginTime==''){
                     curTime='';
                 }
                 if(order.endTime==''){
                     curTime='';
-                }
+                }*/
                 if(order.isAuthentication=='0'){
                     authorization='未授权';
                 }else{
@@ -44,8 +40,8 @@ function indexAjax(datas, pageState) {
                 tbody += '<td class="mailbox-date"><span>' + authorization + '</span></td>';
                 tbody += '<td class="mailbox-date"><span>' + order.zyappName + '</span></td>';
                 tbody += '<td class="mailbox-date"><span>' + order.serverType + '</span></td>';
-                tbody += '<td class="mailbox-date"><span>' + curTime + '</span></td>';
-                tbody += '<td class="mailbox-date"><span class="End">' + endTime + '</span></td>';
+                tbody += '<td class="mailbox-date"><span>' + order.beginTime + '</span></td>';
+                tbody += '<td class="mailbox-date"><span class="End">' + order.endTime + '</span></td>';
                 tbody += '<td class="mailbox-date">' +
                     '<span class="label label-success minus" style="margin-right:5px; background-color:rgb(191,191,191);"data-index="' + order.serverId + '">减时</span>';
                 tbody += '<span class="label label-success"style="background-color:rgb(41,204,254);">延期</span></td></tr>';
@@ -114,11 +110,7 @@ $("#cancel").on("click",function(){
     $('li').removeClass("lactive");
 
 });
-var date=new Date();
 
-date=parseInt(date).toLocaleString().replace(/:\d{1,2}$/,' ');
-/*date.setDate(date.getDate()-30);*/
-console.log(date);
 
 /* date=date.getDate()+1;
 console.log(date);*/

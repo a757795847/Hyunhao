@@ -147,6 +147,7 @@ $("#Table").on('click', '.order_confirm_btn', function () {
 var date_lists=[];
 $("#Table").on("click",".label.label-success.turn",function(){
     console.log("1");
+    var orders=$(this).data("index");
     $.ajax({
        type:'post',
         url:'/redstrategy/list',
@@ -166,7 +167,7 @@ $("#Table").on("click",".label.label-success.turn",function(){
         })
 
 
-
+    $('#send').attr('data-index', orders);
     $("#myModals").modal('show');
 
     })
@@ -210,9 +211,11 @@ $("#send").on('click', function () {
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
             console.log(data);
-            $('#' + order_index + ' #order_state span').html("红包发送成功");
-            $('#' + order_index + ' .top').html(Idx / 100 + '元红包');
-            $('#' + order_index + ' .turn').remove();
+            if(data.status=="1") {
+                $('#' + order_index + ' #order_state span').html("红包发送成功");
+                $('#' + order_index + ' .top').html(Idx / 100 + '元红包');
+                $('#' + order_index + ' .turn').remove();
+            }
         }
     })
 });
@@ -290,12 +293,12 @@ function filterAjax(datas, pageState) {
                     order.giftState = "未申领";
                 } else if (order.giftState == 1) {
                     order.giftState = "审核中";
-                    than = "通过";
-                    thao = "驳回";
+                    than = '<span class="label label-success order_confirm_btn" data-index="' + order.id + '" >通过</span>';
+                    thao = '<span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span>';
 
                 }else{
                     order.giftState = "审核通过";
-
+                    thao='<span class="label label-success turn" data-index="' + order.id + '" >发送红包</span>';
                 }
 
                 var curTime = new Date(parseInt(order.applyDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
@@ -333,8 +336,8 @@ function filterAjax(datas, pageState) {
                 tbody += '<td class="mailbox-date"><span class="top">' + order.giftDetail + '</span></td>';
                 tbody += '<td class="mailbox-date"><span>' + order.sendDate + '</span></td>';
                 tbody += '<td class="mailbox-date"><span>' + order.recieveDate + '</span></td>';
-                tbody += '<td class="mailbox-date"><span class="label label-success order_confirm_btn" data-index="' + order.id + '" >' + than + '</span>';
-                tbody += '<span class="label label-success turn" data-toggle="modal" data-target="#myModal">' + thao + '</span></td></tr>';
+                tbody += '<td class="mailbox-date">'+than+'';
+                tbody += ''+thao+'</td></tr>';
 
 
             });

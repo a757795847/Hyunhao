@@ -83,7 +83,7 @@
         </form>
         <ul class="sidebar-menu">
             <li>
-                <a href="home">
+                <a href="/proxy/home">
                     <i class="fa fa-weixin mr-housite"></i> <span>公众号使用期管理</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-green">new</small>
@@ -97,7 +97,7 @@
             </li>
             <li class="treeview">
                 <a href="/redstrategy/home">
-                    <i class="fa fa-fw fa-folder-open"></i> <span>信息管理</span>
+                    <i class="fa fa-fw fa-folder-open"></i><span>信息管理</span>
                 </a>
             </li>
             <li>
@@ -108,7 +108,7 @@
                 </a>
             </li>
             <li>
-                <a href="">
+                <a href="/proxy/QRUploadHome">
                     <i class="fa fa-fw fa-qrcode"></i><span style="margin-left: 3px;">上传二维码</span>
             <span class="pull-right-container">
             </span>
@@ -125,18 +125,18 @@
 
                     <div class="father">
                         <form action="" method="post" target="" id="uploadForm"  enctype="multipart/form-data">
-                            <img src="" alt="" class="images_go">
+                            <img src="" alt="" class="images_go" style="width:140px;height:140px; position: absolute;">
                             <a href="#" id="upfile_list">
                                 点击上传支付宝码
-                                <input type="file" name="alipay" class="upfile" id="tops"/>
+                                <input type="file" name="alipay" class="upfile" id="tops" accept="image/jpg,image/png"/>
                             </a>
-                            <img src="" alt="" class="images_li" style="margin-left:80px;">
+                            <img src="" alt="" class="images_li" style="margin-left:80px;width:140px;height:140px; position: absolute;">
                             <a href="#" id="upfile_kich" style="margin-left:80px;">
                                 点击上传微信码
-                                <input type="file" name="wechatPay"class="upfile" id="bottoms"/>
+                                <input type="file" name="wechatPay"class="upfile" id="bottoms" accept=".jpg,.png"/>
                             </a>
                             <div class="input-group input-group-sm" id="search" style="width:200px;margin-top:30px;">
-                                <input type="text" name="count" class="form-control pull-right" placeholder="单价100元/周期">
+                                <input type="text" name="count" id='count'class="form-control pull-right" placeholder="单价100元/周期">
                                 <div class="input-group-btn">
                                     <button type="submit" class="btn btn-default" style="width:46px;text-align:center;">编辑</button>
                                 </div>
@@ -153,6 +153,20 @@
             </div>
     </section>
 </div>
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div>
+        <img src="../../../images/ok.jpg" alt="">
+        <div class="sa-icon sa-error animateErrorIcon">
+             <span class="sa-x-mark animateXMark">
+        <span class="sa-line sa-left"></span>
+        <span class="sa-line sa-right"></span>
+                </span>
+        </div>
+
+        <h2>上传成功</h2>
+        <button class="confirms" tabindex="1" data-dismiss="modal" style="display: inline-block; background-color: rgb(44, 162, 251); box-shadow: rgba(44, 162, 251, 0.8) 0px 0px 2px, rgba(0, 0, 0, 0.0470588) 0px 0px 0px 1px inset;">好的</button>
+
+    </div>
 </div>
 
 
