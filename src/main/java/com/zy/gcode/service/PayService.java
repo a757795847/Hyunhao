@@ -247,7 +247,7 @@ public class PayService implements IPayService {
     @Transactional
     public CodeRe circularGetPayInfo() {
 
-        List<RedStatus> pushList = new ArrayList<>(512);
+        List<RedStatus> pushList = new ArrayList<>();
         List<String> errorList = new ArrayList<>();
 
         List<RedBill> redBills = persistenceService.getListByColumn(RedBill.class,"status",null);
@@ -264,8 +264,18 @@ public class PayService implements IPayService {
                 persistenceService.update(redBill);
             }
         });
+        BatchRe<RedStatus> batchRe = new BatchRe<>();
+        if (!errorList.isEmpty()) {
+            batchRe.setErrorList(errorList);
+        }
+        batchRe.setTlist(pushList);
 
 
+        return batchRe;
+    }
+    public CodeRe pullIllegalBill(){
+        List<RedStatus> pushList = new ArrayList<>();
+        List<String> errorList = new ArrayList<>();
         DetachedCriteria criteria = DetachedCriteria.forClass(RedStatus.class);
         Disjunction disjunction = Restrictions.disjunction();
         disjunction.
@@ -284,6 +294,7 @@ public class PayService implements IPayService {
                 }
             }
         });
+
         BatchRe<RedStatus> batchRe = new BatchRe<>();
         if (!errorList.isEmpty()) {
             batchRe.setErrorList(errorList);
