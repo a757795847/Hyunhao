@@ -213,7 +213,7 @@ public class HttpClientUtils {
                 }
                 return null;
             }
-            Map map = Constants.objectMapper.readValue(response.getEntity().getContent(), Map.class);
+            Map map = JsonUtils.asObj(Map.class,response.getEntity().getContent());
             return map;
         } catch (IOException e) {
             e.printStackTrace();
@@ -226,6 +226,12 @@ public class HttpClientUtils {
         return res2Map(response);
     }
 
+    public static String stringGetSend(String url,String... params){
+        HttpResponse response = getSend(url,params);
+        return res2String(response);
+    }
+
+
     public static Map mapGetSend(String url) {
         HttpResponse response = getSend(url);
         return res2Map(response);
@@ -234,6 +240,26 @@ public class HttpClientUtils {
     public static Map mapGetSend(String url, String... params) {
         HttpResponse response = getSend(url, params);
         return res2Map(response);
+    }
+
+
+    private static String res2String(HttpResponse response){
+        StringBuilder builder = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        if (response.getStatusLine().getStatusCode() != 200) {
+            System.out.println(builder.toString());
+            return null;
+        }
+        return builder.toString();
     }
 
     /**

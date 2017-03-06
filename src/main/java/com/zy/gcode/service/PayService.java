@@ -130,7 +130,7 @@ public class PayService implements IPayService {
 
         persistenceService.updateOrSave(redBill);
 
-        return CodeRe.correct("success");
+        return CodeRe.correct(redBill.getMchBillno());
     }
 
     @Override

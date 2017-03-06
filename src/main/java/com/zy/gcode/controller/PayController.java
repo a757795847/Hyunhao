@@ -11,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by admin5 on 17/1/20.
  */
@@ -65,9 +68,11 @@ public class PayController {
     Object redinfo(String billno, String zyid) {
         CodeRe<RedStatus> redStatusCodeRe = payService.payInfo(billno, zyid);
         if (redStatusCodeRe.isError()) {
-            return redStatusCodeRe.getErrorMessage();
+            return ControllerStatus.error(redStatusCodeRe.getErrorMessage());
         }
-        return redStatusCodeRe.getMessage();
+        Map map = new HashMap(2);
+        map.put("redInfo",redStatusCodeRe.getMessage());
+        return ControllerStatus.ok(map);
     }
 
     @RequestMapping("upCatch")

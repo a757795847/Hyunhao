@@ -6,6 +6,7 @@ import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IOrderService;
 import com.zy.gcode.utils.Constants;
+import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.Page;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -219,6 +220,15 @@ public class OrderController {
         return ControllerStatus.ok(codeRe.getMessage().toString());
 
     }
+    @RequestMapping("/redInfo/{billno}")
+    public @ResponseBody Object redInfo(@PathVariable String billno){
+       CodeRe codeRe =  orderService.redInfo(billno);
+        if(codeRe.isError()){
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
+        return ControllerStatus.ok(codeRe.getMessage());
+    }
+
 
     @RequestMapping("test")
     public

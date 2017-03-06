@@ -5,6 +5,7 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.DataStrategy;
+import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.annocation.CsvPush;
 import com.zy.gcode.utils.*;
@@ -240,7 +241,7 @@ public class OrderService implements IOrderService {
             return muCodeRe;
         }
 
-        String wxappid = muCodeRe.getMessage();
+        String tappid = muCodeRe.getMessage();
         DataOrder order = persistenceService.get(DataOrder.class, orderno);
         if (!operator.getUsername().equals(order.getCreateUserId()))
             return CodeRe.error("您无权操作次订单");
@@ -260,7 +261,7 @@ public class OrderService implements IOrderService {
             return CodeRe.error("红包策略不存在");
         }
         Map map = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/pay/send", "openid", order.getWeixinId(),
-                "count", String.valueOf(strategy.getMoney()), "geAppid", wxappid, "sign", "13468794sagag");
+                "count", String.valueOf(strategy.getMoney()), "geAppid", tappid, "sign", "13468794sagag");
         if (map == null) {
             log.error("http请求错误");
             return CodeRe.error("红包发送失败");
@@ -270,9 +271,35 @@ public class OrderService implements IOrderService {
             return CodeRe.error((String) map.get("message"));
         }
         order.setGiftState(3);
+        order.setMchNumber(map.get("message").toString());
         order.setSendDate(new Timestamp(System.currentTimeMillis()));
         persistenceService.updateOrSave(order);
         return CodeRe.correct("success");
+    }
+
+    @Override
+    public CodeRe redInfo(String mchNumber) {
+       RedStatus redStatus =  persistenceService.get(RedStatus.class,mchNumber);
+        CodeRe<String> muCodeRe = multipartService.getTappidByApp(getWxOperator().getUsername(), Constants.ZYAPPID);
+        if (muCodeRe.isError()) {
+            return muCodeRe;
+        }
+
+        String tappid = muCodeRe.getMessage();
+       if(redStatus==null){
+         String str = HttpClientUtils.stringGetSend("http://open.izhuiyou.com/pay/redinfo","billno",mchNumber,"zyid",tappid);
+         Map map = JsonUtils.asObj(Map.class,str);
+            if(map==null){
+                return CodeRe.error("请求异常");
+            }
+
+           if(map.get("status").equals("0")){
+                log.error("获取红包信息错误:"+map.get("message"));
+               return CodeRe.error("请求异常");
+           }
+           return CodeRe.correct(map.get("message"));
+       }
+       return CodeRe.correct(redStatus);
     }
 
     private User getWxOperator() {

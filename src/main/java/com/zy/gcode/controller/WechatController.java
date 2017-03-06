@@ -8,6 +8,7 @@ import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.service.IAuthenticationService;
 import com.zy.gcode.service.IWechatService;
 import com.zy.gcode.utils.Constants;
+import com.zy.gcode.utils.JsonUtils;
 import com.zy.gcode.utils.wx.JsapiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,14 +47,7 @@ public class WechatController {
             Map<String, String> map = JsapiUtils.sign(authenticationService.getJsapiTicketByAppid(wechatPublicServer.getWxAppid()).getMessage().getToken(),
                     request.getRequestURL().toString());
             map.put("appid", wechatPublicServer.getWxAppid());
-
-            try {
-                request.setAttribute("jsonConfig", Constants.objectMapper.writeValueAsString(map));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-
-
+            request.setAttribute("jsonConfig", JsonUtils.objAsString(map));
             return "/views/wechat/submit.html";
         }
         try {

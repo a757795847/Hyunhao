@@ -38,6 +38,13 @@ public class ControllerStatus {
         return map;
     }
 
+    public static Map ok(Object obj) {
+        Map map = new HashMap(5);
+        map.put("status", "1");
+        map.put("data", obj);
+        return map;
+    }
+
     public static Map ok(Map map) {
         if (map == null) {
             map = new HashMap(2);
