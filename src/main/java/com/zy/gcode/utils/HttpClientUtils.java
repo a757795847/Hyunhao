@@ -294,7 +294,7 @@ public class HttpClientUtils {
                 SSLContext sslcontext = SSLContexts.custom()
                         .loadKeyMaterial(keyStore, mechid.toCharArray())
                         .build();
-                HttpClient httpClient1 = HttpClientBuilder.create().setMaxConnPerRoute(2).setSSLContext(sslcontext).build();
+                HttpClient httpClient1 = HttpClientBuilder.create().setMaxConnPerRoute(10).setSSLContext(sslcontext).build();
                 stringHttpClientMap.put(mechid, httpClient1);
                 return paySSLSend(mechid, path, url, body);
             } catch (Exception e) {

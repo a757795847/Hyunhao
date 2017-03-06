@@ -6,6 +6,7 @@ import com.zy.gcode.pojo.GeToken;
 import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.service.ICodeService;
 import com.zy.gcode.utils.Constants;
+import com.zy.gcode.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -77,13 +78,8 @@ public class AccessController {
         if (codeRe.isError()) {
             return error(codeRe.getErrorMessage());
         }
-
         Map map = new HashMap(4);
-        try {
-            map.put("userinfo", Constants.objectMapper.writeValueAsString(codeRe.getMessage()));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        map.put("userinfo", JsonUtils.objAsString(codeRe.getMessage()));
         return ok(map);
     }
 

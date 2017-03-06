@@ -2,6 +2,7 @@ package controller;
 
 import com.zy.gcode.service.OrderService;
 import com.zy.gcode.utils.Constants;
+import com.zy.gcode.utils.JsonUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,7 +58,7 @@ public class ControllerTest {
         for(int i = 0 ; i < body.length;i+=2){
             map.put(body[i],body[i+1]);
         }
-        return Constants.objectMapper.writeValueAsString(map);
+        return JsonUtils.objAsString(map);
     }
 
    @Test

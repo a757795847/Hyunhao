@@ -14,7 +14,6 @@ import java.util.Properties;
 public abstract class Constants {
     public static Properties properties = new Properties();
 
-    public static ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      *微信token 回调url
@@ -63,10 +62,6 @@ public abstract class Constants {
     public final static String ZYAPPID = "zyappid1";
 
 
-    /**
-     * 商户号
-     */
-    public static final String MCH_ID = "1426499802";
 
     static {
         try (InputStream inputStream = new ClassPathResource("config.properties").getInputStream()) {
@@ -76,9 +71,6 @@ public abstract class Constants {
             e.printStackTrace();
             System.exit(0);
         }
-        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
-        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-        objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
     }
 
 

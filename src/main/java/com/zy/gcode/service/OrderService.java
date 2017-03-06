@@ -278,6 +278,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional
     public CodeRe redInfo(String mchNumber) {
        RedStatus redStatus =  persistenceService.get(RedStatus.class,mchNumber);
         CodeRe<String> muCodeRe = multipartService.getTappidByApp(getWxOperator().getUsername(), Constants.ZYAPPID);

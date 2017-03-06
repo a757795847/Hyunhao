@@ -6,6 +6,7 @@ import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.service.IPayService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
+import com.zy.gcode.utils.JsonUtils;
 import org.springframework.context.ApplicationContext;
 
 import java.util.Map;
@@ -31,11 +32,8 @@ public class RedPagCatchTask extends TimerTask {
         Map map = new TreeMap();
         map.put("list", batchRe.getTlist());
         map.put("error", batchRe.getErrorList());
-        try {
-            HttpClientUtils.postSend(Constants.properties.getProperty("callback.redinfo"), Constants.objectMapper.writeValueAsString(map));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        HttpClientUtils.postSend(Constants.properties.getProperty("callback.redinfo"), JsonUtils.objAsString(map));
+
     }
 
     public static class TaskTest extends TimerTask{

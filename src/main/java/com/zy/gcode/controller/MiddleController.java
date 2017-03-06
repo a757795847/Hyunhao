@@ -3,6 +3,7 @@ package com.zy.gcode.controller;
 import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
+import com.zy.gcode.utils.JsonUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -37,13 +38,11 @@ public class MiddleController {
             Map map1 = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/access/guserinfo?token=" + map.get("access_token") + "&zyid=" + zyid);
             if (map1.containsKey("status") && map1.get("status").equals("1")) {
                 String str = map1.get("userinfo").toString();
-                try {
-                    WechatUserInfo wechatUserInfo = Constants.objectMapper.readValue(str, WechatUserInfo.class);
+
+                    WechatUserInfo wechatUserInfo = JsonUtils.asObj(WechatUserInfo.class,str);
                     session.setAttribute("c_user", wechatUserInfo);
                     return "redirect:" + state;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
             }
         }
 

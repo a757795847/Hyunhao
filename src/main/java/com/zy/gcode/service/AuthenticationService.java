@@ -10,6 +10,7 @@ import com.zy.gcode.service.pay.WxXmlParser;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;
 import com.zy.gcode.utils.HttpClientUtils;
+import com.zy.gcode.utils.JsonUtils;
 import com.zy.gcode.utils.wx.AesException;
 import com.zy.gcode.utils.wx.WXBizMsgCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,7 @@ public class AuthenticationService implements IAuthenticationService {
     @Override
     @Transactional
     public CodeRe<WechatPublic> saveServerToken(String content, String token) {
-        try {
-            Map<String, Map> map = Constants.objectMapper.readValue(content, Map.class);
+            Map<String, Map> map = JsonUtils.asObj( Map.class,content);
             if (map.containsKey("errmsg")) {
                 return CodeRe.error(map.get("errmsg").toString());
             }
@@ -86,10 +86,6 @@ public class AuthenticationService implements IAuthenticationService {
 
             persistenceService.updateOrSave(wechatPublic);
             return CodeRe.correct(wechatPublic);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return CodeRe.error("系统异常");
     }
 
     /**

@@ -45,7 +45,7 @@ public class PayController {
     @ResponseBody
     Object send(String openid, String count, String geAppid, String sign) throws Exception {
         if (!sign.equals("13468794sagag")) {
-            return Constants.objectMapper.writeValueAsString(ControllerStatus.error("签名错误"));
+            return ControllerStatus.error("签名错误");
         }
 
         CodeRe<String> codeRe = payService.pay(openid, 100, geAppid);
