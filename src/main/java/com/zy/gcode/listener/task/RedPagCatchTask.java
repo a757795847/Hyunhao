@@ -9,6 +9,7 @@ import com.zy.gcode.utils.HttpClientUtils;
 import org.springframework.context.ApplicationContext;
 
 import java.util.Map;
+import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
 
@@ -35,5 +36,18 @@ public class RedPagCatchTask extends TimerTask {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+
+    public static class TaskTest extends TimerTask{
+        int i = 0;
+        @Override
+        public void run() {
+           System.out.println(i++);
+        }
+    }
+    public static void main(String[] args){
+        TaskTest taskTest = new TaskTest();
+        Timer timer = new Timer();
+        timer.schedule(taskTest, 100, 1000);
     }
 }

@@ -38,6 +38,7 @@ public class PayService implements IPayService {
     @Autowired
     PersistenceService persistenceService;
 
+
     @Override
     @Transactional
     public CodeRe pay(String id, int count, String geappid) {
@@ -249,20 +250,9 @@ public class PayService implements IPayService {
         List<RedStatus> pushList = new ArrayList<>(512);
         List<String> errorList = new ArrayList<>();
 
-        Date lastReadTime;
-        try {
-            lastReadTime = DateUtils.parse(Constants.properties.get("pay.lastReadTime").toString(), "yyyy-MM-dd hh:mm:ss");
-        } catch (ParseException e) {
-            return CodeRe.error("pay.lastReadTime 格式必须符合yyyy-MM-dd hh:mm:ss");
-        }
+        List<RedBill> redBills = persistenceService.getListByColumn(RedBill.class,"status",null);
 
-        DetachedCriteria billCriteria = DetachedCriteria.forClass(RedBill.class);
-        billCriteria.add(Restrictions.ge("insert_time", new Timestamp(lastReadTime.getTime())));
-        List<RedBill> redBillList = persistenceService.getList(billCriteria);
-        Timestamp maxInsertTime = (Timestamp) persistenceService.max(RedBill.class, "insert_time");
-        Constants.properties.setProperty("pay.lastReadTime", DateUtils.format(maxInsertTime, "yyyy-MM-dd hh:mm:ss"));
-
-        redBillList.forEach(redBill -> {
+        redBills.forEach(redBill -> {
             CodeRe<RedStatus> redStatusCodeRe = redinfo(redBill.getWxappid(), redBill.getMchBillno());
             if (redStatusCodeRe.isError()) {
                 StringBuilder builder = new StringBuilder(redStatusCodeRe.getErrorMessage());
@@ -270,6 +260,8 @@ public class PayService implements IPayService {
             } else {
                 RedStatus updateAfterRedStatus = redStatusCodeRe.getMessage();
                 pushList.add(updateAfterRedStatus);
+                redBill.setStatus(1);
+                persistenceService.update(redBill);
             }
         });
 

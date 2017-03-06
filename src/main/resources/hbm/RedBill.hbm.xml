@@ -12,6 +12,7 @@
         <property name="totalAmount" column="total_amount"/>
         <property name="sendListid" column="send_listid"/>
         <property name="sign" column="sign"/>
+        <property name="status" column="status"/>
         <property update="false" insert="false" name="insertTime" column="insert_time"/>
         <property update="false" insert="false" name="updateTime" column="update_time"/>
     </class>

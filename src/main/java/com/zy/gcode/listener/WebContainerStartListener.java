@@ -22,8 +22,6 @@ public class WebContainerStartListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         TimerTask timerTask = new RedPagCatchTask(WebApplicationContextUtils.getWebApplicationContext(sce.getServletContext()));
-        Timer timer = new Timer();
-        timer.schedule(timerTask, 100000, 1000 * 60 * 10);
 
     }
 

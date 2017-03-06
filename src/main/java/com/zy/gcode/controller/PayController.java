@@ -1,5 +1,6 @@
 package com.zy.gcode.controller;
 
+import com.zy.gcode.controller.delegate.BatchRe;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.RedStatus;
@@ -68,6 +69,12 @@ public class PayController {
             return redStatusCodeRe.getErrorMessage();
         }
         return redStatusCodeRe.getMessage();
+    }
+
+    @RequestMapping("upCatch")
+    public @ResponseBody Object upCatch(){
+       BatchRe batchRe = (BatchRe) payService.circularGetPayInfo();
+        return ControllerStatus.ok(batchRe.getMessage());
     }
 
 
