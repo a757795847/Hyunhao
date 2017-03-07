@@ -250,6 +250,10 @@ public class PayService implements IPayService {
 
         List<RedBill> redBills = persistenceService.getListByColumn(RedBill.class,"status",null);
 
+        if(Constants.debug){
+            System.out.println("redBillsSize:"+redBills.size());
+        }
+
         redBills.forEach(redBill -> {
             CodeRe<RedStatus> redStatusCodeRe = redinfo(redBill.getWxappid(), redBill.getMchBillno());
             if (redStatusCodeRe.isError()) {

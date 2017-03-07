@@ -106,7 +106,7 @@ public class PayController {
             BatchRe batchRe = (BatchRe) payService.circularGetPayInfo();
             if (Constants.debug) {
                 System.out.println("ok:" + batchRe.getMessage());
-                System.out.println("error:" + batchRe.getErrorMessage());
+                System.out.println("error:" + batchRe.getErrorList());
             }
             if (batchRe.getMessage().isEmpty()) {
                 timer.cancel();
@@ -128,7 +128,7 @@ public class PayController {
             BatchRe batchRe = (BatchRe) payService.pullIllegalBill();
             if (Constants.debug) {
                 System.out.println("ok:" + batchRe.getMessage());
-                System.out.println("error:" + batchRe.getErrorMessage());
+                System.out.println("error:" + batchRe.getErrorList());
             }
         }
     }
