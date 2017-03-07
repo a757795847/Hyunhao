@@ -62,6 +62,12 @@ public abstract class Constants {
     public final static String ZYAPPID = "zyappid1";
 
 
+    /**
+     * 是否开启本应用debug模式
+     */
+
+    public final static boolean debug = true;
+
 
     static {
         try (InputStream inputStream = new ClassPathResource("config.properties").getInputStream()) {

@@ -10,14 +10,13 @@ import com.zy.gcode.pojo.WechatPublicServer;
 import com.zy.gcode.service.pay.RedPayInfo;
 import com.zy.gcode.service.pay.RedReqInfo;
 import com.zy.gcode.service.pay.WxXmlParser;
-import com.zy.gcode.utils.Constants;
-import com.zy.gcode.utils.DateUtils;
-import com.zy.gcode.utils.HttpClientUtils;
-import com.zy.gcode.utils.UniqueStringGenerator;
+import com.zy.gcode.utils.*;
 import org.apache.http.HttpResponse;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +33,8 @@ import java.util.*;
  */
 @Service
 public class PayService implements IPayService {
+
+    Logger log = LoggerFactory.getLogger(PayService.class);
 
     @Autowired
     PersistenceService persistenceService;
@@ -170,16 +171,13 @@ public class PayService implements IPayService {
         }
 
 
-        StringBuilder builder1 = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "utf-8"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                builder1.append(line);
-            }
+        Map<String, String> reMap = null;
+        try {
+            reMap = WxXmlParser.Xml2Map(MzUtils.inputStreamToString(response.getEntity().getContent()));
         } catch (IOException e) {
             e.printStackTrace();
+            return CodeRe.error("系统错误");
         }
-        Map<String, String> reMap = WxXmlParser.Xml2Map(builder1.toString());
 
         if (!reMap.containsKey("return_code")) {
             return CodeRe.error("failure request");
@@ -257,6 +255,7 @@ public class PayService implements IPayService {
             if (redStatusCodeRe.isError()) {
                 StringBuilder builder = new StringBuilder(redStatusCodeRe.getErrorMessage());
                 errorList.add(builder.append(":").append(redBill.getMchBillno()).toString());
+                log.error("抓取红包失败:"+builder.toString());
             } else {
                 RedStatus updateAfterRedStatus = redStatusCodeRe.getMessage();
                 pushList.add(updateAfterRedStatus);
@@ -269,10 +268,9 @@ public class PayService implements IPayService {
             batchRe.setErrorList(errorList);
         }
         batchRe.setTlist(pushList);
-
-
         return batchRe;
     }
+    @Transactional
     public CodeRe pullIllegalBill(){
         List<RedStatus> pushList = new ArrayList<>();
         List<String> errorList = new ArrayList<>();
@@ -287,10 +285,12 @@ public class PayService implements IPayService {
             if (redStatusCodeRe.isError()) {
                 StringBuilder builder = new StringBuilder(redStatusCodeRe.getErrorMessage());
                 errorList.add(builder.append(":").append(redStatus.getMchBillno()).toString());
+                log.error("抓取红包失败:"+builder.toString());
             } else {
                 RedStatus updateAfterRedStatus = redStatusCodeRe.getMessage();
                 if (!updateAfterRedStatus.getStatus().equals(redStatus.getStatus())) {
                     pushList.add(updateAfterRedStatus);
+                    persistenceService.update(updateAfterRedStatus);
                 }
             }
         });

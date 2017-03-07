@@ -56,4 +56,13 @@ public class CodeRe<T> {
     public void setMessage(T message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "CodeRe{" +
+                "isError=" + isError +
+                ", error='" + error + '\'' +
+                ", message=" + message +
+                '}';
+    }
 }

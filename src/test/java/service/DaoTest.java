@@ -1,3 +1,5 @@
+package service;
+
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.ApplicationInfo;
 import com.zy.gcode.pojo.DataOrder;
@@ -90,5 +92,8 @@ public class DaoTest {
             System.out.println("finally");
         }
         return null;
+    }
+    protected void println(Object object){
+        System.out.println(object);
     }
 }

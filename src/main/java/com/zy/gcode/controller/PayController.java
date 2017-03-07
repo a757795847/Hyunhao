@@ -11,8 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by admin5 on 17/1/20.
@@ -20,6 +19,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("pay")
 public class PayController {
+
     @Autowired
     IPayService payService;
 
@@ -71,14 +71,70 @@ public class PayController {
             return ControllerStatus.error(redStatusCodeRe.getErrorMessage());
         }
         Map map = new HashMap(2);
-        map.put("redInfo",redStatusCodeRe.getMessage());
+        map.put("redInfo", redStatusCodeRe.getMessage());
         return ControllerStatus.ok(map);
     }
 
     @RequestMapping("upCatch")
-    public @ResponseBody Object upCatch(){
-       BatchRe batchRe = (BatchRe) payService.circularGetPayInfo();
-        return ControllerStatus.ok(batchRe.getMessage());
+    public
+    @ResponseBody
+    Object upCatch() {
+        new RedInfoTimerTask(3600);
+        return ControllerStatus.ok();
+    }
+
+    @RequestMapping("upReCatch")
+    public
+    @ResponseBody
+    Object upReCatch() {
+        new UpdateRedInfoTimerTask(3600);
+        return ControllerStatus.ok();
+    }
+
+
+    private class RedInfoTimerTask extends TimerTask {
+        Timer timer;
+
+        public RedInfoTimerTask(int seconds) {
+            timer = new Timer();
+            timer.schedule(this, 5000, seconds * 1000);
+        }
+
+
+        @Override
+        public void run() {
+            BatchRe batchRe = (BatchRe) payService.circularGetPayInfo();
+            if (Constants.debug) {
+                System.out.println("ok:" + batchRe.getMessage());
+                System.out.println("error:" + batchRe.getErrorMessage());
+            }
+            if (batchRe.getMessage().isEmpty()) {
+                timer.cancel();
+            }
+        }
+    }
+
+    private class UpdateRedInfoTimerTask extends TimerTask {
+        Timer timer;
+
+        public UpdateRedInfoTimerTask(int seconds) {
+            timer = new Timer();
+            timer.schedule(this, 5000, seconds * 1000);
+        }
+
+
+        @Override
+        public void run() {
+            BatchRe batchRe = (BatchRe) payService.pullIllegalBill();
+            if (Constants.debug) {
+                System.out.println("ok:" + batchRe.getMessage());
+                System.out.println("error:" + batchRe.getErrorMessage());
+            }
+
+            if (batchRe.getMessage().isEmpty()) {
+                timer.cancel();
+            }
+        }
     }
 
 
