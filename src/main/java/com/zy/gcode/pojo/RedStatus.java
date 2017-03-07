@@ -105,4 +105,21 @@ public class RedStatus {
     public void setOpenid(String openid) {
         this.openid = openid;
     }
+
+    @Override
+    public String toString() {
+        return "RedStatus{" +
+                "mchBillno='" + mchBillno + '\'' +
+                ", mchId='" + mchId + '\'' +
+                ", status='" + status + '\'' +
+                ", totalAmount=" + totalAmount +
+                ", sendTime=" + sendTime +
+                ", refundTime=" + refundTime +
+                ", rcvTime=" + rcvTime +
+                ", insertTime=" + insertTime +
+                ", updateTime=" + updateTime +
+                ", openid='" + openid + '\'' +
+                ", wxappid='" + wxappid + '\'' +
+                '}';
+    }
 }

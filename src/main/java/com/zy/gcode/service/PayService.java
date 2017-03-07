@@ -294,6 +294,12 @@ public class PayService implements IPayService {
                 log.error("抓取红包失败:"+builder.toString());
             } else {
                 RedStatus updateAfterRedStatus = redStatusCodeRe.getMessage();
+                if(Constants.debug){
+                    System.out.println("updateAfterRedStatus:"+updateAfterRedStatus);
+                    System.out.println("updateBeforeRedStatus:"+redStatus);
+                }
+
+
                 if (!updateAfterRedStatus.getStatus().equals(redStatus.getStatus())) {
                     pushList.add(updateAfterRedStatus);
                     if(Constants.debug){
