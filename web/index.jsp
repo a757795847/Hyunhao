@@ -9,7 +9,7 @@
 <html>
   <head>
     <title>$Title$</title>
-    <script src="/javascripts/jquery.min.js"/>
+    <script src="/documents/jquery.min.js"/>
     <script>
         $.ajax({
             type: 'POST',
