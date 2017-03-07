@@ -11,7 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by admin5 on 17/1/20.
@@ -24,7 +27,7 @@ public class PayController {
     IPayService payService;
 
 
-    RedInfoTimerTask redInfoTimerTask =   new RedInfoTimerTask();
+    RedInfoTimerTask redInfoTimerTask = new RedInfoTimerTask();
     UpdateRedInfoTimerTask updateRedInfoTimerTask = new UpdateRedInfoTimerTask();
 
     @RequestMapping("index")
@@ -83,7 +86,7 @@ public class PayController {
     public
     @ResponseBody
     Object upCatch() {
-        if(redInfoTimerTask.begin(3600)){
+        if (redInfoTimerTask.begin(3600)) {
             return ControllerStatus.ok();
         }
         return ControllerStatus.error("抓单已启动");
@@ -93,13 +96,15 @@ public class PayController {
     public
     @ResponseBody
     Object upReCatch() {
-       if(updateRedInfoTimerTask.begin(3600)){
-           return ControllerStatus.ok();
-       }
+        if (updateRedInfoTimerTask.begin(3600)) {
+            return ControllerStatus.ok();
+        }
         return ControllerStatus.error("抓单已启动");
     }
 
-
+    /**
+     * 用于执行抓取红包状态
+     */
 
     private class RedInfoTimerTask extends TimerTask {
         Timer timer;
@@ -114,7 +119,7 @@ public class PayController {
             }
             timer = new Timer();
             timer.schedule(this, 5000, seconds * 1000);
-            isStop= false;
+            isStop = false;
             return true;
         }
 
@@ -127,19 +132,23 @@ public class PayController {
             }
             if (batchRe.getMessage().isEmpty()) {
                 timer.cancel();
-                isStop=true;
+                isStop = true;
                 System.out.println("系统抓取订单已结束调用");
             }
         }
     }
 
+    /**
+     * 用于更新红包状态
+     */
     private class UpdateRedInfoTimerTask extends TimerTask {
         Timer timer;
 
         private UpdateRedInfoTimerTask() {
         }
-        public  boolean begin(int seconds){
-            if(timer!=null){
+
+        public boolean begin(int seconds) {
+            if (timer != null) {
                 return false;
             }
             timer = new Timer();

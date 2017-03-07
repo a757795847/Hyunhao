@@ -23,4 +23,6 @@ public interface IOrderService {
     CodeRe redSend(String orderno, long strategyid);
 
     CodeRe redInfo(String mchNumber);
+
+    CodeRe getOrderByNumber(String orderNo);
 }

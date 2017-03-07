@@ -13,8 +13,8 @@ public class OrderServiceTest extends DaoTest {
     OrderService orderService;
 
     @Test
-    public void redinfoTest(){
-      println(orderService.redInfo("1426499802201703066574510102"));
+    public void redinfoTest() {
+        println(orderService.redInfo("1426499802201703066574510102"));
     }
 
 }

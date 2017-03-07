@@ -1,13 +1,11 @@
 package com.zy.gcode.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.WechatPublicServer;
 import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.service.IAuthenticationService;
 import com.zy.gcode.service.IWechatService;
-import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.JsonUtils;
 import com.zy.gcode.utils.wx.JsapiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +65,7 @@ public class WechatController {
         if (wechatUserInfo == null) {
             return ControllerStatus.error("登录过期");
         }
-        CodeRe<String> codeRe = wechatService.sumbit(image1, image2, image3, billno, wechatUserInfo.getOpenId(), wechatUserInfo.getAppid());
+        CodeRe<String> codeRe = wechatService.sumbit(image1, image2,image3,billno,wechatUserInfo.getOpenId(),wechatUserInfo.getAppid());
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }

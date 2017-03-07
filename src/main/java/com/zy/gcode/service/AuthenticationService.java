@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -51,41 +50,41 @@ public class AuthenticationService implements IAuthenticationService {
     @Override
     @Transactional
     public CodeRe<WechatPublic> saveServerToken(String content, String token) {
-            Map<String, Map> map = JsonUtils.asObj( Map.class,content);
-            if (map.containsKey("errmsg")) {
-                return CodeRe.error(map.get("errmsg").toString());
-            }
+        Map<String, Map> map = JsonUtils.asObj(Map.class, content);
+        if (map.containsKey("errmsg")) {
+            return CodeRe.error(map.get("errmsg").toString());
+        }
 
-            Map child = map.get("authorization_info");
-            WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class, "wxAppid", child.get("authorizer_appid").toString());
-            if (wechatPublic == null) {
-                wechatPublic = new WechatPublic();
-            }
-            wechatPublic.setWxAppid(child.get("authorizer_appid").toString());
-            wechatPublic.setAccessToken(child.get("authorizer_access_token").toString());
-            wechatPublic.setExpiresIn(Integer.parseInt((child.get("expires_in").toString())));
-            wechatPublic.setRefeshToken(child.get("authorizer_refresh_token").toString());
-            List<Map<String, Map>> funs = (List) child.get("func_info");
-            StringBuilder builder = new StringBuilder();
-            for (Map<String, Map> third : funs) {
-                builder.append(third.get("funcscope_category").get("id").toString()).append(",");
-            }
-            wechatPublic.setFuncInfo(builder.substring(0, builder.length() - 1));
-            PublicInfoRequest infoRequest = new PublicInfoRequest();
-            infoRequest.setParam(PublicInfoRequest.PRA_COMPONENT_ACCESS_TOKEN, token)
-                    .setBody(PublicInfoRequest.BAY_COMPONENT_APPID, Constants.properties.getProperty("platform.appid"))
-                    .setBody(PublicInfoRequest.BAY_AUTHORIZER_APPID, wechatPublic.getWxAppid());
+        Map child = map.get("authorization_info");
+        WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class, "wxAppid", child.get("authorizer_appid").toString());
+        if (wechatPublic == null) {
+            wechatPublic = new WechatPublic();
+        }
+        wechatPublic.setWxAppid(child.get("authorizer_appid").toString());
+        wechatPublic.setAccessToken(child.get("authorizer_access_token").toString());
+        wechatPublic.setExpiresIn(Integer.parseInt((child.get("expires_in").toString())));
+        wechatPublic.setRefeshToken(child.get("authorizer_refresh_token").toString());
+        List<Map<String, Map>> funs = (List) child.get("func_info");
+        StringBuilder builder = new StringBuilder();
+        for (Map<String, Map> third : funs) {
+            builder.append(third.get("funcscope_category").get("id").toString()).append(",");
+        }
+        wechatPublic.setFuncInfo(builder.substring(0, builder.length() - 1));
+        PublicInfoRequest infoRequest = new PublicInfoRequest();
+        infoRequest.setParam(PublicInfoRequest.PRA_COMPONENT_ACCESS_TOKEN, token)
+                .setBody(PublicInfoRequest.BAY_COMPONENT_APPID, Constants.properties.getProperty("platform.appid"))
+                .setBody(PublicInfoRequest.BAY_AUTHORIZER_APPID, wechatPublic.getWxAppid());
 
-            Map map1 = infoRequest.start();
-            if (map1 == null)
-                return CodeRe.error("获取公众号名称错误!");
-            map1 = (Map) map1.get("authorizer_info");
-            wechatPublic.setUserName((String) (map1.get("user_name")));
-            wechatPublic.setNickName((String) (map1.get("nick_name")));
-            wechatPublic.setCompanyName((String) (map1.get("principal_name")));
+        Map map1 = infoRequest.start();
+        if (map1 == null)
+            return CodeRe.error("获取公众号名称错误!");
+        map1 = (Map) map1.get("authorizer_info");
+        wechatPublic.setUserName((String) (map1.get("user_name")));
+        wechatPublic.setNickName((String) (map1.get("nick_name")));
+        wechatPublic.setCompanyName((String) (map1.get("principal_name")));
 
-            persistenceService.updateOrSave(wechatPublic);
-            return CodeRe.correct(wechatPublic);
+        persistenceService.updateOrSave(wechatPublic);
+        return CodeRe.correct(wechatPublic);
     }
 
     /**
@@ -193,6 +192,7 @@ public class AuthenticationService implements IAuthenticationService {
 
     /**
      * 通过tappid获取jssdkticket
+     *
      * @param id
      * @return
      */

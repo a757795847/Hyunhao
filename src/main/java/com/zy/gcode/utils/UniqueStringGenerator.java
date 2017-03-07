@@ -30,7 +30,7 @@ public class UniqueStringGenerator {
         int v;
         do {
             v = value.get();
-            if(v >999){
+            if (v > 999) {
                 value.set(100);
             }
 
@@ -60,7 +60,7 @@ public class UniqueStringGenerator {
 
     public static String wxbillno(String mchId) {
         String beg = String.valueOf(System.currentTimeMillis()).substring(6);
-        int i = currentIncrement() ;
+        int i = currentIncrement();
         return mchId + DateUtils.format(new Date(), "yyyyMMdd") + beg + i;
     }
 

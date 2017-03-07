@@ -1,8 +1,5 @@
 package com.zy.gcode.utils;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.InputStream;
@@ -13,8 +10,6 @@ import java.util.Properties;
  */
 public abstract class Constants {
     public static Properties properties = new Properties();
-
-
     /**
      *微信token 回调url
      */

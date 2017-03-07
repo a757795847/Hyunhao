@@ -14,5 +14,5 @@ public interface IOperatorService {
 
     CodeRe updatePassword(String username, String password);
 
-    boolean passwordIsTrue(String oldPassword,String newPassword);
+    boolean passwordIsTrue(String oldPassword, String newPassword);
 }

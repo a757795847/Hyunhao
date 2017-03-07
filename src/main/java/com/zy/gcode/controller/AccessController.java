@@ -1,11 +1,9 @@
 package com.zy.gcode.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.pojo.GeToken;
 import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.service.ICodeService;
-import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

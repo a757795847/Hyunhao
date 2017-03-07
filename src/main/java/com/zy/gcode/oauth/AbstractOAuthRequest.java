@@ -1,6 +1,5 @@
 package com.zy.gcode.oauth;
 
-import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.JsonUtils;
 import com.zy.gcode.utils.MzUtils;
@@ -70,7 +69,7 @@ public abstract class AbstractOAuthRequest<T> {
         String str = null;
         try {
             str = MzUtils.inputStreamToString(response.getEntity().getContent());
-            return JsonUtils.asObj(clazz,str);
+            return JsonUtils.asObj(clazz, str);
         } catch (IOException e) {
             log.error("ObjectMapper解析出错:" + str);
             e.printStackTrace();

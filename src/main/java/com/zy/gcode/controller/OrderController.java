@@ -6,7 +6,6 @@ import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IOrderService;
 import com.zy.gcode.utils.Constants;
-import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.Page;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +110,7 @@ public class OrderController {
             file.lastModified();
             OutputStream outputStream = response.getOutputStream();
             response.setContentType("image/png");
-            response.setHeader("Cache-Control","max-age=3600");
+            response.setHeader("Cache-Control", "max-age=3600");
             final byte[] tmp = new byte[4096];
             while ((fileInputStream.read(tmp)) != -1) {
                 outputStream.write(tmp);
@@ -217,13 +216,25 @@ public class OrderController {
         return ControllerStatus.ok(codeRe.getMessage().toString());
 
     }
+
     @RequestMapping("/redInfo/{billno}")
-    public @ResponseBody Object redInfo(@PathVariable String billno){
-       CodeRe codeRe =  orderService.redInfo(billno);
-        if(codeRe.isError()){
+    public
+    @ResponseBody
+    Object redInfo(@PathVariable String billno) {
+        CodeRe codeRe = orderService.redInfo(billno);
+        if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }
         return ControllerStatus.ok(codeRe.getMessage());
+    }
+
+    @RequestMapping("lookup/{orderNo}")
+    public @ResponseBody Object lookup(@PathVariable String orderNo){
+       CodeRe<DataOrder> codeRe = orderService.getOrderByNumber(orderNo);
+       if(codeRe.isError()){
+           return ControllerStatus.error(codeRe.getErrorMessage());
+       }
+       return ControllerStatus.ok(codeRe.getMessage());
     }
 
 

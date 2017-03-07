@@ -213,7 +213,7 @@ public class HttpClientUtils {
                 }
                 return null;
             }
-            Map map = JsonUtils.asObj(Map.class,response.getEntity().getContent());
+            Map map = JsonUtils.asObj(Map.class, response.getEntity().getContent());
             return map;
         } catch (IOException e) {
             e.printStackTrace();
@@ -226,8 +226,8 @@ public class HttpClientUtils {
         return res2Map(response);
     }
 
-    public static String stringGetSend(String url,String... params){
-        HttpResponse response = getSend(url,params);
+    public static String stringGetSend(String url, String... params) {
+        HttpResponse response = getSend(url, params);
         return res2String(response);
     }
 
@@ -243,14 +243,14 @@ public class HttpClientUtils {
     }
 
 
-    private static String res2String(HttpResponse response){
+    private static String res2String(HttpResponse response) {
         StringBuilder builder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 builder.append(line);
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }

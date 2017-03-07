@@ -198,7 +198,9 @@ public class OperatorController {
     }
 
     @RequestMapping("checkVerificationCode/{code}")
-    public @ResponseBody Object checkVerificationCode(@PathVariable String code){
+    public
+    @ResponseBody
+    Object checkVerificationCode(@PathVariable String code) {
         Session session = SecurityUtils.getSubject().getSession();
         VerificationInfo verificationInfo = (VerificationInfo) session.getAttribute("verificationInfo");
         if (verificationInfo == null) {
@@ -216,25 +218,27 @@ public class OperatorController {
     }
 
     @RequestMapping("innerUpdatePassword")
-    public @ResponseBody Object innerUpdatePassword(@RequestBody Map map){
-       User user = (User) SecurityUtils.getSubject().getPrincipal();
-       if(!map.containsKey("oldpassword")){
-           return ControllerStatus.error("旧密码不能为空");
-       }
-       if(!operatorService.passwordIsTrue(map.get("oldpassword").toString(),user.getPassword())) {
-           return ControllerStatus.error("旧密码错误");
-       }
+    public
+    @ResponseBody
+    Object innerUpdatePassword(@RequestBody Map map) {
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        if (!map.containsKey("oldpassword")) {
+            return ControllerStatus.error("旧密码不能为空");
+        }
+        if (!operatorService.passwordIsTrue(map.get("oldpassword").toString(), user.getPassword())) {
+            return ControllerStatus.error("旧密码错误");
+        }
 
 
-       if(map.get("newpassword")==null&&map.get("newpassword").toString().length()==0){
-           return ControllerStatus.error();
-       }
-      CodeRe codeRe =  operatorService.updatePassword(user.getUsername(),map.get("newpassword").toString());
+        if (map.get("newpassword") == null && map.get("newpassword").toString().length() == 0) {
+            return ControllerStatus.error();
+        }
+        CodeRe codeRe = operatorService.updatePassword(user.getUsername(), map.get("newpassword").toString());
 
-       if(codeRe.isError()){
-           return ControllerStatus.error(codeRe.getErrorMessage());
-       }
-       return  ControllerStatus.ok();
+        if (codeRe.isError()) {
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
+        return ControllerStatus.ok();
     }
 
 

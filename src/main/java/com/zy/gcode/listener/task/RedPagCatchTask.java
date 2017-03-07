@@ -1,6 +1,5 @@
 package com.zy.gcode.listener.task;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zy.gcode.controller.delegate.BatchRe;
 import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.service.IPayService;
@@ -36,14 +35,16 @@ public class RedPagCatchTask extends TimerTask {
 
     }
 
-    public static class TaskTest extends TimerTask{
+    public static class TaskTest extends TimerTask {
         int i = 0;
+
         @Override
         public void run() {
-           System.out.println(i++);
+            System.out.println(i++);
         }
     }
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         TaskTest taskTest = new TaskTest();
         Timer timer = new Timer();
         timer.schedule(taskTest, 100, 1000);

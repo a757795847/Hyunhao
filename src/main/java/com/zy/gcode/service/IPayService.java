@@ -12,5 +12,6 @@ public interface IPayService {
     CodeRe<RedStatus> payInfo(String billno, String geappid);
 
     CodeRe circularGetPayInfo();
+
     CodeRe pullIllegalBill();
 }

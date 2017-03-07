@@ -1,7 +1,6 @@
 package com.zy.gcode.oauth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.JsonUtils;
 import org.apache.http.HttpResponse;
@@ -27,7 +26,7 @@ public class PublicPreCodeRequest extends AbstractOAuthRequest<PublicPreCodeRequ
         HttpClientUtils.checkRespons(response);
 
         try {
-            return JsonUtils.asObj(PreAuthCode.class,response.getEntity().getContent());
+            return JsonUtils.asObj(PreAuthCode.class, response.getEntity().getContent());
         } catch (IOException e) {
             e.printStackTrace();
         }

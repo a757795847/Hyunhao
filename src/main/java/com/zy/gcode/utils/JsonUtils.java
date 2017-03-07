@@ -11,37 +11,39 @@ import java.io.InputStream;
 /**
  * Created by admin5 on 17/3/6.
  */
-public  abstract class JsonUtils {
-   private static ObjectMapper mapper = new ObjectMapper();
-   static {
-       mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
-       mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-       mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-   }
+public abstract class JsonUtils {
+    private static ObjectMapper mapper = new ObjectMapper();
 
-    public static <T> T asObj(Class<T> clazz,String str){
-        try {
-           return mapper.readValue(str,clazz);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException();
-        }
+    static {
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
     }
-    public static <T> T asObj(Class<T> clazz,InputStream inputStream){
+
+    public static <T> T asObj(Class<T> clazz, String str) {
         try {
-           return mapper.readValue(inputStream,clazz);
+            return mapper.readValue(str, clazz);
         } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalArgumentException();
         }
     }
 
-    public static String objAsString(Object obj){
+    public static <T> T asObj(Class<T> clazz, InputStream inputStream) {
         try {
-           return mapper.writeValueAsString(obj);
+            return mapper.readValue(inputStream, clazz);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public static String objAsString(Object obj) {
+        try {
+            return mapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw  new IllegalArgumentException();
+            throw new IllegalArgumentException();
         }
     }
 

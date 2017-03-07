@@ -246,10 +246,10 @@ public class PayService implements IPayService {
         List<RedStatus> pushList = new ArrayList<>();
         List<String> errorList = new ArrayList<>();
 
-        List<RedBill> redBills = persistenceService.getListByColumn(RedBill.class,"status",0);
+        List<RedBill> redBills = persistenceService.getListByColumn(RedBill.class, "status", 0);
 
-        if(Constants.debug){
-            System.out.println("redBillsSize:"+redBills.size());
+        if (Constants.debug) {
+            System.out.println("redBillsSize:" + redBills.size());
         }
 
         redBills.forEach(redBill -> {
@@ -257,7 +257,7 @@ public class PayService implements IPayService {
             if (redStatusCodeRe.isError()) {
                 StringBuilder builder = new StringBuilder(redStatusCodeRe.getErrorMessage());
                 errorList.add(builder.append(":").append(redBill.getMchBillno()).toString());
-                log.error("抓取红包失败:"+builder.toString());
+                log.error("抓取红包失败:" + builder.toString());
             } else {
                 RedStatus updateAfterRedStatus = redStatusCodeRe.getMessage();
                 pushList.add(updateAfterRedStatus);
@@ -272,8 +272,9 @@ public class PayService implements IPayService {
         batchRe.setTlist(pushList);
         return batchRe;
     }
+
     @Transactional
-    public CodeRe pullIllegalBill(){
+    public CodeRe pullIllegalBill() {
         List<RedStatus> pushList = new ArrayList<>();
         List<String> errorList = new ArrayList<>();
         DetachedCriteria criteria = DetachedCriteria.forClass(RedStatus.class);
@@ -282,8 +283,8 @@ public class PayService implements IPayService {
                 add(Restrictions.not(Restrictions.in("status", new String[]{"RECEIVED", "REFUND"})));
         criteria.add(disjunction);
         List<RedStatus> redStatuses = persistenceService.getList(criteria);
-        if(Constants.debug){
-            System.out.println("updateredStatusesSize:"+redStatuses.size());
+        if (Constants.debug) {
+            System.out.println("updateredStatusesSize:" + redStatuses.size());
         }
 
         redStatuses.forEach(redStatus -> {
@@ -291,19 +292,19 @@ public class PayService implements IPayService {
             if (redStatusCodeRe.isError()) {
                 StringBuilder builder = new StringBuilder(redStatusCodeRe.getErrorMessage());
                 errorList.add(builder.append(":").append(redStatus.getMchBillno()).toString());
-                log.error("抓取红包失败:"+builder.toString());
+                log.error("抓取红包失败:" + builder.toString());
             } else {
                 RedStatus updateAfterRedStatus = redStatusCodeRe.getMessage();
-                if(Constants.debug){
-                    System.out.println("updateAfterRedStatus:"+updateAfterRedStatus);
-                    System.out.println("updateBeforeRedStatus:"+redStatus);
+                if (Constants.debug) {
+                    System.out.println("updateAfterRedStatus:" + updateAfterRedStatus);
+                    System.out.println("updateBeforeRedStatus:" + redStatus);
                 }
 
 
                 if (!updateAfterRedStatus.getStatus().equals(redStatus.getStatus())) {
                     pushList.add(updateAfterRedStatus);
-                    if(Constants.debug){
-                        System.out.println("红包更新成功:"+updateAfterRedStatus);
+                    if (Constants.debug) {
+                        System.out.println("红包更新成功:" + updateAfterRedStatus);
                     }
                     redStatus.setStatus(updateAfterRedStatus.getStatus());
                     persistenceService.update(redStatus);

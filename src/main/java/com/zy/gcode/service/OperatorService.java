@@ -4,7 +4,6 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.User;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -69,6 +68,6 @@ public class OperatorService implements IOperatorService {
 
     @Override
     public boolean passwordIsTrue(String oldPassword, String newPassword) {
-        return passwordService.passwordsMatch(oldPassword,newPassword);
+        return passwordService.passwordsMatch(oldPassword, newPassword);
     }
 }

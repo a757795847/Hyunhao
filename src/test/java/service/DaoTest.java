@@ -58,15 +58,10 @@ public class DaoTest {
 
     @Test
     public void password() {
-        ApplicationInfo applicationInfo = new ApplicationInfo();
-        applicationInfo.setId("11");
-        applicationInfo.setPrice(111);
-        try {
-            persistenceService.update(applicationInfo);
-        } catch (HibernateOptimisticLockingFailureException e) {
+        int n = 10;
+        int i = 1;
 
-            // e.printStackTrace();
-        }
+        System.out.println(n*i++);
     }
 
     @Test
