@@ -6,13 +6,13 @@ $("#send_confirm").on("click",function () {
        "newpassword":newpassword,
     }
     console.log(datas);
-    var newpasswords=$("#new_passwords").val();
-    if(newpassword!=newpasswords){
+    var newpasswords = $("#new_passwords").val();
+    if (newpassword != newpasswords) {
         $("#change_pass").modal("show");
-        $(".sa-icon").css("display","block");
-        $("#change_pass img").css("display","none");
+        $(".sa-icon").css("display", "block");
+        $("#change_pass img").css("display", "none");
         $("#change_pass h2").html("两次密码输入不一样");
-    }else {
+    } else {
 
         $.ajax({
             type: 'POST',
@@ -22,12 +22,12 @@ $("#send_confirm").on("click",function () {
             contentType: 'application/json;charset=UTF-8',
             success: function (data) {
                 console.log(data);
-                if(data.status=="1"){
+                if (data.status == "1") {
                     $("#change_pass").modal("show");
-                }else{
+                } else {
                     $("#change_pass").modal("show");
-                    $(".sa-icon").css("display","block");
-                    $("#change_pass img").css("display","none");
+                    $(".sa-icon").css("display", "block");
+                    $("#change_pass img").css("display", "none");
                     $("#change_pass h2").html("修改密码有误");
                 }
 

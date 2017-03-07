@@ -36,19 +36,19 @@ public abstract class Constants {
      * 返现截图存放的路径
      */
 
-    public final static String RED_PICTURE_PATH = "/opt/zy/Pictures";
+    public final static String RED_PICTURE_PATH = "/Users/admin3/Downloads";
 
     /**
      * 上传的csv存放路径
      */
 
-    public final static String RED_CSV_PATH = "/opt/zy/Downloads";
+    public final static String RED_CSV_PATH = "/Users/admin3/Downloads";
 
     /**
      * 支付二维码存放路径
      */
 
-    public final static String PAY_QR_PATH = "/opt/zy/Downloads";
+    public final static String PAY_QR_PATH = "/Users/admin3/Downloads";
 
     /**
      * 这个应用的id

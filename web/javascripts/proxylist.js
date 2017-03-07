@@ -36,8 +36,6 @@ function indexAjax(datas, pageState) {
         dataType: 'json',
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
-            // console.log(data.list[0].giftState);
-            console.log(data);
             dataList = data.list;
 
             var tbody = '';
@@ -55,21 +53,20 @@ function indexAjax(datas, pageState) {
                     than = "通过";
                     thao = "驳回";
 
-                }else if(order.giftState == 2){
+                } else if (order.giftState == 2) {
                     order.giftState = "审核通过";
-                }else{
+                } else {
                     order.giftState = "红包已发送";
                 }
 
-                var curTime = new Date(parseInt(order.applyDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
+                var curTime = new Date(parseInt(order.applyDate)).toLocaleString().replace(/:\d{1,2}$/, ' ');
 
-                var sendTime = new Date(parseInt(order.sendDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
-                console.log(sendTime)
-                if(order.applyDate==''||order.applyDate==null){
-                    curTime='';
+                var sendTime = new Date(parseInt(order.sendDate)).toLocaleString().replace(/:\d{1,2}$/, ' ');
+                if (order.applyDate == '' || order.applyDate == null) {
+                    curTime = '';
                 }
-                if(order.sendDate==''||order.sendDate==null){
-                    sendTime="";
+                if (order.sendDate == '' || order.sendDate == null) {
+                    sendTime = "";
                 }
 
                 for (var key in order) {
@@ -88,7 +85,7 @@ function indexAjax(datas, pageState) {
                 tbody += '<td class="mailbox-date"><span class="label label-success order_confirm_btn" data-index="' + order.id + '" >' + than + '</span>';
                 tbody += '<span class="label label-success turn" data-toggle="modal" data-target="#myModal">' + thao + '</span></td></tr>';
 
-            
+
             });
             $("#Table").find("tbody").html(tbody);
 
@@ -122,12 +119,16 @@ function indexAjax(datas, pageState) {
 }
 indexAjax({status: [0], currentPageIndex: 1}, 1);
 
+$("#search_list").on("click", function () {
+    searchAjax();
+
+})
+
 //点击通过按钮
 $("#Table").on('click', '.order_confirm_btn', function () {
 
     var orderIndex = $(this).data("index");
     var that = $(this);
-    console.log(orderIndex);
     $.ajax({
         type: 'post',
         url: '/order/passAuditing/' + orderIndex,
@@ -139,7 +140,6 @@ $("#Table").on('click', '.order_confirm_btn', function () {
                 $('.' + orderIndex).html("审核通过");
                 // $(".label.label-success.turn").remove();
                 var link = '<span class="label label-success turn">发送红包</span>';
-                console.log(that);
                 that.parent().html(link);
 
 
@@ -150,38 +150,34 @@ $("#Table").on('click', '.order_confirm_btn', function () {
     $('#send').attr('data-index', orderIndex);
 });
 //显示红包策略
-var date_lists=[];
-$("#Table").on("click",".label.label-success.turn",function(){
-    console.log("1");
-    var orders=$(this).data("index");
+var date_lists = [];
+$("#Table").on("click", ".label.label-success.turn", function () {
+    var orders = $(this).data("index");
     $.ajax({
-       type:'post',
-        url:'/redstrategy/list',
+        type: 'post',
+        url: '/redstrategy/list',
         dataType: 'json',
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
-            console.log(data);
-            date_lists=data.list;
-            var tbody='';
-            for(var i=0;i<data.list.length;i++){
-                tbody +='<span class="text-color border-color" data-index="' + data.list[i] .id + '">'+data.list[i].name+'</span>';
+            date_lists = data.list;
+            var tbody = '';
+            for (var i = 0; i < data.list.length; i++) {
+                tbody += '<span class="text-color border-color" data-index="' + data.list[i].id + '">' + data.list[i].name + '</span>';
             }
 
             $("#span").find('.father').html(tbody);
-            }
+        }
 
-        })
+    })
 
 
     $('#send').attr('data-index', orders);
     $("#myModals").modal('show');
 
-    })
+})
 
 
-
-
-$("#span").on("click",'.text-color.border-color', function () {
+$("#span").on("click", '.text-color.border-color', function () {
     $(this).addClass("actives");
     $(this).siblings().removeClass("actives");
 });
@@ -190,25 +186,20 @@ $("#span").on("click",'.text-color.border-color', function () {
 //选择红包并发送红包
 $("#send").on('click', function () {
     var order_index = $(this).data("index");
-    console.log(order_index);
     var Idx = '';
 
     for (var i = 0; i < $("#span").find('.text-color').length; i++) {
 
         if ($("#span").find('.text-color').eq(i).hasClass('actives')) {
-            console.log($('#span .text-color').eq(i).attr('class'))
             Idx = date_lists[i].id;
         }
     }
 
 
-
-    console.log(Idx);
     var parameter = {
         "id": order_index,
         "strategyid": Idx
     }
-    console.log(parameter);
     $.ajax({
         type: 'post',
         url: "/order/redSend",
@@ -216,8 +207,7 @@ $("#send").on('click', function () {
         dataType: 'json',
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
-            console.log(data);
-            if(data.status=="1") {
+            if (data.status == "1") {
                 $('#' + order_index + ' #order_state span').html("红包发送成功");
                 $('#' + order_index + ' .top').html(Idx / 100 + '元红包');
                 $('#' + order_index + ' .turn').remove();
@@ -230,8 +220,6 @@ $("#send").on('click', function () {
 $("#Table").on('click', ".proxylist_details", function () {
     var order_index = $(this).data("index");
     /* data[order_index]*/
-    console.log(dataList);
-    console.log(dataList[order_index]);
     $("#order_number").html(dataList[order_index].orderNumber);
     $("#buyer_name").html(dataList[order_index].buyerName);
     $("#order_create_time").html(dataList[order_index].orderCreateTime);
@@ -279,6 +267,7 @@ $("#clear").click(function () {
     $("#Text").val("");
 });
 //点击筛选 重新显示列表
+var red_status='';
 function filterAjax(datas, pageState) {
     $.ajax({
         type: 'post',
@@ -287,73 +276,62 @@ function filterAjax(datas, pageState) {
         dataType: 'json',
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
-            // console.log(data.list[0].giftState);
+
             console.log(data);
             dataList = data.list;
-
-            var tbody = '';
+            var tbodys = '';
             var than = '';
             var thao = '';
             $.each(data.list, function (i, order) {
                 if (order.giftState == 0) {
                     order.giftState = "未申领";
+                    tbodys += index(order, i, than, thao,red_status);
                 } else if (order.giftState == 1) {
                     order.giftState = "审核中";
                     than = '<span class="label label-success order_confirm_btn" data-index="' + order.id + '" >通过</span>';
                     thao = '<span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span>';
-
-                }else if(order.giftState == 2){
+                    tbodys += index(order, i, than, thao,red_status);
+                } else if (order.giftState == 2) {
                     order.giftState = "审核通过";
-                    thao='<span class="label label-success turn" data-index="' + order.id + '" >发送红包</span>';
-                }else{
+                    thao = '<span class="label label-success turn" data-index="' + order.id + '" >发送红包</span>';
+                    tbodys += index(order, i, than, thao,red_status);
+                } else {
                     order.giftState = "红包已发送";
-                }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/order/redInfo/' + order.mchNumber,
+                        dataType: 'json',
+                        async:false,
+                        contentType: 'application/json;charset=UTF-8',
+                        success: function (datas) {
+                            console.log(datas);
+                            console.log(order.mchNumber);
+                            if (datas.data.status == "SENT") {
+                                red_status = "已发放待领取";
+                            } else if (datas.data.status == "SENDING") {
+                                red_status = "发放中";
+                            } else if (datas.data.status == "FAILED") {
+                                red_status = "发放失败";
+                            } else if (datas.data.status == "RECEIVED") {
+                                red_status = "已领取";
+                            } else if (datas.data.status == "RFUND_ING") {
+                                red_status = "退款中";
+                            }
+                            else {
+                                red_status = "已退款";
+                            }
+                            tbodys += index(order, i, than, thao,red_status);
 
-                var curTime = new Date(parseInt(order.applyDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
-                var sendTime = new Date(parseInt(order.sendDate)).toLocaleString().replace(/:\d{1,2}$/,' ');
-                if(order.applyDate==''||order.applyDate==null){
-                    curTime='';
-                }
-                if(order.sendDate==''||order.sendDate==null){
-                    sendTime='';
-                }
-                console.log(curTime);
+                        },
+                        error: function (jqXHR) {
+                            if (jqXHR.status == 406) {
+                            }
+                        }
+                    })
 
-                for (var key in order) {
-                    if (order[key] == null) {
-                        order[key] = '';
-                    }
                 }
-                var comment_file='';
-                if(order.commentFile3!=''){
-                    comment_file='<li><img src="http://open.izhuiyou.com/order/picture/'+order.commentFile1+'" alt="" class="tooltips"></li>';
-                     comment_file +='<li><img src="http://open.izhuiyou.com/order/picture/'+order.commentFile2+'" alt="" class="tooltips"></li>';
-                    comment_file +='<li><img src="http://open.izhuiyou.com/order/picture/'+order.commentFile3+'" alt="" class="tooltips"></li>';
-                    console.log("1");
-                }
-                 else if(order.commentFile2!=''){
-                    comment_file='<li><img src="http://open.izhuiyou.com/order/picture/'+order.commentFile1+'" alt="" class="tooltips"></li>';
-                    comment_file +='<li><img src="http://open.izhuiyou.com/order/picture/'+order.commentFile2+'" alt="" class="tooltips"></li>';
-                    console.log("2");
-                }else if(order.commentFile1!=''){
-                    comment_file='<li><img src="http://open.izhuiyou.com/order/picture/'+order.commentFile1+'" alt="" class="tooltips"></li>';
-                }else{
-                    comment_file='';
-                }
-                tbody += '<tr id="' + order.id + '"><td><input type="checkbox" id="statistic"></td><td class="mailbox-date"><span>' + order.orderNumber + '</span></td>';
-                tbody += '<td class="mailbox-date"><span class="label label-success proxylist_details" data-index="' + i + '">详情</span></td>';
-                tbody += '<td class="mailbox-date"><ul class="images">'+comment_file+'</ul></td>';
-                tbody += '<td class="mailbox-date" style="width:12%;"><span>' + curTime + '</span></td>';
-                tbody += '<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">' + order.giftState + '</span></td>';
-                tbody += '<td class="mailbox-date"><span class="top">' + order.giftDetail + '</span></td>';
-                tbody += '<td class="mailbox-date"><span>' + sendTime + '</span></td>';
-                tbody += '<td class="mailbox-date"><span>' + order.recieveDate + '</span></td>';
-                tbody += '<td class="mailbox-date">'+than+'';
-                tbody += ''+thao+'</td></tr>';
-
-
             });
-            $("#Table").find("tbody").html(tbody);
+            $("#Table").find("tbody").html(tbodys);
 
             if (pageState == 1) {
                 $("#jqueryPage").pagination({
@@ -366,13 +344,86 @@ function filterAjax(datas, pageState) {
                     callback: function (options) {
                         var index = options.index;
                         filterAjax({status: datas.status, currentPageIndex: index});
-                        //options.count = 300;
-                        //return options;
                     },
                 });
             }
 
 
+        },
+        error: function (jqXHR) {
+            if (jqXHR.status == 406) {
+
+            }
+        }
+
+    })
+
+
+}
+
+function searchAjax() {
+    var search_input = $("#search_input").val();
+    console.log(search_input);
+    $.ajax({
+        type: 'POST',
+        url: '/order/lookup/' + search_input,
+        dataType: 'json',
+        contentType: 'application/json;charset=UTF-8',
+        success: function (data) {
+            console.log(data.data);
+            var tbodys = '';
+            var than = '';
+            var thao = '';
+            var i=0;
+                if (data.data.giftState == 0) {
+                    data.data.giftState = "未申领";
+                    tbodys = index(data.data, i, than, thao,red_status);
+                } else if (data.data.giftState == 1) {
+                    data.data.giftState = "申领中";
+                    than = '<span class="label label-success order_confirm_btn" data-index="' + data.data.id + '" >通过</span>';
+                    thao = '<span class="label label-success turn" data-toggle="modal" data-target="#myModal">驳回</span>';
+                    tbodys = index(data.data, i, than, thao,red_status);
+                } else if (data.data.giftState == 2) {
+                    data.data.giftState = "审核通过";
+                    thao = '<span class="label label-success turn" data-index="' + data.data.id + '" >发送红包</span>';
+                    tbodys = index(data.data, i, than, thao,red_status);
+                } else {
+                    data.data.giftState = "红包已发送";
+                    $.ajax({
+                        type: 'POST',
+                        url: '/order/redInfo/' + data.data.mchNumber,
+                        dataType: 'json',
+                        async:false,
+                        contentType: 'application/json;charset=UTF-8',
+                        success: function (datas) {
+                            console.log(datas);
+                            console.log(data.data.mchNumber);
+                            if (datas.data.status == "SENT") {
+                                red_status = "已发放待领取";
+                            } else if (datas.data.status == "SENDING") {
+                                red_status = "发放中";
+                            } else if (datas.data.status == "FAILED") {
+                                red_status = "发放失败";
+                            } else if (datas.data.status == "RECEIVED") {
+                                red_status = "已领取";
+                            } else if (datas.data.status == "RFUND_ING") {
+                                red_status = "退款中";
+                            }
+                            else {
+                                red_status = "已退款";
+                            }
+                            tbodys += index(data.data, i, than, thao,red_status);
+
+
+                        },
+                        error: function (jqXHR) {
+                            if (jqXHR.status == 406) {
+                            }
+                        }
+                    })
+
+                }
+            $("#Table").find("tbody").html(tbodys);
         },
         error: function (jqXHR) {
             if (jqXHR.status == 406) {
@@ -392,34 +443,80 @@ $("#filter").on("click", function () {
         state_r = 0;
     } else if (receive == "申领中") {
         state_r = 1;
-    } else if(receive == "审核通过"){
+    } else if (receive == "审核通过") {
         state_r = 2;
-    }else{
+    } else {
         state_r = 3;
     }
-    var import_date=$("#Import_date").val();
-    var user_date=$("#user_date").val();
+    var import_date = $("#Import_date").val();
+    var user_date = $("#user_date").val();
 
-    import_date=new Date(Date.parse(import_date.replace(/:\d{1,2}$/,' ')));
-    import_date=import_date.getTime();
+    import_date = new Date(Date.parse(import_date.replace(/:\d{1,2}$/, ' ')));
+    import_date = import_date.getTime();
 
-    user_date=new Date(Date.parse(user_date.replace(/:\d{1,2}$/,' ')));
-    user_date=user_date.getTime();
-    if(import_date ==""){
-        filterAjax({status: [state_r], currentPageIndex: 1,applyTime:user_date}, 1);
+    user_date = new Date(Date.parse(user_date.replace(/:\d{1,2}$/, ' ')));
+    user_date = user_date.getTime();
+    if (import_date == "") {
+        filterAjax({status: [state_r], currentPageIndex: 1, applyTime: user_date}, 1);
     }
-    else if(user_date ==""){
-        filterAjax({status: [state_r], currentPageIndex: 1,importTime:import_date}, 1);
+    else if (user_date == "") {
+        filterAjax({status: [state_r], currentPageIndex: 1, importTime: import_date}, 1);
     }
-    else{
-        filterAjax({status: [state_r], currentPageIndex: 1,importTime:import_date,applyTime:user_date}, 1);
+    else {
+        filterAjax({status: [state_r], currentPageIndex: 1, importTime: import_date, applyTime: user_date}, 1);
     }
-    console.log([state_r]);
     $(".pager").remove();
 
 
-
 });
+
+function index(order, i, than, thao,red_status) {
+
+    var tbody = '';
+    var curTime = new Date(parseInt(order.applyDate)).toLocaleString().replace(/:\d{1,2}$/, ' ');
+    var sendTime = new Date(parseInt(order.sendDate)).toLocaleString().replace(/:\d{1,2}$/, ' ');
+    if (order.applyDate == '' || order.applyDate == null) {
+        curTime = '';
+    }
+    if (order.sendDate == '' || order.sendDate == null) {
+        sendTime = '';
+    }
+
+    for (var key in order) {
+        if (order[key] == null) {
+            order[key] = '';
+        }
+    }
+    var comment_file = '';
+    if (order.commentFile3 != '') {
+        comment_file = '<li><img src="http://open.izhuiyou.com/order/picture/' + order.commentFile1 + '" alt="" class="tooltips"></li>';
+        comment_file += '<li><img src="http://open.izhuiyou.com/order/picture/' + order.commentFile2 + '" alt="" class="tooltips"></li>';
+        comment_file += '<li><img src="http://open.izhuiyou.com/order/picture/' + order.commentFile3 + '" alt="" class="tooltips"></li>';
+    }
+    else if (order.commentFile2 != '') {
+        comment_file = '<li><img src="http://open.izhuiyou.com/order/picture/' + order.commentFile1 + '" alt="" class="tooltips"></li>';
+        comment_file += '<li><img src="http://open.izhuiyou.com/order/picture/' + order.commentFile2 + '" alt="" class="tooltips"></li>';
+    } else if (order.commentFile1 != '') {
+        comment_file = '<li><img src="http://open.izhuiyou.com/order/picture/' + order.commentFile1 + '" alt="" class="tooltips"></li>';
+    } else {
+        comment_file = '';
+    }
+
+    tbody += '<tr id="' + order.id + '"><td><input type="checkbox" id="statistic"></td><td class="mailbox-date"><span>' + order.orderNumber + '</span></td>';
+    tbody += '<td class="mailbox-date"><span class="label label-success proxylist_details" data-index="' + i + '">详情</span></td>';
+    tbody += '<td class="mailbox-date"><ul class="images">' + comment_file + '</ul></td>';
+    tbody += '<td class="mailbox-date" style="width:12%;"><span>' + curTime + '</span></td>';
+    tbody += '<td id="order_state" class="mailbox-date"><span class="state ' + order.id + '">' + order.giftState + '</span></td>';
+    tbody += '<td class="mailbox-date"><span class="top">'+red_status+'</span></td>';
+    tbody += '<td class="mailbox-date"><span>' + sendTime + '</span></td>';
+    tbody += '<td class="mailbox-date"><span>' + order.recieveDate + '</span></td>';
+    tbody += '<td class="mailbox-date">' + than + '';
+    tbody += '' + thao + '</td></tr>';
+
+    return tbody;
+
+
+}
 
 
 // this.tooltipsPreview = function(){
@@ -505,29 +602,29 @@ $('#Table').on('mouseover', '.images', function () {
     var objTop = offset.top;
     var objLeft = offset.left;
 
-    if(($(document).scrollTop() + winHeight) - objTop < 500){
+    if (($(document).scrollTop() + winHeight) - objTop < 500) {
         objTop = objTop - 450;
-    }else{
-        objTop = objTop +19;
+    } else {
+        objTop = objTop + 19;
     }
-    if(pacList.length==3){
-        pacText='<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[0] + '" />' +
+    if (pacList.length == 3) {
+        pacText = '<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[0] + '" />' +
             '<img style="position:absolute;left:280px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[1] + '" />' +
             '<img style="position:absolute;left:560px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[2] + '" />';
-    }else if(pacList.length==2){
-        pacText='<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[0] + '" />' +
-        '<img style="position:absolute;left:280px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[1] + '" />';
-    }else{
-        pacText='<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[0] + '"/>';
+    } else if (pacList.length == 2) {
+        pacText = '<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[0] + '" />' +
+            '<img style="position:absolute;left:280px;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[1] + '" />';
+    } else {
+        pacText = '<img style="position:absolute;left:0;top:0;z-index:10003;border:1px solid #ddd;" height="500px" width="280" src="' + pacList[0] + '"/>';
     }
 
     $('#tooltips').html(pacText);
     $('#tooltips').css({
-        'top':objTop,
-        'left':objLeft +114,
+        'top': objTop,
+        'left': objLeft + 114,
     })
     $('#tooltips').show();
 });
-$('#Table').on('mouseout','.images',function(){
+$('#Table').on('mouseout', '.images', function () {
     $('#tooltips').hide();
 })
