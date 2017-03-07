@@ -4,7 +4,9 @@ import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.MzUtils;
 import com.zy.gcode.utils.UniqueStringGenerator;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Arrays;
@@ -15,7 +17,7 @@ import java.util.Arrays;
 @Controller
 @RequestMapping("wcMs")
 public class WechatMessageController {
-    @RequestMapping
+    @RequestMapping(method=RequestMethod.GET)
     public
     @ResponseBody
     String index(String signature,String timestamp,String nonce,String echostr) {
@@ -35,6 +37,12 @@ public class WechatMessageController {
         if(afterSha1.equals(signature)){
             return  echostr;
         }
+        return "";
+    }
+
+    @RequestMapping(method=RequestMethod.POST)
+    public @ResponseBody String receiver(@RequestBody String body){
+        System.out.println(body);
         return "";
     }
 
