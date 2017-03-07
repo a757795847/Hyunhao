@@ -23,6 +23,10 @@ public class PayController {
     @Autowired
     IPayService payService;
 
+
+    RedInfoTimerTask redInfoTimerTask =   new RedInfoTimerTask();
+    UpdateRedInfoTimerTask updateRedInfoTimerTask = new UpdateRedInfoTimerTask();
+
     @RequestMapping("index")
     public
     @ResponseBody
@@ -79,27 +83,40 @@ public class PayController {
     public
     @ResponseBody
     Object upCatch() {
-        new RedInfoTimerTask(3600);
-        return ControllerStatus.ok();
+        if(redInfoTimerTask.begin(3600)){
+            return ControllerStatus.ok();
+        }
+        return ControllerStatus.error("抓单已启动");
     }
 
     @RequestMapping("upReCatch")
     public
     @ResponseBody
     Object upReCatch() {
-        new UpdateRedInfoTimerTask(3600);
-        return ControllerStatus.ok();
+       if(updateRedInfoTimerTask.begin(3600)){
+           return ControllerStatus.ok();
+       }
+        return ControllerStatus.error("抓单已启动");
     }
+
 
 
     private class RedInfoTimerTask extends TimerTask {
         Timer timer;
+        boolean isStop = true;
 
-        public RedInfoTimerTask(int seconds) {
-            timer = new Timer();
-            timer.schedule(this, 5000, seconds * 1000);
+        private RedInfoTimerTask() {
         }
 
+        public boolean begin(int seconds) {
+            if (!isStop) {
+                return false;
+            }
+            timer = new Timer();
+            timer.schedule(this, 5000, seconds * 1000);
+            isStop= false;
+            return true;
+        }
 
         @Override
         public void run() {
@@ -110,6 +127,7 @@ public class PayController {
             }
             if (batchRe.getMessage().isEmpty()) {
                 timer.cancel();
+                isStop=true;
                 System.out.println("系统抓取订单已结束调用");
             }
         }
@@ -118,9 +136,15 @@ public class PayController {
     private class UpdateRedInfoTimerTask extends TimerTask {
         Timer timer;
 
-        public UpdateRedInfoTimerTask(int seconds) {
+        private UpdateRedInfoTimerTask() {
+        }
+        public  boolean begin(int seconds){
+            if(timer!=null){
+                return false;
+            }
             timer = new Timer();
             timer.schedule(this, 5000, seconds * 1000);
+            return true;
         }
 
 
