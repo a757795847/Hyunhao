@@ -307,7 +307,7 @@ public class OrderService implements IOrderService {
     @Override
     @Transactional
     public CodeRe getOrderByNumber(String orderNo) {
-       DataOrder order =  persistenceService.getOneByColumn(DataOrder.class,"orderNumber",orderNo,"createUserId",getWxOperator().getUsername());
+       DataOrder order =  persistenceService.getOneByColumn(DataOrder.class,"orderNumber",orderNo.trim(),"createUserId",getWxOperator().getUsername());
         if(order ==null){
             return CodeRe.error("订单不存在!");
         }

@@ -42,9 +42,9 @@ public class PayService implements IPayService {
 
     @Override
     @Transactional
-    public CodeRe pay(String id, int count, String geappid) {
+    public CodeRe pay(String id, int count, String tappid) {
 
-        WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, geappid);
+        WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, tappid);
 
 
         PayCredential payCredential = persistenceService.get(PayCredential.class, wechatPublicServer.getWxAppid());
@@ -129,6 +129,7 @@ public class PayService implements IPayService {
             redBill.setSendListid(reMap.get("send_listid"));
         }
         redBill.setStatus(0);
+        redBill.setTappid(tappid);
         persistenceService.updateOrSave(redBill);
 
         return CodeRe.correct(redBill.getMchBillno());
@@ -136,10 +137,10 @@ public class PayService implements IPayService {
 
     @Override
     @Transactional
-    public CodeRe<RedStatus> payInfo(String billno, String geappid) {
+    public CodeRe<RedStatus> payInfo(String billno, String tappid) {
 
 
-        WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, geappid);
+        WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, tappid);
 
         return redinfo(wechatPublicServer.getWxAppid(), billno);
     }
@@ -241,7 +242,7 @@ public class PayService implements IPayService {
 
     @Override
     @Transactional
-    public CodeRe circularGetPayInfo() {
+    public BatchRe circularGetPayInfo() {
 
         List<RedStatus> pushList = new ArrayList<>();
         List<String> errorList = new ArrayList<>();
@@ -262,6 +263,8 @@ public class PayService implements IPayService {
                 RedStatus updateAfterRedStatus = redStatusCodeRe.getMessage();
                 pushList.add(updateAfterRedStatus);
                 redBill.setStatus(1);
+                updateAfterRedStatus.setTappid(redBill.getTappid());
+                persistenceService.updateOrSave(updateAfterRedStatus);
                 persistenceService.update(redBill);
             }
         });
@@ -274,7 +277,7 @@ public class PayService implements IPayService {
     }
 
     @Transactional
-    public CodeRe pullIllegalBill() {
+    public BatchRe pullIllegalBill() {
         List<RedStatus> pushList = new ArrayList<>();
         List<String> errorList = new ArrayList<>();
         DetachedCriteria criteria = DetachedCriteria.forClass(RedStatus.class);

@@ -17,6 +17,7 @@ public class RedStatus {
     private Timestamp updateTime;
     private String openid;
     private String wxappid;
+    private String tappid;
 
     public String getWxappid() {
         return wxappid;
@@ -104,6 +105,14 @@ public class RedStatus {
 
     public void setOpenid(String openid) {
         this.openid = openid;
+    }
+
+    public String getTappid() {
+        return tappid;
+    }
+
+    public void setTappid(String tappid) {
+        this.tappid = tappid;
     }
 
     @Override

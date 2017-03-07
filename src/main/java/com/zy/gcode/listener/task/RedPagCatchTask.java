@@ -44,9 +44,10 @@ public class RedPagCatchTask extends TimerTask {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         TaskTest taskTest = new TaskTest();
         Timer timer = new Timer();
         timer.schedule(taskTest, 100, 1000);
+        timer.schedule(new TaskTest(),100,1000);
     }
 }

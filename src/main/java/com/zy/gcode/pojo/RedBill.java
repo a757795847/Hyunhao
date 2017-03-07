@@ -16,6 +16,7 @@ public class RedBill {
     private Timestamp insertTime;
     private Timestamp updateTime;
     private Integer status;
+    private String tappid;
 
     public String getMchBillno() {
         return mchBillno;
@@ -95,5 +96,13 @@ public class RedBill {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getTappid() {
+        return tappid;
+    }
+
+    public void setTappid(String tappid) {
+        this.tappid = tappid;
     }
 }
