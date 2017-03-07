@@ -130,10 +130,6 @@ public class PayController {
                 System.out.println("ok:" + batchRe.getMessage());
                 System.out.println("error:" + batchRe.getErrorMessage());
             }
-
-            if (batchRe.getMessage().isEmpty()) {
-                timer.cancel();
-            }
         }
     }
 
