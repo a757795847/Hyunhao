@@ -128,7 +128,7 @@ public class PayService implements IPayService {
         if (reMap.containsKey("send_listid")) {
             redBill.setSendListid(reMap.get("send_listid"));
         }
-
+        redBill.setStatus(0);
         persistenceService.updateOrSave(redBill);
 
         return CodeRe.correct(redBill.getMchBillno());

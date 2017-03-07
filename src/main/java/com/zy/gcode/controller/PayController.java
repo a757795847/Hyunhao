@@ -130,6 +130,7 @@ public class PayController {
                 System.out.println("error:" + batchRe.getErrorList());
             }
             if (batchRe.getMessage().isEmpty()) {
+                cancel();
                 timer.cancel();
                 isStop = true;
                 System.out.println("系统抓取订单已结束调用");
