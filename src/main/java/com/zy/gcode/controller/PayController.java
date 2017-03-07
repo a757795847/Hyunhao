@@ -42,19 +42,19 @@ public class PayController {
      *
      * @param openid
      * @param count
-     * @param geAppid 数据库中生成的appid
+     * @param tappid 数据库中生成的appid
      * @param sign
      * @return
      */
     @RequestMapping("send")
     public
     @ResponseBody
-    Object send(String openid, String count, String geAppid, String sign){
+    Object send(String openid, String count, String tappid, String sign){
         if (!sign.equals("13468794sagag")) {
             return ControllerStatus.error("签名错误");
         }
 
-        CodeRe<String> codeRe = payService.pay(openid, 100, geAppid);
+        CodeRe<String> codeRe = payService.pay(openid, 100, tappid);
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }

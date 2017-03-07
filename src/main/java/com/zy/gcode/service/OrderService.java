@@ -262,7 +262,7 @@ public class OrderService implements IOrderService {
             return CodeRe.error("红包策略不存在");
         }
         Map map = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/pay/send", "openid", order.getWeixinId(),
-                "count", String.valueOf(strategy.getMoney()), "geAppid", tappid, "sign", "13468794sagag");
+                "count", String.valueOf(strategy.getMoney()), "tappid", tappid, "sign", "13468794sagag");
         if (map == null) {
             log.error("http请求错误");
             return CodeRe.error("红包发送失败");
@@ -305,6 +305,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional
     public CodeRe getOrderByNumber(String orderNo) {
        DataOrder order =  persistenceService.getOneByColumn(DataOrder.class,"orderNumber",orderNo,"createUserId",getWxOperator().getUsername());
         if(order ==null){

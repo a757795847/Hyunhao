@@ -108,7 +108,6 @@ public class CodeService implements ICodeService {
             log.error(accessToken.getErrcode() + ':' + accessToken.getErrmsg());
             return CodeRe.error("服务器异常");
         }
-
         WxToken wxToken = new WxToken();
         wxToken.setWxToken(accessToken.getAccessToken());
         wxToken.setExpires(accessToken.getExpiresIn().longValue());
@@ -124,7 +123,7 @@ public class CodeService implements ICodeService {
             return CodeRe.error("token or openid is empty");
         }
 
-        WechatUserInfo wechatUserInfo = user(wxToken.getWxToken(), wxToken.getUserOpenId(), appid);
+        WechatUserInfo wechatUserInfo = user(wxToken.getWxToken(), wxToken.getUserOpenId(), appid,geCode.getGeAppid());
 
         if (wechatUserInfo == null) {
             return CodeRe.error("to get wechatUserInfo from weixin is fail");
@@ -133,7 +132,11 @@ public class CodeService implements ICodeService {
     }
 
     @Transactional
-    private WechatUserInfo user(String token, String openid, String appid) {
+    private WechatUserInfo user(String token, String openid, String appid,String tappid) {
+       WechatUserInfo wechatUserInfo1 = persistenceService.get(WechatUserInfo.class,openid);
+       if(wechatUserInfo1!=null){
+           return wechatUserInfo1;
+       }
 
         UserInfoOAuthRequest infoOAuthRequest = new UserInfoOAuthRequest();
         infoOAuthRequest.setParam(UserInfoOAuthRequest.ACCESS_TOKEN, token)
@@ -158,6 +161,7 @@ public class CodeService implements ICodeService {
         wechatUserInfo.setUnionId(userInfo.getUnionid());
 
         wechatUserInfo.setAppid(appid);
+        wechatUserInfo.setTappid(tappid);
         persistenceService.updateOrSave(wechatUserInfo);
 
         return wechatUserInfo;

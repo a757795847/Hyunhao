@@ -19,6 +19,7 @@ public class WechatUserInfo {
     private Timestamp insertTime;
     private Timestamp updateTime;
     private String appid;
+    private String tappid;
 
     public String getOpenId() {
         return openId;
@@ -122,5 +123,13 @@ public class WechatUserInfo {
 
     public void setAppid(String appid) {
         this.appid = appid;
+    }
+
+    public String getTappid() {
+        return tappid;
+    }
+
+    public void setTappid(String tappid) {
+        this.tappid = tappid;
     }
 }
