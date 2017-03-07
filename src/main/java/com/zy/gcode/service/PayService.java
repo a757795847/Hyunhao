@@ -236,8 +236,6 @@ public class PayService implements IPayService {
             redStatus.setOpenid(reMap.get("openid"));
         }
         redStatus.setWxappid(wxappid);
-        persistenceService.updateOrSave(redStatus);
-
         return CodeRe.correct(redStatus);
     }
 
@@ -301,7 +299,8 @@ public class PayService implements IPayService {
                     if(Constants.debug){
                         System.out.println("红包更新成功:"+updateAfterRedStatus);
                     }
-                    persistenceService.update(updateAfterRedStatus);
+                    redStatus.setStatus(updateAfterRedStatus.getStatus());
+                    persistenceService.update(redStatus);
                 }
             }
         });
