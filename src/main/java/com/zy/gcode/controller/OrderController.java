@@ -55,10 +55,8 @@ public class OrderController {
         if (map.containsKey("applyTime") && map.get("applyTime") != null) {
             applyTime = new Timestamp((long) map.get("applyTime"));
         }
-
         return ControllerStatus.ok(orderService.getOrderByCondition((List) map.get("status"), page, user.getUsername(), applyTime, importTime), page);
     }
-
     /**
      * 返货订单首页
      *

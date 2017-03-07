@@ -45,12 +45,11 @@ public class PayController {
      * @param geAppid 数据库中生成的appid
      * @param sign
      * @return
-     * @throws Exception
      */
     @RequestMapping("send")
     public
     @ResponseBody
-    Object send(String openid, String count, String geAppid, String sign) throws Exception {
+    Object send(String openid, String count, String geAppid, String sign){
         if (!sign.equals("13468794sagag")) {
             return ControllerStatus.error("签名错误");
         }

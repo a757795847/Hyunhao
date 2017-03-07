@@ -50,6 +50,7 @@ public class OrderService implements IOrderService {
     @Transactional
     public List<DataOrder> getOrderByCondition(List<Integer> status, Page page, String userId, Timestamp applyTime, Timestamp importTime) {
         DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
+        criteria.add(Restrictions.eq("createUserId",getWxOperator().getUsername()));
         criteria.add(Restrictions.in("giftState", status)).add(Restrictions.eq("createUserId", userId));
         if (importTime != null) {
             criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
@@ -281,7 +282,7 @@ public class OrderService implements IOrderService {
     @Transactional
     public CodeRe redInfo(String mchNumber) {
         RedStatus redStatus = persistenceService.get(RedStatus.class, mchNumber);
-        CodeRe<String> muCodeRe = multipartService.getTappidByApp(getWxOperator().getUsername(), Constants.ZYAPPID);
+        CodeRe<String> muCodeRe = multipartService.getTappidByApp("2", Constants.ZYAPPID);
         if (muCodeRe.isError()) {
             return muCodeRe;
         }
@@ -298,14 +299,14 @@ public class OrderService implements IOrderService {
                 log.error("获取红包信息错误:" + map.get("message"));
                 return CodeRe.error("请求异常");
             }
-            return CodeRe.correct(map.get("message"));
+            return CodeRe.correct(map.get("redInfo"));
         }
         return CodeRe.correct(redStatus);
     }
 
     @Override
     public CodeRe getOrderByNumber(String orderNo) {
-       DataOrder order =  persistenceService.getOneByColumn(DataOrder.class,"orderNumber",orderNo);
+       DataOrder order =  persistenceService.getOneByColumn(DataOrder.class,"orderNumber",orderNo,"createUserId",getWxOperator().getUsername());
         if(order ==null){
             return CodeRe.error("订单不存在!");
         }
