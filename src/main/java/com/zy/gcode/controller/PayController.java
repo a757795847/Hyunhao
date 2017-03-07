@@ -110,6 +110,7 @@ public class PayController {
             }
             if (batchRe.getMessage().isEmpty()) {
                 timer.cancel();
+                System.out.println("系统抓取订单已结束调用");
             }
         }
     }

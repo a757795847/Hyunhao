@@ -248,7 +248,7 @@ public class PayService implements IPayService {
         List<RedStatus> pushList = new ArrayList<>();
         List<String> errorList = new ArrayList<>();
 
-        List<RedBill> redBills = persistenceService.getListByColumn(RedBill.class,"status",null);
+        List<RedBill> redBills = persistenceService.getListByColumn(RedBill.class,"status",0);
 
         if(Constants.debug){
             System.out.println("redBillsSize:"+redBills.size());
@@ -284,6 +284,10 @@ public class PayService implements IPayService {
                 add(Restrictions.not(Restrictions.in("status", new String[]{"RECEIVED", "REFUND"})));
         criteria.add(disjunction);
         List<RedStatus> redStatuses = persistenceService.getList(criteria);
+        if(Constants.debug){
+            System.out.println("updateredStatusesSize:"+redStatuses.size());
+        }
+
         redStatuses.forEach(redStatus -> {
             CodeRe<RedStatus> redStatusCodeRe = redinfo(redStatus.getWxappid(), redStatus.getMchBillno());
             if (redStatusCodeRe.isError()) {
@@ -294,6 +298,9 @@ public class PayService implements IPayService {
                 RedStatus updateAfterRedStatus = redStatusCodeRe.getMessage();
                 if (!updateAfterRedStatus.getStatus().equals(redStatus.getStatus())) {
                     pushList.add(updateAfterRedStatus);
+                    if(Constants.debug){
+                        System.out.println("红包更新成功:"+updateAfterRedStatus);
+                    }
                     persistenceService.update(updateAfterRedStatus);
                 }
             }
