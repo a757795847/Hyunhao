@@ -153,6 +153,11 @@ public class AuthenticationService implements IAuthenticationService {
         return CodeRe.correct(tokenConfig);
     }
 
+    /**
+     * 获取微信第三方的js ticket
+     * @param componetToken
+     * @return
+     */
     private CodeRe<TokenConfig> getWechatPublicAccessToken(String componetToken) {
         TokenConfig tokenConfig = new TokenConfig();
         tokenConfig.setName(Constants.JSSDK_TICKET_NAME);
@@ -211,7 +216,7 @@ public class AuthenticationService implements IAuthenticationService {
     @Override
     @Transactional
     public CodeRe<TokenConfig> getJsapiTicketByAppid(String appid) {
-        CodeRe<TokenConfig> wxAccessToken = getWxAccessToken(appid);
+        CodeRe<TokenConfig> wxAccessToken = getWxAccessTokenBySecret(appid);
         if (wxAccessToken.isError()) {
             return wxAccessToken;
         }
@@ -248,10 +253,15 @@ public class AuthenticationService implements IAuthenticationService {
         return CodeRe.correct(tokenConfig);
     }
 
+    /**
+     *
+     * @param appid
+     * @return
+     */
     @Override
     @Transactional
-    public CodeRe<TokenConfig> getWxAccessToken(String appid) {
-        TokenConfig tokenConfig = persistenceService.get(TokenConfig.class, appid + "toekn");
+    public CodeRe<TokenConfig> getWxAccessTokenBySecret(String appid) {
+        TokenConfig tokenConfig = persistenceService.get(TokenConfig.class, appid + "token");
         Timestamp updateTime;
         try {
             updateTime = tokenConfig.getUpdateTime();

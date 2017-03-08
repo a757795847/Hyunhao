@@ -8,8 +8,6 @@ import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.JsonUtils;
 import org.springframework.context.ApplicationContext;
 
-import java.io.File;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.TreeMap;
@@ -46,9 +44,48 @@ public class RedPagCatchTask extends TimerTask {
     }
 
     public static void main(String[] args) throws Exception{
-        File file = new File("./");
-        System.out.println(   System.getProperty("os.name"));
-        //Arrays.stream(file.list()).forEach(System.out::println);
+ /*     System.out.println( HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/template/api_add_template?access_token=Rbnju32Xzd6wH6yMp4JRjPVmUEbqCdmDZ2-F95DVMFuz8QsR7FE1Pl_12oP6Q3dNTSHxexCn7Ur-uUL-MGgz5a-BAdko2_SmjAR5es14dVCoa6O4UVBA6E8TsROuCFJMOMJjAEAXVS","{\n" +
+               "           \"template_id_short\":\"OPENTM200396847\"\n" +
+               "       }"));*/
+
+    //OfBlXNDZih36iz6s5MiqpBhZP4S68z4sAPaXzmN9dno
+     /*   System.out.println( HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=Rbnju32Xzd6wH6yMp4JRjPVmUEbqCdmDZ2-F95DVMFuz8QsR7FE1Pl_12oP6Q3dNTSHxexCn7Ur-uUL-MGgz5a-BAdko2_SmjAR5es14dVCoa6O4UVBA6E8TsROuCFJMOMJjAEAXVS",
+                "{\n" +
+                        "           \"touser\":\"ooBfdwNcoMaol2CF0zlcRUYkYE_Q\",\n" +
+                        "           \"template_id\":\"OfBlXNDZih36iz6s5MiqpBhZP4S68z4sAPaXzmN9dno\",\n" +
+                        "           \"url\":\"http://open.izhuiyou.com/\",            \n" +
+                        "           \"data\":{\n" +
+                        "                   \"first\": {\n" +
+                        "                       \"value\":\"恭喜你购买成功！\",\n" +
+                        "                       \"color\":\"#173177\"\n" +
+                        "                   },\n" +
+                        "                   \"keyword1\":{\n" +
+                        "                       \"value\":\"巧克力\",\n" +
+                        "                       \"color\":\"#173177\"\n" +
+                        "                   },\n" +
+                        "                   \"keyword2\": {\n" +
+                        "                       \"value\":\"39.8元\",\n" +
+                        "                       \"color\":\"#173177\"\n" +
+                        "                   },\n" +
+                        "                   \"keyword3\": {\n" +
+                        "                       \"value\":\"2014年9月22日\",\n" +
+                        "                       \"color\":\"#173177\"\n" +
+                        "                   },\n" +
+                        "                   \"remark\":{\n" +
+                        "                       \"value\":\"欢迎再次购买！\",\n" +
+                        "                       \"color\":\"#173177\"\n" +
+                        "                   }\n" +
+                        "           }\n" +
+                        "       }"));*/
+    System.out.println( HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=xzTjOd10bt91cwLREKMZdqTKyb2384TPS_xdUz1i1K0LoNP3olvAGR-3Es60LCqi4uhpXnnZMmSLbh8BuMVtZcCUdjW2Zj9uZ_U_qrjml7s-o_gKZq1UpP1MwYa99AbHGRHdAIALWM",
+             "{\n" +
+                     "     \"button\":[\n" +
+                     "     {\t\n" +
+                     "          \"type\":\"view\",\n" +
+                     "          \"name\":\"微信红包\",\n" +
+                     "          \"key\":\"red\",\"url\":\"http://open.izhuiyou.com/view/wechat/home/ge111\"" +
+                     "      }]}"));  System.out.println( HttpClientUtils.
+                mapGetSend("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=Y3jYDmFWVka5s9meiJxZLmwQYdGcMfNWLxcCuK-f2WkGsUEGFEmJJ20XbS-DZ9Bzdb5T4O3RZltJ_SszSddGR7WARTAUb1dEdTVoo8HLJ4fkzVkXKMft1u2BVD4hpl0EFWQaAEAWNH"));
 
     }
 }

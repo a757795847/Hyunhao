@@ -55,7 +55,7 @@ public class WechatService implements IWechatService {
         if (image3 != null) {
             dataOrder.setCommentFile3(MzUtils.merge(dataPath, "/", wechatPublicServer.getTappid(), ":", billno, "C"));
         }
-        CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessToken(appid);
+        CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessTokenBySecret(appid);
         if (tokenConfigCodeRe.isError()) {
             System.err.println(tokenConfigCodeRe.getErrorMessage());
             return tokenConfigCodeRe;

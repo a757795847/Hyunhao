@@ -46,7 +46,7 @@ public class WechatController {
             if(cookies!=null) {
                 for (Cookie cookie : cookies) {
                     if (Constants.debug) {
-                        System.out.println("cookie:" + cookie);
+                        System.out.println("cookie:" + cookie.getName()+":"+cookie.getValue());
                     }
                     if (cookie.getName().equals("user_openid")) {
                         wechatUserInfo = wechatService.getUser(cookie.getValue());
