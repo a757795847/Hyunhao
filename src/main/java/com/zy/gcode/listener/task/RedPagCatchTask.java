@@ -47,7 +47,8 @@ public class RedPagCatchTask extends TimerTask {
 
     public static void main(String[] args) throws Exception{
         File file = new File("./");
-        System.out.println(file.exists());
-        Arrays.stream(file.list()).forEach(System.out::println);
+        System.out.println(   System.getProperty("os.name"));
+        //Arrays.stream(file.list()).forEach(System.out::println);
+
     }
 }

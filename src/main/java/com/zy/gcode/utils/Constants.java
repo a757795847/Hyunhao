@@ -65,7 +65,7 @@ public abstract class Constants {
 
 
     static {
-        if(Constants.debug){
+        if(System.getProperty("os.name").startsWith("Mac")){
             RED_PICTURE_PATH = "./pic";
             PAY_QR_PATH= "./qr";
             RED_CSV_PATH="./csv";
