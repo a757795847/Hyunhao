@@ -77,15 +77,13 @@ public class RedPagCatchTask extends TimerTask {
                         "                   }\n" +
                         "           }\n" +
                         "       }"));*/
-    System.out.println( HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=xzTjOd10bt91cwLREKMZdqTKyb2384TPS_xdUz1i1K0LoNP3olvAGR-3Es60LCqi4uhpXnnZMmSLbh8BuMVtZcCUdjW2Zj9uZ_U_qrjml7s-o_gKZq1UpP1MwYa99AbHGRHdAIALWM",
+/*    System.out.println( HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=xzTjOd10bt91cwLREKMZdqTKyb2384TPS_xdUz1i1K0LoNP3olvAGR-3Es60LCqi4uhpXnnZMmSLbh8BuMVtZcCUdjW2Zj9uZ_U_qrjml7s-o_gKZq1UpP1MwYa99AbHGRHdAIALWM",
              "{\n" +
                      "     \"button\":[\n" +
                      "     {\t\n" +
                      "          \"type\":\"view\",\n" +
                      "          \"name\":\"微信红包\",\n" +
                      "          \"key\":\"red\",\"url\":\"http://open.izhuiyou.com/view/wechat/home/ge111\"" +
-                     "      }]}"));  System.out.println( HttpClientUtils.
-                mapGetSend("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=Y3jYDmFWVka5s9meiJxZLmwQYdGcMfNWLxcCuK-f2WkGsUEGFEmJJ20XbS-DZ9Bzdb5T4O3RZltJ_SszSddGR7WARTAUb1dEdTVoo8HLJ4fkzVkXKMft1u2BVD4hpl0EFWQaAEAWNH"));
-
+                     "      }]}"));*/  //System.out.println( HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=Y3jYDmFWVka5s9meiJxZLmwQYdGcMfNWLxcCuK-f2WkGsUEGFEmJJ20XbS-DZ9Bzdb5T4O3RZltJ_SszSddGR7WARTAUb1dEdTVoo8HLJ4fkzVkXKMft1u2BVD4hpl0EFWQaAEAWNH"));
     }
 }

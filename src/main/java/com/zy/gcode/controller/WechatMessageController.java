@@ -17,6 +17,7 @@ import java.util.Arrays;
 @Controller
 @RequestMapping("wcMs")
 public class WechatMessageController {
+
     @RequestMapping(method=RequestMethod.GET)
     public
     @ResponseBody

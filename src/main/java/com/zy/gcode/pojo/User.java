@@ -12,7 +12,6 @@ public class User {
     private String password;
     private Timestamp insertTime;
     private String name;
-    private String wxAppid;
     private String role;
     private Timestamp updateTime;
     private String isEnable;
@@ -76,14 +75,6 @@ public class User {
 
     public void setIsEnable(String isEnable) {
         this.isEnable = isEnable;
-    }
-
-    public String getWxAppid() {
-        return wxAppid;
-    }
-
-    public void setWxAppid(String wxAppid) {
-        this.wxAppid = wxAppid;
     }
 
     public Date getEndTime() {

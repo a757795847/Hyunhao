@@ -9,7 +9,6 @@
         <property name="password" column="password"/>
         <property insert="false" update="false" name="insertTime" column="insert_time"/>
         <property name="name" column="name"/>
-        <property name="wxAppid" column="wx_appid"/>
         <property name="endTime" column="end_time"/>
         <property insert="false" update="false" name="updateTime" column="update_time"/>
         <property name="role" column="role"/>

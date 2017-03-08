@@ -44,8 +44,8 @@ public class ZyRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         validDataList.forEach(validData -> {
             if (validData.getEndData().after(new Date())) {
-                simpleAuthorizationInfo.addStringPermission("zyappid" + validData.getZyappid().toString());
-                log.debug("权限:zyappid" + validData.getZyappid().toString());
+                simpleAuthorizationInfo.addStringPermission(validData.getZyappid().toString());
+                log.debug("权限:" + validData.getZyappid());
             }
         });
         simpleAuthorizationInfo.addRole(user.getRole());

@@ -12,5 +12,8 @@
         <property name="endData" column="end_data"/>
         <property name="beginTime" column="begin_time"/>
         <property name="zyappid" column="zyappid"/>
+        <property name="useType" column="use_type"/>
+        <property name="residueCount" column="residue_count"/>
+        <property name="totalCount" column="total_count"/>
     </class>
 </hibernate-mapping>

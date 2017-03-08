@@ -3,6 +3,7 @@ package com.zy.gcode.pojo;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 /**
  * Created by admin5 on 17/2/23.
@@ -14,7 +15,10 @@ public class ValidData {
     private Timestamp insertime;
     private Date endData;
     private Date beginTime;
-    private Long zyappid;
+    private String zyappid;
+    private String useType;
+    private Integer residueCount;
+    private Integer totalCount;
 
     public long getId() {
         return id;
@@ -64,11 +68,36 @@ public class ValidData {
         this.beginTime = beginTime;
     }
 
-    public Long getZyappid() {
+    public String getZyappid() {
         return zyappid;
     }
 
-    public void setZyappid(Long zyappid) {
+    public void setZyappid(String zyappid) {
         this.zyappid = zyappid;
+    }
+
+
+    public String getUseType() {
+        return useType;
+    }
+
+    public void setUseType(String useType) {
+        this.useType = useType;
+    }
+
+    public Integer getResidueCount() {
+        return residueCount;
+    }
+
+    public void setResidueCount(Integer residueCount) {
+        this.residueCount = residueCount;
+    }
+
+    public Integer getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(Integer totalCount) {
+        this.totalCount = totalCount;
     }
 }

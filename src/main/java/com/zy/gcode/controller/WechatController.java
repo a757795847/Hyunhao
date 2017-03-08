@@ -38,7 +38,7 @@ public class WechatController {
     IWechatService wechatService;
 
     @RequestMapping("home/{tAppid}")
-    public String home(@PathVariable("tAppid") String tAppid,HttpServletRequest request, HttpServletResponse response) {
+    public String home(@PathVariable("tAppid") String tAppid,HttpServletRequest request) {
         HttpSession session = request.getSession(true);
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
         if(wechatUserInfo ==null){
