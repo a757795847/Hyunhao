@@ -43,13 +43,15 @@ public class WechatController {
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
         if(wechatUserInfo ==null){
             Cookie[] cookies = request.getCookies();
-            for (Cookie cookie : cookies) {
-                if(Constants.debug){
-                    System.out.println("cookie:"+cookie);
-                }
-                if (cookie.getName().equals("user_openid")){
-                    wechatUserInfo = wechatService.getUser(cookie.getValue());
-                    session.setAttribute("c_user",wechatUserInfo);
+            if(cookies!=null) {
+                for (Cookie cookie : cookies) {
+                    if (Constants.debug) {
+                        System.out.println("cookie:" + cookie);
+                    }
+                    if (cookie.getName().equals("user_openid")) {
+                        wechatUserInfo = wechatService.getUser(cookie.getValue());
+                        session.setAttribute("c_user", wechatUserInfo);
+                    }
                 }
             }
         }
