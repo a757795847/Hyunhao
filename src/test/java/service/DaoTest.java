@@ -1,26 +1,23 @@
 package service;
 
 import com.zy.gcode.dao.PersistenceService;
-import com.zy.gcode.pojo.ApplicationInfo;
 import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.IPayService;
 import com.zy.gcode.utils.DateUtils;
 import org.apache.shiro.authc.credential.PasswordService;
-import org.hibernate.StaleStateException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.StringType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Date;
 
 /**
  * Created by admin5 on 17/1/19.

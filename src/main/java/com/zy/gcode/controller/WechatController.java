@@ -1,6 +1,5 @@
 package com.zy.gcode.controller;
 
-import com.sun.tools.internal.jxc.ap.Const;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.WechatPublicServer;
@@ -10,7 +9,6 @@ import com.zy.gcode.service.IWechatService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.JsonUtils;
 import com.zy.gcode.utils.wx.JsapiUtils;
-import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
