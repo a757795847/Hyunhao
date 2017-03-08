@@ -36,19 +36,19 @@ public abstract class Constants {
      * 返现截图存放的路径
      */
 
-    public final static String RED_PICTURE_PATH = "/Users/admin3/Downloads";
+    public  static String RED_PICTURE_PATH = "/opt/zy/Pictures";
 
     /**
      * 上传的csv存放路径
      */
 
-    public final static String RED_CSV_PATH = "/Users/admin3/Downloads";
+    public  static String RED_CSV_PATH = "/opt/zy/csv";
 
     /**
      * 支付二维码存放路径
      */
 
-    public final static String PAY_QR_PATH = "/Users/admin3/Downloads";
+    public  static String PAY_QR_PATH = "/opt/zy/qr";
 
     /**
      * 这个应用的id
@@ -65,6 +65,13 @@ public abstract class Constants {
 
 
     static {
+        if(Constants.debug){
+            RED_PICTURE_PATH = "./pic";
+            PAY_QR_PATH= "./qr";
+            RED_CSV_PATH="./csv";
+        }
+
+
         try (InputStream inputStream = new ClassPathResource("config.properties").getInputStream()) {
             properties.load(inputStream);
         } catch (Exception e) {

@@ -6,6 +6,8 @@ import com.zy.gcode.utils.JsonUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -27,7 +29,7 @@ public class MiddleController {
 
 
     @RequestMapping("token")
-    public String token(String code, HttpSession session, String state, String zyid) {
+    public String token(String code, HttpSession session, String state, String zyid, HttpServletResponse response) {
         Map map = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/access/getoken/" + code + "/" + zyid);
         if (map == null) {
             return "redirect:/error.html";
@@ -39,6 +41,10 @@ public class MiddleController {
 
                 WechatUserInfo wechatUserInfo = JsonUtils.asObj(WechatUserInfo.class, str);
                 session.setAttribute("c_user", wechatUserInfo);
+                Cookie cookie = new Cookie("user_openid",wechatUserInfo.getOpenId());
+                cookie.setMaxAge(24*3600);
+                cookie.setPath("/");
+                response.addCookie(cookie);
                 return "redirect:" + state;
 
             }

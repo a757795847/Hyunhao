@@ -8,10 +8,8 @@ import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.JsonUtils;
 import org.springframework.context.ApplicationContext;
 
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.TreeMap;
+import java.io.File;
+import java.util.*;
 
 /**
  * Created by admin5 on 17/2/13.
@@ -45,9 +43,8 @@ public class RedPagCatchTask extends TimerTask {
     }
 
     public static void main(String[] args) throws Exception{
-        TaskTest taskTest = new TaskTest();
-        Timer timer = new Timer();
-        timer.schedule(taskTest, 100, 1000);
-        timer.schedule(new TaskTest(),100,1000);
+        File file = new File("./");
+        System.out.println(file.exists());
+        Arrays.stream(file.list()).forEach(System.out::println);
     }
 }
