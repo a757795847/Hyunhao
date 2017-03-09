@@ -283,7 +283,7 @@ public class AuthenticationService implements IAuthenticationService {
         }
 
         if (DateUtils.isOutOfDate(updateTime, tokenConfig.getExpiresIn())) {
-            WechatPublic wechatPublic = persistenceService.get(WechatPublic.class, appid);
+            WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class,"wxAppid",appid);
             if (wechatPublic == null) {
                 return CodeRe.error("appid 不存在,获取wxaccesstoken");
             }

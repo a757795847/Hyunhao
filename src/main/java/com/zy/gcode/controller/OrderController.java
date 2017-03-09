@@ -103,12 +103,11 @@ public class OrderController {
             response.getWriter().close();
             return;
         }
-
+        if(webRequest.checkNotModified(file.lastModified()))
+            return;
 
         FileInputStream fileInputStream = new FileInputStream(file);
         try {
-            if(webRequest.checkNotModified(file.lastModified()))
-                return;
             OutputStream outputStream = response.getOutputStream();
             response.setContentType("image/png");
             final byte[] tmp = new byte[4096];
