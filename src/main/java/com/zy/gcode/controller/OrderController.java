@@ -11,6 +11,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -71,12 +72,13 @@ public class OrderController {
      * 根据图片的名称访问图片
      *
      * @param name
-     * @param response
+     * @param webRequest
      * @throws IOException
      */
     @RequestMapping("picture/{date}/{name}")
-    public void picture(@PathVariable String date, @PathVariable String name, HttpServletResponse response) throws IOException {
+    public void picture(@PathVariable String date, @PathVariable String name, ServletWebRequest webRequest) throws IOException {
         File file = new File(Constants.RED_PICTURE_PATH + "/" + date + "/" + name);
+        HttpServletResponse response = (HttpServletResponse) webRequest.getNativeResponse();
         if (!file.exists()) {
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("文件不存在");
@@ -105,10 +107,10 @@ public class OrderController {
 
         FileInputStream fileInputStream = new FileInputStream(file);
         try {
-            file.lastModified();
+            if(webRequest.checkNotModified(file.lastModified()))
+                return;
             OutputStream outputStream = response.getOutputStream();
             response.setContentType("image/png");
-            response.setHeader("Cache-Control", "max-age=3600");
             final byte[] tmp = new byte[4096];
             while ((fileInputStream.read(tmp)) != -1) {
                 outputStream.write(tmp);
