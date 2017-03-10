@@ -305,7 +305,7 @@ public class AuthenticationService implements IAuthenticationService {
     @Override
     @Transactional
     public CodeRe getAuthorizerToken(String appid) {
-       WechatPublic wechatPublic = persistenceService.get(WechatPublic.class,appid);
+       WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class,"wxAppid",appid);
        if(DateUtils.isOutOfDate(wechatPublic.getUpdateTime(),wechatPublic.getExpiresIn())){
           CodeRe<TokenConfig> configCodeRe =  componetToekn();
           if(configCodeRe.isError()){
