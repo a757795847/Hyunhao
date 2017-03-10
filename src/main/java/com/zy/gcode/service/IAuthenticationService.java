@@ -11,6 +11,8 @@ import com.zy.gcode.pojo.WechatPublicServer;
 public interface IAuthenticationService {
     CodeRe<WechatPublic> saveServerToken(String content, String token);
 
+    CodeRe getAuthorizerToken(String appid);
+
     CodeRe<TokenConfig> componetToekn();
 
     String decrpt(String msg_signature, String timestamp, String nonce, String str);

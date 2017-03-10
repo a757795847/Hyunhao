@@ -242,7 +242,7 @@ public class OperatorController {
     }
 
 
-    private class VerificationInfo {
+    public class VerificationInfo {
         public VerificationInfo(String verificationCode, long generationTime, String phone) {
             this.verificationCode = verificationCode;
             this.generationTime = generationTime;
@@ -254,7 +254,7 @@ public class OperatorController {
         String phone;
     }
 
-    private class ImageInfo {
+    public class ImageInfo {
         private String content;
         private long createTime;
 

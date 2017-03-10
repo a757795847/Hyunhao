@@ -3,6 +3,7 @@ package com.zy.gcode.controller;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.RedStatus;
+import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IPayService;
 import com.zy.gcode.service.pay.RedTimerTask;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -92,6 +98,16 @@ public class PayController {
             return ControllerStatus.ok();
         }
         return ControllerStatus.error("抓单已启动");
+    }
+
+    public @ResponseBody  Map<User,String> get(){
+        return null;
+    }
+
+    public static void main(String[] args) throws Exception{
+       Method method = PayController.class.getMethod("get");
+       ParameterizedType type =  (ParameterizedType)method.getGenericReturnType();
+        System.out.println(method.getAnnotatedReturnType());
     }
 
 }

@@ -24,6 +24,7 @@ public class MiddleController {
         if (session.getAttribute("c_user") == null) {
             return "redirect:http://open.izhuiyou.com/code/wxcode/" + appid + "?redirect_url=" + URLEncoder.encode("http://open.izhuiyou.com/middle/token", "utf-8");
         }
+        OperatorController operatorController = new OperatorController();
         return "redirect:/html/a.html";
     }
 

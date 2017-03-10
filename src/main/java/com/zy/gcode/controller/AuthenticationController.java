@@ -80,7 +80,7 @@ public class AuthenticationController {
     public
     @ResponseBody
     String index() {
-        return "welcome!";
+        return authenticationService.getAuthorizerToken("wx653d39223641bea7").getMessage().toString();
     }
 
 

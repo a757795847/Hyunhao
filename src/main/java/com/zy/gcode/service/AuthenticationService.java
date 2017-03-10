@@ -2,6 +2,7 @@ package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
+import com.zy.gcode.oauth.AuthorizedPublicTokenRefresh;
 import com.zy.gcode.oauth.PublicInfoRequest;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.pojo.WechatPublic;
@@ -299,5 +300,28 @@ public class AuthenticationService implements IAuthenticationService {
         }
         return CodeRe.correct(tokenConfig);
 
+    }
+
+    @Override
+    @Transactional
+    public CodeRe getAuthorizerToken(String appid) {
+       WechatPublic wechatPublic = persistenceService.get(WechatPublic.class,appid);
+       if(DateUtils.isOutOfDate(wechatPublic.getUpdateTime(),wechatPublic.getExpiresIn())){
+          CodeRe<TokenConfig> configCodeRe =  componetToekn();
+          if(configCodeRe.isError()){
+              return configCodeRe;
+          }
+         TokenConfig componentToken =  configCodeRe.getMessage();
+
+           AuthorizedPublicTokenRefresh tokenRefresh = new AuthorizedPublicTokenRefresh();
+           tokenRefresh.setParam(AuthorizedPublicTokenRefresh.PRE_COMPONENT_ACCESS_TOKEN,componentToken.getToken())
+                   .setBody(AuthorizedPublicTokenRefresh.BAY_AUTHORIZER_APPID,wechatPublic.getWxAppid())
+                   .setBody(AuthorizedPublicTokenRefresh.BAY_AUTHORIZER_REFRESH_TOKEN,wechatPublic.getRefeshToken())
+                   .setBody(AuthorizedPublicTokenRefresh.BAY_COMPONENT_APPID,Constants.properties.getProperty("platform.appid"));
+          Map map =  tokenRefresh.start();
+          wechatPublic.setAccessToken(map.get("authorizer_access_token").toString());
+          return CodeRe.correct(wechatPublic.getAccessToken());
+       }
+        return CodeRe.correct(wechatPublic.getAccessToken());
     }
 }
