@@ -3,6 +3,8 @@ package com.zy.gcode.controller;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.MzUtils;
 import com.zy.gcode.utils.UniqueStringGenerator;
+import com.zy.gcode.utils.wx.AesException;
+import com.zy.gcode.utils.wx.WXBizMsgCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,17 @@ import java.util.Arrays;
  */
 @Controller
 public class WechatMessageController {
+
+    static WXBizMsgCrypt wxBizMsgCrypt = null;
+
+    static {
+        try {
+            wxBizMsgCrypt = new WXBizMsgCrypt(Constants.properties.getProperty("platform.token"),
+                    Constants.properties.getProperty("platform.asekey"), Constants.properties.getProperty("platform.appid"));
+        } catch (AesException e) {
+            e.printStackTrace();
+        }
+    }
 
     @RequestMapping(value = "/{appid}/receive",method=RequestMethod.GET)
     public
@@ -39,9 +52,15 @@ public class WechatMessageController {
     }
 
     @RequestMapping(value = "/{appid}/receive",method=RequestMethod.POST)
-    public @ResponseBody String receiver(@PathVariable String appid,@RequestBody String body){
+    public @ResponseBody String receiver(String msg_signature, String timestamp, String nonce,
+                                         @PathVariable String appid,@RequestBody String body) {
         System.out.println("appid:"+appid);
-        System.out.println(body);
+        try {
+            System.out.println(wxBizMsgCrypt.decryptMsg(msg_signature,timestamp,nonce,body));
+        } catch (AesException e) {
+            e.printStackTrace();
+           return null;
+        }
         return "";
     }
 
