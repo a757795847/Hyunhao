@@ -15,7 +15,7 @@ public class AuthorizedPublicTokenRefresh extends  AbstractOAuthRequest<Map> {
 
 
     public AuthorizedPublicTokenRefresh(){
-        super("https:// api.weixin.qq.com /cgi-bin/component/api_authorizer_token");
+        super("https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token");
     }
 
     @Override
