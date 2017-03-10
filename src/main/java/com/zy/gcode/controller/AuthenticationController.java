@@ -8,6 +8,7 @@ import com.zy.gcode.oauth.PublicTokenRequest;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.service.IAuthenticationService;
 import com.zy.gcode.utils.Constants;
+import com.zy.gcode.utils.HttpClientUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -80,7 +81,7 @@ public class AuthenticationController {
     public
     @ResponseBody
     String index() {
-        return authenticationService.getAuthorizerToken("wx653d39223641bea7").getMessage().toString();
+        return HttpClientUtils.stringGetSend("https://api.weixin.qq.com/cgi-bin/user/get?access_token=eJSDxQpAum_UbOm5ijkvuyfhDfrQ8B1bF6tx-xVm3uA1Q7Z4zFflxWZmoDbgKgQUnQF6kHp9HI0wCrBHfV-5qi4nceVo6mUz3CW6kWXs2xAopPrUlF3zswTrgIRwQ-tKIKGjAJDQSO");
     }
 
 
