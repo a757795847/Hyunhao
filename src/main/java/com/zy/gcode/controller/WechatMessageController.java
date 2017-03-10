@@ -4,10 +4,7 @@ import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.MzUtils;
 import com.zy.gcode.utils.UniqueStringGenerator;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 
@@ -15,20 +12,20 @@ import java.util.Arrays;
  * Created by admin5 on 17/3/7.
  */
 @Controller
-@RequestMapping("wcMs")
 public class WechatMessageController {
 
-    @RequestMapping(method=RequestMethod.GET)
+    @RequestMapping(value = "/{appid}/receive",method=RequestMethod.GET)
     public
     @ResponseBody
-    String index(String signature,String timestamp,String nonce,String echostr) {
+    String index(@PathVariable String appid, String signature,String timestamp,String nonce,String echostr) {
         if(Constants.debug){
+            System.out.println("appid:"+appid);
             System.out.println("signature:"+signature);
             System.out.println("timestamp:"+timestamp);
             System.out.println("nonce:"+nonce);
             System.out.println("echostr:"+echostr);
         }
-        String token = "86868xyz";
+        String token = "ji0a4n2s6o7n";
         String[] strs = {token,timestamp,nonce};
         Arrays.sort(strs);
         String afterSha1 = UniqueStringGenerator.SHA1(MzUtils.merge(strs[0],strs[1],strs[2]));
@@ -41,8 +38,9 @@ public class WechatMessageController {
         return "";
     }
 
-    @RequestMapping(method=RequestMethod.POST)
-    public @ResponseBody String receiver(@RequestBody String body){
+    @RequestMapping(value = "/{appid}/receive",method=RequestMethod.POST)
+    public @ResponseBody String receiver(@PathVariable String appid,@RequestBody String body){
+        System.out.println("appid:"+appid);
         System.out.println(body);
         return "";
     }
