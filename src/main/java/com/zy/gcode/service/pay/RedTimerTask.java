@@ -19,7 +19,7 @@ public class RedTimerTask extends TimerTask {
         this.supplier = supplier;
     }
 
-    public boolean begin(int seconds) {
+    public boolean begin(int seconds){
         if (!isStop) {
             return false;
         }

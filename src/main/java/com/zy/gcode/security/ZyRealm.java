@@ -25,6 +25,7 @@ import java.util.List;
 public class ZyRealm extends AuthorizingRealm {
     Logger log = LoggerFactory.getLogger(ZyRealm.class);
 
+
     IUserService userService;
 
     public void setUserService(IUserService userService) {

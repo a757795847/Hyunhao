@@ -33,7 +33,7 @@ public class AccessController {
     @RequestMapping("wxaccess_token")
     public String callback(String code, String state, String appid) {
         if (StringUtils.isEmpty(code)) {
-            return "redirect:error.html?message=code is empty";
+            return "redirect:error.html?messag0e=code is empty";
         }
         CodeRe<String> codeRe = iCodeService.token(code, state, appid);
         if (codeRe.isError()) {

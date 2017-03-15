@@ -41,7 +41,7 @@ public class WechatController {
     public String home(@PathVariable("tAppid") String tAppid,HttpServletRequest request) {
         HttpSession session = request.getSession(true);
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
-        if(wechatUserInfo ==null){
+       /* if(wechatUserInfo ==null){
             Cookie[] cookies = request.getCookies();
             if(cookies!=null) {
                 for (Cookie cookie : cookies) {
@@ -54,7 +54,7 @@ public class WechatController {
                     }
                 }
             }
-        }
+        }*/
         WechatPublicServer wechatPublicServer = wechatService.getWechatPublic(tAppid);
 
         if (wechatUserInfo != null) {

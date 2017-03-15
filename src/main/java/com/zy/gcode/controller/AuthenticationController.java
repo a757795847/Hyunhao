@@ -77,13 +77,13 @@ public class AuthenticationController {
 
     }
 
-    @RequestMapping("index")
+ /*   @RequestMapping("index")
     public
     @ResponseBody
     String index() {
         return HttpClientUtils. stringGetSend("https://api.weixin.qq.com/cgi-bin/user/get?access_token=eJSDxQpAum_UbOm5ijkvuyfhDfrQ8B1bF6tx-xVm3uA1Q7Z4zFflxWZmoDbgKgQUnQF6kHp9HI0wCrBHfV-5qi4nceVo6mUz3CW6kWXs2xAopPrUlF3zswTrgIRwQ-tKIKGjAJDQSO")
         + HttpClientUtils. stringGetSend("https://api.weixin.qq.com/cgi-bin/user/get?access_token=uwCEJnv3DVFcipf9h_u6YQSn4AVGc99NU4Df7cEPo4wq0udJKueRFWknkZuN6h6S4zYwewLTzu4PDg5nchB9RAjZ4om8WB16MMnzcUQ779UZWXjADAIFG");
-    }
+    }*/
 
 
 }

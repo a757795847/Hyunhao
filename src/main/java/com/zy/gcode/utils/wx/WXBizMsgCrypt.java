@@ -60,7 +60,7 @@ public class WXBizMsgCrypt {
      *
      * @throws AesException 执行失败，请查看该异常的错误码和具体的错误信息
      */
-    public WXBizMsgCrypt(String token, String encodingAesKey, String appId) throws AesException {
+    public WXBizMsgCrypt(String token, String encodingAesKey, String appId){
         if (encodingAesKey.length() != 43) {
             throw new AesException(AesException.IllegalAesKey);
         }

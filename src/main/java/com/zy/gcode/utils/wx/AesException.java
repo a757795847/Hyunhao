@@ -1,7 +1,7 @@
 package com.zy.gcode.utils.wx;
 
 @SuppressWarnings("serial")
-public class AesException extends Exception {
+public class AesException extends RuntimeException {
 
     public final static int OK = 0;
     public final static int ValidateSignatureError = -40001;

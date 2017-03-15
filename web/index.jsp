@@ -1,32 +1,27 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: admin5
-  Date: 17/1/16
-  Time: 上午10:45
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
   <head>
     <title>$Title$</title>
-    <script src="/documents/jquery.min.js"/>
+    <script src="/documents/jquery.min.js"></script>
     <script>
-        $.ajax({
-            type: 'POST',
-            url: "http://open.izhuiyou.com/view/wechat/submit",
-            data: datas,
-            dataType: 'json',
-            async:true,
-            success: function (data) {
+       $(function(){
+           $.ajax({
+               type: 'POST',
+               url: "/pay/asyn",
+               dataType: 'text',
+               async:true,
+               success: function (data) {
+                   console.log(data)
+               },
+               error: function () {
+
+               }
+
+           })
+           console.log("之后")
+       })
 
 
-
-            },
-            error: function () {
-
-            }
-
-        })
 
     </script>
   </head>
