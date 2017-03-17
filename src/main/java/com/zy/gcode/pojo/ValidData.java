@@ -3,7 +3,6 @@ package com.zy.gcode.pojo;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Arrays;
 
 /**
  * Created by admin5 on 17/2/23.

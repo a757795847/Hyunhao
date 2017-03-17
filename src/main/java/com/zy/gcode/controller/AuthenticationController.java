@@ -8,7 +8,6 @@ import com.zy.gcode.oauth.PublicTokenRequest;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.service.IAuthenticationService;
 import com.zy.gcode.utils.Constants;
-import com.zy.gcode.utils.HttpClientUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;

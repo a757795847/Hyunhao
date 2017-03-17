@@ -58,7 +58,7 @@ public class DaoTest {
         int n = 10;
         int i = 1;
 
-        System.out.println(n*i++);
+        System.out.println(n * i++);
     }
 
     @Test
@@ -85,7 +85,8 @@ public class DaoTest {
         }
         return null;
     }
-    protected void println(Object object){
+
+    protected void println(Object object) {
         System.out.println(object);
     }
 }

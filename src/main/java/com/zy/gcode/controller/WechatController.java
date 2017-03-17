@@ -6,7 +6,6 @@ import com.zy.gcode.pojo.WechatPublicServer;
 import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.service.IAuthenticationService;
 import com.zy.gcode.service.IWechatService;
-import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.JsonUtils;
 import com.zy.gcode.utils.wx.JsapiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -38,13 +33,13 @@ public class WechatController {
     IWechatService wechatService;
 
     @RequestMapping("home/{tAppid}")
-    public String home(@PathVariable("tAppid") String tAppid,HttpServletRequest request) {
+    public String home(@PathVariable("tAppid") String tAppid, HttpServletRequest request) {
         HttpSession session = request.getSession(true);
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
         WechatPublicServer wechatPublicServer = wechatService.getWechatPublic(tAppid);
 
         if (wechatUserInfo != null) {
-            Map<String, String> map = JsapiUtils.sign(authenticationService.getJsapiTicketByAppid(wechatPublicServer.getWxAppid()).getMessage().getToken(),
+            Map<String, String> map = JsapiUtils.sign(authenticationService.getJsapiTicketByAppid(wechatPublicServer.getWxAppid()).getMessage(),
                     request.getRequestURL().toString());
             map.put("appid", wechatPublicServer.getWxAppid());
             request.setAttribute("jsonConfig", JsonUtils.objAsString(map));
@@ -61,7 +56,7 @@ public class WechatController {
         if (wechatUserInfo == null) {
             return ControllerStatus.error("登录过期");
         }
-        CodeRe<String> codeRe = wechatService.sumbit(image1, image2,image3,billno,wechatUserInfo.getOpenId(),wechatUserInfo.getAppid());
+        CodeRe<String> codeRe = wechatService.sumbit(image1, image2, image3, billno, wechatUserInfo.getOpenId(), wechatUserInfo.getAppid());
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }

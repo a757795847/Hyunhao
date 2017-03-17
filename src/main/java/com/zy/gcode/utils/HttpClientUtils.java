@@ -72,7 +72,7 @@ public class HttpClientUtils {
      */
     public static HttpResponse getSend(String url, String... params) {
         int len = params.length;
-        if(len == 0){
+        if (len == 0) {
             return getSend(url);
         }
 

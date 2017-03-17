@@ -27,7 +27,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
-import java.security.*;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.Signature;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -51,7 +53,7 @@ public class OrderService implements IOrderService {
     @Transactional
     public List<DataOrder> getOrderByCondition(List<Integer> status, Page page, String userId, Timestamp applyTime, Timestamp importTime) {
         DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
-        criteria.add(Restrictions.eq("createUserId",getWxOperator().getUsername()));
+        criteria.add(Restrictions.eq("createUserId", getWxOperator().getUsername()));
         criteria.add(Restrictions.in("giftState", status)).add(Restrictions.eq("createUserId", userId));
         if (importTime != null) {
             criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
@@ -308,8 +310,8 @@ public class OrderService implements IOrderService {
     @Override
     @Transactional
     public CodeRe getOrderByNumber(String orderNo) {
-       DataOrder order =  persistenceService.getOneByColumn(DataOrder.class,"orderNumber",orderNo.trim(),"createUserId",getWxOperator().getUsername());
-        if(order ==null){
+        DataOrder order = persistenceService.getOneByColumn(DataOrder.class, "orderNumber", orderNo.trim(), "createUserId", getWxOperator().getUsername());
+        if (order == null) {
             return CodeRe.error("订单不存在!");
         }
         return CodeRe.correct(order);
@@ -319,8 +321,8 @@ public class OrderService implements IOrderService {
         return (User) SecurityUtils.getSubject().getPrincipal();
     }
 
-    public static void main(String[] args) throws Exception{
-       byte[] bytes = "data signature".getBytes();
+    public static void main(String[] args) throws Exception {
+        byte[] bytes = "data signature".getBytes();
         KeyPairGenerator generator = KeyPairGenerator.getInstance("DSA");
         generator.initialize(1024);
         KeyPair keyPair = generator.generateKeyPair();

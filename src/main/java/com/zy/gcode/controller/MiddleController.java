@@ -28,7 +28,7 @@ public class MiddleController {
         return "redirect:/html/a.html";
     }
 
-        //zyid 就是tappid
+    //zyid 就是tappid
     @RequestMapping("token")
     public String token(String code, HttpSession session, String state, String zyid, HttpServletResponse response) {
         Map map = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/access/getoken/" + code + "/" + zyid);
@@ -42,9 +42,9 @@ public class MiddleController {
 
                 WechatUserInfo wechatUserInfo = JsonUtils.asObj(WechatUserInfo.class, str);
                 session.setAttribute("c_user", wechatUserInfo);
-                Cookie cookie = new Cookie("user_openid",wechatUserInfo.getOpenId());
-                cookie.setMaxAge(24*3600);
-                cookie.setPath("/view/wechat/home/"+zyid);
+                Cookie cookie = new Cookie("user_openid", wechatUserInfo.getOpenId());
+                cookie.setMaxAge(24 * 3600);
+                cookie.setPath("/view/wechat/home/" + zyid);
                 response.addCookie(cookie);
                 return "redirect:" + state;
 

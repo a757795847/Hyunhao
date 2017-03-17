@@ -43,12 +43,12 @@ public class RedPagCatchTask extends TimerTask {
         }
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
  /*     System.out.println( HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/template/api_add_template?access_token=Rbnju32Xzd6wH6yMp4JRjPVmUEbqCdmDZ2-F95DVMFuz8QsR7FE1Pl_12oP6Q3dNTSHxexCn7Ur-uUL-MGgz5a-BAdko2_SmjAR5es14dVCoa6O4UVBA6E8TsROuCFJMOMJjAEAXVS","{\n" +
                "           \"template_id_short\":\"OPENTM200396847\"\n" +
                "       }"));*/
 
-    //OfBlXNDZih36iz6s5MiqpBhZP4S68z4sAPaXzmN9dno
+        //OfBlXNDZih36iz6s5MiqpBhZP4S68z4sAPaXzmN9dno
      /*   System.out.println( HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=Rbnju32Xzd6wH6yMp4JRjPVmUEbqCdmDZ2-F95DVMFuz8QsR7FE1Pl_12oP6Q3dNTSHxexCn7Ur-uUL-MGgz5a-BAdko2_SmjAR5es14dVCoa6O4UVBA6E8TsROuCFJMOMJjAEAXVS",
                 "{\n" +
                         "           \"touser\":\"ooBfdwNcoMaol2CF0zlcRUYkYE_Q\",\n" +
@@ -77,13 +77,13 @@ public class RedPagCatchTask extends TimerTask {
                         "                   }\n" +
                         "           }\n" +
                         "       }"));*/
-/*    System.out.println( HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=xzTjOd10bt91cwLREKMZdqTKyb2384TPS_xdUz1i1K0LoNP3olvAGR-3Es60LCqi4uhpXnnZMmSLbh8BuMVtZcCUdjW2Zj9uZ_U_qrjml7s-o_gKZq1UpP1MwYa99AbHGRHdAIALWM",
+    System.out.println( HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=wfV3OYs0FeJgdCwWxOcjw40qwdTd63LvsYeLH6RriixZgPLx5G7b80YpxSJQbD9fI6t22CmmyOkJJq1CGzVQnsNQm5aGFtzHo5s9cR4D7znfwkYYbo-GiTTWmNsu4Rq_GQKcACAMWQ",
              "{\n" +
                      "     \"button\":[\n" +
                      "     {\t\n" +
                      "          \"type\":\"view\",\n" +
                      "          \"name\":\"微信红包\",\n" +
-                     "          \"key\":\"red\",\"url\":\"http://open.izhuiyou.com/view/wechat/home/ge111\"" +
-                     "      }]}"));*/  //System.out.println( HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=Y3jYDmFWVka5s9meiJxZLmwQYdGcMfNWLxcCuK-f2WkGsUEGFEmJJ20XbS-DZ9Bzdb5T4O3RZltJ_SszSddGR7WARTAUb1dEdTVoo8HLJ4fkzVkXKMft1u2BVD4hpl0EFWQaAEAWNH"));
+                     "          \"key\":\"red\",\"url\":\"http://open.izhuiyou.com/wechat/view/home/ge111\"" +
+                     "      }]}"));  //System.out.println( HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=Y3jYDmFWVka5s9meiJxZLmwQYdGcMfNWLxcCuK-f2WkGsUEGFEmJJ20XbS-DZ9Bzdb5T4O3RZltJ_SszSddGR7WARTAUb1dEdTVoo8HLJ4fkzVkXKMft1u2BVD4hpl0EFWQaAEAWNH"));
     }
 }

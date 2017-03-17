@@ -37,6 +37,7 @@ public class OrderController {
 
     /**
      * 分页获取用户信息
+     *
      * @param map
      * @return
      */
@@ -58,6 +59,7 @@ public class OrderController {
         }
         return ControllerStatus.ok(orderService.getOrderByCondition((List) map.get("status"), page, user.getUsername(), applyTime, importTime), page);
     }
+
     /**
      * 返货订单首页
      *
@@ -103,7 +105,7 @@ public class OrderController {
             response.getWriter().close();
             return;
         }
-        if(webRequest.checkNotModified(file.lastModified()))
+        if (webRequest.checkNotModified(file.lastModified()))
             return;
 
         FileInputStream fileInputStream = new FileInputStream(file);
@@ -228,12 +230,14 @@ public class OrderController {
     }
 
     @RequestMapping("lookup/{orderNo}")
-    public @ResponseBody Object lookup(@PathVariable String orderNo){
-       CodeRe<DataOrder> codeRe = orderService.getOrderByNumber(orderNo);
-       if(codeRe.isError()){
-           return ControllerStatus.error(codeRe.getErrorMessage());
-       }
-       return ControllerStatus.ok(codeRe.getMessage());
+    public
+    @ResponseBody
+    Object lookup(@PathVariable String orderNo) {
+        CodeRe<DataOrder> codeRe = orderService.getOrderByNumber(orderNo);
+        if (codeRe.isError()) {
+            return ControllerStatus.error(codeRe.getErrorMessage());
+        }
+        return ControllerStatus.ok(codeRe.getMessage());
     }
 
 

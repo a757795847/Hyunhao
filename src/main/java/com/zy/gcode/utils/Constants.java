@@ -36,19 +36,19 @@ public abstract class Constants {
      * 返现截图存放的路径
      */
 
-    public  static String RED_PICTURE_PATH = "/opt/zy/Pictures";
+    public static String RED_PICTURE_PATH = "/opt/zy/Pictures";
 
     /**
      * 上传的csv存放路径
      */
 
-    public  static String RED_CSV_PATH = "/opt/zy/csv";
+    public static String RED_CSV_PATH = "/opt/zy/csv";
 
     /**
      * 支付二维码存放路径
      */
 
-    public  static String PAY_QR_PATH = "/opt/zy/qr";
+    public static String PAY_QR_PATH = "/opt/zy/qr";
 
     /**
      * 这个应用的id
@@ -65,10 +65,10 @@ public abstract class Constants {
 
 
     static {
-        if(System.getProperty("os.name").startsWith("Mac")){
+        if (System.getProperty("os.name").startsWith("Mac")) {
             RED_PICTURE_PATH = "./pic";
-            PAY_QR_PATH= "./qr";
-            RED_CSV_PATH="./csv";
+            PAY_QR_PATH = "./qr";
+            RED_CSV_PATH = "./csv";
         }
 
 

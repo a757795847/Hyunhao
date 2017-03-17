@@ -114,6 +114,6 @@ public class WechatService implements IWechatService {
     @Override
     @Transactional(readOnly = true)
     public WechatUserInfo getUser(String openid) {
-        return persistenceService.get(WechatUserInfo.class,openid);
+        return persistenceService.get(WechatUserInfo.class, openid);
     }
 }

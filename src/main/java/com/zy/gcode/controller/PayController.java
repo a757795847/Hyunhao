@@ -3,7 +3,6 @@ package com.zy.gcode.controller;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.RedStatus;
-import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IPayService;
 import com.zy.gcode.service.pay.RedTimerTask;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ForkJoinPool;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by admin5 on 17/1/20.
@@ -41,6 +35,7 @@ public class PayController {
     String index() {
         return "welcome pay index!";
     }
+
     /**
      * 发送红包接口
      *
@@ -109,6 +104,6 @@ public class PayController {
     @RequestMapping("asyn")
     public DeferredResult<ModelAndView> get(HttpServletRequest request, HttpServletResponse response) throws Exception {
         TimeUnit.SECONDS.sleep(3);
-        return  null;
+        return null;
     }
 }

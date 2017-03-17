@@ -123,7 +123,7 @@ public class CodeService implements ICodeService {
             return CodeRe.error("token or openid is empty");
         }
 
-        WechatUserInfo wechatUserInfo = user(wxToken.getWxToken(), wxToken.getUserOpenId(), appid,geCode.getGeAppid());
+        WechatUserInfo wechatUserInfo = user(wxToken.getWxToken(), wxToken.getUserOpenId(), appid, geCode.getGeAppid());
 
         if (wechatUserInfo == null) {
             return CodeRe.error("to get wechatUserInfo from weixin is fail");
@@ -132,11 +132,11 @@ public class CodeService implements ICodeService {
     }
 
     @Transactional
-    private WechatUserInfo user(String token, String openid, String appid,String tappid) {
-       WechatUserInfo wechatUserInfo1 = persistenceService.get(WechatUserInfo.class,openid);
-       if(wechatUserInfo1!=null){
-           return wechatUserInfo1;
-       }
+    private WechatUserInfo user(String token, String openid, String appid, String tappid) {
+        WechatUserInfo wechatUserInfo1 = persistenceService.get(WechatUserInfo.class, openid);
+        if (wechatUserInfo1 != null) {
+            return wechatUserInfo1;
+        }
 
         UserInfoOAuthRequest infoOAuthRequest = new UserInfoOAuthRequest();
         infoOAuthRequest.setParam(UserInfoOAuthRequest.ACCESS_TOKEN, token)

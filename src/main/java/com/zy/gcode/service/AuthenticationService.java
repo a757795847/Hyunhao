@@ -156,6 +156,7 @@ public class AuthenticationService implements IAuthenticationService {
 
     /**
      * 获取微信第三方的js ticket
+     *
      * @param componetToken
      * @return
      */
@@ -197,7 +198,7 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     /**
-     * 通过tappid获取jssdkticket
+     * 通过tappid获取微信服务
      *
      * @param id
      * @return
@@ -216,20 +217,20 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Override
     @Transactional
-    public CodeRe<TokenConfig> getJsapiTicketByAppid(String appid) {
-        CodeRe<TokenConfig> wxAccessToken = getWxAccessTokenBySecret(appid);
-        if (wxAccessToken.isError()) {
-            return wxAccessToken;
-        }
+    public CodeRe<String> getJsapiTicketByAppid(String appid) {
+
         String name = Constants.JSSDK_TICKET_NAME + appid;
         TokenConfig tokenConfig = persistenceService.get(TokenConfig.class, name);
-        Timestamp updateTime;
-        try {
-            updateTime = tokenConfig.getUpdateTime();
-        } catch (NullPointerException e) {
+
+
+        if(tokenConfig==null) {
+            CodeRe<String> wxAccessToken = getAuthorizerToken(appid);
+            if (wxAccessToken.isError()) {
+                return wxAccessToken;
+            }
             tokenConfig = new TokenConfig();
             tokenConfig.setName(name);
-            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + wxAccessToken.getMessage().getToken() + "&type=jsapi");
+            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + wxAccessToken.getMessage() + "&type=jsapi");
             if (map.containsKey("errmsg")) {
                 if (!map.get("errmsg").equals("ok"))
                     return CodeRe.error((String) map.get("errmsg"));
@@ -237,25 +238,29 @@ public class AuthenticationService implements IAuthenticationService {
             tokenConfig.setToken(map.get("ticket").toString());
             tokenConfig.setExpiresIn(Long.parseLong(map.get("expires_in").toString()));
             persistenceService.updateOrSave(tokenConfig);
-            return CodeRe.correct(tokenConfig);
+            return CodeRe.correct(tokenConfig.getToken());
         }
+        Timestamp updateTime= tokenConfig.getUpdateTime();
         if (DateUtils.isOutOfDate(updateTime, tokenConfig.getExpiresIn())) {
-            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + wxAccessToken.getMessage().getToken() + "&type=jsapi");
+            CodeRe<String> wxAccessToken = getAuthorizerToken(appid);
+            if (wxAccessToken.isError()) {
+                return wxAccessToken;
+            }
+            Map map = HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + wxAccessToken.getMessage() + "&type=jsapi");
             if (map.containsKey("errmsg")) {
                 if (!map.get("errmsg").equals("ok"))
                     return CodeRe.error((String) map.get("errmsg"));
             }
             tokenConfig.setToken(map.get("ticket").toString());
             persistenceService.updateOrSave(tokenConfig);
-            return CodeRe.correct(tokenConfig);
+            return CodeRe.correct(tokenConfig.getToken());
 
         }
+        return CodeRe.correct(tokenConfig.getToken());
 
-        return CodeRe.correct(tokenConfig);
     }
 
     /**
-     *
      * @param appid
      * @return
      */
@@ -284,7 +289,7 @@ public class AuthenticationService implements IAuthenticationService {
         }
 
         if (DateUtils.isOutOfDate(updateTime, tokenConfig.getExpiresIn())) {
-            WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class,"wxAppid",appid);
+            WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class, "wxAppid", appid);
             if (wechatPublic == null) {
                 return CodeRe.error("appid 不存在,获取wxaccesstoken");
             }
@@ -305,23 +310,23 @@ public class AuthenticationService implements IAuthenticationService {
     @Override
     @Transactional
     public CodeRe getAuthorizerToken(String appid) {
-       WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class,"wxAppid",appid);
-       if(DateUtils.isOutOfDate(wechatPublic.getUpdateTime(),wechatPublic.getExpiresIn())){
-          CodeRe<TokenConfig> configCodeRe =  componetToekn();
-          if(configCodeRe.isError()){
-              return configCodeRe;
-          }
-         TokenConfig componentToken =  configCodeRe.getMessage();
+        WechatPublic wechatPublic = persistenceService.getOneByColumn(WechatPublic.class, "wxAppid", appid);
+        if (DateUtils.isOutOfDate(wechatPublic.getUpdateTime(), wechatPublic.getExpiresIn())) {
+            CodeRe<TokenConfig> configCodeRe = componetToekn();
+            if (configCodeRe.isError()) {
+                return configCodeRe;
+            }
+            TokenConfig componentToken = configCodeRe.getMessage();
 
-           AuthorizedPublicTokenRefresh tokenRefresh = new AuthorizedPublicTokenRefresh();
-           tokenRefresh.setParam(AuthorizedPublicTokenRefresh.PRE_COMPONENT_ACCESS_TOKEN,componentToken.getToken())
-                   .setBody(AuthorizedPublicTokenRefresh.BAY_AUTHORIZER_APPID,wechatPublic.getWxAppid())
-                   .setBody(AuthorizedPublicTokenRefresh.BAY_AUTHORIZER_REFRESH_TOKEN,wechatPublic.getRefeshToken())
-                   .setBody(AuthorizedPublicTokenRefresh.BAY_COMPONENT_APPID,Constants.properties.getProperty("platform.appid"));
-          Map map =  tokenRefresh.start();
-          wechatPublic.setAccessToken(map.get("authorizer_access_token").toString());
-          return CodeRe.correct(wechatPublic.getAccessToken());
-       }
+            AuthorizedPublicTokenRefresh tokenRefresh = new AuthorizedPublicTokenRefresh();
+            tokenRefresh.setParam(AuthorizedPublicTokenRefresh.PRE_COMPONENT_ACCESS_TOKEN, componentToken.getToken())
+                    .setBody(AuthorizedPublicTokenRefresh.BAY_AUTHORIZER_APPID, wechatPublic.getWxAppid())
+                    .setBody(AuthorizedPublicTokenRefresh.BAY_AUTHORIZER_REFRESH_TOKEN, wechatPublic.getRefeshToken())
+                    .setBody(AuthorizedPublicTokenRefresh.BAY_COMPONENT_APPID, Constants.properties.getProperty("platform.appid"));
+            Map map = tokenRefresh.start();
+            wechatPublic.setAccessToken(map.get("authorizer_access_token").toString());
+            return CodeRe.correct(wechatPublic.getAccessToken());
+        }
         return CodeRe.correct(wechatPublic.getAccessToken());
     }
 }
