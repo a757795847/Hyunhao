@@ -24,8 +24,19 @@ public class OpenIdFilter extends PassThruAuthenticationFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request1, ServletResponse response, Object mappedValue) {
+
         HttpServletRequest request = (HttpServletRequest) request1;
         HttpSession session = request.getSession(true);
+
+        Cookie[] cookies1 = request.getCookies();
+        if (cookies1 != null) {
+            for (Cookie cookie : cookies1) {
+                if (Constants.debug) {
+                    System.out.println("cookie:" + cookie.getName() + ":" + cookie.getValue());
+                }
+            }
+
+        }
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
         if (wechatUserInfo == null) {
             Cookie[] cookies = request.getCookies();
