@@ -47,7 +47,6 @@ public class WechatController {
         }
         return null;
     }
-
     @RequestMapping("submit")
     @ResponseBody
     public Map submit(@RequestParam(required = false) String image1, @RequestParam(required = false) String image2,
