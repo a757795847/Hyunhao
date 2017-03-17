@@ -30,6 +30,7 @@ public class OpenIdFilter extends PassThruAuthenticationFilter {
 
         Cookie[] cookies1 = request.getCookies();
         if (cookies1 != null) {
+            System.out.println(request.getRequestURL().toString());
             for (Cookie cookie : cookies1) {
                 if (Constants.debug) {
                     System.out.println("cookie:" + cookie.getName() + ":" + cookie.getValue());
