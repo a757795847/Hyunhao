@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * Created by admin5 on 17/2/14.
  */
-@RequestMapping("view/wechat")
+@RequestMapping("wechat/view")
 @Controller
 public class WechatController {
     @Autowired
@@ -41,20 +41,6 @@ public class WechatController {
     public String home(@PathVariable("tAppid") String tAppid,HttpServletRequest request) {
         HttpSession session = request.getSession(true);
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
-       /* if(wechatUserInfo ==null){
-            Cookie[] cookies = request.getCookies();
-            if(cookies!=null) {
-                for (Cookie cookie : cookies) {
-                    if (Constants.debug) {
-                        System.out.println("cookie:" + cookie.getName()+":"+cookie.getValue());
-                    }
-                    if (cookie.getName().equals("user_openid")) {
-                        wechatUserInfo = wechatService.getUser(cookie.getValue());
-                        session.setAttribute("c_user", wechatUserInfo);
-                    }
-                }
-            }
-        }*/
         WechatPublicServer wechatPublicServer = wechatService.getWechatPublic(tAppid);
 
         if (wechatUserInfo != null) {
@@ -63,12 +49,6 @@ public class WechatController {
             map.put("appid", wechatPublicServer.getWxAppid());
             request.setAttribute("jsonConfig", JsonUtils.objAsString(map));
             return "/views/wechat/submit.html";
-        }
-        try {
-            return "redirect:http://open.izhuiyou.com/access/wxcode/" + tAppid + "?redirect_url="
-                    + URLEncoder.encode("http://open.izhuiyou.com/middle/token", "utf-8") + "&state=" + URLEncoder.encode(request.getRequestURL().toString(), "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         }
         return null;
     }

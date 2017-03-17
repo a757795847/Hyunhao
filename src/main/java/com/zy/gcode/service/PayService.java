@@ -43,12 +43,11 @@ public class PayService implements IPayService {
     @Override
     @Transactional
     public CodeRe pay(String id, int count, String tappid) {
-
         WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, tappid);
-
-
         PayCredential payCredential = persistenceService.get(PayCredential.class, wechatPublicServer.getWxAppid());
-
+        if(payCredential==null){
+            return CodeRe.error("该微信公众号无商户!");
+        }
         RedPayInfo payInfo = new RedPayInfo();
         payInfo.setNonce_str(UniqueStringGenerator.getUniqueCode());
         payInfo.setMch_billno(UniqueStringGenerator.wxbillno(payCredential.getMchid()));
@@ -283,11 +282,11 @@ public class PayService implements IPayService {
         DetachedCriteria criteria = DetachedCriteria.forClass(RedStatus.class);
         Disjunction disjunction = Restrictions.disjunction();
         disjunction.
-                add(Restrictions.not(Restrictions.in("status", new String[]{"RECEIVED", "REFUND"})));
+                add(Restrictions.not(Restrictions.in("status",new String[]{"RECEIVED", "REFUND"})));
         criteria.add(disjunction);
         List<RedStatus> redStatuses = persistenceService.getList(criteria);
         if (Constants.debug) {
-            System.out.println("updateredStatusesSize:" + redStatuses.size());
+            System.out.println("updateRedStatusesSize:" + redStatuses.size());
         }
 
         redStatuses.forEach(redStatus -> {

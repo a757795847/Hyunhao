@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
+import java.security.*;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -316,5 +317,18 @@ public class OrderService implements IOrderService {
 
     private User getWxOperator() {
         return (User) SecurityUtils.getSubject().getPrincipal();
+    }
+
+    public static void main(String[] args) throws Exception{
+       byte[] bytes = "data signature".getBytes();
+        KeyPairGenerator generator = KeyPairGenerator.getInstance("DSA");
+        generator.initialize(1024);
+        KeyPair keyPair = generator.generateKeyPair();
+        Du.pl(generator.getAlgorithm());
+        Signature signature = Signature.getInstance(generator.getAlgorithm());
+        Du.pl(Arrays.toString(keyPair.getPrivate().getEncoded()));
+        Du.pl(Arrays.toString(keyPair.getPublic().getEncoded()));
+        signature.initSign(keyPair.getPrivate());
+
     }
 }

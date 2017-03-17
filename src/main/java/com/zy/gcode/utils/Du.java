@@ -3,7 +3,7 @@ package com.zy.gcode.utils;
 /**
  * Created by admin5 on 17/3/15.
  */
-public abstract class DU {
+public abstract class Du {
     public static void pl(Object obj){
         System.out.println(obj);
     }
