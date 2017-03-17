@@ -44,7 +44,7 @@ public class MiddleController {
                 session.setAttribute("c_user", wechatUserInfo);
                 Cookie cookie = new Cookie("user_openid", wechatUserInfo.getOpenId());
                 cookie.setMaxAge(24 * 3600);
-                cookie.setPath("/wechat/view/home/"+zyid+"/");
+                cookie.setPath("/");
                 response.addCookie(cookie);
                 return "redirect:" + state;
 
