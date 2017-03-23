@@ -16,7 +16,7 @@ $("#btn").on("click", function () {
     }else {
         $.ajax({
             type: 'POST',
-            url: '/operator/login',
+            url: '/login',
             data: JSON.stringify(datas),
             dataType: 'json',
             contentType: 'application/json;charset=UTF-8',

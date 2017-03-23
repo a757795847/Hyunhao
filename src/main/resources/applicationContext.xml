@@ -66,6 +66,9 @@
                 <ref bean="zyRealm"/>
             </list>
         </property>
+        <property name="subjectFactory">
+            <bean class="com.zy.gcode.security.JwtSubjectFactory"/>
+        </property>
     </bean>
     <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -78,7 +81,7 @@
           class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
     <bean id="userFilter"
-          class="org.apache.shiro.web.filter.authc.PassThruAuthenticationFilter">
+          class="com.zy.gcode.filter.JwtHttpAuthenticationFilter">
         <property name="loginUrl" value="/login"/>
     </bean>
     <bean id="roleFilter" class="org.apache.shiro.web.filter.authz.RolesAuthorizationFilter">
@@ -103,6 +106,7 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
+                /login=authe
                 /order/**=authe
                 /redstrategy/**=authe
                 /proxy/**=role[proxy]

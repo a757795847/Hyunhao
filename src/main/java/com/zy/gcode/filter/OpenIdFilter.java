@@ -28,22 +28,11 @@ public class OpenIdFilter extends PassThruAuthenticationFilter {
         HttpServletRequest request = (HttpServletRequest) request1;
         HttpSession session = request.getSession(true);
 
-        Cookie[] cookies1 = request.getCookies();
-        if (cookies1 != null) {
-            System.out.println(request.getRequestURL().toString());
-            for (Cookie cookie : cookies1) {
-                if (Constants.debug) {
-                    System.out.println("cookie:" + cookie.getName() + ":" + cookie.getValue());
-                    System.out.println(cookie.getPath());
-                }
-            }
-
-        }
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
         if (wechatUserInfo == null) {
             Cookie[] cookies = request.getCookies();
             if (cookies != null) {
-                for (Cookie cookie : cookies) {
+                for (Cookie cookie:cookies) {
                     if (Constants.debug) {
                         System.out.println("cookie:" + cookie.getName() + ":" + cookie.getValue());
                     }

@@ -36,34 +36,6 @@ public class OperatorController {
     @Autowired
     IOperatorService operatorService;
 
-    @RequestMapping("login")
-    public
-    @ResponseBody
-    Map login(@RequestBody Map map) {
-        String username = (String) map.get("username");
-        String password = (String) map.get("password");
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
-        try {
-            subject.login(usernamePasswordToken);
-        } catch (UnknownAccountException e) {
-            return ControllerStatus.error("用户名不存在");
-        } catch (IncorrectCredentialsException e) {
-            subject.getSession().removeAttribute("operator");
-            return ControllerStatus.error("密码不正确");
-        }
-        Map result = new HashMap(2);
-        User user = (User) subject.getPrincipal();
-        if (user.getRole().equals("proxy")) {
-            result.put("url", "/proxy/home");
-        } else {
-            result.put("url", "/order/home");
-        }
-
-
-        return ControllerStatus.ok(result);
-    }
-
     @RequestMapping("register")
     public
     @ResponseBody

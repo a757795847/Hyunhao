@@ -6,7 +6,10 @@ import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.IPayService;
 import com.zy.gcode.utils.DateUtils;
+import com.zy.gcode.utils.Du;
+import com.zy.gcode.utils.JsonUtils;
 import org.apache.shiro.authc.credential.PasswordService;
+import org.apache.shiro.crypto.AesCipherService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.StringType;
@@ -18,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by admin5 on 17/1/19.
@@ -41,6 +45,9 @@ public class DaoTest {
 
     @Test
     public void test() {
+        Du.pl( JsonUtils.asObj(Map.class,"{\"username\":\"a\",\"password:\"b\"}"));
+
+
 /*
        System.out.println(persistenceService.getOneByColumn(DataOrder.class,"orderNumber","24423067612233391")==null);*/
     }
@@ -55,10 +62,8 @@ public class DaoTest {
 
     @Test
     public void password() {
-        int n = 10;
-        int i = 1;
-
-        System.out.println(n * i++);
+        AesCipherService aesCipherService = new AesCipherService();
+        System.out.println(aesCipherService.generateNewKey());
     }
 
     @Test

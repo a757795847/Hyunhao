@@ -12,6 +12,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,9 +22,10 @@ import java.util.List;
 /**
  * Created by admin5 on 17/2/15.
  */
-@Component
-public class ZyRealm extends AuthorizingRealm {
+public class ZyRealm extends AuthorizingRealm implements InitializingBean{
     Logger log = LoggerFactory.getLogger(ZyRealm.class);
+
+    public static String name;
 
 
     IUserService userService;
@@ -68,4 +70,8 @@ public class ZyRealm extends AuthorizingRealm {
 
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        name = getName();
+    }
 }
