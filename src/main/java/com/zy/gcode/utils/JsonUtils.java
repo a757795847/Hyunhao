@@ -7,12 +7,13 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  * Created by admin5 on 17/3/6.
  */
 public abstract class JsonUtils {
-    private static ObjectMapper mapper = new ObjectMapper();
+    private final static ObjectMapper mapper = new ObjectMapper();
 
     static {
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
@@ -46,5 +47,4 @@ public abstract class JsonUtils {
             throw new IllegalArgumentException();
         }
     }
-
 }

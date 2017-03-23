@@ -1,12 +1,8 @@
 package com.zy.gcode.security;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.impl.PublicClaims;
 import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import org.apache.shiro.mgt.DefaultSubjectFactory;
+import com.zy.gcode.utils.JwtUtils;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SimpleSession;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -20,7 +16,6 @@ import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 /**
@@ -33,7 +28,7 @@ public class JwtSubjectFactory extends DefaultWebSubjectFactory {
             return super.createSubject(context);
         }
         WebSubjectContext webContext = (WebSubjectContext) context;
-        if(webContext.isAuthenticated()){
+        if (webContext.isAuthenticated()) {
             return super.createSubject(context);
         }
         HttpServletRequest request = WebUtils.toHttp(webContext.getServletRequest());
@@ -45,21 +40,14 @@ public class JwtSubjectFactory extends DefaultWebSubjectFactory {
         PrincipalCollection principals = null;
         boolean authenticated = false;
         String host = request.getRemoteHost();
-        String authorization ;
-        try {
-            authorization = request.getHeader("authorization");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return  new WebDelegatingSubject(principals, authenticated, host, session, false,
-                    request, response, securityManager);
-        }
-        Map map = getClaimMap(authorization);
-        session.setAttributes(map);
-
+        String authorization;
+        authorization = request.getHeader("authorization");
+        Map map = JwtUtils.deJwtWithTwo(authorization==null?null:authorization.substring("bearer ".length()));
         boolean sessionEnabled = false;
         if (map != null && map.containsKey(PublicClaims.SUBJECT)) {
-            String token = ((Claim) map.get(PublicClaims.SUBJECT)).asString();
-            principals = new SimplePrincipalCollection(token, ZyRealm.name);
+            session.setAttributes(map);
+            String userName = ((Claim) map.get(PublicClaims.SUBJECT)).asString();
+            principals = new SimplePrincipalCollection(userName, ZyRealm.name);
         }
         if (principals != null) {
             authenticated = true;
@@ -68,11 +56,13 @@ public class JwtSubjectFactory extends DefaultWebSubjectFactory {
                 request, response, securityManager);
     }
 
-
+/*
     private Map getClaimMap(String token) {
         if (token == null) {
             return null;
         }
+       token = token.substring("bearer ".length());
+
         Algorithm algorithm = null;
         try {
             algorithm = Algorithm.HMAC256("secret");
@@ -86,10 +76,10 @@ public class JwtSubjectFactory extends DefaultWebSubjectFactory {
         } catch (Exception e) {
             return null;
         }
-
-
         DecodedJWT jwt = verifier.verify(token);
-        return jwt.getClaims();
+        Map map = new HashMap();
+        jwt.getClaims().forEach(map::put);
+        return map;
 
-    }
+    }*/
 }

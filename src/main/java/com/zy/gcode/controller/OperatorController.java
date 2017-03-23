@@ -5,6 +5,7 @@ import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IOperatorService;
 import com.zy.gcode.utils.CodeImage;
+import com.zy.gcode.utils.JwtUtils;
 import com.zy.gcode.utils.MzUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -29,12 +30,24 @@ import java.util.Map;
 /**
  * Created by admin5 on 17/2/15.
  */
-@RequestMapping("operator")
 @Controller
 public class OperatorController {
 
     @Autowired
     IOperatorService operatorService;
+
+
+    @RequestMapping("/auth/user")
+    public @ResponseBody Object user(){
+       String userName = (String)SecurityUtils.getSubject().getPrincipal();
+      return ControllerStatus.ok(operatorService.get(userName));
+    }
+
+    @RequestMapping("/auth/refresh")
+    public void refresh(HttpServletResponse response){
+        JwtUtils.setResponse(response,(String)SecurityUtils.getSubject().getPrincipal());
+    }
+
 
     @RequestMapping("register")
     public

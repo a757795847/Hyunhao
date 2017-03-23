@@ -30,6 +30,9 @@
                         <value>text/html;charset=UTF-8</value>
                     </list>
                 </property>
+                <property name="objectMapper">
+                    <bean  class="com.zy.gcode.utils.ObjectMapperFactoryBean"/>
+                </property>
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>

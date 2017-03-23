@@ -2,7 +2,6 @@ package com.zy.gcode.filter;
 
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.utils.JsonUtils;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
@@ -14,7 +13,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -23,14 +21,13 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends AuthenticatingFilter {
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
-       Map<String,String> map =  JsonUtils.asObj(Map.class,request.getInputStream());
+        Map<String, String> map = JsonUtils.asObj(Map.class, request.getInputStream());
         String username = map.get("username");
         String password = map.get("password");
         return new UsernamePasswordToken(username, password);
     }
 
     /**
-     *
      * @param request
      * @param response
      * @return
@@ -51,13 +48,13 @@ public class JwtAuthenticationFilter extends AuthenticatingFilter {
 
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e,
                                      ServletRequest request, ServletResponse response) {
-        if(e instanceof UnknownAccountException){
+        if (e instanceof UnknownAccountException) {
             try {
                 response.getWriter().write(JsonUtils.objAsString(ControllerStatus.error("用户名不存在")));
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-        }else if(e instanceof IncorrectCredentialsException){
+        } else if (e instanceof IncorrectCredentialsException) {
             try {
                 response.getWriter().write(JsonUtils.objAsString(ControllerStatus.error("密码不正确")));
             } catch (IOException e1) {
@@ -71,11 +68,11 @@ public class JwtAuthenticationFilter extends AuthenticatingFilter {
 
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject,
                                      ServletRequest request, ServletResponse response) throws Exception {
-    SavedRequest savedRequest =  WebUtils.getAndClearSavedRequest(request);
-   if(savedRequest!=null&&savedRequest.getMethod().equals(AccessControlFilter.GET_METHOD)){
-       response.getWriter().println(JsonUtils.objAsString(ControllerStatus.ok()));
-       return false;
-    }
+        SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(request);
+        if (savedRequest != null && savedRequest.getMethod().equals(AccessControlFilter.GET_METHOD)) {
+            response.getWriter().println("bearer "+JsonUtils.objAsString(ControllerStatus.ok()));
+            return false;
+        }
 
         response.getWriter().println(JsonUtils.objAsString(ControllerStatus.ok()));
         //we handled the success redirect directly, prevent the chain from continuing:

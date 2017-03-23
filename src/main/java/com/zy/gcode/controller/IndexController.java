@@ -1,6 +1,7 @@
 package com.zy.gcode.controller;
 
 import com.zy.gcode.pojo.User;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,6 +13,9 @@ import org.springframework.web.context.request.RequestContextHolder;
  */
 @Controller
 public class IndexController {
+
+
+
 
     @RequestMapping("/login")
     public String login() {

@@ -67,7 +67,14 @@ public class OperatorService implements IOperatorService {
     }
 
     @Override
+    @Transactional
     public boolean passwordIsTrue(String oldPassword, String newPassword) {
         return passwordService.passwordsMatch(oldPassword, newPassword);
+    }
+
+    @Override
+    @Transactional
+    public User get(String userName) {
+        return persistenceService.get(User.class,userName);
     }
 }

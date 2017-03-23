@@ -1,5 +1,7 @@
 package com.zy.gcode.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
  */
 public class User {
     private String username;
+    @JsonIgnore
     private String password;
     private Timestamp insertTime;
     private String name;
