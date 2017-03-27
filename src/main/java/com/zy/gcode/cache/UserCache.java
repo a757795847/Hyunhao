@@ -29,7 +29,7 @@ public class UserCache implements Cache {
 
     @Override
     public ValueWrapper get(Object key) {
-        if(key instanceof  String){
+        if(key instanceof  String||key instanceof byte[]){
            return getString(key);
         }
         return null;
@@ -43,21 +43,25 @@ public class UserCache implements Cache {
 
     private ValueWrapper getByUserCache(Object key){
         if(key ==null){
-            return new SimpleValueWrapper(jedis.hget(getName(),"null"));
+            return new SimpleValueWrapper(jedis.hget(getName().getBytes(),"null".getBytes()));
         }
-        return new SimpleValueWrapper(jedis.hget(getName(),key.toString()));
+        return new SimpleValueWrapper(jedis.hget(getName().getBytes(),key.toString().getBytes()));
     }
 
     private boolean isExistByUserCache(Object key){
         if(key==null){
-           return jedis.hexists(getName(),"null");
+           return jedis.hexists(getName().getBytes(),"null".getBytes());
         }
-      return   jedis.hexists(getName(),key.toString());
+      return   jedis.hexists(getName().getBytes(),key.toString().getBytes());
     }
 
     @Override
     public <T> T get(Object key, Class<T> type) {
        ValueWrapper valueWrapper = get(key);
+       Object value = valueWrapper.get();
+       if(value instanceof  byte[]){
+          return  SerializeUtils.de((byte[])value,type);
+       }
         return (T)valueWrapper.get();
     }
 
