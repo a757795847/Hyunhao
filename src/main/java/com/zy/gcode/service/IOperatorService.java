@@ -18,4 +18,5 @@ public interface IOperatorService {
     boolean passwordIsTrue(String oldPassword, String newPassword);
 
     User get(String userName);
+
 }

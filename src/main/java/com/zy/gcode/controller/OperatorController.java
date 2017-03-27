@@ -4,9 +4,11 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IOperatorService;
+import com.zy.gcode.service.IUserService;
 import com.zy.gcode.utils.CodeImage;
 import com.zy.gcode.utils.JwtUtils;
 import com.zy.gcode.utils.MzUtils;
+import com.zy.gcode.utils.UniqueStringGenerator;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +39,9 @@ public class OperatorController {
     @Autowired
     IOperatorService operatorService;
 
+    @Autowired
+    IUserService userService;
+
 
     @RequestMapping("/auth/user")
     public @ResponseBody Object user(){
@@ -46,6 +52,12 @@ public class OperatorController {
     @RequestMapping("/auth/refresh")
     public void refresh(HttpServletResponse response){
         JwtUtils.setResponse(response,(String)SecurityUtils.getSubject().getPrincipal());
+    }
+
+    @RequestMapping("/auth/logout")
+    public void logout(HttpServletResponse response){
+        userService.setState((String)SecurityUtils.getSubject().getPrincipal(), UniqueStringGenerator.getUniqueCode());
+        response.setStatus(401);
     }
 
 
@@ -121,12 +133,6 @@ public class OperatorController {
     @RequestMapping("registerHome")
     public String registerHome() {
         return "/views/proxy/register.html";
-    }
-
-    @RequestMapping("logout")
-    public String logout() {
-        SecurityUtils.getSubject().logout();
-        return "redirect:/";
     }
 
 

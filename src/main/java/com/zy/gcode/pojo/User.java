@@ -23,6 +23,8 @@ public class User {
     private String isAuthentication;
     private String authenticationTime;
     private List<WechatPublicServer> wechatPublicServerList;
+    @JsonIgnore
+    private String state;
 
     public String getUsername() {
         return username;
@@ -110,6 +112,14 @@ public class User {
 
     public void setAuthenticationTime(String authenticationTime) {
         this.authenticationTime = authenticationTime;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public WechatPublicServer getWechatPublicServerList(String zyappid) {

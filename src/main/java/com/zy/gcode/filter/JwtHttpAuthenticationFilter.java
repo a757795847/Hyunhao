@@ -1,10 +1,9 @@
 package com.zy.gcode.filter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.zy.gcode.utils.Du;
 import com.zy.gcode.utils.JsonUtils;
 import com.zy.gcode.utils.JwtUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -30,15 +29,27 @@ public class JwtHttpAuthenticationFilter extends BasicHttpAuthenticationFilter {
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
         if (response instanceof HttpServletResponse) {
             HttpServletResponse servletResponse = (HttpServletResponse) response;
-            JwtUtils.setResponse(servletResponse,(String)token.getPrincipal());
+            JwtUtils.setResponse(servletResponse, (String) token.getPrincipal());
         }
         return true;
     }
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        super.onAccessDenied(request,response);
+        super.onAccessDenied(request, response);
         return false;
+    }
+
+    @Override
+    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
+        //因为前段在登录时有可能传入jwt
+     return super.isAccessAllowed(request, response, mappedValue)&&(!isLoginRequest(request, response));
+
+
+    }
+
+    protected boolean isRefreshRequest(HttpServletRequest request){
+        return  WebUtils.getPathWithinApplication(request).equals("/auth/refresh");
     }
 
     @Override
@@ -67,6 +78,7 @@ public class JwtHttpAuthenticationFilter extends BasicHttpAuthenticationFilter {
 
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
+        Du.dPl("requestUrl:" + WebUtils.toHttp(request).getRequestURI());
         return pathsMatch(getLoginUrl(), request) &&
                 ((request instanceof HttpServletRequest) && WebUtils.toHttp(request).getMethod().equalsIgnoreCase(POST_METHOD));
     }
@@ -82,8 +94,15 @@ public class JwtHttpAuthenticationFilter extends BasicHttpAuthenticationFilter {
             servletResponse.setStatus(200);
             return false;
         }
-
         return super.preHandle(request, response);
     }
 
+
+    @Override
+    protected void postHandle(ServletRequest request, ServletResponse response) throws Exception {
+        String username = (String) SecurityUtils.getSubject().getPrincipal();
+        if(username!=null){
+            JwtUtils.setResponse(WebUtils.toHttp(response),(String) SecurityUtils.getSubject().getPrincipal());
+        }
+    }
 }

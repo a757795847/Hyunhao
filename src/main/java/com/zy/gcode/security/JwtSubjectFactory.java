@@ -48,9 +48,10 @@ public class JwtSubjectFactory extends DefaultWebSubjectFactory {
             session.setAttributes(map);
             String userName = ((Claim) map.get(PublicClaims.SUBJECT)).asString();
             principals = new SimplePrincipalCollection(userName, ZyRealm.name);
-        }
-        if (principals != null) {
             authenticated = true;
+            if(map.containsKey("authenticated")){
+                authenticated = (boolean)map.get("authenticated");
+            }
         }
         return new WebDelegatingSubject(principals, authenticated, host, session, sessionEnabled,
                 request, response, securityManager);
