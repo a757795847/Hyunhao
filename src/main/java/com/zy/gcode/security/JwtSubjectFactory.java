@@ -42,6 +42,9 @@ public class JwtSubjectFactory extends DefaultWebSubjectFactory {
         String host = request.getRemoteHost();
         String authorization;
         authorization = request.getHeader("authorization");
+        if(authorization==null){
+          authorization = request.getParameter("jwt");
+        }
         Map map = JwtUtils.deJwtWithTwo(authorization==null?null:authorization.substring("bearer ".length()));
         boolean sessionEnabled = false;
         if (map != null && map.containsKey(PublicClaims.SUBJECT)) {

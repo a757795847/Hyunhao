@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -37,7 +38,7 @@ public class AuthenticationController {
     }
 
     @RequestMapping("auth/index")
-    public @ResponseBody Object authAppid(@RequestParam String url) {
+    public @ResponseBody Object authAppid(@RequestParam String url, HttpServletRequest request) {
         CodeRe<TokenConfig> codeRe = authenticationService.componetToekn();
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
@@ -49,11 +50,12 @@ public class AuthenticationController {
         if (preAuthCode.isError()) {
             return ControllerStatus.error(preAuthCode.getErrmsg());
         }
+        String authorization = request.getHeader("authorization");
 
         PublicLoginRequest loginRequest = new PublicLoginRequest();
         loginRequest.setParam(PublicLoginRequest.PRA_COMPONENT_APPID, Constants.properties.getProperty("platform.appid"))
                 .setParam(PublicLoginRequest.PRA_PRE_AUTH_CODE, preAuthCode.getPreAuthCode())
-                .setParam(PublicLoginRequest.PRA_REDIRECT_URI, "http://open.izhuiyou.com/auth/code");
+                .setParam(PublicLoginRequest.PRA_REDIRECT_URI, "http://open.izhuiyou.com/auth/code?jwt="+authorization);
         try {
             SecurityUtils.getSubject().getSession().setAttribute("url", URLDecoder.decode(url,"utf-8"));
         } catch (UnsupportedEncodingException e) {
