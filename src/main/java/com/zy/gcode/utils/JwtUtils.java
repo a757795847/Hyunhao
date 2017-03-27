@@ -155,9 +155,9 @@ public class JwtUtils{
         Session session = SecurityUtils.getSubject().getSession();
         Map map = new HashMap();
 
-        session.getAttributeKeys().forEach(k->{
-            map.put(k,session.getAttribute(k));
-        });
+        session.getAttributeKeys().forEach(k->
+            map.put(k,session.getAttribute(k))
+        );
 
 
         response.setHeader(AUTHORIZATION, JwtUtils.enJwtWithNoExpires(map));

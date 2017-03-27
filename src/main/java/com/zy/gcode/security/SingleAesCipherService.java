@@ -10,6 +10,7 @@ import com.zy.gcode.utils.Du;
 import org.apache.shiro.codec.Hex;
 import org.apache.shiro.crypto.AesCipherService;
 import org.springframework.core.io.PathResource;
+import redis.clients.jedis.Jedis;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
@@ -56,21 +57,8 @@ public class SingleAesCipherService extends AesCipherService {
     }
 
     public static void main(String[] args){
-        try {
-            Algorithm algorithm = Algorithm.HMAC256("secret");
-            String token = JWT.create()
-                    .withIssuer("auth0")
-                    .sign(algorithm);
-            Du.pl(token);
-            JWTVerifier verifier = JWT.require(algorithm)
-                    .build(); //Reusable verifier instance
-            DecodedJWT jwt = verifier.verify("eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIyIn0.xl46YfBD8GpRNmFqEnGjpOAJUIDZvxMUL9cGnkjpGzA");
-            Du.pl(jwt.getIssuer());
-        } catch (UnsupportedEncodingException exception){
-            //UTF-8 encoding not supported
-        } catch (JWTCreationException exception){
-            //Invalid Signing configuration / Couldn't convert Claims.
-        }
+        Jedis jedis = new  Jedis("192.29.188.190", 6379);
+        Du.pl(jedis.get("key"));
     }
 
 

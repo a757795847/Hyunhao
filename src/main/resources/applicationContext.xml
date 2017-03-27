@@ -109,6 +109,7 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
+                /auth/receive=anon
                 /auth/**=authe
                 /order/**=authe
                 /redstrategy/**=authe
