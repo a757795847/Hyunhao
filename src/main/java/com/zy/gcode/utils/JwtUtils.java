@@ -85,6 +85,7 @@ public class JwtUtils{
                  if(!k.equals(PublicClaims.EXPIRES_AT)){
                      if(v instanceof Claim)
                      builder.withClaim((String)k,((Claim) v).asString());
+                     builder.withClaim(k.toString(),v.toString());
                  }
              });
            }
