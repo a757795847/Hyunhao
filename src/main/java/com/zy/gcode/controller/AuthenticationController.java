@@ -87,7 +87,7 @@ public class AuthenticationController {
     public
     @ResponseBody
     String index(String param) {
-        Jedis jedis = new  Jedis("localhost", 6370);
+        Jedis jedis = new  Jedis("localhost", 6379);
         Du.pl(jedis.get("key"));
         return jedis.get(param);
     }
