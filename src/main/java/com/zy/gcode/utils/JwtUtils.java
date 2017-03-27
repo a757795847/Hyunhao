@@ -140,6 +140,19 @@ public class JwtUtils{
         }
         response.setHeader(ACCESS_CONTROL_EXPOSE_HEADERS, AUTHORIZATION);
         SimpleSession simpleSession = (SimpleSession)SecurityUtils.getSubject().getSession();
+        response.setHeader(AUTHORIZATION, JwtUtils.enJwt(username));
+    }
+    public static void setResponseWithNoExpires(HttpServletResponse response,String username){
+        if(response.getHeader(AUTHORIZATION)!=null){
+            return;
+        }
+
+        if(username==null){
+            response.setStatus(401);
+            return;
+        }
+        response.setHeader(ACCESS_CONTROL_EXPOSE_HEADERS, AUTHORIZATION);
+        SimpleSession simpleSession = (SimpleSession)SecurityUtils.getSubject().getSession();
         response.setHeader(AUTHORIZATION, JwtUtils.enJwtWithNoExpires(simpleSession.getAttributes()));
     }
 

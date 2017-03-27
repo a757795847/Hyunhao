@@ -102,7 +102,7 @@ public class JwtHttpAuthenticationFilter extends BasicHttpAuthenticationFilter {
     protected void postHandle(ServletRequest request, ServletResponse response) throws Exception {
         String username = (String) SecurityUtils.getSubject().getPrincipal();
         if(username!=null){
-            JwtUtils.setResponse(WebUtils.toHttp(response),(String) SecurityUtils.getSubject().getPrincipal());
+            JwtUtils.setResponseWithNoExpires(WebUtils.toHttp(response),(String) SecurityUtils.getSubject().getPrincipal());
         }
     }
 }
