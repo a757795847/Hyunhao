@@ -13,10 +13,7 @@ import com.zy.gcode.utils.JwtUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -40,7 +37,7 @@ public class AuthenticationController {
     }
 
     @RequestMapping("auth/index")
-    public @ResponseBody Object authAppid(String url) {
+    public @ResponseBody Object authAppid(@RequestParam String url) {
         CodeRe<TokenConfig> codeRe = authenticationService.componetToekn();
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
