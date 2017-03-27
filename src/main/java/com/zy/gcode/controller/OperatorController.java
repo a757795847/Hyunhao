@@ -9,6 +9,7 @@ import com.zy.gcode.utils.CodeImage;
 import com.zy.gcode.utils.JwtUtils;
 import com.zy.gcode.utils.MzUtils;
 import com.zy.gcode.utils.UniqueStringGenerator;
+import org.apache.http.HttpRequest;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -131,7 +133,7 @@ public class OperatorController {
     }
 
     @RequestMapping("getcodeImage")
-    public void getCodeImage(HttpServletResponse response, HttpSession session) {
+    public void getCodeImage(HttpServletResponse response, HttpServletRequest request) {
         CodeImage codeImage = new CodeImage();
         response.setContentType("image/jpeg");
         //禁止图像缓存。
@@ -139,7 +141,7 @@ public class OperatorController {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
         ImageInfo imageInfo = new ImageInfo(codeImage.getCode(), System.currentTimeMillis());
-        session.setAttribute("imageInfo", imageInfo);
+        request.getSession(true).setAttribute("imageInfo", imageInfo);
         try {
             codeImage.write(response.getOutputStream());
             response.flushBuffer();
