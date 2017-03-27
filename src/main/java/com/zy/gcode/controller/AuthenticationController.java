@@ -55,7 +55,7 @@ public class AuthenticationController {
         PublicLoginRequest loginRequest = new PublicLoginRequest();
         loginRequest.setParam(PublicLoginRequest.PRA_COMPONENT_APPID, Constants.properties.getProperty("platform.appid"))
                 .setParam(PublicLoginRequest.PRA_PRE_AUTH_CODE, preAuthCode.getPreAuthCode())
-                .setParam(PublicLoginRequest.PRA_REDIRECT_URI, "http://open.izhuiyou.com/auth/code?jwt="+authorization+"&url="+url);
+                .setParam(PublicLoginRequest.PRA_REDIRECT_URI, "http://open.izhuiyou.com/auth/code?jwt="+authorization);
         return ControllerStatus.ok(loginRequest.start());
 
     }
