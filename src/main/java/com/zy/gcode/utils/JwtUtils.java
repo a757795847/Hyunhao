@@ -14,6 +14,7 @@ import com.zy.gcode.service.OperatorService;
 import com.zy.gcode.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.codec.Hex;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SimpleSession;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryUtils;
@@ -139,7 +140,6 @@ public class JwtUtils{
             return;
         }
         response.setHeader(ACCESS_CONTROL_EXPOSE_HEADERS, AUTHORIZATION);
-        SimpleSession simpleSession = (SimpleSession)SecurityUtils.getSubject().getSession();
         response.setHeader(AUTHORIZATION, JwtUtils.enJwt(username));
     }
     public static void setResponseWithNoExpires(HttpServletResponse response,String username){
@@ -152,8 +152,15 @@ public class JwtUtils{
             return;
         }
         response.setHeader(ACCESS_CONTROL_EXPOSE_HEADERS, AUTHORIZATION);
-        SimpleSession simpleSession = (SimpleSession)SecurityUtils.getSubject().getSession();
-        response.setHeader(AUTHORIZATION, JwtUtils.enJwtWithNoExpires(simpleSession.getAttributes()));
+        Session session = SecurityUtils.getSubject().getSession();
+        Map map = new HashMap();
+
+        session.getAttributeKeys().forEach(k->{
+            map.put(k,session.getAttribute(k));
+        });
+
+
+        response.setHeader(AUTHORIZATION, JwtUtils.enJwtWithNoExpires(map));
     }
 
     public static Map deJwtWithTwo(String token){
