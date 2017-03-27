@@ -9,13 +9,16 @@ import com.zy.gcode.oauth.PublicTokenRequest;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.service.IAuthenticationService;
 import com.zy.gcode.utils.Constants;
+import com.zy.gcode.utils.Du;
 import com.zy.gcode.utils.JwtUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -62,7 +65,7 @@ public class AuthenticationController {
 
     @RequestMapping("auth/code")
     public
-    String serverCode(String auth_code, String expires_in,String url) {
+    String serverCode(String auth_code, String expires_in) {
         CodeRe<TokenConfig> componetTokenCodeRe = authenticationService.componetToekn();
         if (componetTokenCodeRe.isError()) {
             return componetTokenCodeRe.getErrorMessage();
@@ -76,17 +79,18 @@ public class AuthenticationController {
         if (codeRe.isError()) {
             return codeRe.getErrorMessage();
         }
-        return "redirect:"+url;
+        return "redirect:/";
 
     }
 
- /*   @RequestMapping("index")
+    @RequestMapping("index")
     public
     @ResponseBody
-    String index() {
-        return HttpClientUtils. stringGetSend("https://api.weixin.qq.com/cgi-bin/user/get?access_token=eJSDxQpAum_UbOm5ijkvuyfhDfrQ8B1bF6tx-xVm3uA1Q7Z4zFflxWZmoDbgKgQUnQF6kHp9HI0wCrBHfV-5qi4nceVo6mUz3CW6kWXs2xAopPrUlF3zswTrgIRwQ-tKIKGjAJDQSO")
-        + HttpClientUtils. stringGetSend("https://api.weixin.qq.com/cgi-bin/user/get?access_token=uwCEJnv3DVFcipf9h_u6YQSn4AVGc99NU4Df7cEPo4wq0udJKueRFWknkZuN6h6S4zYwewLTzu4PDg5nchB9RAjZ4om8WB16MMnzcUQ779UZWXjADAIFG");
-    }*/
+    String index(String param) {
+        Jedis jedis = new  Jedis("localhost", 6370);
+        Du.pl(jedis.get("key"));
+        return jedis.get(param);
+    }
 
 
 }
