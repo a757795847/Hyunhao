@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 public class ObjectMapperFactoryBean implements FactoryBean<ObjectMapper>,ApplicationContextAware {
     @Override
     public ObjectMapper getObject() throws Exception {
+        Du.dPl("调用了getObject方法");
         Field field = JsonUtils.class.getDeclaredField("mapper");
         field.setAccessible(true);
         return (ObjectMapper)field.get(null);
@@ -27,7 +28,7 @@ public class ObjectMapperFactoryBean implements FactoryBean<ObjectMapper>,Applic
 
     @Override
     public boolean isSingleton() {
-        return true;
+        return false;
     }
 
     @Override

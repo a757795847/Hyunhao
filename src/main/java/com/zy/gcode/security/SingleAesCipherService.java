@@ -57,7 +57,7 @@ public class SingleAesCipherService extends AesCipherService {
     }
 
     public static void main(String[] args){
-        Jedis jedis = new  Jedis("localhost", 6379);
+        Jedis jedis = new  Jedis("115.29.188.190", 6379);
         Du.pl(jedis.get("key"));
     }
 

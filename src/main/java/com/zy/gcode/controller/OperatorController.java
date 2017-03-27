@@ -130,12 +130,6 @@ public class OperatorController {
         return ControllerStatus.ok("success");
     }
 
-    @RequestMapping("registerHome")
-    public String registerHome() {
-        return "/views/proxy/register.html";
-    }
-
-
     @RequestMapping("getcodeImage")
     public void getCodeImage(HttpServletResponse response, HttpSession session) {
         CodeImage codeImage = new CodeImage();
@@ -152,7 +146,6 @@ public class OperatorController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @RequestMapping("/forgetHome")
