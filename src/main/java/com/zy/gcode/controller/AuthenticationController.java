@@ -55,20 +55,14 @@ public class AuthenticationController {
         PublicLoginRequest loginRequest = new PublicLoginRequest();
         loginRequest.setParam(PublicLoginRequest.PRA_COMPONENT_APPID, Constants.properties.getProperty("platform.appid"))
                 .setParam(PublicLoginRequest.PRA_PRE_AUTH_CODE, preAuthCode.getPreAuthCode())
-                .setParam(PublicLoginRequest.PRA_REDIRECT_URI, "http://open.izhuiyou.com/auth/code?jwt="+authorization);
-        try {
-            SecurityUtils.getSubject().getSession().setAttribute("url", URLDecoder.decode(url,"utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return ControllerStatus.error();
-        }
+                .setParam(PublicLoginRequest.PRA_REDIRECT_URI, "http://open.izhuiyou.com/auth/code?jwt="+authorization+"&url="+url);
         return ControllerStatus.ok(loginRequest.start());
 
     }
 
     @RequestMapping("auth/code")
     public
-    String serverCode(String auth_code, String expires_in) {
+    String serverCode(String auth_code, String expires_in,String url) {
         CodeRe<TokenConfig> componetTokenCodeRe = authenticationService.componetToekn();
         if (componetTokenCodeRe.isError()) {
             return componetTokenCodeRe.getErrorMessage();
@@ -82,7 +76,6 @@ public class AuthenticationController {
         if (codeRe.isError()) {
             return codeRe.getErrorMessage();
         }
-        String url = JwtUtils.claimAsString("url");
         return "redirect:"+url;
 
     }
