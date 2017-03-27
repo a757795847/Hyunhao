@@ -93,7 +93,7 @@ public class JwtUtils{
     }
 
     public static String claimAsString(String key){
-        return ((Claim)SecurityUtils.getSubject().getSession().getAttribute("key")).asString();
+        return ((Claim)SecurityUtils.getSubject().getSession().getAttribute(key)).asString();
     }
 
 
