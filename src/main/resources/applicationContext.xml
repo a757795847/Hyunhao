@@ -119,6 +119,7 @@
                 /proxy/**=role[proxy]
                 /operator/innerUpdatePassword=authe
                 /wechat/**=openid
+                /**=anon
             </value>
         </property>
     </bean>
