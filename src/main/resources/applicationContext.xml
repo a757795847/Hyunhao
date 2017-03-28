@@ -30,6 +30,25 @@
 
     <bean id="jedisPool" class="com.zy.gcode.cache.JedisPoolFactoryBean">
     </bean>
+
+
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="8" />
+        <property name="testOnBorrow" value="true" />
+    </bean>
+
+    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="hostName" value="115.29.188.190"></property>
+    </bean>
+
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory"   ref="connectionFactory" />
+    </bean>
+
+
+
+
+
     <!--  &lt;!&ndash; 配置事务事务属性 &ndash;&gt;
       <tx:advice id="txAdvice" transaction-manager="transactionManager">
           <tx:attributes>
@@ -77,6 +96,7 @@
             <bean class="com.zy.gcode.security.JwtSubjectFactory"/>
         </property>
     </bean>
+
 
     <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

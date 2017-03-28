@@ -91,12 +91,14 @@ public class JwtHttpAuthenticationFilter extends BasicHttpAuthenticationFilter {
             servletResponse.setStatus(200);
             return false;
         }
-        return super.preHandle(request, response);
+        boolean flag = super.preHandle(request, response);
+        if(flag){
+            pre1PostHandle(request,response);
+        }
+        return flag;
     }
 
-
-    @Override
-    protected void postHandle(ServletRequest request, ServletResponse response) throws Exception {
+    protected void pre1PostHandle(ServletRequest request, ServletResponse response) throws Exception {
         String username = (String) SecurityUtils.getSubject().getPrincipal();
         if(username!=null){
             JwtUtils.setResponseWithNoExpires(WebUtils.toHttp(response),(String) SecurityUtils.getSubject().getPrincipal());

@@ -199,7 +199,6 @@ public class CodeImage {
 
     public void write(OutputStream sos) throws IOException {
         ImageIO.write(buffImg, "png", sos);
-        sos.close();
     }
 
     public BufferedImage getBuffImg() {

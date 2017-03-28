@@ -1,5 +1,6 @@
 package com.zy.gcode.filter;
 
+import com.zy.gcode.utils.Du;
 import com.zy.gcode.utils.JwtUtils;
 import org.apache.shiro.web.filter.authc.AnonymousFilter;
 import org.apache.shiro.web.util.WebUtils;
@@ -21,18 +22,22 @@ public class JwtAnonymousFilter extends AnonymousFilter  {
             servletResponse.setStatus(200);
             return false;
         }
-        return super.preHandle(request, response);
+        boolean flag = super.preHandle(request, response);
+        if(flag){
+             prePostHandle(request,response);
+        }
+        return flag;
     }
 
-    @Override
-    protected void postHandle(ServletRequest request, ServletResponse response) throws Exception {
+    protected void prePostHandle(ServletRequest request, ServletResponse response) throws Exception {
         if(request instanceof  HttpServletRequest){
             HttpServletRequest servletRequest = WebUtils.toHttp(request);
-           String authorization = servletRequest.getHeader(JwtUtils.AUTHORIZATION);
-           if(authorization!=null){
+            String authorization = servletRequest.getHeader(JwtUtils.AUTHORIZATION);
+             if(authorization!=null){
                return;
            }
-          JwtUtils.setAnonymousResponse(WebUtils.toHttp(response));
+            Du.dPl("anonymous:"+((HttpServletRequest) request).getRequestURI());
+            JwtUtils.setAnonymousResponse(WebUtils.toHttp(response));
         }
     }
 }

@@ -1,6 +1,7 @@
 package service;
 
-import com.zy.gcode.cache.UserCache;
+import com.zy.gcode.cache.MyCache;
+import com.zy.gcode.cache.OperatorCache;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.User;
@@ -9,7 +10,6 @@ import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.IPayService;
 import com.zy.gcode.utils.DateUtils;
 import com.zy.gcode.utils.Du;
-import com.zy.gcode.utils.JsonUtils;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.apache.shiro.crypto.AesCipherService;
 import org.hibernate.criterion.DetachedCriteria;
@@ -18,6 +18,7 @@ import org.hibernate.type.StringType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,6 @@ import redis.clients.jedis.Jedis;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by admin5 on 17/1/19.
@@ -48,17 +48,18 @@ public class DaoTest {
     PasswordService passwordService;
 
     @Autowired
-    UserCache userCache;
+    MyCache userCache;
 
     @Autowired
     Jedis jedis;
+
+    @Autowired
+    OperatorCache operatorCache;
 
     @Test
     public void test() {
         HashMap map = new HashMap();
         User user = new User();
-        user.setUsername("桂敏瑞");
-        map.put("user",user);
 
         userCache.put("123",user);
         long start = System.currentTimeMillis();
@@ -69,9 +70,12 @@ public class DaoTest {
         System.out.println(start1);
         Du.pl(map.get("user"));
         System.out.println(System.currentTimeMillis()-start1);
-        jedis.set("key1",user.toString());
+
+        long start3 = System.currentTimeMillis();
+        Du.pl(operatorCache.get("key2",User.class));
+        System.out.println(System.currentTimeMillis()-start3);
+
         long start2 = System.currentTimeMillis();
-        System.out.println(start2);
         Du.pl(jedis.get("key1"));
         System.out.println(System.currentTimeMillis()-start2);
 

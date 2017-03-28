@@ -90,6 +90,7 @@ public class JwtUtils{
                  }
              });
            }
+           builder.withExpiresAt(new Date(System.currentTimeMillis()));
         return builder.sign(algorithm);
     }
 
@@ -114,7 +115,7 @@ public class JwtUtils{
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT jwt;
         jwt = verifier.verify(token);
-        if(!jwt.getClaim(PublicClaims.JWT_ID).asString().equals(getUserState(jwt.getSubject()))){
+        if(!jwt.getSubject().startsWith("anonymous")&&!jwt.getClaim(PublicClaims.JWT_ID).asString().equals(getUserState(jwt.getSubject()))){
             return null;
         }
 
@@ -167,10 +168,12 @@ public class JwtUtils{
     }
 
     public static Map deJwtWithTwo(String token){
-        if(token==null)
-            return null;
         Map map;
         Map result = new HashMap();
+        if(token==null){
+        token = JWT.create().withSubject("anonymous"+UUID.randomUUID().toString())
+                   .sign(algorithm);
+        }
         try {
             map=deJwt(token);
         } catch (InvalidClaimException e) {
@@ -193,9 +196,15 @@ public class JwtUtils{
     }
 
     public static void setAnonymousResponse(HttpServletResponse response){
-        response.setHeader(ACCESS_CONTROL_EXPOSE_HEADERS, AUTHORIZATION);
-        response.setHeader(AUTHORIZATION, JwtUtils.enJwt(  JWT.create().withSubject("anonymous")
-                .withClaim("id",UUID.randomUUID().toString()).sign(algorithm)));
+        String authorization = response.getHeader(AUTHORIZATION);
+        if(authorization!=null&&authorization.length()>0)
+            return;
+        String id = (String)SecurityUtils.getSubject().getPrincipal();
+        if(id == null){
+            id ="anonymous"+UUID.randomUUID().toString();
+        }
+        response.setHeader(AUTHORIZATION,  JWT.create().withSubject(id)
+                .sign(algorithm));
     }
 
 

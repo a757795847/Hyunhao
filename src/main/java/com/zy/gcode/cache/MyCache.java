@@ -16,7 +16,7 @@ import java.util.concurrent.Callable;
  * Created by admin5 on 17/3/27.
  */
 @Component
-public class UserCache implements Cache {
+public class MyCache implements Cache {
     @Autowired
     Jedis jedis;
 

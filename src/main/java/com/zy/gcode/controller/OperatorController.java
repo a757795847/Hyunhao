@@ -1,20 +1,19 @@
 package com.zy.gcode.controller;
 
+import com.zy.gcode.cache.OperatorCache;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.IOperatorService;
 import com.zy.gcode.service.IUserService;
-import com.zy.gcode.utils.CodeImage;
-import com.zy.gcode.utils.JwtUtils;
-import com.zy.gcode.utils.MzUtils;
-import com.zy.gcode.utils.UniqueStringGenerator;
+import com.zy.gcode.utils.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -38,6 +38,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OperatorController {
 
     Map<String,Map> mapCache = new ConcurrentHashMap<>();
+
+
+    @Autowired
+    OperatorCache operatorCache;
 
     @Autowired
     IOperatorService operatorService;
@@ -160,7 +164,6 @@ public class OperatorController {
         sessionPut("imageInfo", imageInfo);
         try {
             codeImage.write(response.getOutputStream());
-            response.flushBuffer();
         } catch (IOException e) {
             e.printStackTrace();
         }
