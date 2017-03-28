@@ -143,7 +143,6 @@ public class JwtUtils{
             response.setStatus(401);
             return;
         }
-        response.setHeader(ACCESS_CONTROL_EXPOSE_HEADERS, AUTHORIZATION);
         response.setHeader(AUTHORIZATION, JwtUtils.enJwt(username));
     }
     public static void setResponseWithNoExpires(HttpServletResponse response,String username){
@@ -155,7 +154,6 @@ public class JwtUtils{
             response.setStatus(401);
             return;
         }
-        response.setHeader(ACCESS_CONTROL_EXPOSE_HEADERS, AUTHORIZATION);
         Session session = SecurityUtils.getSubject().getSession();
         Map map = new HashMap();
 

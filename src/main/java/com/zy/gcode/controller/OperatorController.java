@@ -206,8 +206,8 @@ public class OperatorController {
     public
     @ResponseBody
     Object checkVerificationCode(@PathVariable String code) {
-        Session session = SecurityUtils.getSubject().getSession();
-        VerificationInfo verificationInfo = (VerificationInfo) session.getAttribute("verificationInfo");
+
+        VerificationInfo verificationInfo = (VerificationInfo) getSession().get("verificationInfo");
         if (verificationInfo == null) {
             return ControllerStatus.error("请先填写验证码");
         }
