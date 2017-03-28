@@ -84,9 +84,11 @@ public class JwtUtils{
            if(!map.isEmpty()){
              map.forEach((k,v)->{
                  if(!k.equals(PublicClaims.EXPIRES_AT)){
-                     if(v instanceof Claim)
-                     builder.withClaim((String)k,((Claim) v).asString());
-                     builder.withClaim(k.toString(),v.toString());
+                     if(v instanceof Claim){
+                         builder.withClaim((String)k,((Claim) v).asString());
+                     }else {
+                         builder.withClaim(k.toString(),v.toString());
+                     }
                  }
              });
            }
