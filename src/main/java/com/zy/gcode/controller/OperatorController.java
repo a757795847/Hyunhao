@@ -103,7 +103,7 @@ public class OperatorController {
 
 
     private void sessionPut(Object key,Object value){
-        Map map = null;
+        Map map;
        if((map =getSession())==null){
            map = new HashMap();
            mapCache.put((String)SecurityUtils.getSubject().getPrincipal(),map);
