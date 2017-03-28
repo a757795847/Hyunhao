@@ -7,9 +7,6 @@ import java.io.*;
  */
 public abstract class SerializeUtils {
     public static <T> T de(byte[] bytes, Class<T> tClass) {
-        if(tClass.isAssignableFrom(Serializable.class)){
-            throw new IllegalArgumentException();
-        }
 
         try (ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(bytes))){
             return (T)inputStream.readObject();

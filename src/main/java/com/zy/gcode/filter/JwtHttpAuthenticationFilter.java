@@ -86,10 +86,7 @@ public class JwtHttpAuthenticationFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletResponse servletResponse = WebUtils.toHttp(response);
-        servletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-        servletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST");
-        servletResponse.setHeader("Access-Control-Allow-Origin", "*");
-        servletResponse.setHeader("Allow", "GET,POST");
+        JwtUtils.setAcrossOrigin(servletResponse);
         if (((request instanceof HttpServletRequest) && WebUtils.toHttp(request).getMethod().equalsIgnoreCase("OPTIONS"))) {
             servletResponse.setStatus(200);
             return false;

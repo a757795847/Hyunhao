@@ -1,7 +1,9 @@
 package service;
 
+import com.zy.gcode.cache.UserCache;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.DataOrder;
+import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.IPayService;
@@ -19,8 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.Jedis;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -43,10 +47,33 @@ public class DaoTest {
     @Autowired
     PasswordService passwordService;
 
+    @Autowired
+    UserCache userCache;
+
+    @Autowired
+    Jedis jedis;
+
     @Test
     public void test() {
-        Du.pl( JsonUtils.asObj(Map.class,"{\"username\":\"a\",\"password:\"b\"}"));
+        HashMap map = new HashMap();
+        User user = new User();
+        user.setUsername("桂敏瑞");
+        map.put("user",user);
 
+        userCache.put("123",user);
+        long start = System.currentTimeMillis();
+        System.out.println(start);
+        Du.pl(userCache.get("123").get());
+        System.out.println(System.currentTimeMillis()-start);
+        long start1 = System.currentTimeMillis();
+        System.out.println(start1);
+        Du.pl(map.get("user"));
+        System.out.println(System.currentTimeMillis()-start1);
+        jedis.set("key1",user.toString());
+        long start2 = System.currentTimeMillis();
+        System.out.println(start2);
+        Du.pl(jedis.get("key1"));
+        System.out.println(System.currentTimeMillis()-start2);
 
 /*
        System.out.println(persistenceService.getOneByColumn(DataOrder.class,"orderNumber","24423067612233391")==null);*/

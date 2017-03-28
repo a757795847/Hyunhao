@@ -35,14 +35,15 @@ import java.security.Security;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by admin5 on 17/3/21.
  */
 public class JwtUtils{
     private static Algorithm algorithm;
-    private static final String AUTHORIZATION = "authorization";
-    private static final String ACCESS_CONTROL_EXPOSE_HEADERS = "access-control-expose-headers";
+    public static final String AUTHORIZATION = "authorization";
+    public static final String ACCESS_CONTROL_EXPOSE_HEADERS = "access-control-expose-headers";
     private static final String secret = "369a854208a071782ff35262586dceb3";
     private static ApplicationContext applicationContext;
 
@@ -191,6 +192,13 @@ public class JwtUtils{
 
     }
 
+    public static void setAnonymousResponse(HttpServletResponse response){
+        response.setHeader(ACCESS_CONTROL_EXPOSE_HEADERS, AUTHORIZATION);
+        response.setHeader(AUTHORIZATION, JwtUtils.enJwt(  JWT.create().withSubject("anonymous")
+                .withClaim("id",UUID.randomUUID().toString()).sign(algorithm)));
+    }
+
+
 
     private static String deCode(String content, int type) {
         SecretKeySpec key = new SecretKeySpec(Hex.decode(secret), "AES");
@@ -230,5 +238,13 @@ public class JwtUtils{
 
     public static void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         JwtUtils.applicationContext = applicationContext;
+    }
+
+
+    public static void setAcrossOrigin(HttpServletResponse servletResponse){
+        servletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        servletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        servletResponse.setHeader("Access-Control-Allow-Origin", "*");
+        servletResponse.setHeader("Allow", "GET,POST");
     }
 }

@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -35,6 +36,8 @@ import java.util.Map;
  */
 @Controller
 public class OperatorController {
+
+    Map<String,Map> mapCache = new ConcurrentHashMap<>();
 
     @Autowired
     IOperatorService operatorService;
@@ -64,8 +67,8 @@ public class OperatorController {
     @RequestMapping("register")
     public
     @ResponseBody
-    Object register(@RequestBody Map map, HttpSession session) {
-        VerificationInfo verificationInfo = (VerificationInfo) session.getAttribute("verificationInfo");
+    Object register(@RequestBody Map map) {
+        VerificationInfo verificationInfo = (VerificationInfo) getSession().get("verificationInfo");
         if (verificationInfo == null) {
             return ControllerStatus.error("请先填写验证码");
         }
@@ -80,7 +83,7 @@ public class OperatorController {
         if (verificationInfo.generationTime < (System.currentTimeMillis() - 120 * 1000)) {
             return ControllerStatus.error("验证码过期");
         }
-        session.removeAttribute("verificationInfo");
+        getSession().remove("verificationInfo");
 
 
         CodeRe codeRe = operatorService.registerOperator(map.get("phone").toString(), map.get("password").toString());
@@ -88,6 +91,20 @@ public class OperatorController {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }
         return ControllerStatus.ok((String) codeRe.getMessage());
+    }
+
+    private Map getSession(){
+       return mapCache.get(SecurityUtils.getSubject().getPrincipal());
+    }
+
+
+    private void sessionPut(Object key,Object value){
+        Map map = null;
+       if((map =getSession())==null){
+           map = new HashMap();
+           mapCache.put((String)SecurityUtils.getSubject().getPrincipal(),map);
+       }
+       map.put(key,value);
     }
 
     @RequestMapping("checkUsername/{username}")
@@ -101,11 +118,12 @@ public class OperatorController {
         return ControllerStatus.ok();
     }
 
+
     @RequestMapping("verificationCode")
     public
     @ResponseBody
-    Object verificationCode(String phone, String code, HttpSession session) {
-        ImageInfo imageInfo = (ImageInfo) session.getAttribute("imageInfo");
+    Object verificationCode(String phone, String code) {
+        ImageInfo imageInfo = (ImageInfo) getSession().get("imageInfo");
         if (imageInfo == null) {
             return ControllerStatus.error("请输入验证码");
         }
@@ -113,25 +131,25 @@ public class OperatorController {
         if ((!imageInfo.content.equals(code)) || imageInfo.createTime < (System.currentTimeMillis() - 120 * 1000)) {
             return ControllerStatus.error("验证码错误或过期!");
         }
-        VerificationInfo periousVerificationInfo = (VerificationInfo) session.getAttribute("verificationInfo");
+        VerificationInfo periousVerificationInfo = (VerificationInfo)  getSession().get("verificationInfo");
         if (periousVerificationInfo != null && periousVerificationInfo.generationTime > (System.currentTimeMillis() - 60 * 1000)) {
             return ControllerStatus.error("请60秒后再发送");
         }
 
 
-        session.removeAttribute("imageInfo");
+        getSession().remove("imageInfo");
 
         CodeRe<String> codeRe = operatorService.generateVerificationCode(phone);
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }
         VerificationInfo verificationInfo = new VerificationInfo(codeRe.getMessage(), System.currentTimeMillis(), phone);
-        session.setAttribute("verificationInfo", verificationInfo);
+        sessionPut("verificationInfo", verificationInfo);
         return ControllerStatus.ok("success");
     }
 
     @RequestMapping("getcodeImage")
-    public void getCodeImage(HttpServletResponse response, HttpSession session) {
+    public void getCodeImage(HttpServletResponse response) {
         CodeImage codeImage = new CodeImage();
         response.setContentType("image/jpeg");
         //禁止图像缓存。
@@ -139,7 +157,7 @@ public class OperatorController {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
         ImageInfo imageInfo = new ImageInfo(codeImage.getCode(), System.currentTimeMillis());
-        session.setAttribute("imageInfo", imageInfo);
+        sessionPut("imageInfo", imageInfo);
         try {
             codeImage.write(response.getOutputStream());
             response.flushBuffer();
@@ -157,8 +175,8 @@ public class OperatorController {
     @RequestMapping("updatePassword")
     public
     @ResponseBody
-    Object updatePassword(@RequestBody Map map, HttpSession session) {
-        VerificationInfo verificationInfo = (VerificationInfo) session.getAttribute("verificationInfo");
+    Object updatePassword(@RequestBody Map map) {
+        VerificationInfo verificationInfo = (VerificationInfo) getSession().get("verificationInfo");
         if (verificationInfo == null) {
             return ControllerStatus.error("请先填写验证码");
         }
@@ -173,7 +191,7 @@ public class OperatorController {
         if (verificationInfo.generationTime < (System.currentTimeMillis() - 120 * 1000)) {
             return ControllerStatus.error("验证码过期");
         }
-        session.removeAttribute("verificationInfo");
+        getSession().remove("verificationInfo");
         CodeRe codeRe = operatorService.updatePassword(map.get("phone").toString(), map.get("password").toString());
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());

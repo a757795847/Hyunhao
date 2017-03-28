@@ -55,6 +55,9 @@ public class JwtSubjectFactory extends DefaultWebSubjectFactory {
             if(map.containsKey("authenticated")){
                 authenticated = (boolean)map.get("authenticated");
             }
+            if(((Claim) map.get(PublicClaims.SUBJECT)).asString().equals("anonymous")){
+                authenticated=false;
+            }
         }
         return new WebDelegatingSubject(principals, authenticated, host, session, sessionEnabled,
                 request, response, securityManager);

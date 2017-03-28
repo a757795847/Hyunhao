@@ -2,6 +2,7 @@ package com.zy.gcode.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Created by admin5 on 17/2/15.
  */
-public class User {
+public class User implements Serializable {
     private String username;
     @JsonIgnore
     private String password;
@@ -133,5 +134,24 @@ public class User {
 
     public void setWechatPublicServerList(List<WechatPublicServer> wechatPublicServerList) {
         this.wechatPublicServerList = wechatPublicServerList;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", insertTime=" + insertTime +
+                ", name='" + name + '\'' +
+                ", role='" + role + '\'' +
+                ", updateTime=" + updateTime +
+                ", isEnable='" + isEnable + '\'' +
+                ", endTime=" + endTime +
+                ", phone='" + phone + '\'' +
+                ", isAuthentication='" + isAuthentication + '\'' +
+                ", authenticationTime='" + authenticationTime + '\'' +
+                ", wechatPublicServerList=" + wechatPublicServerList +
+                ", state='" + state + '\'' +
+                '}';
     }
 }

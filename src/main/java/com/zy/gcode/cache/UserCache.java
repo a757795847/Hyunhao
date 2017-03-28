@@ -1,12 +1,15 @@
 package com.zy.gcode.cache;
 
+import com.zy.gcode.pojo.User;
+import com.zy.gcode.utils.Du;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 /**
@@ -16,6 +19,8 @@ import java.util.concurrent.Callable;
 public class UserCache implements Cache {
     @Autowired
     Jedis jedis;
+
+    private byte[] nameBytes = SerializeUtils.en(getName());
 
     @Override
     public String getName() {
@@ -29,77 +34,88 @@ public class UserCache implements Cache {
 
     @Override
     public ValueWrapper get(Object key) {
-        if(key instanceof  String||key instanceof byte[]){
-           return getString(key);
-        }
-        return null;
-    }
-
-    private ValueWrapper getString(Object key){
-       if(isExistByUserCache(key))
-           return getByUserCache(key);
-       return null;
-    }
-
-    private ValueWrapper getByUserCache(Object key){
         if(key ==null){
-            return new SimpleValueWrapper(jedis.hget(getName().getBytes(),"null".getBytes()));
+            return null;
         }
-        return new SimpleValueWrapper(jedis.hget(getName().getBytes(),key.toString().getBytes()));
-    }
 
-    private boolean isExistByUserCache(Object key){
-        if(key==null){
-           return jedis.hexists(getName().getBytes(),"null".getBytes());
-        }
-      return   jedis.hexists(getName().getBytes(),key.toString().getBytes());
+       if(jedis.hexists(getNameBytes(),SerializeUtils.en(key)))
+        return new SimpleValueWrapper(SerializeUtils.de(jedis.hget(getNameBytes(),SerializeUtils.en(key)),Object.class));
+        return null;
     }
 
     @Override
     public <T> T get(Object key, Class<T> type) {
        ValueWrapper valueWrapper = get(key);
-       Object value = valueWrapper.get();
-       if(value instanceof  byte[]){
-          return  SerializeUtils.de((byte[])value,type);
+       if(valueWrapper==null){
+           return  null;
        }
-        return (T)valueWrapper.get();
+       Object value = valueWrapper.get();
+        return  SerializeUtils.de((byte[])value,type);
     }
 
     @Override
     public <T> T get(Object key, Callable<T> valueLoader) {
-        if(isExistByUserCache(key)){
-          return  (T)getByUserCache(key);
+        if(jedis.hexists(getNameBytes(),SerializeUtils.en(key))){
+          return  (T)get(key,Object.class);
         }
         else {
             try {
                 Object value = valueLoader.call();
-                jedis.hset(getName(),String.valueOf(key),(String)value);
+                if(value instanceof Serializable){
+                    jedis.hset(getNameBytes(), SerializeUtils.en(key),SerializeUtils.en(value));
+                }else {
+                    throw new IllegalArgumentException();
+                }
+
+                return (T) value;
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
         }
-
-        return null;
     }
 
     @Override
     public void put(Object key, Object value) {
+        jedis.hset(getNameBytes(),SerializeUtils.en(key),SerializeUtils.en(value));
 
+    }
+
+    private void checkSerialize(Object obj){
+        if(!(obj instanceof Serializable)){
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override
     public ValueWrapper putIfAbsent(Object key, Object value) {
+        byte[] keyBytes = SerializeUtils.en(key);
+        if(jedis.hexists(getNameBytes(),keyBytes)){
+            return new SimpleValueWrapper(jedis.hget(getNameBytes(),keyBytes));
+        }
+        checkSerialize(value);
+        jedis.hset(getNameBytes(),keyBytes,SerializeUtils.en(value));
         return null;
+    }
+    private byte[] getNameBytes(){
+        return nameBytes;
     }
 
     @Override
     public void evict(Object key) {
-
+        byte[] keys = SerializeUtils.en(key);
+        if(jedis.hexists(getNameBytes(),keys))
+        jedis.hdel(getNameBytes(),keys);
     }
 
     @Override
     public void clear() {
-
+        jedis.del(getNameBytes());
     }
+    public static void main(String[] args){
+
+
+        Du.pl(Arrays.toString(SerializeUtils.en(new User())));
+    }
+
 }

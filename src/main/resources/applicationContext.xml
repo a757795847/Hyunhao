@@ -77,6 +77,7 @@
             <bean class="com.zy.gcode.security.JwtSubjectFactory"/>
         </property>
     </bean>
+
     <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod"
@@ -95,7 +96,7 @@
         <property name="loginUrl" value="/login"/>
         <property name="unauthorizedUrl" value="/unAuthorization"/>
     </bean>
-    <bean id="anonymousFilter" class="com.zy.gcode.filter.AcrossOrigAnonymousFilter"/>
+    <bean id="anonymousFilter" class="com.zy.gcode.filter.JwtAnonymousFilter"/>
     <bean id="openIdFilter" class="com.zy.gcode.filter.OpenIdFilter">
     </bean>
     <!-- Shiro的Web过滤器 -->
