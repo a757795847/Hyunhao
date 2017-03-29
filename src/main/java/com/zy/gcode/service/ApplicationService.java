@@ -35,6 +35,8 @@ public class ApplicationService implements IApplicationService {
             map.put("name", app.getName());
             map.put("applicationInfo", app.getApplicationInfo());
             map.put("isOpened", false);
+            map.put("id",app.getId());
+            map.put("backgroundColor",app.getBackgroundColor());
             for (WechatPublicServer server : wechatPublicServers) {
                 if (server.getZyappid().equals(app.getId()) && server.getIsAuthentication().equals("1")) {
                     map.put("isOpened", true);
