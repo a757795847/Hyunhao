@@ -112,11 +112,12 @@ public class JwtUtils{
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT jwt;
         jwt = verifier.verify(token);
+        Map map = new HashMap();
         if(!jwt.getSubject().startsWith("anonymous")&&!jwt.getClaim(PublicClaims.JWT_ID).asString().equals(getUserState(jwt.getSubject()))){
-            return null;
+           map.put("authenticated",false);
         }
 
-        Map map = new HashMap();
+
         map.putAll(jwt.getClaims());
         return map;
     }
