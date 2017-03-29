@@ -8,6 +8,7 @@ import com.auth0.jwt.exceptions.InvalidClaimException;
 import com.auth0.jwt.impl.PublicClaims;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.zy.gcode.cache.OperatorCache;
 import com.zy.gcode.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.codec.Hex;
@@ -38,6 +39,8 @@ public class JwtUtils{
     public static final String ACCESS_CONTROL_EXPOSE_HEADERS = "access-control-expose-headers";
     private static final String secret = "369a854208a071782ff35262586dceb3";
     private static ApplicationContext applicationContext;
+
+
 
     static {
         try {
@@ -94,8 +97,7 @@ public class JwtUtils{
 
 
     private static String getUserState(String username){
-        UserService service = applicationContext.getBean(UserService.class);
-       String state =  service.getState(username);
+        String state = applicationContext.getBean(OperatorCache.class).get(username,String.class);
        return  state==null?"null":state;
     }
 

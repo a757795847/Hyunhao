@@ -7,6 +7,7 @@ import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.intef.IOrderService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.Page;
+import com.zy.gcode.utils.SubjectUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -89,7 +90,7 @@ public class OrderController {
             return;
         }
         String[] strs = name.split(":");
-        User user =  getUser();
+        User user = SubjectUtils.getUser();
         if (user == null) {
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("如要访问，请先登录！");
@@ -123,10 +124,6 @@ public class OrderController {
             fileInputStream.close();
 
         }
-    }
-
-    private User getUser(){
-     return  userCache.get(SecurityUtils.getSubject().getPrincipal(),User.class);
     }
 
     /**
@@ -171,7 +168,7 @@ public class OrderController {
     public
     @ResponseBody
     Object importCsv(@RequestBody List<DataOrder> orderList) {
-        User operator = getUser();
+        User operator = SubjectUtils.getUser();
         CodeRe codeRe = orderService.saveOrderList(orderList, operator.getUsername());
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());

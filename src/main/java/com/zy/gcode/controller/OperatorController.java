@@ -58,7 +58,7 @@ public class OperatorController {
 
     @RequestMapping("/auth/logout")
     public void logout(HttpServletResponse response){
-        userService.setState((String)SecurityUtils.getSubject().getPrincipal(), UniqueStringGenerator.getUniqueCode());
+        operatorCache.put(SecurityUtils.getSubject().getPrincipal(),UniqueStringGenerator.getUniqueCode());
         response.setStatus(401);
     }
 
