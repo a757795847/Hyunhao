@@ -1,16 +1,20 @@
 package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
-import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.ApplicationInfo;
+import com.zy.gcode.pojo.WechatPublicServer;
 import com.zy.gcode.service.intef.IApplicationService;
 import com.zy.gcode.utils.Page;
+import com.zy.gcode.utils.SubjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by admin5 on 17/3/28.
@@ -22,14 +26,41 @@ public class ApplicationService implements IApplicationService {
 
     @Override
     @Transactional
-    public List<ApplicationInfo> getApplications(Page page) {
-        return  persistenceService.getList(ApplicationInfo.class,page);
+    public List<Map> getApplications(Page page) {
+        List<ApplicationInfo> applicationInfos = persistenceService.getList(ApplicationInfo.class, page);
+        List<WechatPublicServer> wechatPublicServers = persistenceService.getListByColumn(WechatPublicServer.class, "createUserId", SubjectUtils.getUserName());
+        List<Map> results = new ArrayList<>();
+        for (ApplicationInfo app : applicationInfos) {
+            Map map = new HashMap();
+            map.put("name", app.getName());
+            map.put("applicationInfo", app.getApplicationInfo());
+            map.put("isOpened", false);
+            for (WechatPublicServer server : wechatPublicServers) {
+                if (server.getZyappid().equals(app.getId()) && server.getIsAuthentication().equals("1")) {
+                    map.put("isOpened", true);
+                    break;
+                }
+            }
+        }
+        return results;
     }
 
     @Override
     @Transactional
-    public ApplicationInfo info(String appid) {
-        return persistenceService.get(ApplicationInfo.class,appid);
+    public Map info(String appid) {
+        Map map = new HashMap(2,1.0f);
+     ApplicationInfo applicationInfo =   persistenceService.get(ApplicationInfo.class, appid);
+     map.put("applicationInfo",applicationInfo);
+     map.put("isOpened",false);
+     if(applicationInfo!=null){
+         WechatPublicServer wechatPublicServer = persistenceService.
+                 getOneByColumn(WechatPublicServer.class,"zyappid",applicationInfo.getId(),"createUserId",SubjectUtils.getUserName());
+         if(wechatPublicServer!=null){
+             map.put("isOpened",wechatPublicServer.getIsAuthentication().equals("1")?true:false);
+         }
+     }
+     return map;
+
     }
 
     @Override

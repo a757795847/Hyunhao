@@ -5,13 +5,14 @@ import com.zy.gcode.pojo.ApplicationInfo;
 import com.zy.gcode.utils.Page;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by admin5 on 17/3/28.
  */
 public interface IApplicationService{
-    List<ApplicationInfo> getApplications(Page page);
+    List<Map> getApplications(Page page);
     CodeRe add(ApplicationInfo applicationInfo);
     CodeRe update(ApplicationInfo applicationInfo);
-    ApplicationInfo info(String appid);
+    Map info(String appid);
 }

@@ -126,7 +126,7 @@ public class OrderController {
     }
 
     private User getUser(){
-     return   (User)userCache.get(SecurityUtils.getSubject().getPrincipal());
+     return  userCache.get(SecurityUtils.getSubject().getPrincipal(),User.class);
     }
 
     /**

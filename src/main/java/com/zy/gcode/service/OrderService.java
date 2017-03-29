@@ -316,7 +316,4 @@ public class OrderService implements IOrderService {
         return (String) SecurityUtils.getSubject().getPrincipal();
     }
 
-    public static void main(String[] args) throws Exception {
-     Du.pl(System.currentTimeMillis()+":"+"1490756620");
-    }
 }
