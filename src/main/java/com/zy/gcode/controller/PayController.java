@@ -3,7 +3,7 @@ package com.zy.gcode.controller;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.RedStatus;
-import com.zy.gcode.service.IPayService;
+import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.service.pay.RedTimerTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

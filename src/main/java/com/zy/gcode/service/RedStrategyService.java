@@ -4,6 +4,7 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.DataStrategy;
 import com.zy.gcode.pojo.User;
+import com.zy.gcode.service.intef.IRedStrategyService;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

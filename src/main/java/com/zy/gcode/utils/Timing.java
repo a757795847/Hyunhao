@@ -11,14 +11,14 @@ public class Timing {
     private long spendTime;
 
     public void start() {
-        spendTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
         System.out.println("start:" + startTime);
     }
 
 
     public void end() {
         endTime = System.currentTimeMillis();
-        spendTime = startTime - endTime;
+        spendTime = endTime -  startTime;
         System.out.println("end:" + endTime);
         System.out.println("spend:" + spendTime);
     }

@@ -7,6 +7,7 @@ import com.zy.gcode.oauth.PublicInfoRequest;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.pojo.WechatPublic;
 import com.zy.gcode.pojo.WechatPublicServer;
+import com.zy.gcode.service.intef.IAuthenticationService;
 import com.zy.gcode.service.pay.WxXmlParser;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;

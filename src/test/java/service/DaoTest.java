@@ -7,9 +7,11 @@ import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
-import com.zy.gcode.service.IPayService;
+import com.zy.gcode.service.OrderService;
+import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.utils.DateUtils;
 import com.zy.gcode.utils.Du;
+import com.zy.gcode.utils.Timing;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.apache.shiro.crypto.AesCipherService;
 import org.hibernate.criterion.DetachedCriteria;
@@ -18,14 +20,12 @@ import org.hibernate.type.StringType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Created by admin5 on 17/1/19.
@@ -55,6 +55,11 @@ public class DaoTest {
 
     @Autowired
     OperatorCache operatorCache;
+
+    @Autowired
+    OrderService orderService;
+
+
 
     @Test
     public void test() {
@@ -90,11 +95,36 @@ public class DaoTest {
     public void utils(){
        System.out.println(persistenceService.get(DataOrder.class,"2943278005233010")==null);
     }*/
+    String sql = " insert \n" +
+          "    into\n" +
+          "        jt_platform.data_order\n" +
+          "        (id,weixin_id, mch_number, order_number, gift_money, gift_detail, gift_state, comment_file1, comment_file2, comment_file3, apply_date, approve_date, send_date, recieve_date, reject_reason, create_user_id, create_date, update_user_id, update_date, del_flag, buyer_name, buyer_zhifubao, dues, postage, pay_points, amount, rebate_point, actual_amount, actual_pay_points, order_state, buyer_notice, receiver, receiver_address, post_kind, receiver_tel, receiver_mobile, order_create_time, order_pay_time, goods_title, goods_kind, logistics_number, logistics_company, order_remark, goods_number, shop_id, shop_name, order_close_reason, solder_fee, buyer_fee, invoice_title, is_mobile_order, phase_order_info, privilege_order_id, is_transfer_agreement_photo, is_transfer_receipt, is_pay_by_another, earnest_ranking, sku_changed, receiver_address_changed, error_info, tmall_cards_deduction, point_dedution, is_o2o_trade) \n" +
+          "    values\n" +
+          "        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     @Test
-    public void password() {
-        AesCipherService aesCipherService = new AesCipherService();
-        System.out.println(aesCipherService.generateNewKey());
+    public void password()  throws Exception{
+/*
+        List<DataOrder> list = new ArrayList();
+        List list1 = new ArrayList();
+        for(int i = 0 ; i <10000;i++){
+            DataOrder order = new DataOrder();
+            order.setOrderNumber("888"+i);
+            list.add(order);
+            list1.add(order);
+        }
+
+
+            Timing timing1 = new Timing();
+            timing1.start();
+            System.out.println("2222");
+            Du.pl(Arrays.toString(persistenceService.insertBatch(list,DataOrder.class,sql)));
+            timing1.end();
+*/
+
+
+       System.out.println(persistenceService.count(DataOrder.class));
+
     }
 
     @Test

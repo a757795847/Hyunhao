@@ -6,6 +6,7 @@ import com.zy.gcode.pojo.ApplicationInfo;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.pojo.ValidData;
 import com.zy.gcode.pojo.WechatPublicServer;
+import com.zy.gcode.service.intef.IProxyService;
 import com.zy.gcode.utils.Page;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;

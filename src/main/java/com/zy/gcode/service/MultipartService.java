@@ -3,6 +3,7 @@ package com.zy.gcode.service;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.WechatPublicServer;
+import com.zy.gcode.service.intef.IMultipartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

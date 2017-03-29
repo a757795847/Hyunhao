@@ -2,7 +2,7 @@ package com.zy.gcode.listener.task;
 
 import com.zy.gcode.controller.delegate.BatchRe;
 import com.zy.gcode.pojo.RedStatus;
-import com.zy.gcode.service.IPayService;
+import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.HttpClientUtils;
 import com.zy.gcode.utils.JsonUtils;

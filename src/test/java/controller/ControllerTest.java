@@ -65,7 +65,7 @@ public class ControllerTest {
 
     @Test
     public void file() throws Exception {
-        File file = new File("/Users/admin5/play/ExportOrderList201612281719.csv");
+        File file = new File("/Users/admin5/Downloads/归档 2/ExportOrderList201612281719.csv");
         System.out.println(file.exists());
         FileInputStream inputStream = new FileInputStream(file);
         MockMultipartFile multipartFile = new MockMultipartFile("file", inputStream);

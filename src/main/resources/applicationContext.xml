@@ -10,7 +10,7 @@
     <context:component-scan base-package="com.zy.gcode.dao,com.zy.gcode.service,com.zy.gcode.cache"></context:component-scan>
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://115.29.188.190:3306/jt_platform?characterEncoding=utf8"/>
+        <property name="jdbcUrl" value="jdbc:mysql://115.29.188.190:3306/jt_platform?characterEncoding=utf8&amp;rewriteBatchedStatements=true"/>
         <property name="user" value="jt_dev"></property>
         <property name="password" value="*+YC!X+mLz%C(fA="></property>
         <property name="idleConnectionTestPeriod" value="2000"></property>
@@ -44,23 +44,6 @@
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory"   ref="connectionFactory" />
     </bean>
-
-
-
-
-
-    <!--  &lt;!&ndash; 配置事务事务属性 &ndash;&gt;
-      <tx:advice id="txAdvice" transaction-manager="transactionManager">
-          <tx:attributes>
-              <tx:method name="get*" read-only="true"/>
-              <tx:method name="*"/>
-          </tx:attributes>
-      </tx:advice>
-      &lt;!&ndash; 配置事务切点，并把切点和事务属性关联起来 &ndash;&gt;
-      <aop:config proxy-target-class="true">
-          <aop:pointcut expression="execution(* com.zy.gcode.service.*.*(..))" id="txPointcut"/>
-          <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
-      </aop:config>-->
     <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager"/>
     <bean name="passwordService" class="org.apache.shiro.authc.credential.DefaultPasswordService">
         <property name="hashService">

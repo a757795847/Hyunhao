@@ -4,7 +4,7 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.User;
-import com.zy.gcode.service.IOrderService;
+import com.zy.gcode.service.intef.IOrderService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.Page;
 import org.apache.shiro.SecurityUtils;
@@ -48,7 +48,6 @@ public class OrderController {
     list(@RequestBody Map map) {
         Page page = new Page();
         page.setCurrentPageIndex((Integer) map.get("currentPageIndex"));
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
         Timestamp importTime = null;
         Timestamp applyTime = null;
         if (map.containsKey("importTime") && map.get("importTime") != null) {
@@ -57,9 +56,12 @@ public class OrderController {
         if (map.containsKey("applyTime") && map.get("applyTime") != null) {
             applyTime = new Timestamp((long) map.get("applyTime"));
         }
-        return ControllerStatus.ok(orderService.getOrderByCondition((List) map.get("status"), page, user.getUsername(), applyTime, importTime), page);
+        return ControllerStatus.ok(orderService.getOrderByCondition((List) map.get("status"), page,getUsername(), applyTime, importTime), page);
     }
 
+    private String getUsername(){
+        return SecurityUtils.getSubject().getPrincipal().toString();
+    }
     /**
      * 返货订单首页
      *
@@ -150,7 +152,7 @@ public class OrderController {
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }
-        return ControllerStatus.ok((List) codeRe.getMessage());
+        return ControllerStatus.ok(codeRe.getMessage());
     }
 
     /**

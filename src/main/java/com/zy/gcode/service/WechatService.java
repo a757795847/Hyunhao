@@ -3,6 +3,7 @@ package com.zy.gcode.service;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.*;
+import com.zy.gcode.service.intef.IWechatService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;
 import com.zy.gcode.utils.HttpClientUtils;

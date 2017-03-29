@@ -8,6 +8,8 @@ import com.zy.gcode.pojo.DataStrategy;
 import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.annocation.CsvPush;
+import com.zy.gcode.service.intef.IMultipartService;
+import com.zy.gcode.service.intef.IOrderService;
 import com.zy.gcode.utils.*;
 import org.apache.shiro.SecurityUtils;
 import org.hibernate.criterion.DetachedCriteria;
@@ -30,6 +32,8 @@ import java.nio.charset.Charset;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.Signature;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -40,8 +44,18 @@ import java.util.*;
 public class OrderService implements IOrderService {
     Logger log = LoggerFactory.getLogger(OrderService.class);
 
-    int HANDLE_COUNT = 256;
-    int HANDLE_MOST_COUNT = 200;
+
+
+    String sql = " insert \n" +
+            "    into\n" +
+            "        jt_platform.data_order\n" +
+            "        (id,weixin_id, mch_number, order_number, gift_money, gift_detail, gift_state, comment_file1, comment_file2, comment_file3, apply_date, approve_date, send_date, recieve_date, reject_reason, create_user_id, create_date, update_user_id, update_date, del_flag, buyer_name, buyer_zhifubao, dues, postage, pay_points, amount, rebate_point, actual_amount, actual_pay_points, order_state, buyer_notice, receiver, receiver_address, post_kind, receiver_tel, receiver_mobile, order_create_time, order_pay_time, goods_title, goods_kind, logistics_number, logistics_company, order_remark, goods_number, shop_id, shop_name, order_close_reason, solder_fee, buyer_fee, invoice_title, is_mobile_order, phase_order_info, privilege_order_id, is_transfer_agreement_photo, is_transfer_receipt, is_pay_by_another, earnest_ranking, sku_changed, receiver_address_changed, error_info, tmall_cards_deduction, point_dedution, is_o2o_trade) \n" +
+            "    values\n" +
+            "        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+
+    int HANDLE_COUNT = 10000;
+    int HANDLE_MOST_COUNT = 10000;
 
     @Autowired
     PersistenceService persistenceService;
@@ -53,7 +67,7 @@ public class OrderService implements IOrderService {
     @Transactional
     public List<DataOrder> getOrderByCondition(List<Integer> status, Page page, String userId, Timestamp applyTime, Timestamp importTime) {
         DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
-        criteria.add(Restrictions.eq("createUserId", getWxOperator().getUsername()));
+        criteria.add(Restrictions.eq("createUserId", getWxOperator()));
         criteria.add(Restrictions.in("giftState", status)).add(Restrictions.eq("createUserId", userId));
         if (importTime != null) {
             criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
@@ -80,16 +94,9 @@ public class OrderService implements IOrderService {
         if (multipartFile.isEmpty()) {
             return CodeRe.error("上传文件不能为空");
         }
-
-        User operator = getWxOperator();
-
-        if (operator == null) {
-            log.debug("当前session用户为空");
-            return CodeRe.error("登录过期!");
-        }
-
+        Timing timing =new Timing();
         Date date = new Date();
-        File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/", DateUtils.format(date, "yyyyMM"), "/", operator.getUsername(), ":",
+        File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/", DateUtils.format(date, "yyyyMM"), "/", getWxOperator(), ":",
                 DateUtils.format(date, "yyyyMMddhhmmss")));
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
@@ -131,28 +138,17 @@ public class OrderService implements IOrderService {
             }
             dataOrderList.add((DataOrder) beanWrapper.getWrappedInstance());
         }
-
+        timing.start();
         List<DataOrder> existDataOrderList = persistenceService.getListByIn(DataOrder.class, "orderNumber", orderNoList.toArray());
+        dataOrderList.removeAll(existDataOrderList);
+        timing.end();
+        timing.start();
+        persistenceService.insertBatch(dataOrderList,DataOrder.class,sql);
+        timing.end();
+        System.out.println("插入的数量:"+dataOrderList.size());
+        System.out.println("库存数量:"+persistenceService.count(DataOrder.class));
 
-        List<Map> resultList = new ArrayList<>(HANDLE_COUNT);
-        dataOrderList.forEach(dataOrder -> {
-            DataOrder containOrder = getContainsOrder(existDataOrderList, dataOrder);
-            if (containOrder != null) {
-          /*      if(!containOrder.getCreateUserId().equals(operator.getUsername())){
-                    resultMap.put("state","-1"); //-1 表示解析的订单已存在，且不属于该运营者
-                }else {
-                    resultMap.put("state", "0"); // 0 表示订单已存在,且属于当前运营者
-                }*/
-            } else {
-                Map resultMap = new HashMap(3);
-                resultMap.put("order", dataOrder);
-                resultMap.put("state", "1"); // 1 表示订单不存在
-                resultList.add(resultMap);
-            }
-
-        });
-
-        return CodeRe.correct(resultList);
+        return CodeRe.correct("ok");
     }
 
     /**
@@ -217,11 +213,7 @@ public class OrderService implements IOrderService {
             log.debug("红包状态非等于1");
             return CodeRe.error("该红包未申领");
         }
-        User operator = getWxOperator();
-        if (operator == null) {
-            return CodeRe.error("登录超时!");
-        }
-        if (!operator.getUsername().equals(dataOrder.getCreateUserId())) {
+        if (!getWxOperator().equals(dataOrder.getCreateUserId())) {
             log.debug("订单号的用户名与当前登录者用户名不符和");
             return CodeRe.error("您无此权限更改用户状态");
         }
@@ -310,27 +302,20 @@ public class OrderService implements IOrderService {
     @Override
     @Transactional
     public CodeRe getOrderByNumber(String orderNo) {
-        DataOrder order = persistenceService.getOneByColumn(DataOrder.class, "orderNumber", orderNo.trim(), "createUserId", getWxOperator().getUsername());
+        DataOrder order = persistenceService.getOneByColumn(DataOrder.class, "orderNumber", orderNo.trim(), "createUserId", getWxOperator());
         if (order == null) {
             return CodeRe.error("订单不存在!");
         }
         return CodeRe.correct(order);
     }
 
-    private User getWxOperator() {
-        return (User) SecurityUtils.getSubject().getPrincipal();
+    private String getWxOperator() {
+        return (String) SecurityUtils.getSubject().getPrincipal();
     }
 
     public static void main(String[] args) throws Exception {
-        byte[] bytes = "data signature".getBytes();
-        KeyPairGenerator generator = KeyPairGenerator.getInstance("DSA");
-        generator.initialize(1024);
-        KeyPair keyPair = generator.generateKeyPair();
-        Du.pl(generator.getAlgorithm());
-        Signature signature = Signature.getInstance(generator.getAlgorithm());
-        Du.pl(Arrays.toString(keyPair.getPrivate().getEncoded()));
-        Du.pl(Arrays.toString(keyPair.getPublic().getEncoded()));
-        signature.initSign(keyPair.getPrivate());
-
+        Connection connection = null;
+       PreparedStatement statement = connection.prepareStatement("");
+       statement.executeBatch();
     }
 }

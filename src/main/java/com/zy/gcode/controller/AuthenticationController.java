@@ -7,20 +7,15 @@ import com.zy.gcode.oauth.PublicLoginRequest;
 import com.zy.gcode.oauth.PublicPreCodeRequest;
 import com.zy.gcode.oauth.PublicTokenRequest;
 import com.zy.gcode.pojo.TokenConfig;
-import com.zy.gcode.service.IAuthenticationService;
+import com.zy.gcode.service.intef.IAuthenticationService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.Du;
-import com.zy.gcode.utils.JwtUtils;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 
 /**
  * Created by admin5 on 17/1/18.

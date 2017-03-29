@@ -5,21 +5,15 @@ import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.InvalidClaimException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.impl.PublicClaims;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.zy.gcode.filter.JwtHttpAuthenticationFilter;
-import com.zy.gcode.service.OperatorService;
 import com.zy.gcode.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.codec.Hex;
 import org.apache.shiro.session.Session;
-import org.apache.shiro.session.mgt.SimpleSession;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -30,8 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.Security;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,7 +69,7 @@ public class JwtUtils{
                 }
 
             }
-            return    builder.sign(algorithm);
+            return  builder.sign(algorithm);
     }
     public static String enJwtWithNoExpires(Map map) {
         JWTCreator.Builder builder = JWT.create();
@@ -92,7 +84,7 @@ public class JwtUtils{
                  }
              });
            }
-           builder.withExpiresAt(new Date(System.currentTimeMillis()));
+           builder.withExpiresAt(new Date(System.currentTimeMillis()+1000*10*10));
         return builder.sign(algorithm);
     }
 
@@ -103,7 +95,8 @@ public class JwtUtils{
 
     private static String getUserState(String username){
         UserService service = applicationContext.getBean(UserService.class);
-       return service.getState(username);
+       String state =  service.getState(username);
+       return  state==null?"null":state;
     }
 
 

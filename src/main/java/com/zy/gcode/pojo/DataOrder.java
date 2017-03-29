@@ -117,6 +117,10 @@ public class DataOrder {
     @CsvPush("是否是O2O交易")
     private String isO2OTrade;
 
+    public void setGiftState(Integer giftState) {
+        this.giftState = giftState;
+    }
+
     public String getId() {
         return id;
     }
@@ -619,5 +623,15 @@ public class DataOrder {
 
     public void setMchNumber(String mchNumber) {
         this.mchNumber = mchNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DataOrder order = (DataOrder) o;
+        if (orderNumber != null ? !orderNumber.equals(order.orderNumber) : order.orderNumber != null) return false;
+        return true;
     }
 }

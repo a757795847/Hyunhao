@@ -8,5 +8,11 @@
         <id name="id" column="id"/>
         <property name="name" column="name"/>
         <property name="price" column="price"/>
+        <property name="applicationInfo" column="application_info"/>
+        <property name="backgroundColor" column="background_color"/>
+        <property name="deleteFlag" column="delete_flag"/>
+        <property name="description" column="description"/>
+        <property name="escapeClause" column="escape_clause"/>
+        <property name="imageUrl" column="image_url"/>
     </class>
 </hibernate-mapping>

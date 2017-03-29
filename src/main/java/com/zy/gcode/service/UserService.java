@@ -4,6 +4,7 @@ import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.pojo.ValidData;
 import com.zy.gcode.pojo.WechatPublicServer;
+import com.zy.gcode.service.intef.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

@@ -48,4 +48,6 @@ public interface PersistenceService {
 
     Integer count(Class clazz, Object... objs);
 
+    <T> int[] insertBatch(List<T> list,Class<T> clazz,String sql);
+
 }

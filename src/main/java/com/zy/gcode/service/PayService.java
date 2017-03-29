@@ -7,6 +7,7 @@ import com.zy.gcode.pojo.PayCredential;
 import com.zy.gcode.pojo.RedBill;
 import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.pojo.WechatPublicServer;
+import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.service.pay.RedPayInfo;
 import com.zy.gcode.service.pay.RedReqInfo;
 import com.zy.gcode.service.pay.WxXmlParser;

@@ -2,8 +2,7 @@ package com.zy.gcode.security;
 
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.pojo.ValidData;
-import com.zy.gcode.service.IUserService;
-import org.apache.shiro.SecurityUtils;
+import com.zy.gcode.service.intef.IUserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -14,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;

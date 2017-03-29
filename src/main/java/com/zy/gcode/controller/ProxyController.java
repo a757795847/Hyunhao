@@ -3,7 +3,7 @@ package com.zy.gcode.controller;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.User;
-import com.zy.gcode.service.IProxyService;
+import com.zy.gcode.service.intef.IProxyService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.MzUtils;
 import com.zy.gcode.utils.Page;
