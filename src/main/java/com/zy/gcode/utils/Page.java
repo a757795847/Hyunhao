@@ -4,6 +4,8 @@ package com.zy.gcode.utils;
  * Created by admin5 on 17/1/16.
  */
 public class Page {
+    public static final String CURRENTPAGEINDEX = "currentPageIndex";
+
     private int currentPageIndex;
     private int pageSize = 30;
     private int count;
