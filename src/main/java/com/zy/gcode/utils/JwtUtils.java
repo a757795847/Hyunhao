@@ -84,7 +84,7 @@ public class JwtUtils{
                  }
              });
            }
-           builder.withExpiresAt(new Date(System.currentTimeMillis()+1000*10*10));
+           builder.withExpiresAt(new Date(System.currentTimeMillis()+1000*60*60*10));
         return builder.sign(algorithm);
     }
 
