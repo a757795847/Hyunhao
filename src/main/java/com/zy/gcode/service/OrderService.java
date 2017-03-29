@@ -314,8 +314,6 @@ public class OrderService implements IOrderService {
     }
 
     public static void main(String[] args) throws Exception {
-        Connection connection = null;
-       PreparedStatement statement = connection.prepareStatement("");
-       statement.executeBatch();
+     Du.pl(System.currentTimeMillis()+":"+"1490756620");
     }
 }
