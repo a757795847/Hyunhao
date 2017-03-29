@@ -41,6 +41,7 @@ public class ApplicationService implements IApplicationService {
                     break;
                 }
             }
+            results.add(map);
         }
         return results;
     }
