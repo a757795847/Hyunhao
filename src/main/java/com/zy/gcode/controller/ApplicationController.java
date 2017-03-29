@@ -29,7 +29,7 @@ public class ApplicationController {
     }
 
     @RequestMapping("info")
-    public Object info(@RequestBody String id){
+    public Object info(String id){
        return ControllerStatus.ok(applicationService.info(id));
     }
 }
