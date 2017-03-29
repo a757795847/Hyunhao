@@ -9,6 +9,8 @@ import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.Page;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.ehcache.EhCacheCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -34,6 +36,11 @@ public class OrderController {
 
     @Autowired
     IOrderService orderService;
+
+
+    @Autowired
+    @Qualifier("userCache")
+    EhCacheCache userCache;
 
     /**
      * 分页获取用户信息
@@ -62,15 +69,6 @@ public class OrderController {
     private String getUsername(){
         return SecurityUtils.getSubject().getPrincipal().toString();
     }
-    /**
-     * 返货订单首页
-     *
-     * @return
-     */
-    @RequestMapping("home")
-    public String index() {
-        return "/views/publicNumber/proxylist.html";
-    }
 
     /**
      * 根据图片的名称访问图片
@@ -91,7 +89,7 @@ public class OrderController {
             return;
         }
         String[] strs = name.split(":");
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        User user =  getUser();
         if (user == null) {
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("如要访问，请先登录！");
@@ -125,6 +123,10 @@ public class OrderController {
             fileInputStream.close();
 
         }
+    }
+
+    private User getUser(){
+     return   (User)userCache.get(SecurityUtils.getSubject().getPrincipal());
     }
 
     /**
@@ -165,7 +167,7 @@ public class OrderController {
     public
     @ResponseBody
     Object importCsv(@RequestBody List<DataOrder> orderList) {
-        User operator = (User) SecurityUtils.getSubject().getPrincipal();
+        User operator = getUser();
         CodeRe codeRe = orderService.saveOrderList(orderList, operator.getUsername());
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());

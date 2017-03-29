@@ -6,6 +6,7 @@ import com.zy.gcode.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -21,9 +22,14 @@ public class ApplicationController {
     ApplicationService applicationService;
 
     @RequestMapping("list")
-    public Object appInfo(@RequestBody Map map) {
+    public Object list(@RequestBody Map map) {
         Page page = new Page();
         page.setCurrentPageIndex(Optional.ofNullable((Integer) map.get(Page.CURRENTPAGEINDEX)).orElseGet(() -> 1));
         return ControllerStatus.ok(applicationService.getApplications(page));
+    }
+
+    @RequestMapping("info")
+    public Object info(@RequestBody String id){
+       return ControllerStatus.ok(applicationService.info(id));
     }
 }

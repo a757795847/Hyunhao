@@ -80,6 +80,24 @@
         </property>
     </bean>
 
+    <!-- 定义CacheManager -->
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <!-- 指定配置文件的位置 -->
+        <property name="configLocation" value="classpath:ehcache.xml"/>
+        <!-- 指定新建的CacheManager的名称 -->
+        <property name="cacheManagerName" value="zyCacheManager"/>
+    </bean>
+
+    <bean name="userCache" class="org.springframework.cache.ehcache.EhCacheCache">
+        <constructor-arg>
+            <bean id="userCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+                <property name="cacheName" value="user"/>
+                <property name="cacheManager" ref="cacheManager"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+
 
     <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -118,10 +136,8 @@
             <value>
                 /auth/receive=anon
                 /auth/**=authe
+                /app/**=authe
                 /order/**=authe
-                /redstrategy/**=authe
-                /proxy/**=role[proxy]
-                /operator/innerUpdatePassword=authe
                 /wechat/**=openid
                 /**=anon
             </value>

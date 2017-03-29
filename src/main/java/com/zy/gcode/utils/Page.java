@@ -6,6 +6,7 @@ package com.zy.gcode.utils;
 public class Page {
     public static final String CURRENTPAGEINDEX = "currentPageIndex";
 
+
     private int currentPageIndex;
     private int pageSize = 30;
     private int count;
@@ -13,12 +14,12 @@ public class Page {
     private int startIndex;
 
     public int getCurrentPageIndex() {
- /*       if(currentPageIndex<1){
+          if(currentPageIndex<1){
             return 1;
         }
         if(currentPageIndex > pageCount){
             return pageCount;
-        }*/
+        }
         return currentPageIndex;
     }
 

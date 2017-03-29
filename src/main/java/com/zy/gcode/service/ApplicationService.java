@@ -1,6 +1,7 @@
 package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
+import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.ApplicationInfo;
 import com.zy.gcode.service.intef.IApplicationService;
@@ -23,6 +24,12 @@ public class ApplicationService implements IApplicationService {
     @Transactional
     public List<ApplicationInfo> getApplications(Page page) {
         return  persistenceService.getList(ApplicationInfo.class,page);
+    }
+
+    @Override
+    @Transactional
+    public ApplicationInfo info(String appid) {
+        return persistenceService.get(ApplicationInfo.class,appid);
     }
 
     @Override

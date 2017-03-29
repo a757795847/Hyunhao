@@ -13,4 +13,5 @@ public interface IApplicationService{
     List<ApplicationInfo> getApplications(Page page);
     CodeRe add(ApplicationInfo applicationInfo);
     CodeRe update(ApplicationInfo applicationInfo);
+    ApplicationInfo info(String appid);
 }

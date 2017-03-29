@@ -14,5 +14,6 @@
         <property name="description" column="description"/>
         <property name="escapeClause" column="escape_clause"/>
         <property name="imageUrl" column="image_url"/>
+        <property name="chargeStandard" column="charge_standard"/>
     </class>
 </hibernate-mapping>

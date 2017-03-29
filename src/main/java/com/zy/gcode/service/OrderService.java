@@ -122,6 +122,7 @@ public class OrderService implements IOrderService {
         String[] titles = MzUtils.trimArray(csvValueList.get(0));
         List<String> orderNoList = new ArrayList(HANDLE_COUNT);
         List<DataOrder> dataOrderList = new ArrayList<>(HANDLE_COUNT);
+        String userId = getWxOperator();
         for (int j = 1; j < csvValueList.size(); j++) {
             DataOrder dataOrder = new DataOrder();
             BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);//使用spring 包装bean设置csv读入属性到pojo
@@ -136,7 +137,9 @@ public class OrderService implements IOrderService {
                 }
                 beanWrapper.setPropertyValue(title2Value.get(titles[i]), values[i]);
             }
-            dataOrderList.add((DataOrder) beanWrapper.getWrappedInstance());
+           DataOrder dataOrder1 = (DataOrder) beanWrapper.getWrappedInstance();
+            dataOrder1.setCreateUserId(userId);
+            dataOrderList.add(dataOrder1);
         }
         timing.start();
         List<DataOrder> existDataOrderList = persistenceService.getListByIn(DataOrder.class, "orderNumber", orderNoList.toArray());

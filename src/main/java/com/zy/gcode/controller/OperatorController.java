@@ -9,6 +9,8 @@ import com.zy.gcode.service.intef.IUserService;
 import com.zy.gcode.utils.*;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.ehcache.EhCacheCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OperatorController {
 
     Map<String,Map> mapCache = new ConcurrentHashMap<>();
+
+
 
 
     @Autowired

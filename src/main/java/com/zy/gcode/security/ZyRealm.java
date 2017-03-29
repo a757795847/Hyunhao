@@ -3,6 +3,7 @@ package com.zy.gcode.security;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.pojo.ValidData;
 import com.zy.gcode.service.intef.IUserService;
+import net.sf.ehcache.Ehcache;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -13,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.ehcache.EhCacheCache;
 
 import java.util.Date;
 import java.util.List;
@@ -25,6 +28,9 @@ public class ZyRealm extends AuthorizingRealm implements InitializingBean{
 
     public static String name;
 
+    @Autowired
+    @Qualifier("userCache")
+    EhCacheCache userCache;
 
     IUserService userService;
 
@@ -63,6 +69,7 @@ public class ZyRealm extends AuthorizingRealm implements InitializingBean{
             throw new UnknownAccountException();
         }
         user.setWechatPublicServerList(userService.getPublicServerList(user.getUsername()));
+        userCache.put(user.getUsername(),user);
         return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), getName());
 
     }

@@ -18,8 +18,7 @@ public class ApplicationInfo {
     private String deleteFlag;
     private Timestamp insertTime;
     private Timestamp updateTime;
-
-
+    private String chargeStandard;
 
     public Integer getPrice() {
         return price;
@@ -115,5 +114,13 @@ public class ApplicationInfo {
 
     public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getChargeStandard() {
+        return chargeStandard;
+    }
+
+    public void setChargeStandard(String chargeStandard) {
+        this.chargeStandard = chargeStandard;
     }
 }
