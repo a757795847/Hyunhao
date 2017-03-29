@@ -150,6 +150,10 @@ public class OrderController {
     @ResponseBody
     Object parseCsv(MultipartFile file) {
 //      User operator = (User) SecurityUtils.getSubject().getSession().getAttribute("operator");
+        if(!file.getOriginalFilename().endsWith("csv")){
+            return ControllerStatus.error("必须是csv文件");
+        }
+
         CodeRe codeRe = orderService.handleCsv(file);
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
