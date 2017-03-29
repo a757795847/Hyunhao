@@ -77,7 +77,7 @@ $("#addID").on("click",function(){
         } else {
             $.ajax({
                 type: 'POST',
-                url: "http://open.izhuiyou.com/view/wechat/submit",
+                url: "http://open.izhuiyou.com/wechat/view/submit",
                 data: datas,
                 dataType: 'json',
                 success: function (data) {
