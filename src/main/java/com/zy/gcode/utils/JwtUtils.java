@@ -206,7 +206,12 @@ public class JwtUtils{
     }
 
 
-
+    /**
+     * 使用aes
+     * @param content
+     * @param type
+     * @return
+     */
     private static String deCode(String content, int type) {
         SecretKeySpec key = new SecretKeySpec(Hex.decode(secret), "AES");
         Cipher cipher = null;// 创建密码器
@@ -247,7 +252,10 @@ public class JwtUtils{
         JwtUtils.applicationContext = applicationContext;
     }
 
-
+    /**
+     * 为response 设置跨域许可证
+     * @param servletResponse
+     */
     public static void setAcrossOrigin(HttpServletResponse servletResponse){
         servletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         servletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST");
