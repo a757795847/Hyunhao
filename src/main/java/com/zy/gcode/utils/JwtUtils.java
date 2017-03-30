@@ -145,9 +145,11 @@ public class JwtUtils{
         response.setHeader(AUTHORIZATION, JwtUtils.enJwt(username));
     }
     public static void setResponseWithNoExpires(HttpServletResponse response,String username){
-        if(response.getHeader(AUTHORIZATION)!=null){
+        if(response.getHeader(AUTHORIZATION)!=null&&!SubjectUtils.getUserName().startsWith("anonymous")){
             return;
         }
+
+
 
         if(username==null){
             response.setStatus(401);

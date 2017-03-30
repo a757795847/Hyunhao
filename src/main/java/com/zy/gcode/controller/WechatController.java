@@ -55,7 +55,7 @@ public class WechatController {
         if (wechatUserInfo == null) {
             return ControllerStatus.error("登录过期");
         }
-        CodeRe<String> codeRe = wechatService.sumbit(image1, image2, image3, billno, wechatUserInfo.getOpenId(), wechatUserInfo.getAppid());
+        CodeRe<String> codeRe = wechatService.sumbit(image1, image2, image3, billno, wechatUserInfo.getOpenId(), wechatUserInfo.getAppid(),wechatUserInfo.getNick());
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }

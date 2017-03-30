@@ -29,7 +29,7 @@ public class WechatService implements IWechatService {
 
     @Override
     @Transactional
-    public CodeRe sumbit(final String image1, final String image2, final String image3, final String billno, final String openid, final String appid) {
+    public CodeRe sumbit(final String image1, final String image2, final String image3, final String billno, final String openid, final String appid,String nick) {
         String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").toString();
         DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class, "orderNumber", billno);
         WechatPublicServer wechatPublicServer = persistenceService.getOneByColumn(WechatPublicServer.class, "wxAppid", appid, "zyappid", Constants.ZYAPPID);
@@ -101,6 +101,7 @@ public class WechatService implements IWechatService {
         dataOrder.setWeixinId(openid);
         dataOrder.setGiftState(1);
         dataOrder.setApplyDate(new Timestamp(System.currentTimeMillis()));
+        dataOrder.setWechatName(nick);
         persistenceService.updateOrSave(dataOrder);
         return CodeRe.correct("success");
     }

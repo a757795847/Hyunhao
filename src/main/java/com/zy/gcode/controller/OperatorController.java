@@ -70,7 +70,7 @@ public class OperatorController {
     Object register(@RequestBody Map map) {
         VerificationInfo verificationInfo = (VerificationInfo) getSession().get("verificationInfo");
         if (verificationInfo == null) {
-            return ControllerStatus.error("请先填写验证码");
+            return ControllerStatus.error("未验证验证码");
         }
 
         if (!(MzUtils.checkEntry(map, "phone") && MzUtils.checkEntry(map, "password"))) {
@@ -83,13 +83,14 @@ public class OperatorController {
         if (verificationInfo.generationTime < (System.currentTimeMillis() - 120 * 1000)) {
             return ControllerStatus.error("验证码过期");
         }
-        getSession().remove("verificationInfo");
+       // getSession().remove("verificationInfo");
 
 
         CodeRe codeRe = operatorService.registerOperator(map.get("phone").toString(), map.get("password").toString());
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }
+        mapCache.remove(SecurityUtils.getSubject().getPrincipal());
         return ControllerStatus.ok((String) codeRe.getMessage());
     }
 
@@ -125,7 +126,7 @@ public class OperatorController {
     Object verificationCode(String phone, String code) {
         ImageInfo imageInfo = (ImageInfo) getSession().get("imageInfo");
         if (imageInfo == null) {
-            return ControllerStatus.error("请输入验证码");
+            return ControllerStatus.error("请先获取验证码");
         }
 
         if ((!imageInfo.content.equals(code)) || imageInfo.createTime < (System.currentTimeMillis() - 120 * 1000)) {

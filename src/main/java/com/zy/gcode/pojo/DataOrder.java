@@ -116,6 +116,7 @@ public class DataOrder {
     private String pointDedution;
     @CsvPush("是否是O2O交易")
     private String isO2OTrade;
+    private String wechatName;
 
     public void setGiftState(Integer giftState) {
         this.giftState = giftState;
@@ -623,6 +624,14 @@ public class DataOrder {
 
     public void setMchNumber(String mchNumber) {
         this.mchNumber = mchNumber;
+    }
+
+    public String getWechatName() {
+        return wechatName;
+    }
+
+    public void setWechatName(String wechatName) {
+        this.wechatName = wechatName;
     }
 
     @Override
