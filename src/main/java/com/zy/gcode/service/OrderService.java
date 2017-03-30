@@ -142,6 +142,9 @@ public class OrderService implements IOrderService {
         List<DataOrder> existDataOrderList = persistenceService.getList(detachedCriteria);
         dataOrderList.removeAll(existDataOrderList);
         for(DataOrder order:dataOrderList){
+            order.setLable(lable);
+            order.setRedPackageSize(redSize);
+            order.setCreateUserId(SubjectUtils.getUserName());
             persistenceService.save(order);
         }
         System.out.println("插入的数量:" + dataOrderList.size());
