@@ -71,5 +71,6 @@
         <property name="pointDedution" column="point_dedution"/>
         <property name="isO2OTrade" column="is_o2o_trade"/>
         <property name="wechatName" column="wechat_name"/>
+        <property name="redPackageSize" column="red_package_size"/>
     </class>
 </hibernate-mapping>

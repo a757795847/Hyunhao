@@ -14,7 +14,7 @@ import java.util.List;
 public interface IOrderService {
     List<DataOrder> getOrderByCondition(List<Integer> status, Page page, String userId, Timestamp applyTime, Timestamp importTime);
 
-    CodeRe handleCsv(MultipartFile multipartFile);
+    CodeRe handleCsv(MultipartFile multipartFile,String lable,int size);
 
     CodeRe saveOrderList(List<DataOrder> orderList, String userId);
 

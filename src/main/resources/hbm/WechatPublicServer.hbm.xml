@@ -17,5 +17,8 @@
         <property name="createUserId" column="create_user_id"/>
         <property name="beginTime" column="begin_time"/>
         <property name="endTime" column="end_time"/>
+        <property name="useType" column="use_type"/>
+        <property name="totalCount" column="total_count"/>
+        <property name="residueCount" column="residue_count"/>
     </class>
 </hibernate-mapping>

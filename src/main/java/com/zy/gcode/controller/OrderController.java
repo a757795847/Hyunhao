@@ -90,16 +90,7 @@ public class OrderController {
             return;
         }
         String[] strs = name.split(":");
-        User user = SubjectUtils.getUser();
-        if (user == null) {
-            response.setContentType("text/html;charset=utf-8");
-            response.getWriter().println("如要访问，请先登录！");
-            response.getWriter().flush();
-            response.getWriter().close();
-            return;
-        }
-
-        if (!strs[0].equals(user.getWechatPublicServerList(Constants.ZYAPPID).getTappid())) {
+        if (!strs[0].equals(SubjectUtils.getUserName())) {
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("无法访问");
             response.getWriter().flush();
@@ -145,13 +136,13 @@ public class OrderController {
     @RequestMapping(value = "parseCsv", method = RequestMethod.POST)
     public
     @ResponseBody
-    Object parseCsv(MultipartFile file) {
+    Object parseCsv(MultipartFile file,@RequestBody Map map) {
 //      User operator = (User) SecurityUtils.getSubject().getSession().getAttribute("operator");
         if(!file.getOriginalFilename().endsWith("csv")){
             return ControllerStatus.error("必须是csv文件");
         }
 
-        CodeRe codeRe = orderService.handleCsv(file);
+        CodeRe codeRe = orderService.handleCsv(file,(String)map.get("lable"),(int)map.getOrDefault("redPackageSize",1));
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }

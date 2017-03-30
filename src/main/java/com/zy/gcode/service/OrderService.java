@@ -29,11 +29,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.Signature;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -45,13 +40,12 @@ public class OrderService implements IOrderService {
     Logger log = LoggerFactory.getLogger(OrderService.class);
 
 
-
     String sql = " insert \n" +
             "    into\n" +
             "        jt_platform.data_order\n" +
-            "        (id,weixin_id, mch_number, order_number, gift_money, gift_detail, gift_state, comment_file1, comment_file2, comment_file3, apply_date, approve_date, send_date, recieve_date, reject_reason, create_user_id, create_date, update_user_id, update_date, del_flag, buyer_name, buyer_zhifubao, dues, postage, pay_points, amount, rebate_point, actual_amount, actual_pay_points, order_state, buyer_notice, receiver, receiver_address, post_kind, receiver_tel, receiver_mobile, order_create_time, order_pay_time, goods_title, goods_kind, logistics_number, logistics_company, order_remark, goods_number, shop_id, shop_name, order_close_reason, solder_fee, buyer_fee, invoice_title, is_mobile_order, phase_order_info, privilege_order_id, is_transfer_agreement_photo, is_transfer_receipt, is_pay_by_another, earnest_ranking, sku_changed, receiver_address_changed, error_info, tmall_cards_deduction, point_dedution, is_o2o_trade) \n" +
+            "        (id,weixin_id, mch_number, order_number, gift_money, gift_detail, gift_state, comment_file1, comment_file2, comment_file3, apply_date, approve_date, send_date, recieve_date, reject_reason, create_user_id, create_date, update_user_id, update_date, del_flag, buyer_name, buyer_zhifubao, dues, postage, pay_points, amount, rebate_point, actual_amount, actual_pay_points, order_state, buyer_notice, receiver, receiver_address, post_kind, receiver_tel, receiver_mobile, order_create_time, order_pay_time, goods_title, goods_kind, logistics_number, logistics_company, order_remark, goods_number, shop_id, shop_name, order_close_reason, solder_fee, buyer_fee, invoice_title, is_mobile_order, phase_order_info, privilege_order_id, is_transfer_agreement_photo, is_transfer_receipt, is_pay_by_another, earnest_ranking, sku_changed, receiver_address_changed, error_info, tmall_cards_deduction, point_dedution, is_o2o_trade,wechatName) \n" +
             "    values\n" +
-            "        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "        (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
     int HANDLE_COUNT = 10000;
@@ -90,11 +84,11 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public CodeRe handleCsv(MultipartFile multipartFile) {
+    public CodeRe handleCsv(MultipartFile multipartFile,String lable,int redSize) {
         if (multipartFile.isEmpty()) {
             return CodeRe.error("上传文件不能为空");
         }
-        Timing timing =new Timing();
+        Timing timing = new Timing();
         Date date = new Date();
         File file = new File(MzUtils.merge(Constants.RED_CSV_PATH, "/", DateUtils.format(date, "yyyyMM"), "/", getWxOperator(), ":",
                 DateUtils.format(date, "yyyyMMddhhmmss")));
@@ -137,22 +131,32 @@ public class OrderService implements IOrderService {
                 }
                 beanWrapper.setPropertyValue(title2Value.get(titles[i]), values[i]);
             }
-           DataOrder dataOrder1 = (DataOrder) beanWrapper.getWrappedInstance();
+            DataOrder dataOrder1 = (DataOrder) beanWrapper.getWrappedInstance();
             dataOrder1.setCreateUserId(userId);
             dataOrderList.add(dataOrder1);
         }
         timing.start();
-        List<DataOrder> existDataOrderList = persistenceService.getListByIn(DataOrder.class, "orderNumber", orderNoList.toArray());
+        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(DataOrder.class);
+        detachedCriteria.add(Restrictions.not(Restrictions.eq("createUserId",SubjectUtils.getUserName())))
+                .add(Restrictions.in("orderNumber", orderNoList.toArray()));
+        List<DataOrder> existDataOrderList = persistenceService.getList(detachedCriteria);
         dataOrderList.removeAll(existDataOrderList);
-        timing.end();
-        timing.start();
-        persistenceService.insertBatch(dataOrderList,DataOrder.class,sql);
-        timing.end();
-        System.out.println("插入的数量:"+dataOrderList.size());
-        System.out.println("库存数量:"+persistenceService.count(DataOrder.class));
+        for(DataOrder order:dataOrderList){
+            persistenceService.save(order);
+        }
+        System.out.println("插入的数量:" + dataOrderList.size());
+        System.out.println("库存数量:" + persistenceService.count(DataOrder.class));
 
         return CodeRe.correct("ok");
     }
+/*    @Transactional
+    public void test(List<DataOrder> list,int beg,int end){
+        System.out.print(beg+"");
+        for(int i = beg ; i <end ;i++){
+            persistenceService.save(list.get(i));
+        }
+    }*/
+
 
     /**
      * 如果集合中存在订单号与传入参数相等的订单，则返回单号相等的订单，否则返回null

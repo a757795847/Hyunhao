@@ -20,6 +20,9 @@ public class WechatPublicServer {
 
     private Date beginTime;
     private Date endTime;
+    private int useType;
+    private long totalCount;
+    private long residueCount;
 
     public String getTappid() {
         return tappid;
@@ -117,4 +120,27 @@ public class WechatPublicServer {
         this.endTime = endTime;
     }
 
+    public int getUseType() {
+        return useType;
+    }
+
+    public void setUseType(int useType) {
+        this.useType = useType;
+    }
+
+    public long getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(long totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public long getResidueCount() {
+        return residueCount;
+    }
+
+    public void setResidueCount(long residueCount) {
+        this.residueCount = residueCount;
+    }
 }

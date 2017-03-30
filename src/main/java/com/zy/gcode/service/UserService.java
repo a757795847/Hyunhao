@@ -39,20 +39,4 @@ public class UserService implements IUserService {
         return persistenceService.getListByColumn(WechatPublicServer.class, "userId", username);
     }
 
-    @Override
-    @Transactional
-    public String getState(String username) {
-        return Optional.ofNullable(persistenceService.get(User.class,username)).orElseThrow(IllegalAccessError::new).getState();
-    }
-
-    @Override
-    @Transactional
-    public void setState(String username, String state) {
-       User user =  getUser(username);
-       if(user==null){
-           throw new IllegalArgumentException();
-       }
-       user.setState(state);
-       persistenceService.update(user);
-    }
 }

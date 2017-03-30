@@ -2,13 +2,14 @@ package com.zy.gcode.pojo;
 
 import com.zy.gcode.service.annocation.CsvPush;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
  * Created by admin5 on 17/2/14.
  */
-public class DataOrder {
+public class DataOrder implements Serializable{
     private String id;
     private String weixinId;
     private String mchNumber;
@@ -117,6 +118,8 @@ public class DataOrder {
     @CsvPush("是否是O2O交易")
     private String isO2OTrade;
     private String wechatName;
+    private int redPackageSize;
+    private String lable;
 
     public void setGiftState(Integer giftState) {
         this.giftState = giftState;
@@ -632,6 +635,22 @@ public class DataOrder {
 
     public void setWechatName(String wechatName) {
         this.wechatName = wechatName;
+    }
+
+    public int getRedPackageSize() {
+        return redPackageSize;
+    }
+
+    public void setRedPackageSize(int redPackageSize) {
+        this.redPackageSize = redPackageSize;
+    }
+
+    public String getLable() {
+        return lable;
+    }
+
+    public void setLable(String lable) {
+        this.lable = lable;
     }
 
     @Override

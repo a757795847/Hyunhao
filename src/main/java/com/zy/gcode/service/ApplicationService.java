@@ -28,24 +28,28 @@ public class ApplicationService implements IApplicationService {
     @Transactional
     public List<Map> getApplications(Page page) {
         List<ApplicationInfo> applicationInfos = persistenceService.getList(ApplicationInfo.class, page);
-        List<WechatPublicServer> wechatPublicServers = persistenceService.getListByColumn(WechatPublicServer.class, "createUserId", SubjectUtils.getUserName());
         List<Map> results = new ArrayList<>();
         for (ApplicationInfo app : applicationInfos) {
             Map map = new HashMap();
             map.put("name", app.getName());
             map.put("applicationInfo", app.getApplicationInfo());
-            map.put("isOpened", false);
+            map.put("isOpened", isOpened(app));
             map.put("id",app.getId());
             map.put("backgroundColor",app.getBackgroundColor());
-            for (WechatPublicServer server : wechatPublicServers) {
-                if (server.getZyappid().equals(app.getId()) && server.getIsAuthentication().equals("1")) {
-                    map.put("isOpened", true);
-                    break;
-                }
-            }
+
             results.add(map);
         }
         return results;
+    }
+
+    public boolean isOpened(ApplicationInfo info){
+        List<WechatPublicServer> wechatPublicServers = persistenceService.getListByColumn(WechatPublicServer.class, "createUserId", SubjectUtils.getUserName());
+        for (WechatPublicServer server:wechatPublicServers) {
+            if(server.getZyappid().equals(info.getId())) {
+                    return  server.getIsAuthentication().equals("1");
+            }
+        }
+        return false;
     }
 
     @Override

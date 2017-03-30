@@ -15,8 +15,4 @@ public interface IUserService {
     List<ValidData> getValidDateList(String username);
 
     List<WechatPublicServer> getPublicServerList(String username);
-
-    String getState(String username);
-
-    void setState(String username,String state);
 }

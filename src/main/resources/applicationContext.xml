@@ -14,6 +14,7 @@
         <property name="user" value="jt_dev"></property>
         <property name="password" value="*+YC!X+mLz%C(fA="></property>
         <property name="idleConnectionTestPeriod" value="2000"></property>
+        <property name="maxPoolSize" value="20"/>
     </bean>
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" lazy-init="false">
         <!-- 注入datasource，给sessionfactoryBean内setdatasource提供数据源 -->
@@ -140,6 +141,7 @@
         <property name="filterChainDefinitions">
             <value>
                 /auth/receive=anon
+                /*/receive=anon
                 /auth/**=authe
                 /app/**=authe
                 /order/**=authe

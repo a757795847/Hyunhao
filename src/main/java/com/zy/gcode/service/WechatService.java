@@ -48,20 +48,20 @@ public class WechatService implements IWechatService {
         String dataPath = DateUtils.format(new Date(), "yyyyMM");
 
         if (image1 != null) {
-            dataOrder.setCommentFile1(MzUtils.merge(dataPath, "/", wechatPublicServer.getTappid(), ":", billno, "A"));
+            dataOrder.setCommentFile1(MzUtils.merge(dataPath, "/", wechatPublicServer.getUserId(), ":", billno, "A"));
         }
         if (image2 != null) {
-            dataOrder.setCommentFile2(MzUtils.merge(dataPath, "/", wechatPublicServer.getTappid(), ":", billno, "B"));
+            dataOrder.setCommentFile2(MzUtils.merge(dataPath, "/", wechatPublicServer.getUserId(), ":", billno, "B"));
         }
         if (image3 != null) {
-            dataOrder.setCommentFile3(MzUtils.merge(dataPath, "/", wechatPublicServer.getTappid(), ":", billno, "C"));
+            dataOrder.setCommentFile3(MzUtils.merge(dataPath, "/", wechatPublicServer.getUserId(), ":", billno, "C"));
         }
-        CodeRe<TokenConfig> tokenConfigCodeRe = authenticationService.getWxAccessTokenBySecret(appid);
+        CodeRe tokenConfigCodeRe = authenticationService.getAuthorizerToken(appid);
         if (tokenConfigCodeRe.isError()) {
             System.err.println(tokenConfigCodeRe.getErrorMessage());
             return tokenConfigCodeRe;
         }
-        String geturl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=" + tokenConfigCodeRe.getMessage().getToken() + "&media_id=";
+        String geturl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=" + tokenConfigCodeRe.getMessage() + "&media_id=";
         if (image1 != null) {
 
             boolean flag = HttpClientUtils.fileGetSend(geturl + image1, path + dataOrder.getCommentFile1());

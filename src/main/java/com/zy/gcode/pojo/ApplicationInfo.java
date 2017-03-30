@@ -6,6 +6,12 @@ import java.sql.Timestamp;
  * Created by admin5 on 17/2/23.
  */
 public class ApplicationInfo {
+    public static final int PAY_FREE_TO_USE = 0;
+    public static final int PAY_BY_COUNT = 1;
+    public static final int PAY_BY_RATE = 2;
+    public static final int PAY_BY_DAY = 3;
+
+
     private String id;
     private String name;
     private Integer price;
@@ -19,6 +25,10 @@ public class ApplicationInfo {
     private Timestamp insertTime;
     private Timestamp updateTime;
     private String chargeStandard;
+    private int openCdn;
+    private String openOption;
+    private int payCdn;
+    private String payOption;
 
     public Integer getPrice() {
         return price;
@@ -122,5 +132,37 @@ public class ApplicationInfo {
 
     public void setChargeStandard(String chargeStandard) {
         this.chargeStandard = chargeStandard;
+    }
+
+    public int getOpenCdn() {
+        return openCdn;
+    }
+
+    public void setOpenCdn(int openCdn) {
+        this.openCdn = openCdn;
+    }
+
+    public String getOpenOption() {
+        return openOption;
+    }
+
+    public void setOpenOption(String openOption) {
+        this.openOption = openOption;
+    }
+
+    public int getPayCdn() {
+        return payCdn;
+    }
+
+    public void setPayCdn(int payCdn) {
+        this.payCdn = payCdn;
+    }
+
+    public String getPayOption() {
+        return payOption;
+    }
+
+    public void setPayOption(String payOption) {
+        this.payOption = payOption;
     }
 }

@@ -15,5 +15,9 @@
         <property name="escapeClause" column="escape_clause"/>
         <property name="imageUrl" column="image_url"/>
         <property name="chargeStandard" column="charge_standard"/>
+        <property name="openCdn" column="open_cdn"/>
+        <property name="openOption" column="open_option"/>
+        <property name="payCdn" column="pay_cdn"/>
+        <property name="payOption" column="pay_option"/>
     </class>
 </hibernate-mapping>

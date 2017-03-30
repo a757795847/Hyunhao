@@ -39,7 +39,7 @@ public class PersistenceServiceImpl implements PersistenceService {
         session().saveOrUpdate(object);
     }
 
-    private Session session() {
+    public Session session() {
         return sessionFactory.getCurrentSession();
     }
 

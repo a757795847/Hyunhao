@@ -1,7 +1,10 @@
 package service;
 
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
 import com.zy.gcode.cache.MyCache;
 import com.zy.gcode.cache.OperatorCache;
+import com.zy.gcode.cache.SerializeUtils;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.User;
@@ -26,6 +29,10 @@ import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by admin5 on 17/1/19.
@@ -104,6 +111,27 @@ public class DaoTest {
 
     @Test
     public void password()  throws Exception{
+        List<DataOrder> list = new ArrayList();
+        List list1 = new ArrayList();
+        for(int i = 0 ; i <10000;i++){
+            DataOrder order = new DataOrder();
+            order.setOrderNumber("888"+i);
+            list.add(order);
+            list1.add(order);
+        }
+
+        System.out.println(SerializeUtils.en(list).length/1024);
+/*        ThreadPoolExecutor poolExecutor =new ThreadPoolExecutor(20,20,100, TimeUnit.MINUTES,new ArrayBlockingQueue<Runnable>(10));
+        for(int i = 0 ; i < 20;i++){
+            List<DataOrder> list2 = list.subList(i*500,i*500+500);
+
+            poolExecutor.execute(()->{
+                Timing timing = new Timing();
+                timing.start();
+                timing.end();
+            });
+        }*/
+
 /*
         List<DataOrder> list = new ArrayList();
         List list1 = new ArrayList();
@@ -121,9 +149,6 @@ public class DaoTest {
             Du.pl(Arrays.toString(persistenceService.insertBatch(list,DataOrder.class,sql)));
             timing1.end();
 */
-
-
-       System.out.println(persistenceService.count(DataOrder.class));
 
     }
 
@@ -155,4 +180,9 @@ public class DaoTest {
     protected void println(Object object) {
         System.out.println(object);
     }
+
+    public static void main(String[] args){
+       // BitMatrix bitMatrix = new MultiFormatWriter().encode()
+    }
+
 }
