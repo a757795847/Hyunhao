@@ -136,13 +136,13 @@ public class OrderController {
     @RequestMapping(value = "parseCsv", method = RequestMethod.POST)
     public
     @ResponseBody
-    Object parseCsv(MultipartFile file,String lable,String redPackageSize){
+    Object parseCsv(MultipartFile file,String label,String redPackageSize){
 //      User operator = (User) SecurityUtils.getSubject().getSession().getAttribute("operator");
         if(!file.getOriginalFilename().endsWith("csv")){
             return ControllerStatus.error("必须是csv文件");
         }
 
-        CodeRe codeRe = orderService.handleCsv(file,lable,redPackageSize!=null&&!redPackageSize.equals("")?Integer.parseInt(redPackageSize):100);
+        CodeRe codeRe = orderService.handleCsv(file,label,redPackageSize!=null&&!redPackageSize.equals("")?Integer.parseInt(redPackageSize):100);
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }

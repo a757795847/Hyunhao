@@ -84,7 +84,7 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public CodeRe handleCsv(MultipartFile multipartFile,String lable,int redSize) {
+    public CodeRe handleCsv(MultipartFile multipartFile,String label,int redSize) {
         if (multipartFile.isEmpty()) {
             return CodeRe.error("上传文件不能为空");
         }
@@ -142,7 +142,7 @@ public class OrderService implements IOrderService {
         List<DataOrder> existDataOrderList = persistenceService.getList(detachedCriteria);
         dataOrderList.removeAll(existDataOrderList);
         for(DataOrder order:dataOrderList){
-            order.setLable(lable);
+            order.setLable(label);
             order.setRedPackageSize(redSize);
             order.setCreateUserId(SubjectUtils.getUserName());
             persistenceService.save(order);
