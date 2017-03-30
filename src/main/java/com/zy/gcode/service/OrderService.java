@@ -150,7 +150,7 @@ public class OrderService implements IOrderService {
         System.out.println("插入的数量:" + dataOrderList.size());
         System.out.println("库存数量:" + persistenceService.count(DataOrder.class));
 
-        return CodeRe.correct("ok");
+        return CodeRe.correct(existDataOrderList);
     }
 /*    @Transactional
     public void test(List<DataOrder> list,int beg,int end){
