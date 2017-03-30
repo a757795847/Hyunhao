@@ -17,6 +17,5 @@
         <property name="createUserId" column="create_user_id"/>
         <property name="beginTime" column="begin_time"/>
         <property name="endTime" column="end_time"/>
-        <property name="validDateId" column="valid_date_id"/>
     </class>
 </hibernate-mapping>

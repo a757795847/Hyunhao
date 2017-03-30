@@ -21,4 +21,8 @@ public class SubjectUtils {
     public static User getUser(){
         return userCache.get(getUserName(),User.class);
     }
+
+    public static boolean isAnonymous(){
+        return getUserName().startsWith("anonymous");
+    }
 }

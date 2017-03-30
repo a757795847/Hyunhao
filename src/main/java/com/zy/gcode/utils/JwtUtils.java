@@ -133,7 +133,7 @@ public class JwtUtils{
     }
 
     public static void setResponse(HttpServletResponse response,String username){
-        if(response.getHeader(AUTHORIZATION)!=null){
+        if(!isSet(response)){
             return;
         }
 
@@ -144,12 +144,18 @@ public class JwtUtils{
         response.setHeader(ACCESS_CONTROL_EXPOSE_HEADERS, AUTHORIZATION);
         response.setHeader(AUTHORIZATION, JwtUtils.enJwt(username));
     }
+
+    private static boolean isSet(HttpServletResponse response){
+        if(response.getHeader(AUTHORIZATION)!=null&&!SubjectUtils.isAnonymous()){
+            return false;
+        }
+        return true;
+    }
+
     public static void setResponseWithNoExpires(HttpServletResponse response,String username){
-        if(response.getHeader(AUTHORIZATION)!=null&&!SubjectUtils.getUserName().startsWith("anonymous")){
+        if(!isSet(response)){
             return;
         }
-
-
 
         if(username==null){
             response.setStatus(401);

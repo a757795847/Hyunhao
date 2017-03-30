@@ -20,7 +20,6 @@ public class WechatPublicServer {
 
     private Date beginTime;
     private Date endTime;
-    private Long validDateId;
 
     public String getTappid() {
         return tappid;
@@ -118,11 +117,4 @@ public class WechatPublicServer {
         this.endTime = endTime;
     }
 
-    public Long getValidDateId() {
-        return validDateId;
-    }
-
-    public void setValidDateId(Long validDateId) {
-        this.validDateId = validDateId;
-    }
 }
