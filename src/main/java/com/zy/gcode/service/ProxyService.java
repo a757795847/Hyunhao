@@ -98,7 +98,6 @@ public class ProxyService implements IProxyService {
         Serializable id = persistenceService.save(validData);
         publicServer.setEndTime(validData.getEndData());
         publicServer.setBeginTime(validData.getBeginTime());
-        publicServer.setValidDateId((Long) id);
         persistenceService.update(publicServer);
         return CodeRe.correct("重新开通成功");
     }
