@@ -77,4 +77,9 @@ public class ApplicationService implements IApplicationService {
     public CodeRe update(ApplicationInfo applicationInfo) {
         return null;
     }
+
+    @Override
+    public CodeRe openApp(String appid) {
+        return null;
+    }
 }
