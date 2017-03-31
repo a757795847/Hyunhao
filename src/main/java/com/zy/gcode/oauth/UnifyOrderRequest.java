@@ -39,7 +39,8 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
     */
 
    private String path;
-   public void init(String appid,String mchId,String body,int totalFee,String spbillCreateIp,String notifyUrl,String tradeType,String path){
+   private String key;
+   public void init(String appid,String mchId,String body,int totalFee,String spbillCreateIp,String notifyUrl,String tradeType,String path,String key){
         setAppid(appid);
         setMchId(mchId);
         setOutTradeNo(UniqueStringGenerator.wxbillno(mchId));
@@ -49,6 +50,7 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
         setNotifyUrl(notifyUrl);
         setTradeType(tradeType);
         this.path = path;
+        this.key=key;
         this.init();
         this.sign();
    }
@@ -146,7 +148,8 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
             builder.append(keys[i].toString()).append("=")
                     .append(map.get(keys[i])).append("&");
         }
-        map.put(SIGN, UniqueStringGenerator.getMd5(builder.substring(0,builder.length()-1)).toUpperCase());
+        builder.append("key=").append(key);
+        map.put(SIGN, UniqueStringGenerator.getMd5(builder.toString()).toUpperCase());
     }
 
     private void init(){
