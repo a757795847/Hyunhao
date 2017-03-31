@@ -127,7 +127,7 @@ public class OrderService implements IOrderService {
                     String str = values[i];
                     //因为csv订单号格式有问题，所以进行特别处理
                     values[i] = str.substring(2, str.length() - 1);
-                    orderNoList.add(values[i]);
+                    orderNoList.add(values[i].trim());
                 }
                 beanWrapper.setPropertyValue(title2Value.get(titles[i]), values[i]);
             }
@@ -137,7 +137,7 @@ public class OrderService implements IOrderService {
         }
         timing.start();
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(DataOrder.class);
-        detachedCriteria.add(Restrictions.not(Restrictions.eq("createUserId",SubjectUtils.getUserName())))
+        detachedCriteria.add(Restrictions.eq("createUserId",SubjectUtils.getUserName()))
                 .add(Restrictions.in("orderNumber", orderNoList.toArray()));
         List<DataOrder> existDataOrderList = persistenceService.getList(detachedCriteria);
         dataOrderList.removeAll(existDataOrderList);

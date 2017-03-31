@@ -32,7 +32,7 @@ public class Page {
     }
 
     public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
+        this.pageSize = pageSize>30?30:pageSize;
     }
 
     public int getCount() {

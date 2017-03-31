@@ -56,6 +56,8 @@ public class OrderController {
     list(@RequestBody Map map) {
         Page page = new Page();
         page.setCurrentPageIndex((Integer) map.get("currentPageIndex"));
+        int pageSize = (int)map.get("pageSize");
+        page.setPageSize(pageSize);
         Timestamp importTime = null;
         Timestamp applyTime = null;
         if (map.containsKey("importTime") && map.get("importTime") != null) {
