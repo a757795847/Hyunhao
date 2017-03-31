@@ -1,8 +1,5 @@
 package com.zy.gcode.utils;
 
-import com.sun.tools.corba.se.idl.constExpr.Times;
-
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,14 +66,16 @@ public class DateUtils {
         return date.before(date1);
     }
 
-    public static Timestamp tNow(){
+    public static Timestamp tNow() {
         return new Timestamp(System.currentTimeMillis());
     }
-    public static Date now(){
+
+    public static Date now() {
         return new Date();
     }
-    public static Timestamp afterOfDay(int count){
-      return   new Timestamp(System.currentTimeMillis()+3600000*24*count);
+
+    public static Timestamp afterOfDay(int count) {
+        return new Timestamp(System.currentTimeMillis() + 3600000 * 24 * count);
     }
 
 
