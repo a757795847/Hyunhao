@@ -11,10 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Created by admin5 on 17/3/28.
@@ -34,19 +37,19 @@ public class ApplicationService implements IApplicationService {
             map.put("name", app.getName());
             map.put("applicationInfo", app.getApplicationInfo());
             map.put("isOpened", isOpened(app));
-            map.put("id",app.getId());
-            map.put("backgroundColor",app.getBackgroundColor());
+            map.put("id", app.getId());
+            map.put("backgroundColor", app.getBackgroundColor());
 
             results.add(map);
         }
         return results;
     }
 
-    public boolean isOpened(ApplicationInfo info){
+    public boolean isOpened(ApplicationInfo info) {
         List<WechatPublicServer> wechatPublicServers = persistenceService.getListByColumn(WechatPublicServer.class, "createUserId", SubjectUtils.getUserName());
-        for (WechatPublicServer server:wechatPublicServers) {
-            if(server.getZyappid().equals(info.getId())) {
-                    return  server.getIsAuthentication().equals("1");
+        for (WechatPublicServer server : wechatPublicServers) {
+            if (server.getZyappid().equals(info.getId())) {
+                return server.getIsAuthentication().equals("1");
             }
         }
         return false;
@@ -55,18 +58,18 @@ public class ApplicationService implements IApplicationService {
     @Override
     @Transactional
     public Map info(String appid) {
-        Map map = new HashMap(2,1.0f);
-     ApplicationInfo applicationInfo =   persistenceService.get(ApplicationInfo.class, appid);
-     map.put("applicationInfo",applicationInfo);
-     map.put("isOpened",false);
-     if(applicationInfo!=null){
-         WechatPublicServer wechatPublicServer = persistenceService.
-                 getOneByColumn(WechatPublicServer.class,"zyappid",applicationInfo.getId(),"createUserId",SubjectUtils.getUserName());
-         if(wechatPublicServer!=null){
-             map.put("isOpened",wechatPublicServer.getIsAuthentication().equals("1")?true:false);
-         }
-     }
-     return map;
+        Map map = new HashMap(2, 1.0f);
+        ApplicationInfo applicationInfo = persistenceService.get(ApplicationInfo.class, appid);
+        map.put("applicationInfo", applicationInfo);
+        map.put("isOpened", false);
+        if (applicationInfo != null) {
+            WechatPublicServer wechatPublicServer = persistenceService.
+                    getOneByColumn(WechatPublicServer.class, "zyappid", applicationInfo.getId(), "createUserId", SubjectUtils.getUserName());
+            if (wechatPublicServer != null) {
+                map.put("isOpened", wechatPublicServer.getIsAuthentication().equals("1") ? true : false);
+            }
+        }
+        return map;
 
     }
 
@@ -84,6 +87,29 @@ public class ApplicationService implements IApplicationService {
 
     @Override
     public CodeRe openApp(String appid) {
+        ApplicationInfo applicationInfo = persistenceService.get(ApplicationInfo.class, appid);
+        if (applicationInfo == null) {
+            return CodeRe.error("该app不存在");
+        }
+        switch (applicationInfo.getPayCdn()) {
+            case ApplicationInfo.PAY_FREE_TO_USE:
+                WechatPublicServer server = new WechatPublicServer();
+                server.setBeginTime(new Date(System.currentTimeMillis()));
+                server.setIsAuthentication("1");
+                server.setCreateUserId(SubjectUtils.getUserName());
+                server.setTappid(SubjectUtils.getUserName()+new SecureRandom().nextInt(1000000));
+
+                break;
+            case ApplicationInfo.PAY_BY_COUNT:
+                break;
+            case ApplicationInfo.PAY_BY_DAY:
+                break;
+            case ApplicationInfo.PAY_BY_RATE:
+                break;
+        }
+
+
         return null;
     }
+
 }
