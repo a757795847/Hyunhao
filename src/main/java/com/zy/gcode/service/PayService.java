@@ -341,9 +341,10 @@ public class PayService implements IPayService {
         PayCredential payCredential = persistenceService.get(PayCredential.class,"wx653d39223641bea7");
         UnifyOrderRequest unifyOrderRequest = new UnifyOrderRequest();
         unifyOrderRequest.init("wx653d39223641bea7",payCredential.getMchid(),"支付测试",10,request.getRemoteAddr(),
-                "http://open.izhuiyou.com/wechatPayMessage/handler","native",payCredential.getCredentialPath());
+                "http://open.izhuiyou.com/wechatPayMessage/handler","NATIVE",payCredential.getCredentialPath());
+        unifyOrderRequest.setProductId("12235413214070356458");
         Map map = unifyOrderRequest.start();
-
+        Du.pl("map:"+map);
         response.setContentType("image/png");
         response.setHeader("Cache-Control","no-cache");
         try {
