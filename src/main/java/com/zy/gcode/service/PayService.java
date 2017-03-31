@@ -334,6 +334,7 @@ public class PayService implements IPayService {
     }
 
     @Override
+    @Transactional
     public void setPayQR(HttpServletResponse response, HttpServletRequest request) {
      //  /wechatPayMessage/handler
 

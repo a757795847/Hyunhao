@@ -46,13 +46,13 @@ public class ControllerTest {
 
     @Test
     public void geAppid() throws Exception {
-        ParameterizedType clazz = (ParameterizedType) OrderService.class.getDeclaredMethod("saveOrderList", List.class, String.class).getParameters()[0].getParameterizedType();
-        System.out.println(clazz.getActualTypeArguments()[0]);
+    /*    ParameterizedType clazz = (ParameterizedType) OrderService.class.getDeclaredMethod("saveOrderList", List.class, String.class).getParameters()[0].getParameterizedType();
+        System.out.println(clazz.getActualTypeArguments()[0]);*/
     }
 
     protected void jsonPost(String url, Object... params) throws Exception {
-        this.mockMvc.perform(post(url).content(buildBody(params)).contentType(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print());
+       /* this.mockMvc.perform(post(url).content(buildBody(params)).contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print());*/
     }
 
     private String buildBody(Object[] body) throws Exception {
@@ -65,13 +65,13 @@ public class ControllerTest {
 
     @Test
     public void file() throws Exception {
-        File file = new File("/Users/admin5/Downloads/归档 2/ExportOrderList201612281719.csv");
+       /* File file = new File("/Users/admin5/Downloads/归档 2/ExportOrderList201612281719.csv");
         System.out.println(file.exists());
         FileInputStream inputStream = new FileInputStream(file);
         MockMultipartFile multipartFile = new MockMultipartFile("file", inputStream);
         this.mockMvc.perform(fileUpload("/order/parseCsv").file(multipartFile).
                 accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
-                .andDo(MockMvcResultHandlers.print());
+                .andDo(MockMvcResultHandlers.print());*/
 
     }
 

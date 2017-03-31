@@ -70,7 +70,7 @@ public class DaoTest {
 
     @Test
     public void test() {
-        HashMap map = new HashMap();
+     /*   HashMap map = new HashMap();
         User user = new User();
 
         userCache.put("123",user);
@@ -89,7 +89,7 @@ public class DaoTest {
 
         long start2 = System.currentTimeMillis();
         Du.pl(jedis.get("key1"));
-        System.out.println(System.currentTimeMillis()-start2);
+        System.out.println(System.currentTimeMillis()-start2);*/
 
 /*
        System.out.println(persistenceService.getOneByColumn(DataOrder.class,"orderNumber","24423067612233391")==null);*/
@@ -111,7 +111,7 @@ public class DaoTest {
 
     @Test
     public void password()  throws Exception{
-        List<DataOrder> list = new ArrayList();
+       /* List<DataOrder> list = new ArrayList();
         List list1 = new ArrayList();
         for(int i = 0 ; i <10000;i++){
             DataOrder order = new DataOrder();
@@ -120,7 +120,7 @@ public class DaoTest {
             list1.add(order);
         }
 
-        System.out.println(SerializeUtils.en(list).length/1024);
+        System.out.println(SerializeUtils.en(list).length/1024);*/
 /*        ThreadPoolExecutor poolExecutor =new ThreadPoolExecutor(20,20,100, TimeUnit.MINUTES,new ArrayBlockingQueue<Runnable>(10));
         for(int i = 0 ; i < 20;i++){
             List<DataOrder> list2 = list.subList(i*500,i*500+500);
