@@ -31,12 +31,13 @@ public class WechatMessageController {
     }
 
     @RequestMapping(value = "/wechatPayMessage/handler")
-    public @ResponseBody Object wechatPayMessage(@RequestBody String body){
+    public @ResponseBody String wechatPayMessage(@RequestBody String body){
         Du.pl("payMessage:"+body);
         Map map = new HashMap(2,1.0f);
-        map.put("return_code","SUCCESS");
-        map.put("return_msg","OK");
-        return map;
+        return "<xml>\n" +
+                "  <return_code><![CDATA[SUCCESS]]></return_code>\n" +
+                "  <return_msg><![CDATA[OK]]></return_msg>\n" +
+                "</xml>";
     }
 
 
