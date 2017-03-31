@@ -146,7 +146,7 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
             builder.append(keys[i].toString()).append("=")
                     .append(map.get(keys[i])).append("&");
         }
-        map.put(SIGN, UniqueStringGenerator.getMd5(builder.substring(0,builder.length())));
+        map.put(SIGN, UniqueStringGenerator.getMd5(builder.substring(0,builder.length()-1)));
     }
 
     private void init(){
