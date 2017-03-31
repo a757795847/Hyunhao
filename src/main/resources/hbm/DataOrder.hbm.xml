@@ -72,6 +72,6 @@
         <property name="isO2OTrade" column="is_o2o_trade"/>
         <property name="wechatName" column="wechat_name"/>
         <property name="redPackageSize" column="red_package_size"/>
-        <property name="lable" column="lable"/>
+        <property name="label" column="lable"/>
     </class>
 </hibernate-mapping>

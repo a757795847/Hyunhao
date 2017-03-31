@@ -53,6 +53,7 @@ public class PersistenceServiceImpl implements PersistenceService {
         return criteria.getExecutableCriteria(session()).list();
     }
 
+
     public <T> List<T> getListAndSetCount(Class<T> clazz, DetachedCriteria criteria, Page page) {
         if (page != null) {
             Long l = (Long) criteria.getExecutableCriteria(session()).setProjection(Projections.rowCount()).uniqueResult();

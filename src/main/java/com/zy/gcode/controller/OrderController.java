@@ -25,6 +25,7 @@ import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 用于处理用户订单相关
@@ -227,11 +228,15 @@ public class OrderController {
         return ControllerStatus.ok(codeRe.getMessage());
     }
 
-    @RequestMapping("lookup/{orderNo}")
+    @RequestMapping("lookup/{condition}")
     public
     @ResponseBody
-    Object lookup(@PathVariable String orderNo) {
-        CodeRe<DataOrder> codeRe = orderService.getOrderByNumber(orderNo);
+    Object lookup(@PathVariable String condition,@RequestBody Map map) {
+        Page page =new Page();
+        page.setCurrentPageIndex((int)map.getOrDefault(Page.CURRENTPAGEINDEX,0));
+        page.setPageSize((int)map.getOrDefault(Page.PAGE_SIZE,0));
+
+        CodeRe<DataOrder> codeRe = orderService.getOrderByCondition(condition,page);
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }

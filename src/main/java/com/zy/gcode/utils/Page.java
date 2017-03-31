@@ -5,6 +5,7 @@ package com.zy.gcode.utils;
  */
 public class Page {
     public static final String CURRENTPAGEINDEX = "currentPageIndex";
+    public static final String PAGE_SIZE = "pageSize";
 
 
     private int currentPageIndex;
@@ -32,6 +33,7 @@ public class Page {
     }
 
     public void setPageSize(int pageSize) {
+        if(pageSize>0)
         this.pageSize = pageSize>30?30:pageSize;
     }
 

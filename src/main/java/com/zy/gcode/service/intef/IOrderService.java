@@ -24,5 +24,5 @@ public interface IOrderService {
 
     CodeRe redInfo(String mchNumber);
 
-    CodeRe getOrderByNumber(String orderNo);
+    CodeRe getOrderByCondition(String orderNo, Page page);
 }

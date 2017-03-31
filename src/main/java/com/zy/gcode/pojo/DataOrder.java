@@ -119,7 +119,7 @@ public class DataOrder implements Serializable{
     private String isO2OTrade;
     private String wechatName;
     private int redPackageSize;
-    private String lable;
+    private String label;
 
     public void setGiftState(Integer giftState) {
         this.giftState = giftState;
@@ -645,12 +645,12 @@ public class DataOrder implements Serializable{
         this.redPackageSize = redPackageSize;
     }
 
-    public String getLable() {
-        return lable;
+    public String getLabel() {
+        return label;
     }
 
-    public void setLable(String lable) {
-        this.lable = lable;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     @Override

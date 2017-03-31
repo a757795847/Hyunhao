@@ -142,7 +142,7 @@ public class OrderService implements IOrderService {
         List<DataOrder> existDataOrderList = persistenceService.getList(detachedCriteria);
         dataOrderList.removeAll(existDataOrderList);
         for(DataOrder order:dataOrderList){
-            order.setLable(label);
+            order.setLabel(label);
             order.setRedPackageSize(redSize);
             order.setCreateUserId(SubjectUtils.getUserName());
             persistenceService.save(order);
@@ -311,11 +311,13 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public CodeRe getOrderByNumber(String orderNo) {
-        DataOrder order = persistenceService.getOneByColumn(DataOrder.class, "orderNumber", orderNo.trim(), "createUserId", getWxOperator());
-        if (order == null) {
-            return CodeRe.error("订单不存在!");
-        }
+    public CodeRe getOrderByCondition(String orderNo, Page page) {
+
+        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(DataOrder.class);
+
+        detachedCriteria.add(Restrictions.or(Restrictions.like("label","%+"+orderNo+"+%"),Restrictions.eq("orderNumber",orderNo)));
+
+        List order = persistenceService.getListAndSetCount(DataOrder.class,detachedCriteria,page);
         return CodeRe.correct(order);
     }
 
