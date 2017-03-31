@@ -54,7 +54,7 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
    }
 
     public static final String APPID="appid";
-    public static final String MCH_ID="mchId";
+    public static final String MCH_ID="mch_id";
     public static final String DEVICE_INFO="device_info";
     public static final String NONCE_STR="nonce_str";
     public static final String SIGN="sign";
@@ -160,7 +160,7 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
     }
 
     private void setSignType() {
-        map.put(SIGN_TYPE,"md5");
+        map.put(SIGN_TYPE,"MD5");
     }
 
     public String getBody() {
