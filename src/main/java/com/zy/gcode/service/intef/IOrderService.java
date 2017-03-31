@@ -12,7 +12,7 @@ import java.util.List;
  * Created by admin5 on 17/2/15.
  */
 public interface IOrderService {
-    List<DataOrder> getOrderByCondition(List<Integer> status, Page page, String userId, Timestamp applyTime, Timestamp importTime);
+    List<DataOrder> searchOrderByCondition(List<Integer> status, Page page, String userId, Timestamp applyTime, Timestamp importTime);
 
     CodeRe handleCsv(MultipartFile multipartFile,String lable,int size);
 
@@ -24,5 +24,5 @@ public interface IOrderService {
 
     CodeRe redInfo(String mchNumber);
 
-    CodeRe getOrderByCondition(String orderNo, Page page);
+    CodeRe searchOrderByCondition(String orderNo, Page page, List<Integer> status);
 }

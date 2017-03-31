@@ -25,7 +25,6 @@ import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * 用于处理用户订单相关
@@ -67,7 +66,7 @@ public class OrderController {
         if (map.containsKey("applyTime") && map.get("applyTime") != null) {
             applyTime = new Timestamp((long) map.get("applyTime"));
         }
-        return ControllerStatus.ok(orderService.getOrderByCondition((List) map.get("status"), page,getUsername(), applyTime, importTime), page);
+        return ControllerStatus.ok(orderService.searchOrderByCondition((List) map.get("status"), page,getUsername(), applyTime, importTime), page);
     }
 
     private String getUsername(){
@@ -236,7 +235,7 @@ public class OrderController {
         page.setCurrentPageIndex((int)map.getOrDefault(Page.CURRENTPAGEINDEX,0));
         page.setPageSize((int)map.getOrDefault(Page.PAGE_SIZE,0));
 
-        CodeRe<DataOrder> codeRe = orderService.getOrderByCondition(condition,page);
+        CodeRe<DataOrder> codeRe = orderService.searchOrderByCondition(condition,page,(List) map.get("status"));
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }

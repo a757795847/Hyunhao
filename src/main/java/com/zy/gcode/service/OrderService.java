@@ -40,13 +40,13 @@ public class OrderService implements IOrderService {
     Logger log = LoggerFactory.getLogger(OrderService.class);
 
 
-    String sql = " insert \n" +
+  /*  String sql = " insert \n" +
             "    into\n" +
             "        jt_platform.data_order\n" +
             "        (id,weixin_id, mch_number, order_number, gift_money, gift_detail, gift_state, comment_file1, comment_file2, comment_file3, apply_date, approve_date, send_date, recieve_date, reject_reason, create_user_id, create_date, update_user_id, update_date, del_flag, buyer_name, buyer_zhifubao, dues, postage, pay_points, amount, rebate_point, actual_amount, actual_pay_points, order_state, buyer_notice, receiver, receiver_address, post_kind, receiver_tel, receiver_mobile, order_create_time, order_pay_time, goods_title, goods_kind, logistics_number, logistics_company, order_remark, goods_number, shop_id, shop_name, order_close_reason, solder_fee, buyer_fee, invoice_title, is_mobile_order, phase_order_info, privilege_order_id, is_transfer_agreement_photo, is_transfer_receipt, is_pay_by_another, earnest_ranking, sku_changed, receiver_address_changed, error_info, tmall_cards_deduction, point_dedution, is_o2o_trade,wechatName) \n" +
             "    values\n" +
             "        (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+*/
 
     int HANDLE_COUNT = 10000;
     int HANDLE_MOST_COUNT = 10000;
@@ -59,10 +59,11 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public List<DataOrder> getOrderByCondition(List<Integer> status, Page page, String userId, Timestamp applyTime, Timestamp importTime) {
+    public List<DataOrder> searchOrderByCondition(List<Integer> status, Page page, String userId, Timestamp applyTime, Timestamp importTime) {
         DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
         criteria.add(Restrictions.eq("createUserId", getWxOperator()));
-        criteria.add(Restrictions.in("giftState", status)).add(Restrictions.eq("createUserId", userId));
+        if(status!=null&&!status.isEmpty())
+        criteria.add(Restrictions.in("giftState", status));
         if (importTime != null) {
             criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
                     DateUtils.format(importTime, "yyyyMMdd"), new StringType()));
@@ -311,11 +312,16 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public CodeRe getOrderByCondition(String orderNo, Page page) {
+    public CodeRe searchOrderByCondition(String condition, Page page, List<Integer> status) {
 
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(DataOrder.class);
 
-        detachedCriteria.add(Restrictions.or(Restrictions.like("label","%+"+orderNo+"+%"),Restrictions.eq("orderNumber",orderNo)));
+        if(status!=null&&!status.isEmpty())
+            detachedCriteria.add(Restrictions.in("giftState", status));
+
+        detachedCriteria.add(Restrictions.eq("createUserId", getWxOperator()));
+
+        detachedCriteria.add(Restrictions.or(Restrictions.like("label","%"+condition+"%"),Restrictions.eq("orderNumber",condition)));
 
         List order = persistenceService.getListAndSetCount(DataOrder.class,detachedCriteria,page);
         return CodeRe.correct(order);
