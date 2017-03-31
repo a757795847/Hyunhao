@@ -152,6 +152,7 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
     private void init(){
         setSignType();
         setFeeType();
+        setNonceStr();
     }
 
     public String getSignType() {
