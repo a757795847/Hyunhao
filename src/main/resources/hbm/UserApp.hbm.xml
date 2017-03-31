@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.zy.gcode.pojo.UserApp" table="user_app" schema="jt_platform">
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="userId" column="user_id"/>
+        <property name="appId" column="app_Id"/>
+        <property name="insertTime" insert="false" update="false" column="insert_time"/>
+        <property name="updateTime" update="false" insert="false" column="update_time"/>
+        <property name="deleteFlag" column="delete_flag"/>
+        <property name="begTime" column="beg_time"/>
+        <property name="endTime" column="end_time"/>
+        <property name="useType" column="use_type"/>
+        <property name="totalCount" column="total_count"/>
+        <property name="residueCount" column="residue_count"/>
+    </class>
+</hibernate-mapping>

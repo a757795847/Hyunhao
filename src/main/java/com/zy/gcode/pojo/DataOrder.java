@@ -15,7 +15,6 @@ public class DataOrder implements Serializable{
     private String mchNumber;
     @CsvPush("订单编号")
     private String orderNumber;
-    private BigDecimal giftMoney;
     private String giftDetail;
     private int giftState;
     private String commentFile1;
@@ -147,14 +146,6 @@ public class DataOrder implements Serializable{
 
     public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
-    }
-
-    public BigDecimal getGiftMoney() {
-        return giftMoney;
-    }
-
-    public void setGiftMoney(BigDecimal giftMoney) {
-        this.giftMoney = giftMoney;
     }
 
     public String getGiftDetail() {

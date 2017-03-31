@@ -2,6 +2,7 @@ package com.zy.gcode.service.intef;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.pojo.ApplicationInfo;
+import com.zy.gcode.service.pay.OpenCondition;
 import com.zy.gcode.utils.Page;
 import org.aspectj.apache.bcel.classfile.Code;
 
@@ -16,5 +17,5 @@ public interface IApplicationService{
     CodeRe add(ApplicationInfo applicationInfo);
     CodeRe update(ApplicationInfo applicationInfo);
     Map info(String appid);
-    CodeRe openApp(String appid);
+    CodeRe openApp(String appid, OpenCondition condition);
 }

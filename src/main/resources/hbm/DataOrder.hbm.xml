@@ -11,7 +11,6 @@
         <property name="weixinId" column="weixin_id"/>
         <property name="mchNumber" column="mch_number"/>
         <property name="orderNumber" column="order_number"/>
-        <property name="giftMoney" column="gift_money"/>
         <property name="giftDetail" column="gift_detail"/>
         <property name="giftState" column="gift_state"/>
         <property name="commentFile1" column="comment_file1"/>
