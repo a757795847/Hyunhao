@@ -81,7 +81,7 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
 
     @Override
     public Map start(){
-       HttpResponse response = HttpClientUtils.paySSLSend((String)map.get(MCH_ID),path,this.url, WxXmlParser.map2xml(map));
+       HttpResponse response = HttpClientUtils.postSend(this.url, WxXmlParser.map2xml(map));
         if(response.getStatusLine().getStatusCode()!=200){
             try {
                 Du.pl(MzUtils.inputStreamToString(response.getEntity().getContent()));
