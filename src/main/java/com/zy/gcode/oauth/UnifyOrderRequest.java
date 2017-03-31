@@ -49,6 +49,7 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
         setNotifyUrl(notifyUrl);
         setTradeType(tradeType);
         this.path = path;
+        this.init();
    }
 
     public static final String APPID="appid";
