@@ -1,7 +1,6 @@
 package com.zy.gcode.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zy.gcode.utils.wx.JsapiUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;

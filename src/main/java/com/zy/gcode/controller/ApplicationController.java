@@ -1,12 +1,13 @@
 package com.zy.gcode.controller;
 
+import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.service.ApplicationService;
+import com.zy.gcode.service.pay.OpenCondition;
 import com.zy.gcode.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -31,5 +32,21 @@ public class ApplicationController {
     @RequestMapping("info")
     public Object info(String id){
        return ControllerStatus.ok(applicationService.info(id));
+    }
+
+    @RequestMapping("open")
+    public Object open(@RequestBody Map map){
+        OpenCondition condition = new OpenCondition();
+        if(map.containsKey(OpenCondition.COUNT)){
+            condition.setCount((int)map.get(OpenCondition.COUNT));
+        }
+        if(map.containsKey(OpenCondition.DAYCOUNT)){
+            condition.setCount((int)map.get(OpenCondition.DAYCOUNT));
+        }
+        if(!map.containsKey("id")){
+            return ControllerStatus.error("应用id不能为空");
+        }
+      CodeRe codeRe = applicationService.openApp((String)map.get("id"),condition);
+        return codeRe.isError()?ControllerStatus.error(codeRe.getErrorMessage()):ControllerStatus.ok(codeRe.getMessage());
     }
 }

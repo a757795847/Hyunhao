@@ -146,6 +146,7 @@ public class OrderService implements IOrderService {
             order.setLabel(label);
             order.setRedPackageSize(redSize);
             order.setCreateUserId(SubjectUtils.getUserName());
+            order.setCreateDate(DateUtils.tNow());
             persistenceService.save(order);
         }
         System.out.println("插入的数量:" + dataOrderList.size());
@@ -153,10 +154,10 @@ public class OrderService implements IOrderService {
 
         return CodeRe.correct(existDataOrderList);
     }
-/*    @Transactional
-    public void test(List<DataOrder> list,int beg,int end){
-        System.out.print(beg+"");
-        for(int i = beg ; i <end ;i++){
+    /*    @Transactional
+        public void test(List<DataOrder> list,int beg,int end){
+            System.out.print(beg+"");
+            for(int i = beg ; i <end ;i++){
             persistenceService.save(list.get(i));
         }
     }*/

@@ -3,7 +3,6 @@ package com.zy.gcode.pojo;
 import com.zy.gcode.service.annocation.CsvPush;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**

@@ -6,16 +6,13 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.zy.gcode.cache.MyCache;
 import com.zy.gcode.cache.OperatorCache;
-import com.zy.gcode.cache.SerializeUtils;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.DataOrder;
-import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.OrderService;
 import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.utils.DateUtils;
-import com.zy.gcode.utils.Du;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -29,10 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by admin5 on 17/1/19.

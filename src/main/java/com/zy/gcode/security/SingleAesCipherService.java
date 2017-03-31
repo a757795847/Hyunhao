@@ -1,21 +1,13 @@
 package com.zy.gcode.security;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.impl.PublicClaims;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.zy.gcode.utils.Du;
 import org.apache.shiro.codec.Hex;
 import org.apache.shiro.crypto.AesCipherService;
-import org.springframework.core.io.PathResource;
 import redis.clients.jedis.Jedis;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.Key;
-import java.util.Base64;
 
 /**
  * Created by admin5 on 17/3/22.

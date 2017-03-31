@@ -9,7 +9,6 @@ import com.auth0.jwt.impl.PublicClaims;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.zy.gcode.cache.OperatorCache;
-import com.zy.gcode.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.codec.Hex;
 import org.apache.shiro.session.Session;

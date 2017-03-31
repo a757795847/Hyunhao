@@ -3,7 +3,6 @@ package com.zy.gcode.security;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.pojo.ValidData;
 import com.zy.gcode.service.intef.IUserService;
-import net.sf.ehcache.Ehcache;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
