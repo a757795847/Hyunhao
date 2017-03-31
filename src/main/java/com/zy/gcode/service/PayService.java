@@ -1,8 +1,14 @@
 package com.zy.gcode.service;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.zy.gcode.controller.delegate.BatchRe;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
+import com.zy.gcode.oauth.UnifyOrderRequest;
 import com.zy.gcode.pojo.PayCredential;
 import com.zy.gcode.pojo.RedBill;
 import com.zy.gcode.pojo.RedStatus;
@@ -22,6 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -323,5 +331,27 @@ public class PayService implements IPayService {
 
 
         return batchRe;
+    }
+
+    @Override
+    public void setPayQR(HttpServletResponse response, HttpServletRequest request) {
+     //  /wechatPayMessage/handler
+
+        PayCredential payCredential = persistenceService.get(PayCredential.class,"wx653d39223641bea7");
+        UnifyOrderRequest unifyOrderRequest = new UnifyOrderRequest();
+        unifyOrderRequest.init("wx653d39223641bea7",payCredential.getMchid(),"支付测试",10,request.getRemoteAddr(),
+                "http://open.izhuiyou.com/wechatPayMessage/handler","native",payCredential.getCredentialPath());
+        Map map = unifyOrderRequest.start();
+
+        response.setContentType("image/png");
+        response.setHeader("Cache-Control","no-cache");
+        try {
+            BitMatrix bitMatrix = new MultiFormatWriter().encode((String)map.get("code_url"), BarcodeFormat.QR_CODE,200,200);
+            MatrixToImageWriter.writeToStream(bitMatrix,"png",response.getOutputStream());
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

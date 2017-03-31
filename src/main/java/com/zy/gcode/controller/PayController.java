@@ -100,6 +100,11 @@ public class PayController {
         return ControllerStatus.error("抓单已启动");
     }
 
+    @RequestMapping("beg/index")
+    public void begIndex(HttpServletRequest request,HttpServletResponse response){
+        payService.setPayQR(response,request);
+    }
+
 
     @RequestMapping("asyn")
     public DeferredResult<ModelAndView> get(HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by admin5 on 17/1/20.
@@ -33,6 +34,16 @@ public class WxXmlParser {
         }
         return document.asXML();
     }
+    public static String map2xml(Map map){
+        Document document = DocumentHelper.createDocument();
+        Element root = document.addElement("xml");
+        Set<String> keys =  map.keySet();
+        keys.forEach(k->{
+            root.addElement(k).addCDATA(String.valueOf(map.get(k)));
+        });
+        return document.asXML();
+    }
+
 
     public static Map getWxMap(Object obj) {
         Field[] fields = obj.getClass().getDeclaredFields();

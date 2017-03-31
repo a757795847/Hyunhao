@@ -1,6 +1,8 @@
 package service;
 
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.zy.gcode.cache.MyCache;
 import com.zy.gcode.cache.OperatorCache;
@@ -14,9 +16,7 @@ import com.zy.gcode.service.OrderService;
 import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.utils.DateUtils;
 import com.zy.gcode.utils.Du;
-import com.zy.gcode.utils.Timing;
 import org.apache.shiro.authc.credential.PasswordService;
-import org.apache.shiro.crypto.AesCipherService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.StringType;
@@ -28,11 +28,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 
-import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by admin5 on 17/1/19.
@@ -181,8 +181,14 @@ public class DaoTest {
         System.out.println(object);
     }
 
-    public static void main(String[] args){
-       // BitMatrix bitMatrix = new MultiFormatWriter().encode()
+    public static void main(String[] args) throws Exception{
+        BitMatrix bitMatrix = new MultiFormatWriter().encode("不会的", BarcodeFormat.QR_CODE,200,200);
+      //  Path path = FileSystems.getDefault().getPath("~/Downloads","QRtest");
+        File file = new File("/Users/admin5/Downloads/QRtest");
+        if(!file.exists()){
+            file.createNewFile();
+        }
+        MatrixToImageWriter.writeToPath(bitMatrix,"png",file.toPath());
     }
 
 }

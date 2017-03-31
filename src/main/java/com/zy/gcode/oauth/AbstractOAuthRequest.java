@@ -56,8 +56,6 @@ public abstract class AbstractOAuthRequest<T> {
             builder.append("\"").append(k).append("\"").append(":")
                     .append("\"").append(v).append("\"").append(",");
         });
-
-
         return builder.substring(0, builder.length() - 1) + "}";
 
     }

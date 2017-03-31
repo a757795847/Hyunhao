@@ -1,6 +1,7 @@
 package com.zy.gcode.controller;
 
 import com.zy.gcode.utils.Constants;
+import com.zy.gcode.utils.Du;
 import com.zy.gcode.utils.MzUtils;
 import com.zy.gcode.utils.UniqueStringGenerator;
 import com.zy.gcode.utils.wx.AesException;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by admin5 on 17/3/7.
@@ -26,6 +29,16 @@ public class WechatMessageController {
             e.printStackTrace();
         }
     }
+
+    @RequestMapping(value = "/wechatPayMessage/handler")
+    public @ResponseBody Object wechatPayMessage(@RequestBody String body){
+        Du.pl("payMessage:"+body);
+        Map map = new HashMap(2,1.0f);
+        map.put("return_code","SUCCESS");
+        map.put("return_msg","OK");
+        return map;
+    }
+
 
     @RequestMapping(value = "/{appid}/receive", method = RequestMethod.GET)
     public

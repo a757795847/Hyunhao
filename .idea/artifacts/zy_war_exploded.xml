@@ -59,6 +59,8 @@
           <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.7.21" />
           <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache:2.10.3" />
           <element id="library" level="project" name="Maven: com.google.zxing:core:3.2.1" />
+          <element id="library" level="project" name="Maven: com.google.zxing:javase:3.2.1" />
+          <element id="library" level="project" name="Maven: com.beust:jcommander:1.48" />
         </element>
       </element>
       <element id="directory" name="META-INF">
