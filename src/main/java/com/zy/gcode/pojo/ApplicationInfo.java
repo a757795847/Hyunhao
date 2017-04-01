@@ -6,10 +6,32 @@ import java.sql.Timestamp;
  * Created by admin5 on 17/2/23.
  */
 public class ApplicationInfo {
+    /**
+     * 免费使用
+     */
     public static final int PAY_FREE_TO_USE = 0;
+    /**
+     * 根据次数使用
+     */
     public static final int PAY_BY_COUNT = 1;
+    /**
+     * 根据费率使用
+     */
     public static final int PAY_BY_RATE = 2;
+    /**
+     * 根据时间使用
+     */
     public static final int PAY_BY_DAY = 3;
+
+    /**
+     * 任何人都能开通
+     */
+    public static final int OPEN_BY_ANY = 0;
+
+    /**
+     * 只有开通了特定的app才能开通这个应用
+     */
+    public static final int OPEN_BY_APP = 1;
 
 
     private String id;

@@ -40,30 +40,9 @@ public class ApplicationService implements IApplicationService {
             map.put("isOpened", isOpened(app));
             map.put("id", app.getId());
             map.put("backgroundColor", app.getBackgroundColor());
-
             results.add(map);
         }
         return results;
-    }
-
-    public boolean isOpened(ApplicationInfo info) {
-        List<UserApp> userApps = persistenceService.getListByColumn(UserApp.class, "userId", SubjectUtils.getUserName(), "appId", info.getId());
-        for (UserApp userApp : userApps) {
-            if (userApp.getUseType() == UserApp.USE_BY_COUNT) {
-                return userApp.getTotalCount() > userApp.getResidueCount();
-            } else if (userApp.getUseType() == UserApp.USE_BY_TIME) {
-                return isExpires(userApp.getEndTime());
-            }
-            return false;
-        }
-        return false;
-    }
-
-    private boolean isExpires(Timestamp after) {
-        if (after == null) {
-            return true;
-        }
-        return after.after(DateUtils.tNow());
     }
 
 
@@ -90,13 +69,20 @@ public class ApplicationService implements IApplicationService {
         return null;
     }
 
+
     @Override
+    @Transactional
     public CodeRe openApp(String appid, OpenCondition openCondition) {
         ApplicationInfo applicationInfo = persistenceService.get(ApplicationInfo.class, appid);
+
         if (applicationInfo == null) {
             return CodeRe.error("该app不存在");
         }
-        if(isOpened(applicationInfo)){
+        if (canOpen(applicationInfo)) {
+            return CodeRe.error("您暂时无权开通,请阅读开通前提");
+        }
+
+        if (isOpened(applicationInfo)) {
             return CodeRe.error("该应用已经开通");
         }
         UserApp userApp = new UserApp();
@@ -120,11 +106,87 @@ public class ApplicationService implements IApplicationService {
                 userApp.setBegTime(DateUtils.tNow());
                 userApp.setUseType(UserApp.USE_BY_TIME);
                 break;
+            default:
+                throw new IllegalStateException("该类型[" + applicationInfo.getPayCdn() + "]不存在!请检查数据有效性");
         }
         persistenceService.save(userApp);
-
-
         return CodeRe.correct("开通成功");
+    }
+
+
+    public boolean isOpened(ApplicationInfo info) {
+        List<UserApp> userApps = persistenceService.getListByColumn(UserApp.class, "userId", SubjectUtils.getUserName(), "appId", info.getId());
+
+        for (UserApp userApp : userApps) {
+            if (userApp.getUseType() == UserApp.USE_BY_COUNT) {
+                return userApp.getTotalCount() > userApp.getResidueCount();
+            } else if (userApp.getUseType() == UserApp.USE_BY_TIME) {
+                return isExpires(userApp.getEndTime());
+            }
+            return false;
+        }
+        return false;
+    }
+
+    private boolean isExpires(Timestamp after) {
+        if (after == null) {
+            return true;
+        }
+        return after.after(DateUtils.tNow());
+    }
+
+
+    private List<UserApp> getOpenApp() {
+        List<UserApp> userAppList = persistenceService.getListByColumn(UserApp.class, "userId", SubjectUtils.getUserName());
+        List<UserApp> openedAppList = new ArrayList<>();
+        for (UserApp userApp : userAppList) {
+            if (userApp.getUseType() == UserApp.USE_BY_COUNT) {
+                if (userApp.getTotalCount() > userApp.getResidueCount()) {
+                    openedAppList.add(userApp);
+                }
+            } else if (userApp.getUseType() == UserApp.USE_BY_TIME) {
+                if (isExpires(userApp.getEndTime())) {
+                    openedAppList.add(userApp);
+                }
+            }
+        }
+        return openedAppList;
+
+    }
+
+
+    public boolean canOpen(ApplicationInfo info) {
+        switch (info.getOpenCdn()) {
+            case ApplicationInfo.OPEN_BY_ANY:
+                return true;
+            case ApplicationInfo.OPEN_BY_APP:
+                String option = info.getOpenOption();
+                if(option==null||option.length()==0){
+                    return true;
+                }
+                List<UserApp> userAppList = getOpenApp();
+                if(userAppList.isEmpty()){
+                    return false;
+                }
+                String[] options = option.split(",");
+                for (UserApp userApp : userAppList) {
+                    boolean flag = true;
+                    for (String needId : options) {
+                        long id = Long.parseLong(needId);
+                        if (id == userApp.getId()) {
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        return false;
+                    }
+                }
+
+                return true;
+            default:
+                throw new IllegalStateException("该类型[" + info.getOpenCdn() + "]不存在!请检查数据有效性");
+        }
+
     }
 
 }

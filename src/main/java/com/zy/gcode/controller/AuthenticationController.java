@@ -10,6 +10,8 @@ import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.service.intef.IAuthenticationService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.Du;
+import com.zy.gcode.utils.JwtUtils;
+import com.zy.gcode.utils.SubjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by admin5 on 17/1/18.
@@ -29,6 +35,17 @@ public class AuthenticationController {
     @Autowired
     IAuthenticationService authenticationService;
 
+    private Map<String,String> authCache = new ConcurrentHashMap<>();
+    private Map<String,String> authCacheFacade = new LinkedHashMap(){
+        @Override
+        protected boolean removeEldestEntry(Map.Entry eldest) {
+            if(size()>100){
+                authCache.remove(eldest.getKey());
+                return true;
+            }
+            return false;
+        }
+    };
 
     @RequestMapping("auth/receive")
     public
@@ -51,19 +68,20 @@ public class AuthenticationController {
         if (preAuthCode.isError()) {
             return ControllerStatus.error(preAuthCode.getErrmsg());
         }
-        String authorization = request.getHeader("authorization");
-
+        String authentication = request.getHeader(JwtUtils.AUTHORIZATION);
         PublicLoginRequest loginRequest = new PublicLoginRequest();
         loginRequest.setParam(PublicLoginRequest.PRA_COMPONENT_APPID, Constants.properties.getProperty("platform.appid"))
                 .setParam(PublicLoginRequest.PRA_PRE_AUTH_CODE, preAuthCode.getPreAuthCode())
-                .setParam(PublicLoginRequest.PRA_REDIRECT_URI, "http://open.izhuiyou.com/auth/code?jwt="+authorization);
+                .setParam(PublicLoginRequest.PRA_REDIRECT_URI, "http://open.izhuiyou.com/auth2/code?username="+ SubjectUtils.getUserName());
+        authCache.put(SubjectUtils.getUserName(),authentication);
+        authCacheFacade.put(SubjectUtils.getUserName(),authentication+":"+url);
         return ControllerStatus.ok(loginRequest.start());
 
     }
 
-    @RequestMapping("auth/code")
+    @RequestMapping("auth2/code")
     public
-    String serverCode(String auth_code, String expires_in) {
+    String serverCode(String auth_code, String expires_in,String username,HttpServletResponse response) {
         CodeRe<TokenConfig> componetTokenCodeRe = authenticationService.componetToekn();
         if (componetTokenCodeRe.isError()) {
             return componetTokenCodeRe.getErrorMessage();
@@ -77,7 +95,11 @@ public class AuthenticationController {
         if (codeRe.isError()) {
             return codeRe.getErrorMessage();
         }
-        return "redirect:/";
+
+        String redirectInfo =  authCache.get(username);
+        String[] infos = redirectInfo.split(":");
+        response.setHeader(JwtUtils.AUTHORIZATION,infos[0]);
+        return "redirect:"+infos[1];
 
     }
 

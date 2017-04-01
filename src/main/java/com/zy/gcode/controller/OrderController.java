@@ -6,6 +6,7 @@ import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.intef.IOrderService;
 import com.zy.gcode.utils.Constants;
+import com.zy.gcode.utils.Du;
 import com.zy.gcode.utils.Page;
 import com.zy.gcode.utils.SubjectUtils;
 import org.apache.shiro.SecurityUtils;
@@ -22,7 +23,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigInteger;
+import java.security.AlgorithmParameterGenerator;
+import java.security.AlgorithmParameters;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -150,31 +155,13 @@ public class OrderController {
         }
         return ControllerStatus.ok(codeRe.getMessage());
     }
-
-    /**
-     * 根据前段传入的数组导入order数据到DB
-     *
-     * @param orderList
-     * @return
-     */
-    @RequestMapping("importCsv")
-    public
-    @ResponseBody
-    Object importCsv(@RequestBody List<DataOrder> orderList) {
-        User operator = SubjectUtils.getUser();
-        CodeRe codeRe = orderService.saveOrderList(orderList, operator.getUsername());
-        if (codeRe.isError()) {
-            return ControllerStatus.error(codeRe.getErrorMessage());
-        }
-        return ControllerStatus.ok((List) codeRe.getMessage());
-    }
-
-    /**
+/*
+    *//**
      * 根据指定的id，设置订单状态为审核通过
      *
      * @param id
      * @return
-     */
+     *//*
     @RequestMapping("passAuditing/{id}")
     public
     @ResponseBody
@@ -184,7 +171,7 @@ public class OrderController {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }
         return ControllerStatus.ok(codeRe.getMessage().toString());
-    }
+    }*/
 
     /**
      * 审核通过后红包发送
@@ -250,5 +237,15 @@ public class OrderController {
         return SecurityUtils.getSubject().isPermitted(Constants.ZYAPPID) + "";
     }
 
+   /* public static void main(String[] args) throws Exception{
+        AlgorithmParameterGenerator algorithmParameterGenerator = AlgorithmParameterGenerator.getInstance("des");
+        algorithmParameterGenerator.init(10);
+        algorithmParameterGenerator.
+        AlgorithmParameters algorithmParameters = AlgorithmParameters.getInstance("des");
+        Du.plbs(new BigInteger("3246346326").toByteArray());
+        algorithmParameters.init(new BigInteger("1253125235262346342623215").toByteArray());
+        Du.plbs(algorithmParameters.getEncoded());
+
+    }*/
 
 }
