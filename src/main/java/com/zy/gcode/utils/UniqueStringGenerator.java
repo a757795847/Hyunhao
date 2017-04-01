@@ -123,8 +123,8 @@ public class UniqueStringGenerator {
         return null;
     }
     private static final char[] toTappidTable= {
-            'M', 'F', 'O', 'E', 'D', 'B', 'G', 'H', 'I', 'V', 'K', 'Z', 'A',
-            'N', 'C', 'P', 'Q', 'e', 'S', 'T', 'i', 'J', 'W', 'X', 'l', 'm',
+            'M', 'F', 'O', 'E', 'D', 'B', 'G', 'H', 'I', 'V', 'P', 'Z', 'A',
+            'N', 'C', 'K', 'Q', 'e', 'S', 'T', 'i', 'J', 'W', 'X', 'l', 'm',
             '2', 'b', 'c', 'd', '8', '5', 'g', 'u', 'U', '9', 'j', 'y', 'L',
             'n', 'o', 'p', '3', '7', 's', 't', 'r', 'v', 'w', 'x', 'Y',
             '0', '1', 'a', 'q', '4', 'f', '6', 'h', 'R', 'k'};

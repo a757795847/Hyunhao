@@ -12,9 +12,7 @@ import com.zy.gcode.pojo.UserApp;
 import com.zy.gcode.pojo.UserConfig;
 import com.zy.gcode.service.intef.IApplicationService;
 import com.zy.gcode.service.pay.OpenCondition;
-import com.zy.gcode.utils.DateUtils;
-import com.zy.gcode.utils.Page;
-import com.zy.gcode.utils.SubjectUtils;
+import com.zy.gcode.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -129,6 +127,7 @@ public class ApplicationService implements IApplicationService {
         UserConfig userConfig = new UserConfig();
         userConfig.setUserId(SubjectUtils.getUserName());
         userConfig.setAppOpenTime(userApp.getBegTime());
+        persistenceService.save(userConfig);
         return CodeRe.correct("开通成功");
     }
 
@@ -207,18 +206,19 @@ public class ApplicationService implements IApplicationService {
         }
 
     }
+    String httpPrefix = "http://open.izhuiyou.com/app/";
 
     @Override
-    public void setAppQR(String id, HttpServletResponse response) {
-
-
-        try {
-            BitMatrix bitMatrix = new MultiFormatWriter().encode("", BarcodeFormat.QR_CODE,200,200);
-            MatrixToImageWriter.writeToStream(bitMatrix,"png",response.getOutputStream());
-        } catch (WriterException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public CodeRe configList(String appid) {
+        UserApp userApp = persistenceService.getOneByColumn(UserApp.class,"userId",SubjectUtils.getUserName());
+        if(userApp ==null){
+            Du.dPl("服务器不存在的请求");
+          return   CodeRe.error("error");
         }
+         List<UserConfig> userConfigs = persistenceService.getListByColumn(UserConfig.class,"userId",SubjectUtils.getUserName()
+        ,"appOpenTime",userApp.getBegTime(),"appId",appid);
+        userConfigs.forEach(userConfig -> userConfig.setUrl(UniqueStringGenerator.toTappid(userConfig.getId(),
+                userConfig.getAppOpenTime().getTime())));
+        return CodeRe.correct(userConfigs);
     }
 }

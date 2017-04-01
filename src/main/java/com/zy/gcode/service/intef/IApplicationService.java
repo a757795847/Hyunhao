@@ -19,5 +19,5 @@ public interface IApplicationService{
     CodeRe update(ApplicationInfo applicationInfo);
     Map info(String appid);
     CodeRe openApp(String appid, OpenCondition condition);
-    void setAppQR(String id,HttpServletResponse response);
+    CodeRe configList(String appid);
 }

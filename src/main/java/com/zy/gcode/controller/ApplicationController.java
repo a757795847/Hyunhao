@@ -6,6 +6,7 @@ import com.zy.gcode.service.ApplicationService;
 import com.zy.gcode.service.pay.OpenCondition;
 import com.zy.gcode.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,5 +49,14 @@ public class ApplicationController {
         }
       CodeRe codeRe = applicationService.openApp((String)map.get("id"),condition);
         return codeRe.isError()?ControllerStatus.error(codeRe.getErrorMessage()):ControllerStatus.ok(codeRe.getMessage());
+    }
+
+    @RequestMapping("config/list/{appid}")
+    public Object getConfigs(@PathVariable String appid){
+       CodeRe codeRe =  applicationService.configList(appid);
+        if(codeRe.isError()){
+            return  ControllerStatus.error();
+        }
+        return ControllerStatus.ok(codeRe.getMessage());
     }
 }
