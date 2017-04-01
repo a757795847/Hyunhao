@@ -90,6 +90,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     }
 
     @Override
+    @Transactional
     public Serializable save(Object obj) {
         return session().save(obj);
     }

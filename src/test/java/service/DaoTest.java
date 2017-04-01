@@ -8,11 +8,13 @@ import com.zy.gcode.cache.MyCache;
 import com.zy.gcode.cache.OperatorCache;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.DataOrder;
+import com.zy.gcode.pojo.UserConfig;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.OrderService;
 import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.utils.DateUtils;
+import com.zy.gcode.utils.SubjectUtils;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -64,6 +66,12 @@ public class DaoTest {
 
     @Test
     public void test() {
+
+        UserConfig userConfig = new UserConfig();
+        userConfig.setUserId("2");
+        userConfig.setAppOpenTime(DateUtils.tNow());
+        userConfig.setDeleteFlag("1");
+        persistenceService.save(userConfig);
      /*   HashMap map = new HashMap();
         User user = new User();
 

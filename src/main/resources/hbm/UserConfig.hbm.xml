@@ -12,10 +12,10 @@
         <property name="userId" column="user_id"/>
         <property name="appId" column="app_id"/>
         <property name="appOpenTime" column="app_open_time"/>
-        <property name="insertTime" column="insert_time"/>
-        <property name="updateTime" column="update_time"/>
+        <property insert="false" update="false" name="insertTime" column="insert_time"/>
+        <property insert="false" update="false" name="updateTime" column="update_time"/>
         <property name="deleteFlag" column="delete_flag"/>
-        <property name="option" column="option"/>
+        <property name="option" column="`option`"/>
         <property name="remark" column="remark"/>
     </class>
 </hibernate-mapping>
