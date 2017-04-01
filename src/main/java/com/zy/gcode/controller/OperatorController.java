@@ -218,11 +218,6 @@ public class OperatorController {
         return ControllerStatus.ok();
 
     }
-    @RequestMapping("test")
-    @ResponseBody
-    public String test(){
-        return "success";
-    }
 
     @RequestMapping("innerUpdatePassword")
     public

@@ -1,9 +1,15 @@
 package com.zy.gcode.service;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.ApplicationInfo;
 import com.zy.gcode.pojo.UserApp;
+import com.zy.gcode.pojo.UserConfig;
 import com.zy.gcode.service.intef.IApplicationService;
 import com.zy.gcode.service.pay.OpenCondition;
 import com.zy.gcode.utils.DateUtils;
@@ -14,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,6 +126,9 @@ public class ApplicationService implements IApplicationService {
                 throw new IllegalStateException("该类型[" + applicationInfo.getPayCdn() + "]不存在!请检查数据有效性");
         }
         persistenceService.save(userApp);
+        UserConfig userConfig = new UserConfig();
+        userConfig.setUserId(SubjectUtils.getUserName());
+        userConfig.setAppOpenTime(userApp.getBegTime());
         return CodeRe.correct("开通成功");
     }
 
@@ -201,5 +211,14 @@ public class ApplicationService implements IApplicationService {
     @Override
     public void setAppQR(String id, HttpServletResponse response) {
 
+
+        try {
+            BitMatrix bitMatrix = new MultiFormatWriter().encode("", BarcodeFormat.QR_CODE,200,200);
+            MatrixToImageWriter.writeToStream(bitMatrix,"png",response.getOutputStream());
+        } catch (WriterException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

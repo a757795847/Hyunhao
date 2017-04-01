@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.zy.gcode.pojo.UserConfig" table="user_config" schema="jt_platform">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="wechatOfficialId" column="wechat_official_id"/>
+        <property name="userId" column="user_id"/>
+        <property name="appId" column="app_id"/>
+        <property name="appOpenTime" column="app_open_time"/>
+        <property name="insertTime" column="insert_time"/>
+        <property name="updateTime" column="update_time"/>
+        <property name="deleteFlag" column="delete_flag"/>
+        <property name="option" column="option"/>
+        <property name="remark" column="remark"/>
+    </class>
+</hibernate-mapping>
