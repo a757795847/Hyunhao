@@ -209,6 +209,7 @@ public class ApplicationService implements IApplicationService {
     String httpPrefix = "http://open.izhuiyou.com/app/";
 
     @Override
+    @Transactional
     public CodeRe configList(String appid) {
         UserApp userApp = persistenceService.getOneByColumn(UserApp.class,"userId",SubjectUtils.getUserName());
         if(userApp ==null){
