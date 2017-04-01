@@ -53,7 +53,7 @@ public class PayController {
             return ControllerStatus.error("签名错误");
         }
 
-        CodeRe<String> codeRe = payService.pay(openid, Integer.valueOf(count), tappid);
+        CodeRe<String> codeRe = payService.pay(openid, 100, tappid);
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }

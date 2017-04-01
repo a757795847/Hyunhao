@@ -3,10 +3,7 @@ package com.zy.gcode.service;
 import com.csvreader.CsvReader;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
-import com.zy.gcode.pojo.DataOrder;
-import com.zy.gcode.pojo.DataStrategy;
-import com.zy.gcode.pojo.RedStatus;
-import com.zy.gcode.pojo.User;
+import com.zy.gcode.pojo.*;
 import com.zy.gcode.service.annocation.CsvPush;
 import com.zy.gcode.service.intef.IMultipartService;
 import com.zy.gcode.service.intef.IOrderService;
@@ -242,14 +239,15 @@ public class OrderService implements IOrderService {
     public CodeRe redSend(String orderno) {
         User operator = SubjectUtils.getUser();
         if (operator == null) {
-            CodeRe.error("操作超时,请重新登录!");
+           return CodeRe.error("操作超时,请重新登录!");
         }
-        CodeRe<String> muCodeRe = multipartService.getTappidByApp(operator.getUsername(), Constants.ZYAPPID);
-        if (muCodeRe.isError()) {
-            return muCodeRe;
+        UserConfig userConfig =  persistenceService.getOneByColumn(UserConfig.class,"userId",SubjectUtils.getUserName(),
+                  "appId",Constants.ZYAPPID);
+        if(userConfig==null){
+            return CodeRe.error("error");
         }
 
-        String tappid = muCodeRe.getMessage();
+        String tappid = UniqueStringGenerator.toTappid(userConfig.getId(),userConfig.getAppOpenTime().getTime());
         DataOrder order = persistenceService.get(DataOrder.class, orderno);
         if (!operator.getUsername().equals(order.getCreateUserId()))
             return CodeRe.error("您无权操作次订单");

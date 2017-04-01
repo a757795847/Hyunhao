@@ -9,10 +9,7 @@ import com.zy.gcode.controller.delegate.BatchRe;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.oauth.UnifyOrderRequest;
-import com.zy.gcode.pojo.PayCredential;
-import com.zy.gcode.pojo.RedBill;
-import com.zy.gcode.pojo.RedStatus;
-import com.zy.gcode.pojo.WechatPublicServer;
+import com.zy.gcode.pojo.*;
 import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.service.pay.RedPayInfo;
 import com.zy.gcode.service.pay.RedReqInfo;
@@ -52,8 +49,9 @@ public class PayService implements IPayService {
     @Override
     @Transactional
     public CodeRe pay(String id, int count, String tappid) {
-        WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, tappid);
-        PayCredential payCredential = persistenceService.get(PayCredential.class, wechatPublicServer.getWxAppid());
+       // WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, tappid);
+        UserConfig userConfig = persistenceService.get(UserConfig.class,UniqueStringGenerator.deTappid(tappid)[0]);
+        PayCredential payCredential = persistenceService.get(PayCredential.class, userConfig.getWechatOfficialId());
         if (payCredential == null) {
             return CodeRe.error("该微信公众号无商户!");
         }
@@ -61,7 +59,7 @@ public class PayService implements IPayService {
         payInfo.setNonce_str(UniqueStringGenerator.getUniqueCode());
         payInfo.setMch_billno(UniqueStringGenerator.wxbillno(payCredential.getMchid()));
         payInfo.setMch_id(payCredential.getMchid());
-        payInfo.setWxappid(wechatPublicServer.getWxAppid());
+        payInfo.setWxappid(userConfig.getWechatOfficialId());
         payInfo.setSend_name("追游科技");
         payInfo.setRe_openid(id);
         payInfo.setTotal_num(1);
