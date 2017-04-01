@@ -240,7 +240,7 @@ public class OrderService implements IOrderService {
     @Override
     @Transactional
     public CodeRe redSend(String orderno) {
-        User operator = (User) SecurityUtils.getSubject().getSession().getAttribute("operator");
+        User operator = SubjectUtils.getUser();
         if (operator == null) {
             CodeRe.error("操作超时,请重新登录!");
         }
