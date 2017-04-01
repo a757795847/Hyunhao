@@ -78,7 +78,7 @@ public class ApplicationService implements IApplicationService {
         if (applicationInfo == null) {
             return CodeRe.error("该app不存在");
         }
-        if (canOpen(applicationInfo)) {
+        if (!canOpen(applicationInfo)) {
             return CodeRe.error("您暂时无权开通,请阅读开通前提");
         }
 
