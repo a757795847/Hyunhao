@@ -6,10 +6,7 @@ import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.intef.IOperatorService;
 import com.zy.gcode.service.intef.IUserService;
-import com.zy.gcode.utils.CodeImage;
-import com.zy.gcode.utils.JwtUtils;
-import com.zy.gcode.utils.MzUtils;
-import com.zy.gcode.utils.UniqueStringGenerator;
+import com.zy.gcode.utils.*;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -152,6 +149,7 @@ public class OperatorController {
 
     @RequestMapping("getcodeImage")
     public void getCodeImage(HttpServletResponse response) {
+
         CodeImage codeImage = new CodeImage();
         response.setContentType("image/jpeg");
         //禁止图像缓存。
@@ -160,6 +158,7 @@ public class OperatorController {
         response.setDateHeader("Expires", 0);
         ImageInfo imageInfo = new ImageInfo(codeImage.getCode(), System.currentTimeMillis());
         sessionPut("imageInfo", imageInfo);
+        Du.pl("获取验证码:"+imageInfo.content);
         try {
             codeImage.write(response.getOutputStream());
         } catch (IOException e) {

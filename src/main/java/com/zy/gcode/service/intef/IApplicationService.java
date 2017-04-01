@@ -5,6 +5,8 @@ import com.zy.gcode.pojo.ApplicationInfo;
 import com.zy.gcode.service.pay.OpenCondition;
 import com.zy.gcode.utils.Page;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -17,4 +19,5 @@ public interface IApplicationService{
     CodeRe update(ApplicationInfo applicationInfo);
     Map info(String appid);
     CodeRe openApp(String appid, OpenCondition condition);
+    void setAppQR(String id,HttpServletResponse response);
 }

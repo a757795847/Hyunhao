@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,21 +91,29 @@ public class ApplicationService implements IApplicationService {
             case ApplicationInfo.PAY_FREE_TO_USE:
                 userApp.setBegTime(DateUtils.tNow());
                 userApp.setUseType(UserApp.USE_BY_TIME);
+                userApp.setUserId(SubjectUtils.getUserName());
+                userApp.setAppId(appid);
                 break;
             case ApplicationInfo.PAY_BY_COUNT:
                 userApp.setBegTime(DateUtils.tNow());
                 userApp.setUseType(UserApp.USE_BY_COUNT);
                 userApp.setTotalCount(openCondition.getCount());
                 userApp.setResidueCount(openCondition.getCount());
+                userApp.setUserId(SubjectUtils.getUserName());
+                userApp.setAppId(appid);
                 break;
             case ApplicationInfo.PAY_BY_DAY:
                 userApp.setBegTime(DateUtils.tNow());
                 userApp.setUseType(UserApp.USE_BY_TIME);
                 userApp.setEndTime(DateUtils.afterOfDay(openCondition.getDayCount()));
+                userApp.setUserId(SubjectUtils.getUserName());
+                userApp.setAppId(appid);
                 break;
             case ApplicationInfo.PAY_BY_RATE:
                 userApp.setBegTime(DateUtils.tNow());
                 userApp.setUseType(UserApp.USE_BY_TIME);
+                userApp.setUserId(SubjectUtils.getUserName());
+                userApp.setAppId(appid);
                 break;
             default:
                 throw new IllegalStateException("该类型[" + applicationInfo.getPayCdn() + "]不存在!请检查数据有效性");
@@ -189,4 +198,8 @@ public class ApplicationService implements IApplicationService {
 
     }
 
+    @Override
+    public void setAppQR(String id, HttpServletResponse response) {
+
+    }
 }

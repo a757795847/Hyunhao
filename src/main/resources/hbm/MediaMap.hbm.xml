@@ -6,7 +6,7 @@
 
     <class name="com.zy.gcode.pojo.MediaMap" table="media_map" schema="jt_platform">
         <id name="id" column="id">
-            <generator class="native"/>
+            <generator class="identity"/>
         </id>
         <property name="owner" column="owner"/>
         <property name="type" column="type"/>
