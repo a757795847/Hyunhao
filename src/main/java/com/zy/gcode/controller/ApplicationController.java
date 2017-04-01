@@ -52,11 +52,12 @@ public class ApplicationController {
     }
 
     @RequestMapping("config/list/{appid}")
-    public Object getConfigs(@PathVariable String appid){
-       CodeRe codeRe =  applicationService.configList(appid);
-        if(codeRe.isError()){
-            return  ControllerStatus.error();
+    public Object getConfigs(@PathVariable String appid) {
+        CodeRe codeRe = applicationService.configList(appid);
+        if (codeRe.isError()) {
+            return ControllerStatus.error();
         }
         return ControllerStatus.ok(codeRe.getMessage());
     }
+
 }

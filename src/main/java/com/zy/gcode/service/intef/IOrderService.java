@@ -20,7 +20,7 @@ public interface IOrderService {
 
     CodeRe passAuditing(String uuid);
 
-    CodeRe redSend(String orderno, long strategyid);
+    CodeRe redSend(String orderno);
 
     CodeRe redInfo(String mchNumber);
 

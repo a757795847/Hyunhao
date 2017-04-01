@@ -239,7 +239,7 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public CodeRe redSend(String orderno, long strategyid) {
+    public CodeRe redSend(String orderno) {
         User operator = (User) SecurityUtils.getSubject().getSession().getAttribute("operator");
         if (operator == null) {
             CodeRe.error("操作超时,请重新登录!");
@@ -260,16 +260,11 @@ public class OrderService implements IOrderService {
         } catch (NullPointerException e) {
             return CodeRe.error("订单不存在!");
         }
-        if (giftState != 2) {
-            return CodeRe.error("订单未处于审核通过状态!");
-        }
-        DataStrategy strategy = persistenceService.get(DataStrategy.class, strategyid);
-        /*String openid,String count,String wxAppid*/
-        if (strategy == null) {
-            return CodeRe.error("红包策略不存在");
+        if (giftState != 1) {
+            return CodeRe.error("订单未已提交状态!");
         }
         Map map = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/pay/send", "openid", order.getWeixinId(),
-                "count", String.valueOf(strategy.getMoney()), "tappid", tappid, "sign", "13468794sagag");
+                "count",String.valueOf(order.getRedPackageSize()), "tappid", tappid, "sign", "13468794sagag");
         if (map == null) {
             log.error("http请求错误");
             return CodeRe.error("红包发送失败");

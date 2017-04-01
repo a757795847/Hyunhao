@@ -192,10 +192,7 @@ public class OrderController {
         if (!map.containsKey("id")) {
             return ControllerStatus.error("请传入订单id");
         }
-        if (!map.containsKey("strategyid")) {
-            return ControllerStatus.error("请选择红包策略");
-        }
-        CodeRe codeRe = orderService.redSend(map.get("id").toString(), Integer.valueOf(map.get("strategyid").toString()).longValue());
+        CodeRe codeRe = orderService.redSend(map.get("id").toString());
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }
