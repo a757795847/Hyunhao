@@ -3,6 +3,7 @@ package com.zy.gcode.security;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.pojo.ValidData;
 import com.zy.gcode.service.intef.IUserService;
+import com.zy.gcode.utils.SubjectUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -45,7 +46,7 @@ public class ZyRealm extends AuthorizingRealm implements InitializingBean{
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        User user = (User) principals.getPrimaryPrincipal();
+        User user = SubjectUtils.getUser();
         List<ValidData> validDataList = userService.getValidDateList(user.getUsername());
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         validDataList.forEach(validData -> {

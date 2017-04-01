@@ -184,9 +184,6 @@ public class OrderController {
     public
     @ResponseBody
     Object redSend(@RequestBody Map map) {
-        if (SecurityUtils.getSubject().isPermitted(Constants.ZYAPPID)) {
-            ControllerStatus.error("无权访问");
-        }
 
 
         if (!map.containsKey("id")) {
