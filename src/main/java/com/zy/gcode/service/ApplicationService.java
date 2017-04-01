@@ -127,6 +127,7 @@ public class ApplicationService implements IApplicationService {
         UserConfig userConfig = new UserConfig();
         userConfig.setUserId(SubjectUtils.getUserName());
         userConfig.setAppOpenTime(userApp.getBegTime());
+        userConfig.setAppId(userApp.getAppId());
         persistenceService.save(userConfig);
         return CodeRe.correct("开通成功");
     }
@@ -211,14 +212,15 @@ public class ApplicationService implements IApplicationService {
     @Override
     @Transactional
     public CodeRe configList(String appid) {
-        UserApp userApp = persistenceService.getOneByColumn(UserApp.class,"userId",SubjectUtils.getUserName());
+        UserApp userApp = persistenceService.getOneByColumn(UserApp.class,"userId",SubjectUtils.getUserName()
+        ,"appId",appid);
         if(userApp ==null){
             Du.dPl("服务器不存在的请求");
           return   CodeRe.error("error");
         }
          List<UserConfig> userConfigs = persistenceService.getListByColumn(UserConfig.class,"userId",SubjectUtils.getUserName()
         ,"appOpenTime",userApp.getBegTime(),"appId",appid);
-        userConfigs.forEach(userConfig -> userConfig.setUrl(UniqueStringGenerator.toTappid(userConfig.getId(),
+        userConfigs.forEach(userConfig -> userConfig.setUrl(httpPrefix+UniqueStringGenerator.toTappid(userConfig.getId(),
                 userConfig.getAppOpenTime().getTime())));
         return CodeRe.correct(userConfigs);
     }
