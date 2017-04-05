@@ -17,5 +17,7 @@
         <property name="phone" column="phone"/>
         <property name="authenticationTime" column="authentication_time"/>
         <property name="state" column="state"/>
+        <property name="cash" column="cash"/>
+        <property name="presentCash" column="present_cash"/>
     </class>
 </hibernate-mapping>

@@ -26,6 +26,8 @@ public class User implements Serializable {
     private List<WechatPublicServer> wechatPublicServerList;
     @JsonIgnore
     private String state;
+    private int cash;
+    private int presentCash;
 
     public String getUsername() {
         return username;
@@ -134,6 +136,22 @@ public class User implements Serializable {
 
     public void setWechatPublicServerList(List<WechatPublicServer> wechatPublicServerList) {
         this.wechatPublicServerList = wechatPublicServerList;
+    }
+
+    public int getCash() {
+        return cash;
+    }
+
+    public void setCash(int cash) {
+        this.cash = cash;
+    }
+
+    public int getPresentCash() {
+        return presentCash;
+    }
+
+    public void setPresentCash(int presentCash) {
+        this.presentCash = presentCash;
     }
 
     @Override

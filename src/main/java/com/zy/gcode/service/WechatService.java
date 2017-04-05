@@ -2,10 +2,7 @@ package com.zy.gcode.service;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
-import com.zy.gcode.pojo.DataOrder;
-import com.zy.gcode.pojo.MediaMap;
-import com.zy.gcode.pojo.WechatPublicServer;
-import com.zy.gcode.pojo.WechatUserInfo;
+import com.zy.gcode.pojo.*;
 import com.zy.gcode.service.intef.IWechatService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;
@@ -15,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -120,5 +118,14 @@ public class WechatService implements IWechatService {
     @Transactional(readOnly = true)
     public WechatUserInfo getUser(String openid) {
         return persistenceService.get(WechatUserInfo.class, openid);
+    }
+
+    @Override
+    public CodeRe<UserConfig> getUserConfig(Serializable id) {
+       UserConfig userConfig =  persistenceService.get(UserConfig.class,id);
+       if(userConfig==null){
+          return CodeRe.error("empty");
+       }
+        return CodeRe.correct(userConfig);
     }
 }

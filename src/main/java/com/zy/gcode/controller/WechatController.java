@@ -2,11 +2,13 @@ package com.zy.gcode.controller;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
+import com.zy.gcode.pojo.UserConfig;
 import com.zy.gcode.pojo.WechatPublicServer;
 import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.service.intef.IAuthenticationService;
 import com.zy.gcode.service.intef.IWechatService;
 import com.zy.gcode.utils.JsonUtils;
+import com.zy.gcode.utils.TappidUtils;
 import com.zy.gcode.utils.wx.JsapiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +25,7 @@ import java.util.Map;
 /**
  * Created by admin5 on 17/2/14.
  */
-@RequestMapping("wechat")
+@RequestMapping("wechat/view")
 @Controller
 public class WechatController {
     @Autowired
@@ -32,16 +34,20 @@ public class WechatController {
     @Autowired
     IWechatService wechatService;
 
-    @RequestMapping("app/{tAppid}")
+    @RequestMapping("home/{tAppid}")
     public String home(@PathVariable("tAppid") String tAppid, HttpServletRequest request) {
         HttpSession session = request.getSession(true);
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
-        WechatPublicServer wechatPublicServer = wechatService.getWechatPublic(tAppid);
-
+        TappidUtils.TappidEntry tappidEntry =  TappidUtils.deTappid(tAppid);
+        CodeRe<UserConfig> codeRe =   wechatService.getUserConfig(tappidEntry.getUserConfigId());
+        if(codeRe.isError()){
+            return  null;
+        }
+        UserConfig userConfig = codeRe.getMessage();
         if (wechatUserInfo != null) {
-            Map<String, String> map = JsapiUtils.sign(authenticationService.getJsapiTicketByAppid(wechatPublicServer.getWxAppid()).getMessage(),
+            Map<String, String> map = JsapiUtils.sign(authenticationService.getJsapiTicketByAppid(userConfig.getWechatOfficialId()).getMessage(),
                     request.getRequestURL().toString());
-            map.put("appid", wechatPublicServer.getWxAppid());
+            map.put("appid",userConfig.getWechatOfficialId());
             request.setAttribute("jsonConfig", JsonUtils.objAsString(map));
             return "/views/wechat/submit.html";
         }
