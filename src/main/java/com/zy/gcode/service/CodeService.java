@@ -9,6 +9,7 @@ import com.zy.gcode.pojo.*;
 import com.zy.gcode.service.intef.ICodeService;
 import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.DateUtils;
+import com.zy.gcode.utils.TappidUtils;
 import com.zy.gcode.utils.UniqueStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +40,12 @@ public class CodeService implements ICodeService {
     AuthenticationService authenticationService;
 
     @Transactional
-    public CodeRe code(String geappid, String url, String state) {
+    public CodeRe code(String tappid, String url, String state) {
+        TappidUtils.TappidEntry tappidEntry = TappidUtils.deTappid(tappid);
+        UserConfig userConfig = persistenceService.get(UserConfig.class, tappidEntry.getUserConfigId());
 
-        WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, geappid);
 
-        String wxappid;
-        try {
-            wxappid = wechatPublicServer.getWxAppid();
-        } catch (NullPointerException e) {
+        if (userConfig == null) {
             return CodeRe.error("wechatPublicServer is empty!");
         }
 
@@ -54,7 +53,7 @@ public class CodeService implements ICodeService {
         GeCode geCode = new GeCode();
         String code = UniqueStringGenerator.getUniqueCode();
         geCode.setExpires(CODE_EXPIRS);
-        geCode.setGeAppid(geappid);
+        geCode.setGeAppid(tappid);
         geCode.setGeCodeM(code);
         geCode.setState(state);
         try {
@@ -65,7 +64,7 @@ public class CodeService implements ICodeService {
         }
         persistenceService.updateOrSave(geCode);
         UserCodeOAuthRequest codeOAuthRequest = new UserCodeOAuthRequest();
-        codeOAuthRequest.setParam(UserCodeOAuthRequest.APPID, wxappid);
+        codeOAuthRequest.setParam(UserCodeOAuthRequest.APPID, userConfig.getWechatOfficialId());
         try {
             codeOAuthRequest.setParam(UserCodeOAuthRequest.REDIRECTURL, URLEncoder.encode(Constants.CALL_BACK_URL, "utf-8"));
         } catch (UnsupportedEncodingException e) {
@@ -73,7 +72,7 @@ public class CodeService implements ICodeService {
             return CodeRe.error("该系统不支持utf-8");
         }
         codeOAuthRequest.setParam(UserCodeOAuthRequest.RESPONSETYPE, "code");
-        codeOAuthRequest.setParam(UserCodeOAuthRequest.SCOPE, wechatPublicServer.getScope());
+        codeOAuthRequest.setParam(UserCodeOAuthRequest.SCOPE, "snsapi_userinfo");
         codeOAuthRequest.setParam(UserCodeOAuthRequest.STATE, code);
         codeOAuthRequest.setParam(UserCodeOAuthRequest.COMPONENT_APPID, (String) Constants.properties.get("platform.appid")).setSuffix("#wechat_redirect");
         return CodeRe.correct(codeOAuthRequest.start());
@@ -83,9 +82,7 @@ public class CodeService implements ICodeService {
     public CodeRe token(String code, String state, String appid) {
 
         GeCode geCode = persistenceService.get(GeCode.class, state);
-        try {
-            geCode.getGeCodeM();
-        } catch (NullPointerException e) {
+        if (geCode == null) {
             return CodeRe.error("app_id is not exist");
         }
 
@@ -170,7 +167,7 @@ public class CodeService implements ICodeService {
 
     @Override
     @Transactional
-    public CodeRe<GeToken> geToken(String geCodeM, String geappid) {
+    public CodeRe<GeToken> geToken(String geCodeM, String tappid) {
         GeCode geCode = persistenceService.get(GeCode.class, geCodeM);
 
         Timestamp updatetime;
@@ -192,7 +189,7 @@ public class CodeService implements ICodeService {
         geToken.setGeTokenM(geTokenM);
         geToken.setWxToken(geCode.getWxToken());
         geToken.setOpenid(geCode.getOpenid());
-        geToken.setGeAppid(geappid);
+        geToken.setGeAppid(tappid);
         persistenceService.updateOrSave(geToken);
         return CodeRe.correct(geToken);
     }
