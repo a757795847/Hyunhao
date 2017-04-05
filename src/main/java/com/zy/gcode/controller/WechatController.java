@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Created by admin5 on 17/2/14.
  */
-@RequestMapping("wechat/view")
+@RequestMapping("wechat")
 @Controller
 public class WechatController {
     @Autowired
@@ -32,7 +32,7 @@ public class WechatController {
     @Autowired
     IWechatService wechatService;
 
-    @RequestMapping("home/{tAppid}")
+    @RequestMapping("app/{tAppid}")
     public String home(@PathVariable("tAppid") String tAppid, HttpServletRequest request) {
         HttpSession session = request.getSession(true);
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");

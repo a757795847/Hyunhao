@@ -68,9 +68,13 @@ public class UniqueStringGenerator {
     }
 
     public static String getMd5(String plainText) {
+       return getMd5(plainText.getBytes());
+
+    }
+    public static String getMd5(byte[] bytes) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(plainText.getBytes());
+            md.update(bytes);
             byte b[] = md.digest();
 
             int i;

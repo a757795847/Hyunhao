@@ -1,6 +1,8 @@
 package com.zy.gcode.service;
 
 import com.csvreader.CsvReader;
+import com.csvreader.CsvWriter;
+import com.zy.gcode.cache.ErrorOrderCache;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.*;
@@ -8,6 +10,7 @@ import com.zy.gcode.service.annocation.CsvPush;
 import com.zy.gcode.service.intef.IMultipartService;
 import com.zy.gcode.service.intef.IOrderService;
 import com.zy.gcode.utils.*;
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.shiro.SecurityUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -53,6 +57,9 @@ public class OrderService implements IOrderService {
 
     @Autowired
     IMultipartService multipartService;
+
+    @Autowired
+    ErrorOrderCache errorOrderCache;
 
     @Override
     @Transactional
@@ -146,19 +153,53 @@ public class OrderService implements IOrderService {
             order.setCreateDate(DateUtils.tNow());
             persistenceService.save(order);
         }
-        System.out.println("插入的数量:" + dataOrderList.size());
-        System.out.println("库存数量:" + persistenceService.count(DataOrder.class));
-
-        return CodeRe.correct(existDataOrderList);
+        Map map = new HashMap(2,1.0f);
+        map.put("successCount",dataOrderList.size());
+        map.put("errorCount",existDataOrderList.size());
+        map.put("errorKey",saveError(existDataOrderList));
+        return CodeRe.correct(map);
     }
-    /*    @Transactional
-        public void test(List<DataOrder> list,int beg,int end){
-            System.out.print(beg+"");
-            for(int i = beg ; i <end ;i++){
-            persistenceService.save(list.get(i));
-        }
-    }*/
 
+    private String saveError(List<DataOrder> list){
+        byte[] bytes = ordersAsCsv(list);
+        String md5 = UniqueStringGenerator.getMd5(bytes);
+        errorOrderCache.put(md5,bytes);
+        return md5;
+    }
+
+    private byte[] ordersAsCsv(List<DataOrder> list) {
+        Map<String, String> title2Value = getCsvMap();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        CsvWriter writer = new CsvWriter(outputStream, ',', Charset.forName("utf-8"));
+        Set<String> tilteSet = title2Value.keySet();
+        int len = tilteSet.size();
+
+        String[] titles = new String[len];
+        tilteSet.toArray(titles);
+        try {
+            writer.writeRecord(titles);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (DataOrder dataOrder : list) {
+            BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
+            String[] values = new String[len];
+            for (int i = 0; i < len; i++) {
+                values[i] = (String) beanWrapper.getPropertyValue(title2Value.get(titles[i]));
+            }
+            try {
+                writer.writeRecord(values);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return outputStream.toByteArray();
+    }
 
     /**
      * 如果集合中存在订单号与传入参数相等的订单，则返回单号相等的订单，否则返回null

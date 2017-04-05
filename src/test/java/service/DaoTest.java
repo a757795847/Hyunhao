@@ -1,9 +1,11 @@
 package service;
 
+import com.csvreader.CsvWriter;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.zy.gcode.cache.ErrorOrderCache;
 import com.zy.gcode.cache.MyCache;
 import com.zy.gcode.cache.OperatorCache;
 import com.zy.gcode.dao.PersistenceService;
@@ -12,8 +14,10 @@ import com.zy.gcode.pojo.UserConfig;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.OrderService;
+import com.zy.gcode.service.annocation.CsvPush;
 import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.utils.DateUtils;
+import com.zy.gcode.utils.Du;
 import com.zy.gcode.utils.SubjectUtils;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.hibernate.criterion.DetachedCriteria;
@@ -21,14 +25,23 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.StringType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 
+import javax.crypto.KeyGenerator;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.Date;
+import java.lang.reflect.Field;
+import java.nio.charset.Charset;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.Signature;
+import java.util.*;
 
 /**
  * Created by admin5 on 17/1/19.
@@ -61,6 +74,9 @@ public class DaoTest {
 
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    ErrorOrderCache errorOrderCache;
 
 
 
@@ -113,54 +129,36 @@ public class DaoTest {
 
     @Test
     public void password()  throws Exception{
-       /* List<DataOrder> list = new ArrayList();
-        List list1 = new ArrayList();
-        for(int i = 0 ; i <10000;i++){
-            DataOrder order = new DataOrder();
-            order.setOrderNumber("888"+i);
-            list.add(order);
-            list1.add(order);
-        }
+        KeyPairGenerator generator = KeyPairGenerator.getInstance("DSA");
+        generator.initialize(1024);
+        KeyPair keyPair = generator.generateKeyPair();
+        Signature signature = Signature.getInstance(generator.getAlgorithm());
+        signature.initSign(keyPair.getPrivate());
+        String str = "ab c";
+        signature.update(str.getBytes());
+       byte[] ab =  signature.sign();
+       signature.initVerify(keyPair.getPublic());
+       signature.update((str+"1").getBytes());
+        Du.dPl(signature.verify(ab));
 
-        System.out.println(SerializeUtils.en(list).length/1024);*/
-/*        ThreadPoolExecutor poolExecutor =new ThreadPoolExecutor(20,20,100, TimeUnit.MINUTES,new ArrayBlockingQueue<Runnable>(10));
-        for(int i = 0 ; i < 20;i++){
-            List<DataOrder> list2 = list.subList(i*500,i*500+500);
-
-            poolExecutor.execute(()->{
-                Timing timing = new Timing();
-                timing.start();
-                timing.end();
-            });
-        }*/
-
-/*
-        List<DataOrder> list = new ArrayList();
-        List list1 = new ArrayList();
-        for(int i = 0 ; i <10000;i++){
-            DataOrder order = new DataOrder();
-            order.setOrderNumber("888"+i);
-            list.add(order);
-            list1.add(order);
-        }
-
-
-            Timing timing1 = new Timing();
-            timing1.start();
-            System.out.println("2222");
-            Du.pl(Arrays.toString(persistenceService.insertBatch(list,DataOrder.class,sql)));
-            timing1.end();
-*/
 
     }
 
     @Test
-    @Transactional
     public void payService() throws Exception {
-        DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
-        criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
-                DateUtils.format(new Date(), "yyyyMMdd"), new StringType()));
-        persistenceService.getList(criteria).forEach(System.out::println);
+
+    }
+    private Map<String, String> getCsvMap() {
+        Field[] fields = DataOrder.class.getDeclaredFields();
+        HashMap map = new HashMap(64);
+        int len = fields.length;
+        for (int i = 0; i < len; i++) {
+            CsvPush csvPush = fields[i].getAnnotation(CsvPush.class);
+            if (csvPush != null) {
+                map.put(csvPush.value(), fields[i].getName());
+            }
+        }
+        return map;
     }
 
     public String te1() {

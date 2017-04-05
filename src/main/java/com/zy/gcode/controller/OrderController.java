@@ -1,5 +1,6 @@
 package com.zy.gcode.controller;
 
+import com.csvreader.CsvWriter;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.DataOrder;
@@ -24,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.security.AlgorithmParameterGenerator;
 import java.security.AlgorithmParameters;
 import java.sql.Timestamp;
@@ -38,16 +40,11 @@ import java.util.Map;
 @Controller
 @RequestMapping("order")
 public class OrderController {
-
-
     @Autowired
     IOrderService orderService;
-
-
     @Autowired
     @Qualifier("userCache")
     EhCacheCache userCache;
-
     /**
      * 分页获取用户信息
      *
@@ -118,9 +115,7 @@ public class OrderController {
             outputStream.flush();
             outputStream.close();
         } finally {
-
             fileInputStream.close();
-
         }
     }
 
@@ -155,6 +150,14 @@ public class OrderController {
         }
         return ControllerStatus.ok(codeRe.getMessage());
     }
+
+    @RequestMapping("downloadErrorList")
+    public @ResponseBody Object downloadErrorList(@RequestBody List<DataOrder> dataOrderList,HttpServletResponse response) throws IOException{
+        CsvWriter csvWriter = new CsvWriter(response.getOutputStream(),',', Charset.forName("utf-8"));
+        return null;
+    }
+
+
 /*
     *//**
      * 根据指定的id，设置订单状态为审核通过
