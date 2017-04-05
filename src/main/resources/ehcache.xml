@@ -6,7 +6,7 @@
 
     <!-- 默认缓存 -->
     <defaultCache
-            maxElementsInMemory="1000"
+            maxElementsInMemory="100"
             eternal="false"
             timeToIdleSeconds="120"
             timeToLiveSeconds="120"
@@ -14,7 +14,7 @@
 
     <!-- 用户缓存-->
     <cache name="user"
-           maxElementsInMemory="1000"
+           maxElementsInMemory="100"
            eternal="false"
            timeToIdleSeconds="120"
            timeToLiveSeconds="120"
