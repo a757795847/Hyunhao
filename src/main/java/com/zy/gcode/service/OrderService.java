@@ -136,10 +136,14 @@ public class OrderService implements IOrderService {
                     values[i] = str.substring(2, str.length() - 1);
                     orderNoList.add(values[i].trim());
                 }
-                if(!StringUtils.isEmpty(titles[i])&&titles[i].equals("联系手机")){
+                if(titles[i].equals("联系手机")){
+                    if(!StringUtils.isEmpty(values[i]))
                     values[i] = values[i].substring(1);
                 }
-
+                if(titles.equals("联系电话")){
+                    if(!StringUtils.isEmpty(values[i]))
+                        values[i] = values[i].substring(1);
+                }
                 beanWrapper.setPropertyValue(title2Value.get(titles[i]), values[i]);
             }
             DataOrder dataOrder1 = (DataOrder) beanWrapper.getWrappedInstance();
@@ -193,8 +197,14 @@ public class OrderService implements IOrderService {
             BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
             String[] values = new String[len];
             for (int i = 0; i < len; i++) {
-                if(!StringUtils.isEmpty(titles[i])&&titles[i].equals("联系手机")){
-                    titles[i] ="'"+titles[i];
+                if(titles[i].equals("联系手机")){
+                    if(!StringUtils.isEmpty(values[i]))
+                    values[i] ="'"+values[i];
+                }
+                if(titles.equals("联系电话")){
+                    if(!StringUtils.isEmpty(values[i]))
+                        values[i] = "'"+values[i];
+
                 }
                 values[i] = (String) beanWrapper.getPropertyValue(title2Value.get(titles[i]));
             }
