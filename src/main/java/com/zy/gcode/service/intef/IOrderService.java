@@ -5,6 +5,7 @@ import com.zy.gcode.pojo.DataOrder;
 import com.zy.gcode.utils.Page;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -25,4 +26,6 @@ public interface IOrderService {
     CodeRe redInfo(String mchNumber);
 
     CodeRe searchOrderByCondition(String orderNo, Page page, List<Integer> status);
+
+    void downloadErrorOrders(HttpServletResponse response,String key);
 }

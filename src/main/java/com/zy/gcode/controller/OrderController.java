@@ -152,9 +152,8 @@ public class OrderController {
     }
 
     @RequestMapping("downloadErrorList")
-    public @ResponseBody Object downloadErrorList(@RequestBody List<DataOrder> dataOrderList,HttpServletResponse response) throws IOException{
-        CsvWriter csvWriter = new CsvWriter(response.getOutputStream(),',', Charset.forName("utf-8"));
-        return null;
+    public void downloadErrorList(String key,HttpServletResponse response) throws IOException{
+        orderService.downloadErrorOrders(response,key);
     }
 
 

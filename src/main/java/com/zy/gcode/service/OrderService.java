@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -360,6 +361,19 @@ public class OrderService implements IOrderService {
 
         List order = persistenceService.getListAndSetCount(DataOrder.class,detachedCriteria,page);
         return CodeRe.correct(order);
+    }
+
+    @Override
+    public void downloadErrorOrders(HttpServletResponse response, String key) {
+      byte[] bytes = errorOrderCache.get(key,byte[].class);
+        response.addHeader("Content-Disposition", "attachment;filename="+key+"errorList.csv");
+        response.addHeader("Content-Length", "" + bytes.length);
+        response.setContentType("application/octet-stream");
+        try {
+            response.getOutputStream().write(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String getWxOperator() {
