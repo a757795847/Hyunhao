@@ -184,7 +184,7 @@ public class OrderService implements IOrderService {
         CsvWriter writer = new CsvWriter(outputStream, ',', charset);
         Set<String> tilteSet = title2Value.keySet();
         int len = tilteSet.size();
-
+        writer.setUseTextQualifier(false);
         String[] titles = new String[len];
         tilteSet.toArray(titles);
         byte[] omitBytes = "=".getBytes(charset);
@@ -197,16 +197,21 @@ public class OrderService implements IOrderService {
             BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
             String[] values = new String[len];
             for (int i = 0; i < len; i++) {
-                if(titles[i].equals("联系手机")){
-                    if(!StringUtils.isEmpty(values[i]))
-                    values[i] ="'"+values[i];
+                String title = titles[i];
+                String value ="\"" +beanWrapper.getPropertyValue(title2Value.get(titles[i]))+"\"";
+                if(title.equals("联系手机")){
+                    if(!StringUtils.isEmpty(value))
+                        value ="'"+value;
                 }
-                if(titles.equals("联系电话")){
-                    if(!StringUtils.isEmpty(values[i]))
-                        values[i] = "'"+values[i];
+                if(title.equals("联系电话")){
+                    if(!StringUtils.isEmpty(value))
+                        value = "'"+value;
 
                 }
-                values[i] = (String) beanWrapper.getPropertyValue(title2Value.get(titles[i]));
+                if(i==0){
+                    value="="+value;
+                }
+                values[i] =value;
             }
             try {
                 outputStream.write(omitBytes);
@@ -242,7 +247,7 @@ public class OrderService implements IOrderService {
 
     private Map<String, String> getCsvMap() {
         Field[] fields = DataOrder.class.getDeclaredFields();
-        HashMap map = new HashMap(64);
+        Map map = new LinkedHashMap(64);
         int len = fields.length;
         for (int i = 0; i < len; i++) {
             CsvPush csvPush = fields[i].getAnnotation(CsvPush.class);

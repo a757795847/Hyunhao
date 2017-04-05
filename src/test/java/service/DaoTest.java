@@ -146,11 +146,31 @@ public class DaoTest {
 
     @Test
     public void payService() throws Exception {
-
+        Map<String, String> title2Value = getCsvMap();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        CsvWriter writer = new CsvWriter(outputStream,',', Charset.forName("utf-8"));
+       String[] params = new String[title2Value.keySet().size()];
+       title2Value.keySet().toArray(params);
+        writer.writeRecord(params);
+        DataOrder dataOrder = new DataOrder();
+        dataOrder.setId("112512");
+        dataOrder.setReceiverAddress("2w35423");
+        dataOrder.setOrderNumber("34562");
+        BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
+        String[] values = new String[title2Value.size()];
+        int i = 0;
+        Set<String> set = title2Value.keySet();
+        for(String str : set){
+            values[i] =(String)beanWrapper.getPropertyValue(title2Value.get(str));
+            i++;
+        }
+        writer.writeRecord(values);
+        writer.flush();
+        Du.pl(new String(outputStream.toByteArray()));
     }
     private Map<String, String> getCsvMap() {
         Field[] fields = DataOrder.class.getDeclaredFields();
-        HashMap map = new HashMap(64);
+        HashMap map = new LinkedHashMap(64);
         int len = fields.length;
         for (int i = 0; i < len; i++) {
             CsvPush csvPush = fields[i].getAnnotation(CsvPush.class);
