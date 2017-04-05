@@ -23,6 +23,7 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -135,7 +136,7 @@ public class OrderService implements IOrderService {
                     values[i] = str.substring(2, str.length() - 1);
                     orderNoList.add(values[i].trim());
                 }
-                if(titles[i].equals("联系电话")){
+                if(!StringUtils.isEmpty(titles[i])&&titles[i].equals("联系手机")){
                     values[i] = values[i].substring(1);
                 }
 
@@ -192,7 +193,7 @@ public class OrderService implements IOrderService {
             BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
             String[] values = new String[len];
             for (int i = 0; i < len; i++) {
-                if(titles[i].equals("联系电话")){
+                if(!StringUtils.isEmpty(titles[i])&&titles[i].equals("联系手机")){
                     titles[i] ="'"+titles[i];
                 }
                 values[i] = (String) beanWrapper.getPropertyValue(title2Value.get(titles[i]));
