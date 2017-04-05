@@ -214,7 +214,6 @@ public class OrderService implements IOrderService {
                 values[i] =value;
             }
             try {
-                outputStream.write(omitBytes);
                 writer.writeRecord(values);
             } catch (IOException e) {
                 e.printStackTrace();
