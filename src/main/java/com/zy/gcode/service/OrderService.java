@@ -135,6 +135,10 @@ public class OrderService implements IOrderService {
                     values[i] = str.substring(2, str.length() - 1);
                     orderNoList.add(values[i].trim());
                 }
+                if(titles[i].equals("联系电话")){
+                    values[i] = values[i].substring(1);
+                }
+
                 beanWrapper.setPropertyValue(title2Value.get(titles[i]), values[i]);
             }
             DataOrder dataOrder1 = (DataOrder) beanWrapper.getWrappedInstance();
@@ -171,12 +175,14 @@ public class OrderService implements IOrderService {
     private byte[] ordersAsCsv(List<DataOrder> list) {
         Map<String, String> title2Value = getCsvMap();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        CsvWriter writer = new CsvWriter(outputStream, ',', Charset.forName("utf-8"));
+        Charset charset = Charset.forName("gbk");
+        CsvWriter writer = new CsvWriter(outputStream, ',', charset);
         Set<String> tilteSet = title2Value.keySet();
         int len = tilteSet.size();
 
         String[] titles = new String[len];
         tilteSet.toArray(titles);
+        byte[] omitBytes = "=".getBytes(charset);
         try {
             writer.writeRecord(titles);
         } catch (IOException e) {
@@ -186,9 +192,13 @@ public class OrderService implements IOrderService {
             BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
             String[] values = new String[len];
             for (int i = 0; i < len; i++) {
+                if(titles[i].equals("联系电话")){
+                    titles[i] ="'"+titles[i];
+                }
                 values[i] = (String) beanWrapper.getPropertyValue(title2Value.get(titles[i]));
             }
             try {
+                outputStream.write(omitBytes);
                 writer.writeRecord(values);
             } catch (IOException e) {
                 e.printStackTrace();
