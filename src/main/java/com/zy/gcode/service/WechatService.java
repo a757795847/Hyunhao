@@ -121,6 +121,7 @@ public class WechatService implements IWechatService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CodeRe<UserConfig> getUserConfig(Serializable id) {
        UserConfig userConfig =  persistenceService.get(UserConfig.class,id);
        if(userConfig==null){
