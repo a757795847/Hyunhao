@@ -50,7 +50,8 @@ public class PayService implements IPayService {
     @Transactional
     public CodeRe pay(String id, int count, String tappid) {
        // WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, tappid);
-        UserConfig userConfig = persistenceService.get(UserConfig.class,UniqueStringGenerator.deTappid(tappid)[0]);
+        TappidUtils.TappidEntry tappidEntry = TappidUtils.deTappid(tappid);
+        UserConfig userConfig = persistenceService.getOneByColumn(UserConfig.class,"id",tappidEntry.getUserConfigId(),"appOpenTime",tappidEntry.getAppOpenTimeTimeStamp());
         PayCredential payCredential = persistenceService.get(PayCredential.class, userConfig.getWechatOfficialId());
         if (payCredential == null) {
             return CodeRe.error("该微信公众号无商户!");

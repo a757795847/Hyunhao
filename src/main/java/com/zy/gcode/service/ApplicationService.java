@@ -220,7 +220,7 @@ public class ApplicationService implements IApplicationService {
         }
          List<UserConfig> userConfigs = persistenceService.getListByColumn(UserConfig.class,"userId",SubjectUtils.getUserName()
         ,"appOpenTime",userApp.getBegTime(),"appId",appid);
-        userConfigs.forEach(userConfig -> userConfig.setUrl(httpPrefix+UniqueStringGenerator.toTappid(userConfig.getId(),
+        userConfigs.forEach(userConfig -> userConfig.setUrl(httpPrefix+TappidUtils.toTappid(userConfig.getId(),
                 userConfig.getAppOpenTime().getTime())));
         return CodeRe.correct(userConfigs);
     }

@@ -19,5 +19,6 @@
         <property name="openOption" column="open_option"/>
         <property name="payCdn" column="pay_cdn"/>
         <property name="payOption" column="pay_option"/>
+        <property name="fontColor" column="font_color"/>
     </class>
 </hibernate-mapping>

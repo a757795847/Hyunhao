@@ -36,7 +36,7 @@ public interface PersistenceService {
 
     Object max(Class clazz, String column);
 
-    <T> T getOneByColumn(Class<T> clazz, String... values);
+    <T> T getOneByColumn(Class<T> clazz, Object... values);
 
     <T> List<T> getListByColumn(Class<T> clazz, Object... values);
 

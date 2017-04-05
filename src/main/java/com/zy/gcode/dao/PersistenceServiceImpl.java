@@ -96,7 +96,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     }
 
     @Override
-    public <T> T getOneByColumn(Class<T> clazz, String... values) {
+    public <T> T getOneByColumn(Class<T> clazz, Object... values) {
         int len = values.length;
         if (len % 2 != 0) {
             throw new IllegalArgumentException();
@@ -104,7 +104,8 @@ public class PersistenceServiceImpl implements PersistenceService {
 
         Criteria criteria = session().createCriteria(clazz);
         for (int i = 0; i < len; i += 2) {
-            criteria.add(Restrictions.eq(values[i], values[i + 1]));
+
+            criteria.add(Restrictions.eq(values[i].toString(), values[i + 1]));
         }
         return (T) criteria.uniqueResult();
     }

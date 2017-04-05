@@ -1,9 +1,7 @@
 package com.zy.gcode.security;
 
 import com.zy.gcode.pojo.User;
-import com.zy.gcode.pojo.ValidData;
 import com.zy.gcode.service.intef.IUserService;
-import com.zy.gcode.utils.SubjectUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -17,13 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.ehcache.EhCacheCache;
 
-import java.util.Date;
-import java.util.List;
-
 /**
  * Created by admin5 on 17/2/15.
  */
-public class ZyRealm extends AuthorizingRealm implements InitializingBean{
+public class ZyRealm extends AuthorizingRealm implements InitializingBean {
     Logger log = LoggerFactory.getLogger(ZyRealm.class);
 
     public static String name;
@@ -46,17 +41,10 @@ public class ZyRealm extends AuthorizingRealm implements InitializingBean{
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        User user = SubjectUtils.getUser();
-        List<ValidData> validDataList = userService.getValidDateList(user.getUsername());
-        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        validDataList.forEach(validData -> {
-            if (validData.getEndData().after(new Date())) {
-                simpleAuthorizationInfo.addStringPermission(validData.getZyappid().toString());
-                log.debug("权限:" + validData.getZyappid());
-            }
-        });
-        simpleAuthorizationInfo.addRole(user.getRole());
-        return simpleAuthorizationInfo;
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        userService.setRole(authorizationInfo);
+        userService.setUserAuthority(authorizationInfo);
+        return authorizationInfo;
     }
 
     @Override
@@ -69,7 +57,7 @@ public class ZyRealm extends AuthorizingRealm implements InitializingBean{
             throw new UnknownAccountException();
         }
         user.setWechatPublicServerList(userService.getPublicServerList(user.getUsername()));
-        userCache.put(user.getUsername(),user);
+        userCache.put(user.getUsername(), user);
         return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), getName());
 
     }

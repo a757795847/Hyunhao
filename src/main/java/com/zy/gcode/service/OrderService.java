@@ -247,7 +247,7 @@ public class OrderService implements IOrderService {
             return CodeRe.error("error");
         }
 
-        String tappid = UniqueStringGenerator.toTappid(userConfig.getId(),userConfig.getAppOpenTime().getTime());
+        String tappid = TappidUtils.toTappid(userConfig.getId(),userConfig.getAppOpenTime().getTime());
         DataOrder order = persistenceService.get(DataOrder.class, orderno);
         if (!operator.getUsername().equals(order.getCreateUserId()))
             return CodeRe.error("您无权操作次订单");

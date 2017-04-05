@@ -10,6 +10,7 @@ public class UserConfig {
     private String wechatOfficialId;
     private String userId;
     private String appId;
+    //app开通时间
     private Timestamp appOpenTime;
     private Timestamp insertTime;
     private Timestamp updateTime;

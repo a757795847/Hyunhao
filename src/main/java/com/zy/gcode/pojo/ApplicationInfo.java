@@ -51,6 +51,7 @@ public class ApplicationInfo {
     private String openOption;
     private int payCdn;
     private String payOption;
+    private String fontColor;
 
     public Integer getPrice() {
         return price;
@@ -186,5 +187,13 @@ public class ApplicationInfo {
 
     public void setPayOption(String payOption) {
         this.payOption = payOption;
+    }
+
+    public String getFontColor() {
+        return fontColor;
+    }
+
+    public void setFontColor(String fontColor) {
+        this.fontColor = fontColor;
     }
 }
