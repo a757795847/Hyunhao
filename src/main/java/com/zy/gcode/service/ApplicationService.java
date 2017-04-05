@@ -207,7 +207,7 @@ public class ApplicationService implements IApplicationService {
         }
 
     }
-    String httpPrefix = "http://open.izhuiyou.com/app/";
+    String httpPrefix = "http://open.izhuiyou.com/wechat/view/home";
 
     @Override
     @Transactional
