@@ -370,7 +370,7 @@ public class PayService implements IPayService {
             return  CodeRe.error("");
         }
         WechatQrPay wechatQrPay;
-        if((wechatQrPay=persistenceService.getOneByColumn(WechatQrPay.class,"outTradeNo",map.get("out_trade_no")))!=null){
+        if((wechatQrPay=persistenceService.getOneByColumn(WechatQrPay.class,"outTradeNo",map.get("out_trade_no")))==null){
             return CodeRe.correct("exist");
         }
         wechatQrPay.setBankType(map.get("bank_type"));
