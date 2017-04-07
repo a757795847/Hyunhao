@@ -424,4 +424,19 @@ public class PayService implements IPayService {
        }
         return CodeRe.correct("ok");
     }
+
+    @Override
+    public List topUpRecord(Page page) {
+      List<WechatQrPay> wechatQrPays =  persistenceService.getList(WechatQrPay.class,page);
+        List result = new ArrayList();
+        wechatQrPays.forEach(v->{
+            Map map = new HashMap(3,1.0f);
+            map.put("date",v.getInsertTime());
+            map.put("type","微信充值");
+            map.put("count",v.getCashFee());
+            result.add(map);
+        });
+
+        return result;
+    }
 }

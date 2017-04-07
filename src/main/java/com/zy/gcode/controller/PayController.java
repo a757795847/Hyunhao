@@ -10,6 +10,7 @@ import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.service.pay.RedTimerTask;
+import com.zy.gcode.utils.Page;
 import com.zy.gcode.utils.SubjectUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.HttpHead;
@@ -135,6 +136,15 @@ public class PayController {
 
         return ControllerStatus.ok();
 
+    }
+
+    @RequestMapping("topUpRecord")
+    @ResponseBody
+    public Object topUpList(@RequestBody Map map){
+        Page page = new Page();
+        page.setCurrentPageIndex((int)map.getOrDefault(Page.CURRENTPAGEINDEX,1));
+        page.setPageSize((int)map.getOrDefault(Page.PAGE_SIZE,30));
+       return ControllerStatus.ok(payService.topUpRecord(page),page);
     }
 
 

@@ -3,7 +3,9 @@ package com.zy.gcode.service.intef;
 import com.zy.gcode.controller.delegate.BatchRe;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.pojo.RedStatus;
+import com.zy.gcode.utils.Page;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,4 +25,6 @@ public interface IPayService {
     CodeRe dealPayRecord(Map<String, String> map);
 
     CodeRe payStatus(String orderNo);
+
+    List topUpRecord(Page page);
 }
