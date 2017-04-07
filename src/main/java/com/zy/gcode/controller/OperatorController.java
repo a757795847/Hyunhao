@@ -267,6 +267,12 @@ public class OperatorController {
         return ControllerStatus.ok();
     }
 
+    @RequestMapping("test")
+    @ResponseBody
+    public Object test(){
+        return  "success";
+    }
+
     public class VerificationInfo {
         public VerificationInfo(String verificationCode, long generationTime, String phone) {
             this.verificationCode = verificationCode;

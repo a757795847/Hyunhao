@@ -100,7 +100,7 @@ public class PayController {
         return ControllerStatus.error("抓单已启动");
     }
 
-    @RequestMapping("beg/index")
+    @RequestMapping("/uploadQR")
     public void begIndex(HttpServletRequest request,HttpServletResponse response){
         payService.setPayQR(response,request);
     }
