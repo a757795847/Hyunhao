@@ -341,7 +341,7 @@ public class PayService implements IPayService {
         UnifyOrderRequest unifyOrderRequest = new UnifyOrderRequest();
       //  unifyOrderRequest.setProductId("12235413214070356458");
         unifyOrderRequest.init("wx653d39223641bea7",payCredential.getMchid(),"支付测试",10,addr,
-                "http://open.izhuiyou.com/wechatPayMessage/handler","APP",payCredential.getCredentialPath(),payCredential.getKey());
+                "http://open.izhuiyou.com/wechatPayMessage/handler","NATIVE",payCredential.getCredentialPath(),payCredential.getKey());
         Map map = unifyOrderRequest.start();
         if(!checkCodeUrl(map,payCredential.getKey())){
             return CodeRe.error("error");
