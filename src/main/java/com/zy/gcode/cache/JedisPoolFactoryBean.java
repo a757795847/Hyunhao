@@ -12,7 +12,7 @@ import redis.clients.jedis.Protocol;
  */
 public class JedisPoolFactoryBean implements FactoryBean<Jedis>{
     //foobared123456
-    private JedisPool jedisPool = new JedisPool(new GenericObjectPoolConfig(), "127.0.0.1", 6388, Protocol.DEFAULT_TIMEOUT,
+    private JedisPool jedisPool = new JedisPool(new GenericObjectPoolConfig(), "localhost", 6388, Protocol.DEFAULT_TIMEOUT,
             "foobared123456", Protocol.DEFAULT_DATABASE, null);
 
     @Override
