@@ -10,6 +10,7 @@ import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.service.pay.RedTimerTask;
+import com.zy.gcode.utils.SubjectUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.HttpHead;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,6 +118,23 @@ public class PayController {
           return ControllerStatus.error();
       }
       return ControllerStatus.ok(codeRe.getMessage());
+    }
+
+    @RequestMapping("/checkPayStatus")
+    @ResponseBody
+    public Object checkPayStatus(@RequestBody Map<String,String> map){
+        if(!map.containsKey("billno")){
+            SubjectUtils.getHttpServletResponse().setStatus(402);
+            return ControllerStatus.error();
+        }
+
+      CodeRe codeRe = payService.payStatus(map.get("billno"));
+        if(codeRe.isError()){
+            return  ControllerStatus.error();
+        }
+
+        return ControllerStatus.ok();
+
     }
 
 

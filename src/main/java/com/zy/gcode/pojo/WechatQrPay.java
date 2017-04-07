@@ -21,6 +21,7 @@ public class WechatQrPay {
     private String transactionId;
     private Timestamp insertTime;
     private int cashFee;
+    private String userId;
 
     public Long getId() {
         return id;
@@ -140,5 +141,13 @@ public class WechatQrPay {
 
     public void setCashFee(int cashFee) {
         this.cashFee = cashFee;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

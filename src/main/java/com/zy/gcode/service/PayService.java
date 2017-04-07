@@ -16,6 +16,7 @@ import com.zy.gcode.service.pay.RedReqInfo;
 import com.zy.gcode.service.pay.WxXmlParser;
 import com.zy.gcode.utils.*;
 import org.apache.http.HttpResponse;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
@@ -24,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -347,6 +349,10 @@ public class PayService implements IPayService {
             return CodeRe.error("error");
         }
         Map result = new HashMap(2,1.0f);
+        WechatQrPay wechatQrPay = new WechatQrPay();
+        wechatQrPay.setOutTradeNo(unifyOrderRequest.getOutTradeNo());
+        wechatQrPay.setUserId(SubjectUtils.getUserName());
+        persistenceService.save(wechatQrPay);
         result.put("codeUrl",map.get("code_url"));
         result.put("billno",unifyOrderRequest.getOutTradeNo());
         return  CodeRe.correct(result);
@@ -363,14 +369,10 @@ public class PayService implements IPayService {
         if(!UniqueStringGenerator.checkSignature(map,payCredential.getKey())){
             return  CodeRe.error("");
         }
-        if(persistenceService.getOneByColumn(WechatQrPay.class,"transactionId",map.get("transaction_id"))!=null){
+        WechatQrPay wechatQrPay;
+        if((wechatQrPay=persistenceService.getOneByColumn(WechatQrPay.class,"outTradeNo",map.get("out_trade_no")))!=null){
             return CodeRe.correct("exist");
         }
-        User user =  persistenceService.get(User.class,SubjectUtils.getUserName());
-        user.setCash(user.getCash()+10000);
-        persistenceService.update(user);
-        SubjectUtils.updateUser(user);
-        WechatQrPay wechatQrPay = new WechatQrPay();
         wechatQrPay.setBankType(map.get("bank_type"));
         wechatQrPay.setFeeType(map.get("fee_type"));
         wechatQrPay.setMchId(map.get("mch_id"));
@@ -390,6 +392,10 @@ public class PayService implements IPayService {
             e.printStackTrace();
         }
         persistenceService.save(wechatQrPay);
+        User user =  persistenceService.get(User.class,wechatQrPay.getUserId());
+        user.setCash(user.getCash()+10000);
+        persistenceService.update(user);
+        SubjectUtils.updateUser(user);
         return CodeRe.correct("ok");
     }
 
@@ -408,4 +414,14 @@ public class PayService implements IPayService {
         return true;
     }
 
+    @Override
+    @Transactional
+    public CodeRe payStatus(String orderNo) {
+       WechatQrPay wechatQrPay = persistenceService.getOneByColumn(WechatQrPay.class,"outTradeNo",orderNo);
+
+       if(wechatQrPay==null||StringUtils.isEmpty(  wechatQrPay.getTransactionId())){
+           CodeRe.error("error");
+       }
+        return CodeRe.correct("ok");
+    }
 }

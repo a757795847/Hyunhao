@@ -22,5 +22,6 @@
         <property name="transactionId" column="transaction_id"/>
         <property name="insertTime" insert="false" update="false" column="insert_time"/>
         <property name="cashFee" column="cash_fee"/>
+        <property name="userId" column="user_id"/>
     </class>
 </hibernate-mapping>
