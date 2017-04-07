@@ -40,9 +40,7 @@ public class CodeRe<T> {
 
     public void setError(String error) {
         this.error = error;
-        if (!StringUtils.isEmpty(error)) {
-            this.isError = true;
-        }
+        this.isError = true;
     }
 
     public T getMessage() {

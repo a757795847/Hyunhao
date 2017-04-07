@@ -143,6 +143,6 @@ public class UniqueStringGenerator {
         }
         builder.append("key=").append(key);
 
-       return sign.equals(getMd5(builder.toString()));
+       return sign.equalsIgnoreCase(getMd5(builder.toString()));
     }
 }

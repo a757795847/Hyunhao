@@ -358,7 +358,7 @@ public class PayService implements IPayService {
     public CodeRe dealPayRecord(Map<String,String> map){
         PayCredential payCredential = persistenceService.get(PayCredential.class,map.getOrDefault("appid",""));
         if (payCredential==null){
-            return  CodeRe.error("");
+            return  CodeRe.error(" ");
         }
         Du.pl("map:"+map);
         if(!UniqueStringGenerator.checkSignature(map,payCredential.getKey())){
@@ -393,7 +393,7 @@ public class PayService implements IPayService {
         if(resultCode==null||!resultCode.equals("SUCCESS")){
             return false;
         }
-        if(UniqueStringGenerator.checkSignature(map,key)){
+        if(!UniqueStringGenerator.checkSignature(map,key)){
             return false;
         }
         return true;
