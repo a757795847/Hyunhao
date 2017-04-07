@@ -352,6 +352,39 @@ public class PayService implements IPayService {
         return  CodeRe.correct(result);
     }
 
+
+
+    @Transactional
+    public CodeRe dealPayRecord(Map<String,String> map){
+        PayCredential payCredential = persistenceService.get(PayCredential.class,map.getOrDefault("appid",""));
+        if (payCredential==null){
+            return  CodeRe.error("");
+        }
+        Du.pl("map:"+map);
+        Du.pl(UniqueStringGenerator.checkSignature(map,payCredential.getKey()));
+        if(!UniqueStringGenerator.checkSignature(map,payCredential.getKey())){
+            return  CodeRe.error("");
+        }
+        WechatQrPay wechatQrPay = new WechatQrPay();
+        wechatQrPay.setBankType(map.get("bank_type"));
+        wechatQrPay.setFeeType(map.get("fee_type"));
+        wechatQrPay.setMchId(map.get("mch_id"));
+        wechatQrPay.setNonceStr(map.get("nonce_str"));
+        wechatQrPay.setOpenid(map.get("openid"));
+        wechatQrPay.setOutTradeNo("out_trade_no");
+        wechatQrPay.setResultCode("result_code");
+        wechatQrPay.setSign(map.get("sign"));
+        wechatQrPay.setTransactionId(map.get("transaction_id"));
+        try {
+            long time = DateUtils.parse(map.getOrDefault("time_end","19700000145542"),"yyyyMMddHHmmss").getTime();
+            wechatQrPay.setTimeEnd(new Timestamp(time));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        persistenceService.save(wechatQrPay);
+        return CodeRe.correct("ok");
+    }
+
     private boolean checkCodeUrl(Map map,String key){
         Object returnCode = map.get("return_code");
         if(returnCode==null||!returnCode.equals("SUCCESS")){

@@ -6,6 +6,7 @@ import com.zy.gcode.pojo.RedStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * Created by admin5 on 17/1/20.
@@ -20,4 +21,5 @@ public interface IPayService {
     BatchRe pullIllegalBill();
 
     CodeRe getWechatPayUrl(int count,String remoteAddr);
+    public CodeRe dealPayRecord(Map<String,String> map);
 }

@@ -1,8 +1,10 @@
 package com.zy.gcode.controller;
 
+import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.PayCredential;
 import com.zy.gcode.pojo.WechatQrPay;
+import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.service.pay.WxXmlParser;
 import com.zy.gcode.utils.*;
 import com.zy.gcode.utils.wx.AesException;
@@ -26,6 +28,8 @@ public class WechatMessageController {
 
     static WXBizMsgCrypt wxBizMsgCrypt = null;
 
+
+
     static {
         try {
             wxBizMsgCrypt = new WXBizMsgCrypt(Constants.properties.getProperty("platform.token"),
@@ -35,39 +39,15 @@ public class WechatMessageController {
         }
     }
     @Autowired
-    PersistenceService persistenceService;
+    IPayService payService;
 
     @RequestMapping(value = "/wechatPayMessage/handler")
-    @Transactional
     public @ResponseBody String wechatPayMessage(@RequestBody String body){
         Du.pl("payMessage:"+body);
         Map<String,String> map = WxXmlParser.Xml2Map(body);
-        PayCredential payCredential = persistenceService.get(PayCredential.class,(String)map.getOrDefault("appid",""));
-        if (payCredential==null){
-            return  "error";
-        }
-        Du.pl("map:"+map);
-        Du.pl(UniqueStringGenerator.checkSignature(map,payCredential.getKey()));
-        if(!UniqueStringGenerator.checkSignature(map,payCredential.getKey())){
+        if(payService.dealPayRecord(map).isError()){
             return "error";
         }
-        WechatQrPay wechatQrPay = new WechatQrPay();
-        wechatQrPay.setBankType(map.get("bank_type"));
-        wechatQrPay.setFeeType(map.get("fee_type"));
-        wechatQrPay.setMchId(map.get("mch_id"));
-        wechatQrPay.setNonceStr(map.get("nonce_str"));
-        wechatQrPay.setOpenid(map.get("openid"));
-        wechatQrPay.setOutTradeNo("out_trade_no");
-        wechatQrPay.setResultCode("result_code");
-        wechatQrPay.setSign(map.get("sign"));
-        wechatQrPay.setTransactionId(map.get("transaction_id"));
-        try {
-            long time = DateUtils.parse(map.getOrDefault("time_end","19700000145542"),"yyyyMMddHHmmss").getTime();
-            wechatQrPay.setTimeEnd(new Timestamp(time));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        persistenceService.save(wechatQrPay);
 
 
         return "<xml>\n" +
