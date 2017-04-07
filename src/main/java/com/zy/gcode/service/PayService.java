@@ -420,7 +420,7 @@ public class PayService implements IPayService {
        WechatQrPay wechatQrPay = persistenceService.getOneByColumn(WechatQrPay.class,"outTradeNo",orderNo);
 
        if(wechatQrPay==null||StringUtils.isEmpty(  wechatQrPay.getTransactionId())){
-           CodeRe.error("error");
+          return CodeRe.error("error");
        }
         return CodeRe.correct("ok");
     }
