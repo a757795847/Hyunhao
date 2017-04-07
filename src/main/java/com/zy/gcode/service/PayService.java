@@ -428,8 +428,8 @@ public class PayService implements IPayService {
     @Override
     @Transactional
     public List topUpRecord(Page page) {
-      List<WechatQrPay> wechatQrPays =  persistenceService.getListByColumn(WechatQrPay.class,"userId",
-              SubjectUtils.getUserName(),page);
+      List<WechatQrPay> wechatQrPays =  persistenceService.getListByColumn(WechatQrPay.class,page,"userId",
+              SubjectUtils.getUserName());
         List result = new ArrayList();
         wechatQrPays.forEach(v->{
             Map map = new HashMap(3,1.0f);
