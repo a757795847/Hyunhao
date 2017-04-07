@@ -40,8 +40,8 @@
 
     <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
         <property name="hostName" value="115.29.188.190"></property>
+        <property name="port" value="6388"></property>
         <property name="password" value="foobared123456"></property>
-        <property name="port" value="6388"/>
     </bean>
 
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
