@@ -57,7 +57,7 @@ public class JwtHttpAuthenticationFilter extends BasicHttpAuthenticationFilter {
         Map<String, String> map;
         try {
             ServletInputStream inputStream = request.getInputStream();
-            if (inputStream.isFinished()) {
+            if (inputStream.isFinished()||inputStream.available()==0) {
                 Du.dPl("错误!request content为空");
                 return null;
             }

@@ -4,11 +4,19 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.intef.IOperatorService;
+import com.zy.gcode.utils.Constants;
+import com.zy.gcode.utils.SubjectUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 /**
@@ -77,5 +85,52 @@ public class OperatorService implements IOperatorService {
     @Transactional
     public User get(String userName) {
         return persistenceService.get(User.class,userName);
+    }
+
+    @Override
+    public byte[] getUserHeadImage() throws IOException{
+        File file = new File(Constants.USER_HEAD_IMAGE_PATH+"/"+SubjectUtils.getUserName());
+        if(!file.exists()||file.length()==0){
+            return null;
+        }
+
+        long fileSize = file.length();
+        if (fileSize > Integer.MAX_VALUE) {
+            System.out.println("file too big...");
+            return null;
+        }
+        FileInputStream fi = new FileInputStream(file);
+        byte[] buffer = new byte[(int) fileSize];
+        int offset = 0;
+        int numRead = 0;
+        while (offset < buffer.length
+                && (numRead = fi.read(buffer, offset, buffer.length - offset)) >= 0) {
+            offset += numRead;
+        }
+        // 确保所有数据均被读取
+        if (offset != buffer.length) {
+            throw new IOException("Could not completely read file "
+                    + file.getName());
+        }
+        fi.close();
+        return buffer;
+
+    }
+
+    @Override
+    @Transactional
+    public void uploadHeadImage(MultipartFile multipartFile) {
+        User user = SubjectUtils.getUser();
+        user.setHeadImage(Constants.USER_HEAD_IMAGE_PATH+"/"+SubjectUtils.getUserName());
+        persistenceService.update(user);
+        File file = new File(Constants.USER_HEAD_IMAGE_PATH+"/"+SubjectUtils.getUserName());
+        if(!file.getParentFile().exists()){
+            file.getParentFile().mkdirs();
+        }
+        try {
+            multipartFile.transferTo(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

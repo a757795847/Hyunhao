@@ -19,5 +19,7 @@
         <property name="state" column="state"/>
         <property name="cash" column="cash"/>
         <property name="presentCash" column="present_cash"/>
+        <property name="email" column="email"/>
+        <property name="headImage" column="head_image"/>
     </class>
 </hibernate-mapping>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,8 +30,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OperatorController {
 
     Map<String,Map> mapCache = new ConcurrentHashMap<>();
-
-
 
 
     @Autowired
@@ -243,6 +242,26 @@ public class OperatorController {
         return ControllerStatus.ok();
     }
 
+    @RequestMapping("/user/headImage")
+    public void headImage(HttpServletResponse response){
+        response.setContentType("image/png");
+        byte[] bytes;
+        try {
+            bytes = operatorService.getUserHeadImage();
+            response.getOutputStream().write(bytes );
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    @RequestMapping("/user/uploadHeadImage")
+    @ResponseBody
+    public Object uploadImage(MultipartFile file){
+        operatorService.uploadHeadImage(file);
+
+        return ControllerStatus.ok();
+    }
 
     public class VerificationInfo {
         public VerificationInfo(String verificationCode, long generationTime, String phone) {

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.crypto.Cipher;
+import javax.crypto.SealedObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -79,6 +81,11 @@ public class AccessController {
         Map map = new HashMap(4);
         map.put("userinfo", JsonUtils.objAsString(codeRe.getMessage()));
         return ok(map);
+    }
+    public static void main(String[] args) throws Exception{
+        Cipher cipher = Cipher.getInstance("aes");
+        String obj = new String();
+        SealedObject sealedObject = new SealedObject(obj,cipher);
     }
 
 

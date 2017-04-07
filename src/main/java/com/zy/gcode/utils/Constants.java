@@ -56,6 +56,10 @@ public abstract class Constants {
 
     public final static String ZYAPPID = "zyappid1";
 
+    /**
+     * 用户头像路径
+     */
+    public final static String USER_HEAD_IMAGE_PATH;
 
     /**
      * 是否开启本应用debug模式
@@ -65,10 +69,15 @@ public abstract class Constants {
 
 
     static {
+
         if (System.getProperty("os.name").startsWith("Mac")) {
             RED_PICTURE_PATH = "./pic";
             PAY_QR_PATH = "./qr";
             RED_CSV_PATH = "./csv";
+            USER_HEAD_IMAGE_PATH =Constants.class.getClassLoader().getResource("/").getPath()+"userHeadImage";
+            Du.dPl("USER_HEAD_IMAGE_PATH:"+USER_HEAD_IMAGE_PATH);
+        }else {
+            USER_HEAD_IMAGE_PATH = "/opt/zy/headImage";
         }
 
 

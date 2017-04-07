@@ -23,11 +23,13 @@ public class User implements Serializable {
     private String phone;
     private String isAuthentication;
     private String authenticationTime;
-    private List<WechatPublicServer> wechatPublicServerList;
     @JsonIgnore
     private String state;
     private int cash;
+    //赠送的现金
     private int presentCash;
+    private String email;
+    private String headImage;
 
     public String getUsername() {
         return username;
@@ -125,19 +127,6 @@ public class User implements Serializable {
         this.state = state;
     }
 
-    public WechatPublicServer getWechatPublicServerList(String zyappid) {
-        for (WechatPublicServer publicServer : wechatPublicServerList) {
-            if (publicServer.getZyappid().equals(zyappid)) {
-                return publicServer;
-            }
-        }
-        throw new NullPointerException();
-    }
-
-    public void setWechatPublicServerList(List<WechatPublicServer> wechatPublicServerList) {
-        this.wechatPublicServerList = wechatPublicServerList;
-    }
-
     public int getCash() {
         return cash;
     }
@@ -154,22 +143,19 @@ public class User implements Serializable {
         this.presentCash = presentCash;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", insertTime=" + insertTime +
-                ", name='" + name + '\'' +
-                ", role='" + role + '\'' +
-                ", updateTime=" + updateTime +
-                ", isEnable='" + isEnable + '\'' +
-                ", endTime=" + endTime +
-                ", phone='" + phone + '\'' +
-                ", isAuthentication='" + isAuthentication + '\'' +
-                ", authenticationTime='" + authenticationTime + '\'' +
-                ", wechatPublicServerList=" + wechatPublicServerList +
-                ", state='" + state + '\'' +
-                '}';
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getHeadImage() {
+        return headImage;
+    }
+
+    public void setHeadImage(String headImage) {
+        this.headImage = headImage;
     }
 }

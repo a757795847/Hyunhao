@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.zy.gcode.pojo.ChargeRecord" table="charge_record" schema="jt_platform">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="insertTime" column="insert_time"/>
+        <property name="updateTime" column="update_time"/>
+        <property name="chargeType" column="charge_type"/>
+        <property name="state" column="state"/>
+        <property name="userId" column="user_id"/>
+        <property name="presentCount" column="present_count"/>
+        <property name="chargeCount" column="charge_count"/>
+        <property name="option1" column="option1"/>
+        <property name="option2" column="option2"/>
+        <property name="option3" column="option3"/>
+        <property name="option4" column="option4"/>
+        <property name="option5" column="option5"/>
+    </class>
+</hibernate-mapping>

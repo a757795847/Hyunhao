@@ -2,6 +2,9 @@ package com.zy.gcode.service.intef;
 
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.pojo.User;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * Created by admin5 on 17/2/17.
@@ -18,5 +21,9 @@ public interface IOperatorService {
     boolean passwordIsTrue(String oldPassword, String newPassword);
 
     User get(String userName);
+
+    byte[] getUserHeadImage() throws IOException;
+
+    void uploadHeadImage(MultipartFile multipartFile);
 
 }

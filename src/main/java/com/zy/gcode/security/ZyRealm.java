@@ -56,7 +56,6 @@ public class ZyRealm extends AuthorizingRealm implements InitializingBean {
             log.debug("登录失败！用户名:" + token.getPrincipal());
             throw new UnknownAccountException();
         }
-        user.setWechatPublicServerList(userService.getPublicServerList(user.getUsername()));
         userCache.put(user.getUsername(), user);
         return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), getName());
 
