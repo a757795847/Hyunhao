@@ -349,7 +349,7 @@ public class PayService implements IPayService {
         Map result = new HashMap(2,1.0f);
         result.put("codeUrl",map.get("code_url"));
         result.put("billno",unifyOrderRequest.getOutTradeNo());
-        return  CodeRe.correct(map);
+        return  CodeRe.correct(result);
     }
 
     private boolean checkCodeUrl(Map map,String key){
