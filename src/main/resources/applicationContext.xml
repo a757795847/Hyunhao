@@ -150,6 +150,7 @@
                 /auth/receive=anon
                 /*/receive=anon
                 /auth/**=authe
+                /pay/qr=authe
                 /app/**=authe
                 /order/**=authe
                 /wechat/**=openid

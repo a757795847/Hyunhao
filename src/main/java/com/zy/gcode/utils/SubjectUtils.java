@@ -40,6 +40,9 @@ public class SubjectUtils {
         }
         return  user;
     }
+    public static void updateUser(User user){
+        userCache.put(getUserName(),user);
+    }
 
     public static boolean isAnonymous(){
         return getUserName().startsWith("anonymous");

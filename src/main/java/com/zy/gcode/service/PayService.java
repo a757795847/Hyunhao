@@ -358,12 +358,18 @@ public class PayService implements IPayService {
     public CodeRe dealPayRecord(Map<String,String> map){
         PayCredential payCredential = persistenceService.get(PayCredential.class,map.getOrDefault("appid",""));
         if (payCredential==null){
-            return  CodeRe.error(" ");
+            return  CodeRe.error("");
         }
-        Du.pl("map:"+map);
         if(!UniqueStringGenerator.checkSignature(map,payCredential.getKey())){
             return  CodeRe.error("");
         }
+        if(persistenceService.getOneByColumn(WechatQrPay.class,"transactionId",map.get("transaction_id"))!=null){
+            return CodeRe.correct("exist");
+        }
+        User user =  persistenceService.get(User.class,SubjectUtils.getUserName());
+        user.setCash(user.getCash()+10000);
+        persistenceService.update(user);
+        SubjectUtils.updateUser(user);
         WechatQrPay wechatQrPay = new WechatQrPay();
         wechatQrPay.setBankType(map.get("bank_type"));
         wechatQrPay.setFeeType(map.get("fee_type"));
