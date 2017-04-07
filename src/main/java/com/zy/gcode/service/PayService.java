@@ -370,10 +370,13 @@ public class PayService implements IPayService {
         wechatQrPay.setMchId(map.get("mch_id"));
         wechatQrPay.setNonceStr(map.get("nonce_str"));
         wechatQrPay.setOpenid(map.get("openid"));
-        wechatQrPay.setOutTradeNo("out_trade_no");
-        wechatQrPay.setResultCode("result_code");
+        wechatQrPay.setOutTradeNo(map.get("out_trade_no"));
+        wechatQrPay.setResultCode(map.get("result_code"));
         wechatQrPay.setSign(map.get("sign"));
         wechatQrPay.setTransactionId(map.get("transaction_id"));
+        wechatQrPay.setWechatOfficalId(map.get("appid"));
+        wechatQrPay.setTradeType(map.get("trade_type"));
+        wechatQrPay.setCashFee(Integer.valueOf(map.get("cash_fee")));
         try {
             long time = DateUtils.parse(map.getOrDefault("time_end","19700000145542"),"yyyyMMddHHmmss").getTime();
             wechatQrPay.setTimeEnd(new Timestamp(time));

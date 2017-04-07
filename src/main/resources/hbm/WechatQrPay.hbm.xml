@@ -21,5 +21,6 @@
         <property name="tradeType" column="trade_type"/>
         <property name="transactionId" column="transaction_id"/>
         <property name="insertTime" insert="false" update="false" column="insert_time"/>
+        <property name="cashFee" column="cash_fee"/>
     </class>
 </hibernate-mapping>
