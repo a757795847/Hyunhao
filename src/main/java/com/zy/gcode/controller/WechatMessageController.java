@@ -9,6 +9,7 @@ import com.zy.gcode.utils.wx.AesException;
 import com.zy.gcode.utils.wx.WXBizMsgCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -37,6 +38,7 @@ public class WechatMessageController {
     PersistenceService persistenceService;
 
     @RequestMapping(value = "/wechatPayMessage/handler")
+    @Transactional
     public @ResponseBody String wechatPayMessage(@RequestBody String body){
         Du.pl("payMessage:"+body);
         Map<String,String> map = WxXmlParser.Xml2Map(body);
