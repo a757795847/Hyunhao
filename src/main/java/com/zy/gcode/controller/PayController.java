@@ -1,10 +1,17 @@
 package com.zy.gcode.controller;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.RedStatus;
 import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.service.pay.RedTimerTask;
+import org.apache.http.HttpHeaders;
+import org.apache.http.client.methods.HttpHead;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -116,5 +124,19 @@ public class PayController {
     public DeferredResult<ModelAndView> get(HttpServletRequest request, HttpServletResponse response) throws Exception {
         TimeUnit.SECONDS.sleep(3);
         return null;
+    }
+    @RequestMapping("test")
+    public void qr(String value,HttpServletResponse response){
+        response.setHeader(HttpHeaders.CACHE_CONTROL,"no-cache");
+        response.setHeader(HttpHeaders.CONTENT_TYPE,"image/png");
+        try {
+            BitMatrix bitMatrix = new MultiFormatWriter().encode(value BarcodeFormat.QR_CODE,200,200);
+            MatrixToImageWriter.writeToStream(bitMatrix,"png",response.getOutputStream());
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 }
