@@ -44,7 +44,8 @@ public class WechatMessageController {
         if (payCredential==null){
             return  "error";
         }
-
+        Du.pl("map:"+map);
+        Du.pl(UniqueStringGenerator.checkSignature(map,payCredential.getKey()));
         if(!UniqueStringGenerator.checkSignature(map,payCredential.getKey())){
             return "error";
         }
