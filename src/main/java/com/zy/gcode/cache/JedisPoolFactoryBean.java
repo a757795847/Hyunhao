@@ -1,16 +1,19 @@
 package com.zy.gcode.cache;
 
 import com.zy.gcode.utils.Du;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.FactoryBean;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Protocol;
 
 /**
  * Created by admin5 on 17/3/27.
  */
 public class JedisPoolFactoryBean implements FactoryBean<Jedis>{
-
-    private JedisPool jedisPool = new JedisPool("115.29.188.190");
+    //foobared123456
+    private JedisPool jedisPool = new JedisPool(new GenericObjectPoolConfig(), "115.29.188.190", 6388, Protocol.DEFAULT_TIMEOUT,
+            "foobared123456", Protocol.DEFAULT_DATABASE, null);
 
     @Override
     public Jedis getObject() throws Exception {
