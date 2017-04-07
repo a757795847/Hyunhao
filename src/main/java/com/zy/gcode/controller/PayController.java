@@ -130,7 +130,7 @@ public class PayController {
         response.setHeader(HttpHeaders.CACHE_CONTROL,"no-cache");
         response.setHeader(HttpHeaders.CONTENT_TYPE,"image/png");
         try {
-            BitMatrix bitMatrix = new MultiFormatWriter().encode(value BarcodeFormat.QR_CODE,200,200);
+            BitMatrix bitMatrix = new MultiFormatWriter().encode(value,BarcodeFormat.QR_CODE,200,200);
             MatrixToImageWriter.writeToStream(bitMatrix,"png",response.getOutputStream());
         } catch (WriterException e) {
             e.printStackTrace();
