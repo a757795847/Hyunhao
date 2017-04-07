@@ -248,7 +248,11 @@ public class OperatorController {
         byte[] bytes;
         try {
             bytes = operatorService.getUserHeadImage();
-            response.getOutputStream().write(bytes );
+            if(bytes==null){
+                response.setStatus(402);
+                return;
+            }
+            response.getOutputStream().write(bytes);
         } catch (IOException e) {
             e.printStackTrace();
             return;

@@ -6,6 +6,10 @@ import java.sql.Timestamp;
  * Created by admin5 on 17/4/6.
  */
 public class ChargeRecord {
+
+    public static final int BUY_ = 100;
+    public static final int SELL_ = 200;
+
     private long id;
     private Timestamp insertTime;
     private Timestamp updateTime;

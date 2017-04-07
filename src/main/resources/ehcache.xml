@@ -6,18 +6,18 @@
 
     <!-- 默认缓存 -->
     <defaultCache
-            maxElementsInMemory="100"
+            maxElementsInMemory="1000"
             eternal="false"
-            timeToIdleSeconds="120"
-            timeToLiveSeconds="120"
+            timeToIdleSeconds="3600"
+            timeToLiveSeconds="3600"
             overflowToDisk="false"/>
 
     <!-- 用户缓存-->
     <cache name="user"
-           maxElementsInMemory="100"
+           maxElementsInMemory="1000"
            eternal="false"
-           timeToIdleSeconds="120"
-           timeToLiveSeconds="120"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="3600"
            overflowToDisk="false"
-           memoryStoreEvictionPolicy="LRU"/>
+           memoryStoreEvictionPolicy="FIFO"/>
 </ehcache>

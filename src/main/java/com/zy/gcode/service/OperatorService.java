@@ -8,9 +8,11 @@ import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.SubjectUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.credential.PasswordService;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -90,6 +92,7 @@ public class OperatorService implements IOperatorService {
     @Override
     public byte[] getUserHeadImage() throws IOException{
         File file = new File(Constants.USER_HEAD_IMAGE_PATH+"/"+SubjectUtils.getUserName());
+
         if(!file.exists()||file.length()==0){
             return null;
         }

@@ -111,6 +111,11 @@
                   value="com.zy.gcode.utils.SubjectUtils.setUserCache"/>
         <property name="arguments" ref="userCache"/>
     </bean>
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod"
+                  value="com.zy.gcode.utils.SubjectUtils.setUserService"/>
+        <property name="arguments" ref="userService"/>
+    </bean>
     <!-- Shiro生命周期处理器-->
     <bean id="lifecycleBeanPostProcessor"
           class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
