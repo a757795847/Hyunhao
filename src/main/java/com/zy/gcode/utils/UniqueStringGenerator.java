@@ -127,9 +127,11 @@ public class UniqueStringGenerator {
     }
 
     public static  boolean checkSignature(Map map,String key){
+        String sign;
         if(!map.containsKey("sign")){
             return false;
         }
+        sign = (String)map.get("sign");
         Set<String> set =  map.keySet();
         set.remove("sign");
         Object[] keys = set.toArray();
@@ -141,6 +143,6 @@ public class UniqueStringGenerator {
         }
         builder.append("key=").append(key);
 
-       return map.get("sign").equals(getMd5(builder.toString()));
+       return sign.equals(getMd5(builder.toString()));
     }
 }
