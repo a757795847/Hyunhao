@@ -49,7 +49,6 @@ public class WechatMessageController {
             return "error";
         }
 
-
         return "<xml>\n" +
                 "  <return_code><![CDATA[SUCCESS]]></return_code>\n" +
                 "  <return_msg><![CDATA[OK]]></return_msg>\n" +

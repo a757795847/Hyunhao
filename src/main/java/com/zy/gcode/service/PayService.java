@@ -361,7 +361,6 @@ public class PayService implements IPayService {
             return  CodeRe.error("");
         }
         Du.pl("map:"+map);
-        Du.pl(UniqueStringGenerator.checkSignature(map,payCredential.getKey()));
         if(!UniqueStringGenerator.checkSignature(map,payCredential.getKey())){
             return  CodeRe.error("");
         }

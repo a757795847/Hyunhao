@@ -21,5 +21,5 @@ public interface IPayService {
     BatchRe pullIllegalBill();
 
     CodeRe getWechatPayUrl(int count,String remoteAddr);
-    public CodeRe dealPayRecord(Map<String,String> map);
+     CodeRe dealPayRecord(Map<String,String> map);
 }
