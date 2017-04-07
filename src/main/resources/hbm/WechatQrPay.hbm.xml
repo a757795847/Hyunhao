@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.zy.gcode.pojo.WechatQrPay" table="wechat_QR_pay" schema="jt_platform">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="wechatOfficalId" column="wechat_offical_id"/>
+        <property name="bankType" column="bank_type"/>
+        <property name="feeType" column="fee_type"/>
+        <property name="mchId" column="mch_id"/>
+        <property name="nonceStr" column="nonce_str"/>
+        <property name="openid" column="openid"/>
+        <property name="outTradeNo" column="out_trade_no"/>
+        <property name="resultCode" column="result_code"/>
+        <property name="sign" column="sign"/>
+        <property name="timeEnd" column="time_end"/>
+        <property name="tradeType" column="trade_type"/>
+        <property name="transactionId" column="transaction_id"/>
+        <property name="insertTime" insert="false" update="false" column="insert_time"/>
+    </class>
+</hibernate-mapping>

@@ -9,9 +9,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -126,5 +124,23 @@ public class UniqueStringGenerator {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static  boolean checkSignature(Map map,String key){
+        if(!map.containsKey("sign")){
+            return false;
+        }
+        Set<String> set =  map.keySet();
+        set.remove("sign");
+        Object[] keys = set.toArray();
+        Arrays.sort(keys);
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < keys.length; i++) {
+            builder.append(keys[i].toString()).append("=")
+                    .append(map.get(keys[i])).append("&");
+        }
+        builder.append("key=").append(key);
+
+       return map.get("sign").equals(getMd5(builder.toString()));
     }
 }

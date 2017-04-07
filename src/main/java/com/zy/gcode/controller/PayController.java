@@ -7,6 +7,7 @@ import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.service.pay.RedTimerTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -100,9 +101,14 @@ public class PayController {
         return ControllerStatus.error("抓单已启动");
     }
 
-    @RequestMapping("/uploadQR")
-    public void begIndex(HttpServletRequest request,HttpServletResponse response){
-        payService.setPayQR(response,request);
+    @RequestMapping("/qr")
+    @ResponseBody
+    public Object begIndex(HttpServletRequest request, @RequestBody Map map){
+      CodeRe codeRe = payService.getWechatPayUrl((int)map.getOrDefault("count",10000),request.getRemoteAddr());
+      if(codeRe.isError()){
+          return ControllerStatus.error();
+      }
+      return ControllerStatus.ok(codeRe.getMessage());
     }
 
 

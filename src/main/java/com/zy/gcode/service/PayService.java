@@ -334,25 +334,37 @@ public class PayService implements IPayService {
 
     @Override
     @Transactional
-    public void setPayQR(HttpServletResponse response, HttpServletRequest request) {
+    public CodeRe getWechatPayUrl(int count,String addr) {
      //  /wechatPayMessage/handler
 
         PayCredential payCredential = persistenceService.get(PayCredential.class,"wx653d39223641bea7");
         UnifyOrderRequest unifyOrderRequest = new UnifyOrderRequest();
-        unifyOrderRequest.setProductId("12235413214070356458");
-        unifyOrderRequest.init("wx653d39223641bea7",payCredential.getMchid(),"支付测试",10,request.getRemoteAddr(),
-                "http://open.izhuiyou.com/wechatPayMessage/handler","NATIVE",payCredential.getCredentialPath(),payCredential.getKey());
+      //  unifyOrderRequest.setProductId("12235413214070356458");
+        unifyOrderRequest.init("wx653d39223641bea7",payCredential.getMchid(),"支付测试",10,addr,
+                "http://open.izhuiyou.com/wechatPayMessage/handler","APP",payCredential.getCredentialPath(),payCredential.getKey());
         Map map = unifyOrderRequest.start();
-        Du.pl("map:"+map);
-        response.setContentType("image/png");
-        response.setHeader("Cache-Control","no-cache");
-        try {
-            BitMatrix bitMatrix = new MultiFormatWriter().encode((String)map.get("code_url"), BarcodeFormat.QR_CODE,200,200);
-            MatrixToImageWriter.writeToStream(bitMatrix,"png",response.getOutputStream());
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
+        if(!checkCodeUrl(map,payCredential.getKey())){
+            return CodeRe.error("error");
         }
+        Map result = new HashMap(2,1.0f);
+        result.put("codeUrl",map.get("code_url"));
+        result.put("billno",unifyOrderRequest.getOutTradeNo());
+        return  CodeRe.correct(map);
     }
+
+    private boolean checkCodeUrl(Map map,String key){
+        Object returnCode = map.get("return_code");
+        if(returnCode==null||!returnCode.equals("SUCCESS")){
+            return false;
+        }
+        Object resultCode = map.get("result_code");
+        if(resultCode==null||!resultCode.equals("SUCCESS")){
+            return false;
+        }
+        if(UniqueStringGenerator.checkSignature(map,key)){
+            return false;
+        }
+        return true;
+    }
+
 }

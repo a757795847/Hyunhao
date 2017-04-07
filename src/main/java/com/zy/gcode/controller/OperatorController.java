@@ -74,11 +74,11 @@ public class OperatorController {
             return ControllerStatus.error("用户名密码不能为空");
         }
         if (!verificationInfo.verificationCode.equals(map.get("verificationCode"))) {
-            return ControllerStatus.error("验证码错误");
+            return ControllerStatus.error("短信验证码错误");
         }
 
         if (verificationInfo.generationTime < (System.currentTimeMillis() - 120 * 1000)) {
-            return ControllerStatus.error("验证码过期");
+            return ControllerStatus.error("短信验证码过期");
         }
        // getSession().remove("verificationInfo");
 

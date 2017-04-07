@@ -77,10 +77,10 @@ public class WxXmlParser {
 
     }
 
-    public static Map Xml2Map(String date) {
+    public static Map Xml2Map(String data) {
         Document document;
         try {
-            document = DocumentHelper.parseText(date);
+            document = DocumentHelper.parseText(data);
         } catch (DocumentException e) {
             e.printStackTrace();
             return null;

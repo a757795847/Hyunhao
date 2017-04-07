@@ -55,6 +55,7 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
         this.sign();
    }
 
+
     public static final String APPID="appid";
     public static final String MCH_ID="mch_id";
     public static final String DEVICE_INFO="device_info";
@@ -156,6 +157,7 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
         setSignType();
         setFeeType();
         setNonceStr();
+        setTimeExpire(System.currentTimeMillis()+360000);
     }
 
     public String getSignType() {
@@ -231,7 +233,7 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
     }
 
     public void setTimeStart(long timeStart) {
-        map.put(TIME_START,String.valueOf(timeStart));
+        map.put(TIME_START,DateUtils.format(new Date(timeStart),"yyyyMMddHHmmss"));
     }
 
     public Date getTimeExpire() {
@@ -243,7 +245,8 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
     }
 
     public void setTimeExpire(long timeExpire) {
-        map.put(TIME_EXPIRE,String.valueOf(timeExpire));
+        //20091227091010
+        map.put(TIME_EXPIRE,DateUtils.format(new Date(timeExpire),"yyyyMMddHHmmss"));
     }
 
     public String getGoodsTag() {

@@ -19,5 +19,5 @@ public interface IPayService {
 
     BatchRe pullIllegalBill();
 
-    void setPayQR(HttpServletResponse response,HttpServletRequest request);
+    CodeRe getWechatPayUrl(int count,String remoteAddr);
 }
