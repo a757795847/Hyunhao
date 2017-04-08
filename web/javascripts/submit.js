@@ -1,4 +1,4 @@
-var config = $("#config-json").data("data-json");
+var config = $("#config-json").data("json");
 console.log(config);
 // console.info("config: " + config);
 wx.config({
