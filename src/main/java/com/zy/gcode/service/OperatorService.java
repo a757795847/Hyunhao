@@ -55,6 +55,7 @@ public class OperatorService implements IOperatorService {
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordService.encryptPassword(password));
+        user.setName("u"+username);
         user.setRole("user");
         persistenceService.save(user);
         return CodeRe.correct("success");

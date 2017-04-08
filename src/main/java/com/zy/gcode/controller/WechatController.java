@@ -53,15 +53,15 @@ public class WechatController {
         }
         return null;
     }
-    @RequestMapping("submit")
+    @RequestMapping("submit/{tAppid}")
     @ResponseBody
     public Map submit(@RequestParam(required = false) String image1, @RequestParam(required = false) String image2,
-                      @RequestParam(required = false) String image3, @RequestParam String billno, HttpSession session) throws IOException {
+                      @RequestParam(required = false) String image3, @RequestParam String billno, HttpSession session,@PathVariable String tAppid) throws IOException {
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
         if (wechatUserInfo == null) {
             return ControllerStatus.error("登录过期");
         }
-        CodeRe<String> codeRe = wechatService.sumbit(image1, image2, image3, billno, wechatUserInfo.getOpenId(), wechatUserInfo.getAppid(),wechatUserInfo.getNick());
+        CodeRe<String> codeRe = wechatService.sumbit(image1, image2, image3, billno, wechatUserInfo.getOpenId(), wechatUserInfo.getAppid(),wechatUserInfo.getNick(),tAppid);
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }

@@ -62,6 +62,12 @@ $("#odd").on("click",function(){
 
 console.log(ids);
 
+var url = location.search;
+var index1 = url.lastIndexOf("/")
+var index2=url.split('/')[url.split('/').length-1];
+var tappid = url.substring(index1+1);
+
+
 $("#addID").on("click",function(){
     var HTML=$("#addID").html();
     var orders=$("#Orders").val();
@@ -77,7 +83,7 @@ $("#addID").on("click",function(){
         } else {
             $.ajax({
                 type: 'POST',
-                url: "http://open.izhuiyou.com/wechat/view/submit",
+                url: "http://open.izhuiyou.com/wechat/view/submit/"+index2,
                 data: datas,
                 dataType: 'json',
                 success: function (data) {

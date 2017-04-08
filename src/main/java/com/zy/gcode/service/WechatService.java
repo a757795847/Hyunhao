@@ -4,10 +4,7 @@ import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.*;
 import com.zy.gcode.service.intef.IWechatService;
-import com.zy.gcode.utils.Constants;
-import com.zy.gcode.utils.DateUtils;
-import com.zy.gcode.utils.HttpClientUtils;
-import com.zy.gcode.utils.MzUtils;
+import com.zy.gcode.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,15 +27,20 @@ public class WechatService implements IWechatService {
 
     @Override
     @Transactional
-    public CodeRe sumbit(final String image1, final String image2, final String image3, final String billno, final String openid, final String appid,String nick) {
+    public CodeRe sumbit(final String image1, final String image2, final String image3, final String billno, final String openid, final String appid, String nick, String tAppid) {
         String path = new StringBuilder(Constants.RED_PICTURE_PATH).append("/").toString();
-        DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class, "orderNumber", billno);
-        WechatPublicServer wechatPublicServer = persistenceService.getOneByColumn(WechatPublicServer.class, "wxAppid", appid, "zyappid", Constants.ZYAPPID);
 
-        if (wechatPublicServer == null) {
-            return CodeRe.error("该微信公众号未录入系统");
+        //WechatPublicServer wechatPublicServer = persistenceService.getOneByColumn(WechatPublicServer.class, "wxAppid", appid, "zyappid", Constants.ZYAPPID);
+
+        TappidUtils.TappidEntry tappidEntry = TappidUtils.deTappid(tAppid);
+
+        UserConfig userConfig = persistenceService.get(UserConfig.class, tappidEntry.getUserConfigId());
+
+        if(userConfig==null){
+            return CodeRe.error("error");
         }
 
+        DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class, "orderNumber", billno,"createUserId",userConfig.getUserId());
 
         if (dataOrder == null) {
             return CodeRe.error("订单不存在");
@@ -49,13 +51,13 @@ public class WechatService implements IWechatService {
         String dataPath = DateUtils.format(new Date(), "yyyyMM");
 
         if (image1 != null) {
-            dataOrder.setCommentFile1(MzUtils.merge(dataPath, "/", wechatPublicServer.getUserId(), ":", billno, "A"));
+            dataOrder.setCommentFile1(MzUtils.merge(dataPath, "/", userConfig.getUserId(), ":", billno, "A"));
         }
         if (image2 != null) {
-            dataOrder.setCommentFile2(MzUtils.merge(dataPath, "/", wechatPublicServer.getUserId(), ":", billno, "B"));
+            dataOrder.setCommentFile2(MzUtils.merge(dataPath, "/", userConfig.getUserId(), ":", billno, "B"));
         }
         if (image3 != null) {
-            dataOrder.setCommentFile3(MzUtils.merge(dataPath, "/", wechatPublicServer.getUserId(), ":", billno, "C"));
+            dataOrder.setCommentFile3(MzUtils.merge(dataPath, "/", userConfig.getUserId(), ":", billno, "C"));
         }
         CodeRe tokenConfigCodeRe = authenticationService.getAuthorizerToken(appid);
         if (tokenConfigCodeRe.isError()) {
@@ -123,10 +125,10 @@ public class WechatService implements IWechatService {
     @Override
     @Transactional(readOnly = true)
     public CodeRe<UserConfig> getUserConfig(Serializable id) {
-       UserConfig userConfig =  persistenceService.get(UserConfig.class,id);
-       if(userConfig==null){
-          return CodeRe.error("empty");
-       }
+        UserConfig userConfig = persistenceService.get(UserConfig.class, id);
+        if (userConfig == null) {
+            return CodeRe.error("empty");
+        }
         return CodeRe.correct(userConfig);
     }
 }
