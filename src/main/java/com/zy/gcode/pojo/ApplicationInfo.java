@@ -52,6 +52,7 @@ public class ApplicationInfo {
     private int payCdn;
     private String payOption;
     private String fontColor;
+    private String defaultWechatId;
 
     public Integer getPrice() {
         return price;
@@ -195,5 +196,13 @@ public class ApplicationInfo {
 
     public void setFontColor(String fontColor) {
         this.fontColor = fontColor;
+    }
+
+    public String getDefaultWechatId() {
+        return defaultWechatId;
+    }
+
+    public void setDefaultWechatId(String defaultWechatId) {
+        this.defaultWechatId = defaultWechatId;
     }
 }

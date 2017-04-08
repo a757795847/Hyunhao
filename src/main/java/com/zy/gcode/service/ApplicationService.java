@@ -129,6 +129,7 @@ public class ApplicationService implements IApplicationService {
         userConfig.setAppOpenTime(userApp.getBegTime());
         userConfig.setAppId(userApp.getAppId());
         persistenceService.save(userConfig);
+        userConfig.setWechatOfficialId(applicationInfo.getDefaultWechatId());
         return CodeRe.correct("开通成功");
     }
 
