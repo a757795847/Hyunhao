@@ -62,7 +62,7 @@ $("#odd").on("click",function(){
 
 console.log(ids);
 
-var url = location.search;
+var url = location.pathname;
 var index1 = url.lastIndexOf("/")
 var index2=url.split('/')[url.split('/').length-1];
 var tappid = url.substring(index1+1);
