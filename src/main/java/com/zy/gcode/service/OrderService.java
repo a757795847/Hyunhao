@@ -134,16 +134,19 @@ public class OrderService implements IOrderService {
             for (int i = 0; i < titles.length; i++) {
                 if (titles[i].equals("订单编号")) {
                     String str = values[i];
-                    //因为csv订单号格式有问题，所以进行特别处理
-                    values[i] = str.substring(2, str.length() - 1);
-                    orderNoList.add(values[i].trim());
+                    if(str.startsWith("=")){
+                        //因为csv订单号格式有问题，所以进行特别处理
+                        values[i] = str.substring(2, str.length() - 1);
+                        orderNoList.add(values[i].trim());
+                    }
+
                 }
                 if (titles[i].equals("联系手机")) {
-                    if (!StringUtils.isEmpty(values[i]))
+                    if (values[i].startsWith("'"))
                         values[i] = values[i].substring(1);
                 }
-                if (titles.equals("联系电话")) {
-                    if (!StringUtils.isEmpty(values[i]))
+                if (titles[i].equals("联系电话")) {
+                    if (values[i].startsWith("'"))
                         values[i] = values[i].substring(1);
                 }
                 beanWrapper.setPropertyValue(title2Value.get(titles[i]), values[i]);
@@ -199,20 +202,7 @@ public class OrderService implements IOrderService {
             BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
             String[] values = new String[len];
             for (int i = 0; i < len; i++) {
-                String title = titles[i];
                 String value = "\"" + beanWrapper.getPropertyValue(title2Value.get(titles[i])) + "\"";
-                if (title.equals("联系手机")) {
-                    if (!StringUtils.isEmpty(value))
-                        value = "'" + value;
-                }
-                if (title.equals("联系电话")) {
-                    if (!StringUtils.isEmpty(value))
-                        value = "'" + value;
-
-                }
-                if (i == 0) {
-                    value = "=" + value;
-                }
                 values[i] = value;
             }
             try {

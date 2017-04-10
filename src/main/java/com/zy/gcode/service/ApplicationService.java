@@ -53,7 +53,11 @@ public class ApplicationService implements IApplicationService {
         Map map = new HashMap(2, 1.0f);
         ApplicationInfo applicationInfo = persistenceService.get(ApplicationInfo.class, appid);
         map.put("applicationInfo", applicationInfo);
-        map.put("isOpened", isOpened(applicationInfo));
+        boolean flag = isOpened(applicationInfo);
+        map.put("isOpened",flag );
+        if(flag){
+            map.put("userApp",persistenceService.getListByColumn(UserApp.class, "userId", SubjectUtils.getUserName(), "appId", applicationInfo.getId()));
+        }
         return map;
 
     }
