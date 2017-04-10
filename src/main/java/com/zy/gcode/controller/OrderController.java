@@ -52,7 +52,7 @@ public class OrderController {
         SecurityUtils.getSubject().checkPermission(Constants.ZYAPPID);
         Page page = new Page();
         page.setCurrentPageIndex((Integer) map.get("currentPageIndex"));
-        int pageSize = (int) map.get("pageSize");
+        int pageSize = (int) map.getOrDefault("pageSize",15);
         page.setPageSize(pageSize);
         Timestamp importTime = null;
         Timestamp applyTime = null;
@@ -62,12 +62,9 @@ public class OrderController {
         if (map.containsKey("applyTime") && map.get("applyTime") != null) {
             applyTime = new Timestamp((long) map.get("applyTime"));
         }
-        return ControllerStatus.ok(orderService.searchOrderByCondition((List) map.get("status"), page, getUsername(), applyTime, importTime), page);
+        return ControllerStatus.ok(orderService.searchOrderByCondition((List) map.get("status"), page, SubjectUtils.getUserName(), applyTime, importTime), page);
     }
 
-    private String getUsername() {
-        return SecurityUtils.getSubject().getPrincipal().toString();
-    }
 
     /**
      * 根据图片的名称访问图片

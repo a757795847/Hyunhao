@@ -156,7 +156,6 @@
                 /order/**=authe
                 /wechat/**=openid
                 /**=anon
-
             </value>
         </property>
     </bean>

@@ -60,4 +60,13 @@ public class ApplicationController {
         return ControllerStatus.ok(codeRe.getMessage());
     }
 
+    @RequestMapping("close")
+    public Object stopApp(String appid){
+       CodeRe codeRe =  applicationService.closeApp(Long.parseLong(appid));
+       if(codeRe.isError()){
+           return ControllerStatus.error();
+       }
+       return ControllerStatus.ok();
+    }
+
 }

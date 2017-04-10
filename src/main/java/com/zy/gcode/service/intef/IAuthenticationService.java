@@ -3,7 +3,6 @@ package com.zy.gcode.service.intef;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.pojo.WechatPublic;
-import com.zy.gcode.pojo.WechatPublicServer;
 
 /**
  * Created by admin5 on 17/1/21.

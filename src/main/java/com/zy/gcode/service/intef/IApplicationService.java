@@ -5,6 +5,7 @@ import com.zy.gcode.pojo.ApplicationInfo;
 import com.zy.gcode.service.pay.OpenCondition;
 import com.zy.gcode.utils.Page;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -23,4 +24,6 @@ public interface IApplicationService {
     CodeRe openApp(String appid, OpenCondition condition);
 
     CodeRe configList(String appid);
+
+    CodeRe closeApp(Serializable appid);
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -212,5 +213,16 @@ public class ApplicationService implements IApplicationService {
         userConfigs.forEach(userConfig -> userConfig.setUrl(httpPrefix + TappidUtils.toTappid(userConfig.getId(),
                 userConfig.getAppOpenTime().getTime())));
         return CodeRe.correct(userConfigs);
+    }
+
+    @Override
+    @Transactional
+    public CodeRe closeApp(Serializable appid) {
+        try {
+            persistenceService.delete(UserApp.class,appid);
+        } catch (IllegalArgumentException e) {
+           return CodeRe.error("不存在的key");
+        }
+        return CodeRe.correct("ok");
     }
 }

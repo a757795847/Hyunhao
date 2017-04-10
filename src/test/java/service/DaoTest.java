@@ -1,22 +1,17 @@
 package service;
 
 import com.csvreader.CsvWriter;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
 import com.zy.gcode.cache.ErrorOrderCache;
 import com.zy.gcode.cache.MyCache;
 import com.zy.gcode.cache.OperatorCache;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.DataOrder;
-import com.zy.gcode.pojo.UserConfig;
 import com.zy.gcode.service.AuthenticationService;
 import com.zy.gcode.service.CodeService;
 import com.zy.gcode.service.OrderService;
 import com.zy.gcode.service.annocation.CsvPush;
+import com.zy.gcode.service.intef.IApplicationService;
 import com.zy.gcode.service.intef.IPayService;
-import com.zy.gcode.utils.DateUtils;
 import com.zy.gcode.utils.Du;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.junit.Test;
@@ -29,7 +24,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import redis.clients.jedis.Jedis;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.security.KeyPair;
@@ -74,6 +68,9 @@ public class DaoTest {
 
     @Autowired
     ErrorOrderCache errorOrderCache;
+
+    @Autowired
+    IApplicationService applicationService;
     /*  @Test
       public void dome(){
           System.out.println(persistenceService.count(DataOrder.class));
@@ -89,47 +86,10 @@ public class DaoTest {
             "    values\n" +
             "        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    public static void main(String[] args) throws Exception {
-        BitMatrix bitMatrix = new MultiFormatWriter().encode("不会的", BarcodeFormat.QR_CODE, 200, 200);
-        //  Path path = FileSystems.getDefault().getPath("~/Downloads","QRtest");
-        File file = new File("/Users/admin5/Downloads/QRtest");
-        if (!file.exists()) {
-            file.createNewFile();
-        }
-        MatrixToImageWriter.writeToPath(bitMatrix, "png", file.toPath());
-    }
 
     @Test
     public void test() {
-
-        UserConfig userConfig = new UserConfig();
-        userConfig.setUserId("2");
-        userConfig.setAppOpenTime(DateUtils.tNow());
-        userConfig.setDeleteFlag("1");
-        persistenceService.save(userConfig);
-     /*   HashMap map = new HashMap();
-        User user = new User();
-
-        userCache.put("123",user);
-        long start = System.currentTimeMillis();
-        System.out.println(start);
-        Du.pl(userCache.get("123").get());
-        System.out.println(System.currentTimeMillis()-start);
-        long start1 = System.currentTimeMillis();
-        System.out.println(start1);
-        Du.pl(map.get("user"));
-        System.out.println(System.currentTimeMillis()-start1);
-
-        long start3 = System.currentTimeMillis();
-        Du.pl(operatorCache.get("key2",User.class));
-        System.out.println(System.currentTimeMillis()-start3);
-
-        long start2 = System.currentTimeMillis();
-        Du.pl(jedis.get("key1"));
-        System.out.println(System.currentTimeMillis()-start2);*/
-
-/*
-       System.out.println(persistenceService.getOneByColumn(DataOrder.class,"orderNumber","24423067612233391")==null);*/
+        applicationService.closeApp(1611L);
     }
 
     @Test

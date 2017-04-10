@@ -6,7 +6,6 @@ import com.zy.gcode.oauth.AuthorizedPublicTokenRefresh;
 import com.zy.gcode.oauth.PublicInfoRequest;
 import com.zy.gcode.pojo.TokenConfig;
 import com.zy.gcode.pojo.WechatPublic;
-import com.zy.gcode.pojo.WechatPublicServer;
 import com.zy.gcode.service.intef.IAuthenticationService;
 import com.zy.gcode.service.pay.WxXmlParser;
 import com.zy.gcode.utils.Constants;
@@ -16,7 +15,7 @@ import com.zy.gcode.utils.JsonUtils;
 import com.zy.gcode.utils.wx.AesException;
 import com.zy.gcode.utils.wx.WXBizMsgCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
@@ -26,7 +25,7 @@ import java.util.Map;
 /**
  * Created by admin5 on 17/1/21.
  */
-@Service
+@Component
 public class AuthenticationService implements IAuthenticationService {
     static WXBizMsgCrypt wxBizMsgCrypt = null;
 

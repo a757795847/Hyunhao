@@ -64,7 +64,12 @@ public abstract class Constants {
             RED_PICTURE_PATH = "./pic";
             PAY_QR_PATH = "./qr";
             RED_CSV_PATH = "./csv";
-            USER_HEAD_IMAGE_PATH = Constants.class.getClassLoader().getResource("/").getPath() + "userHeadImage";
+            if(Constants.class.getClassLoader().getResource("/")==null){
+                USER_HEAD_IMAGE_PATH="";
+            }else {
+                USER_HEAD_IMAGE_PATH = Constants.class.getClassLoader().getResource("/").getPath() + "userHeadImage";
+            }
+
             Du.dPl("USER_HEAD_IMAGE_PATH:" + USER_HEAD_IMAGE_PATH);
         } else {
             USER_HEAD_IMAGE_PATH = "/opt/zy/headImage";
