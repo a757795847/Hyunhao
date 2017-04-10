@@ -146,7 +146,6 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     @Override
     public void delete(Class clazz, Serializable id) {
-        session().delete();
         session().delete(get(clazz, id));
     }
 
