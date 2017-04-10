@@ -207,10 +207,11 @@ public class OrderService implements IOrderService {
                     if(!StringUtils.isEmpty(value))
                         value = "'"+value;
                 }
-                values[i] ="\""+value+"\"";
+                value ="\""+value+"\"";
                 if(i==0){
                     value="="+value;
                 }
+                values[i] = value;
             }
             try {
                 writer.writeRecord(values);
