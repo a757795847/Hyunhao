@@ -219,7 +219,9 @@ public class ApplicationService implements IApplicationService {
     @Transactional
     public CodeRe closeApp(Serializable appid) {
         try {
-            persistenceService.delete(UserApp.class,appid);
+           UserApp userApp =  persistenceService.getOneByColumn(UserApp.class,"appId",appid
+           ,"userId",SubjectUtils.getUserName());
+            persistenceService.delete(UserApp.class,userApp.getId());
         } catch (IllegalArgumentException e) {
            return CodeRe.error("不存在的key");
         }

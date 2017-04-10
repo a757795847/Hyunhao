@@ -386,6 +386,7 @@ public class PayService implements IPayService {
         user.setCash(user.getCash() + 10000);
         persistenceService.update(user);
         SubjectUtils.updateUser(user);
+
         return CodeRe.correct("ok");
     }
 
