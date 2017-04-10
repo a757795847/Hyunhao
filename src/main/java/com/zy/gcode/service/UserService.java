@@ -44,6 +44,7 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @Transactional
     public void setUserAuthority(SimpleAuthorizationInfo authorityInfo) {
         List<UserApp> userApps = persistenceService.getListByColumn(UserApp.class, "userId", SubjectUtils.getUserName());
         if (userApps.isEmpty()) {
