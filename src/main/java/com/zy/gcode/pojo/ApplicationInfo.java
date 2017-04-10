@@ -53,6 +53,7 @@ public class ApplicationInfo {
     private String payOption;
     private String fontColor;
     private String defaultWechatId;
+    private String abbreviation;
 
     public Integer getPrice() {
         return price;
@@ -204,5 +205,13 @@ public class ApplicationInfo {
 
     public void setDefaultWechatId(String defaultWechatId) {
         this.defaultWechatId = defaultWechatId;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
 }

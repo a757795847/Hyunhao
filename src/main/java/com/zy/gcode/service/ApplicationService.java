@@ -41,6 +41,7 @@ public class ApplicationService implements IApplicationService {
             map.put("isOpened", isOpened(app));
             map.put("id", app.getId());
             map.put("backgroundColor", app.getBackgroundColor());
+            map.put("abbreviation",app.getAbbreviation());
             results.add(map);
         }
         return results;

@@ -22,5 +22,6 @@
         <property name="fontColor" column="font_color"/>
         <property name="openCondition" column="open_condition"/>
         <property name="defaultWechatId" column="default_wechat_id"/>
+        <property name="abbreviation" column="abbreviation"/>
     </class>
 </hibernate-mapping>
