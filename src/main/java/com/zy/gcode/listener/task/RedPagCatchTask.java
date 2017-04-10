@@ -17,30 +17,10 @@ import java.util.TreeMap;
  */
 public class RedPagCatchTask extends TimerTask {
     ApplicationContext applicationContext;
+    IPayService payService = applicationContext.getBean(IPayService.class);
 
     public RedPagCatchTask(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
-    }
-
-    IPayService payService = applicationContext.getBean(IPayService.class);
-
-    @Override
-    public void run() {
-        BatchRe<RedStatus> batchRe = (BatchRe) payService.circularGetPayInfo();
-        Map map = new TreeMap();
-        map.put("list", batchRe.getTlist());
-        map.put("error", batchRe.getErrorList());
-        HttpClientUtils.postSend(Constants.properties.getProperty("callback.redinfo"), JsonUtils.objAsString(map));
-
-    }
-
-    public static class TaskTest extends TimerTask {
-        int i = 0;
-
-        @Override
-        public void run() {
-            System.out.println(i++);
-        }
     }
 
     public static void main(String[] args) throws Exception {
@@ -77,13 +57,32 @@ public class RedPagCatchTask extends TimerTask {
                         "                   }\n" +
                         "           }\n" +
                         "       }"));*/
-    System.out.println( HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=wfV3OYs0FeJgdCwWxOcjw40qwdTd63LvsYeLH6RriixZgPLx5G7b80YpxSJQbD9fI6t22CmmyOkJJq1CGzVQnsNQm5aGFtzHo5s9cR4D7znfwkYYbo-GiTTWmNsu4Rq_GQKcACAMWQ",
-             "{\n" +
-                     "     \"button\":[\n" +
-                     "     {\t\n" +
-                     "          \"type\":\"view\",\n" +
-                     "          \"name\":\"微信红包\",\n" +
-                     "          \"key\":\"red\",\"url\":\"http://open.izhuiyou.com/wechat/view/home/ge111\"" +
-                     "      }]}"));  //System.out.println( HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=Y3jYDmFWVka5s9meiJxZLmwQYdGcMfNWLxcCuK-f2WkGsUEGFEmJJ20XbS-DZ9Bzdb5T4O3RZltJ_SszSddGR7WARTAUb1dEdTVoo8HLJ4fkzVkXKMft1u2BVD4hpl0EFWQaAEAWNH"));
+        System.out.println(HttpClientUtils.mapPostSend("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=wfV3OYs0FeJgdCwWxOcjw40qwdTd63LvsYeLH6RriixZgPLx5G7b80YpxSJQbD9fI6t22CmmyOkJJq1CGzVQnsNQm5aGFtzHo5s9cR4D7znfwkYYbo-GiTTWmNsu4Rq_GQKcACAMWQ",
+                "{\n" +
+                        "     \"button\":[\n" +
+                        "     {\t\n" +
+                        "          \"type\":\"view\",\n" +
+                        "          \"name\":\"微信红包\",\n" +
+                        "          \"key\":\"red\",\"url\":\"http://open.izhuiyou.com/wechat/view/home/ge111\"" +
+                        "      }]}"));  //System.out.println( HttpClientUtils.mapGetSend("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=Y3jYDmFWVka5s9meiJxZLmwQYdGcMfNWLxcCuK-f2WkGsUEGFEmJJ20XbS-DZ9Bzdb5T4O3RZltJ_SszSddGR7WARTAUb1dEdTVoo8HLJ4fkzVkXKMft1u2BVD4hpl0EFWQaAEAWNH"));
+    }
+
+    @Override
+    public void run() {
+        BatchRe<RedStatus> batchRe = (BatchRe) payService.circularGetPayInfo();
+        Map map = new TreeMap();
+        map.put("list", batchRe.getTlist());
+        map.put("error", batchRe.getErrorList());
+        HttpClientUtils.postSend(Constants.properties.getProperty("callback.redinfo"), JsonUtils.objAsString(map));
+
+    }
+
+    public static class TaskTest extends TimerTask {
+        int i = 0;
+
+        @Override
+        public void run() {
+            System.out.println(i++);
+        }
     }
 }

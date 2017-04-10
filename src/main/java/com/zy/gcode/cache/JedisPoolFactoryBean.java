@@ -10,7 +10,7 @@ import redis.clients.jedis.Protocol;
 /**
  * Created by admin5 on 17/3/27.
  */
-public class JedisPoolFactoryBean implements FactoryBean<Jedis>{
+public class JedisPoolFactoryBean implements FactoryBean<Jedis> {
     //foobared123456
     private JedisPool jedisPool = new JedisPool(new GenericObjectPoolConfig(), "localhost", 6388, Protocol.DEFAULT_TIMEOUT,
             "foobared123456", Protocol.DEFAULT_DATABASE, null);
@@ -20,10 +20,12 @@ public class JedisPoolFactoryBean implements FactoryBean<Jedis>{
         Du.dPl("调用了getResource()方法");
         return jedisPool.getResource();
     }
+
     @Override
     public Class<?> getObjectType() {
         return Jedis.class;
     }
+
     @Override
     public boolean isSingleton() {
         return true;

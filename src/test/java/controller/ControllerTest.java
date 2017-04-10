@@ -23,10 +23,9 @@ import java.util.Map;
 @ContextConfiguration({"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
 public class ControllerTest {
 
+    protected MockMvc mockMvc;
     @Autowired
     private WebApplicationContext wac;
-
-    protected MockMvc mockMvc;
 
     @Before
     public void setup() {

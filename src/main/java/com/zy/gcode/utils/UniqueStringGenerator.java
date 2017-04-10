@@ -5,7 +5,6 @@ import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.util.Base64Utils;
 
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -66,9 +65,10 @@ public class UniqueStringGenerator {
     }
 
     public static String getMd5(String plainText) {
-       return getMd5(plainText.getBytes());
+        return getMd5(plainText.getBytes());
 
     }
+
     public static String getMd5(byte[] bytes) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -126,13 +126,13 @@ public class UniqueStringGenerator {
         return null;
     }
 
-    public static  boolean checkSignature(Map map,String key){
+    public static boolean checkSignature(Map map, String key) {
         String sign;
-        if(!map.containsKey("sign")){
+        if (!map.containsKey("sign")) {
             return false;
         }
-        sign = (String)map.get("sign");
-        Set<String> set =  map.keySet();
+        sign = (String) map.get("sign");
+        Set<String> set = map.keySet();
         set.remove("sign");
         Object[] keys = set.toArray();
         Arrays.sort(keys);
@@ -143,6 +143,6 @@ public class UniqueStringGenerator {
         }
         builder.append("key=").append(key);
 
-       return sign.equalsIgnoreCase(getMd5(builder.toString()));
+        return sign.equalsIgnoreCase(getMd5(builder.toString()));
     }
 }

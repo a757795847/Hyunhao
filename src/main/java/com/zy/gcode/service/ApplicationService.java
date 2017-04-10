@@ -1,10 +1,5 @@
 package com.zy.gcode.service;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
 import com.zy.gcode.pojo.ApplicationInfo;
@@ -17,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +26,7 @@ import java.util.Map;
 public class ApplicationService implements IApplicationService {
     @Autowired
     PersistenceService persistenceService;
+    String httpPrefix = "http://open.izhuiyou.com/wechat/view/home/";
 
     @Override
     @Transactional
@@ -50,7 +44,6 @@ public class ApplicationService implements IApplicationService {
         }
         return results;
     }
-
 
     @Override
     @Transactional
@@ -74,7 +67,6 @@ public class ApplicationService implements IApplicationService {
     public CodeRe update(ApplicationInfo applicationInfo) {
         return null;
     }
-
 
     @Override
     @Transactional
@@ -133,7 +125,6 @@ public class ApplicationService implements IApplicationService {
         return CodeRe.correct("开通成功");
     }
 
-
     public boolean isOpened(ApplicationInfo info) {
         List<UserApp> userApps = persistenceService.getListByColumn(UserApp.class, "userId", SubjectUtils.getUserName(), "appId", info.getId());
 
@@ -155,7 +146,6 @@ public class ApplicationService implements IApplicationService {
         return after.after(DateUtils.tNow());
     }
 
-
     private List<UserApp> getOpenApp() {
         List<UserApp> userAppList = persistenceService.getListByColumn(UserApp.class, "userId", SubjectUtils.getUserName());
         List<UserApp> openedAppList = new ArrayList<>();
@@ -174,18 +164,17 @@ public class ApplicationService implements IApplicationService {
 
     }
 
-
     public boolean canOpen(ApplicationInfo info) {
         switch (info.getOpenCdn()) {
             case ApplicationInfo.OPEN_BY_ANY:
                 return true;
             case ApplicationInfo.OPEN_BY_APP:
                 String option = info.getOpenOption();
-                if(option==null||option.length()==0){
+                if (option == null || option.length() == 0) {
                     return true;
                 }
                 List<UserApp> userAppList = getOpenApp();
-                if(userAppList.isEmpty()){
+                if (userAppList.isEmpty()) {
                     return false;
                 }
                 String[] options = option.split(",");
@@ -208,20 +197,19 @@ public class ApplicationService implements IApplicationService {
         }
 
     }
-    String httpPrefix = "http://open.izhuiyou.com/wechat/view/home/";
 
     @Override
     @Transactional
     public CodeRe configList(String appid) {
-        UserApp userApp = persistenceService.getOneByColumn(UserApp.class,"userId",SubjectUtils.getUserName()
-        ,"appId",appid);
-        if(userApp ==null){
+        UserApp userApp = persistenceService.getOneByColumn(UserApp.class, "userId", SubjectUtils.getUserName()
+                , "appId", appid);
+        if (userApp == null) {
             Du.dPl("服务器不存在的请求");
-          return   CodeRe.error("error");
+            return CodeRe.error("error");
         }
-         List<UserConfig> userConfigs = persistenceService.getListByColumn(UserConfig.class,"userId",SubjectUtils.getUserName()
-        ,"appOpenTime",userApp.getBegTime(),"appId",appid);
-        userConfigs.forEach(userConfig -> userConfig.setUrl(httpPrefix+TappidUtils.toTappid(userConfig.getId(),
+        List<UserConfig> userConfigs = persistenceService.getListByColumn(UserConfig.class, "userId", SubjectUtils.getUserName()
+                , "appOpenTime", userApp.getBegTime(), "appId", appid);
+        userConfigs.forEach(userConfig -> userConfig.setUrl(httpPrefix + TappidUtils.toTappid(userConfig.getId(),
                 userConfig.getAppOpenTime().getTime())));
         return CodeRe.correct(userConfigs);
     }

@@ -19,6 +19,15 @@ public class RedTimerTask extends TimerTask {
         this.supplier = supplier;
     }
 
+    public static RedTimerTask getInstance(Supplier<BatchRe> supplier, String name) {
+        RedTimerTask redTimerTask = map.get(name);
+        if (redTimerTask == null) {
+            redTimerTask = new RedTimerTask(supplier);
+            map.put(name, redTimerTask);
+        }
+        return redTimerTask;
+    }
+
     public boolean begin(int seconds) {
         if (!isStop) {
             return false;
@@ -33,16 +42,6 @@ public class RedTimerTask extends TimerTask {
         if (flag)
             isStop = true;
         return flag;
-    }
-
-
-    public static RedTimerTask getInstance(Supplier<BatchRe> supplier, String name) {
-        RedTimerTask redTimerTask = map.get(name);
-        if (redTimerTask == null) {
-            redTimerTask = new RedTimerTask(supplier);
-            map.put(name, redTimerTask);
-        }
-        return redTimerTask;
     }
 
     @Override

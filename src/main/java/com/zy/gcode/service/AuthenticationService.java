@@ -28,9 +28,6 @@ import java.util.Map;
  */
 @Service
 public class AuthenticationService implements IAuthenticationService {
-    @Autowired
-    PersistenceService persistenceService;
-
     static WXBizMsgCrypt wxBizMsgCrypt = null;
 
     static {
@@ -41,6 +38,9 @@ public class AuthenticationService implements IAuthenticationService {
             e.printStackTrace();
         }
     }
+
+    @Autowired
+    PersistenceService persistenceService;
 
     /**
      * 存储认证给第三方平台的微信公众号的token等基本信息
@@ -198,23 +198,6 @@ public class AuthenticationService implements IAuthenticationService {
         return null;
     }
 
-    /**
-     * 通过tappid获取微信服务
-     *
-     * @param id
-     * @return
-     */
-    @Override
-    @Transactional
-    public WechatPublicServer getWechatPublic(String id) {
-        WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, id);
-        try {
-            wechatPublicServer.getTappid();
-        } catch (NullPointerException e) {
-            return null;
-        }
-        return wechatPublicServer;
-    }
 
     @Override
     @Transactional
@@ -224,7 +207,7 @@ public class AuthenticationService implements IAuthenticationService {
         TokenConfig tokenConfig = persistenceService.get(TokenConfig.class, name);
 
 
-        if(tokenConfig==null) {
+        if (tokenConfig == null) {
             CodeRe<String> wxAccessToken = getAuthorizerToken(appid);
             if (wxAccessToken.isError()) {
                 return wxAccessToken;
@@ -241,7 +224,7 @@ public class AuthenticationService implements IAuthenticationService {
             persistenceService.updateOrSave(tokenConfig);
             return CodeRe.correct(tokenConfig.getToken());
         }
-        Timestamp updateTime= tokenConfig.getUpdateTime();
+        Timestamp updateTime = tokenConfig.getUpdateTime();
         if (DateUtils.isOutOfDate(updateTime, tokenConfig.getExpiresIn())) {
             CodeRe<String> wxAccessToken = getAuthorizerToken(appid);
             if (wxAccessToken.isError()) {

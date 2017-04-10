@@ -32,6 +32,12 @@ public class AccessController {
     @Autowired
     ICodeService iCodeService;
 
+    public static void main(String[] args) throws Exception {
+        Cipher cipher = Cipher.getInstance("aes");
+        String obj = new String();
+        SealedObject sealedObject = new SealedObject(obj, cipher);
+    }
+
     @RequestMapping("wxaccess_token")
     public String callback(String code, String state, String appid) {
         if (StringUtils.isEmpty(code)) {
@@ -81,11 +87,6 @@ public class AccessController {
         Map map = new HashMap(4);
         map.put("userinfo", JsonUtils.objAsString(codeRe.getMessage()));
         return ok(map);
-    }
-    public static void main(String[] args) throws Exception{
-        Cipher cipher = Cipher.getInstance("aes");
-        String obj = new String();
-        SealedObject sealedObject = new SealedObject(obj,cipher);
     }
 
 

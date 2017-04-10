@@ -32,7 +32,7 @@ public class OpenIdFilter extends PassThruAuthenticationFilter {
         if (wechatUserInfo == null) {
             Cookie[] cookies = request.getCookies();
             if (cookies != null) {
-                for (Cookie cookie:cookies) {
+                for (Cookie cookie : cookies) {
                     if (Constants.debug) {
                         System.out.println("cookie:" + cookie.getName() + ":" + cookie.getValue());
                     }

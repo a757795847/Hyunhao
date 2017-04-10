@@ -18,7 +18,7 @@ public class Timing {
 
     public void end() {
         endTime = System.currentTimeMillis();
-        spendTime = endTime -  startTime;
+        spendTime = endTime - startTime;
         System.out.println("end:" + endTime);
         System.out.println("spend:" + spendTime);
     }

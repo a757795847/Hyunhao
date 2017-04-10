@@ -1,13 +1,10 @@
 package com.zy.gcode.controller;
 
-import com.csvreader.CsvWriter;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.DataOrder;
-import com.zy.gcode.pojo.User;
 import com.zy.gcode.service.intef.IOrderService;
 import com.zy.gcode.utils.Constants;
-import com.zy.gcode.utils.Du;
 import com.zy.gcode.utils.Page;
 import com.zy.gcode.utils.SubjectUtils;
 import org.apache.shiro.SecurityUtils;
@@ -24,12 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.math.BigInteger;
-import java.nio.charset.Charset;
-import java.security.AlgorithmParameterGenerator;
-import java.security.AlgorithmParameters;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +37,7 @@ public class OrderController {
     @Autowired
     @Qualifier("userCache")
     EhCacheCache userCache;
+
     /**
      * 分页获取用户信息
      *
@@ -56,9 +49,10 @@ public class OrderController {
     @ResponseBody
     Map
     list(@RequestBody Map map) {
+        SecurityUtils.getSubject().checkPermission(Constants.ZYAPPID);
         Page page = new Page();
         page.setCurrentPageIndex((Integer) map.get("currentPageIndex"));
-        int pageSize = (int)map.get("pageSize");
+        int pageSize = (int) map.get("pageSize");
         page.setPageSize(pageSize);
         Timestamp importTime = null;
         Timestamp applyTime = null;
@@ -68,10 +62,10 @@ public class OrderController {
         if (map.containsKey("applyTime") && map.get("applyTime") != null) {
             applyTime = new Timestamp((long) map.get("applyTime"));
         }
-        return ControllerStatus.ok(orderService.searchOrderByCondition((List) map.get("status"), page,getUsername(), applyTime, importTime), page);
+        return ControllerStatus.ok(orderService.searchOrderByCondition((List) map.get("status"), page, getUsername(), applyTime, importTime), page);
     }
 
-    private String getUsername(){
+    private String getUsername() {
         return SecurityUtils.getSubject().getPrincipal().toString();
     }
 
@@ -138,13 +132,13 @@ public class OrderController {
     @RequestMapping(value = "parseCsv", method = RequestMethod.POST)
     public
     @ResponseBody
-    Object parseCsv(MultipartFile file,String label,String redPackageSize){
+    Object parseCsv(MultipartFile file, String label, String redPackageSize) {
 //      User operator = (User) SecurityUtils.getSubject().getSession().getAttribute("operator");
-        if(!file.getOriginalFilename().endsWith("csv")){
+        if (!file.getOriginalFilename().endsWith("csv")) {
             return ControllerStatus.error("必须是csv文件");
         }
 
-        CodeRe codeRe = orderService.handleCsv(file,label,redPackageSize!=null&&!redPackageSize.equals("")?Integer.parseInt(redPackageSize):100);
+        CodeRe codeRe = orderService.handleCsv(file, label, redPackageSize != null && !redPackageSize.equals("") ? Integer.parseInt(redPackageSize) : 100);
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }
@@ -152,8 +146,8 @@ public class OrderController {
     }
 
     @RequestMapping("downloadErrorList")
-    public void downloadErrorList(String key,HttpServletResponse response) throws IOException{
-        orderService.downloadErrorOrders(response,key);
+    public void downloadErrorList(String key, HttpServletResponse response) throws IOException {
+        orderService.downloadErrorOrders(response, key);
     }
 
 
@@ -213,16 +207,16 @@ public class OrderController {
     @RequestMapping("lookup/{condition}")
     public
     @ResponseBody
-    Object lookup(@PathVariable String condition,@RequestBody Map map) {
-        Page page =new Page();
-        page.setCurrentPageIndex((int)map.getOrDefault(Page.CURRENTPAGEINDEX,0));
-        page.setPageSize((int)map.getOrDefault(Page.PAGE_SIZE,0));
+    Object lookup(@PathVariable String condition, @RequestBody Map map) {
+        Page page = new Page();
+        page.setCurrentPageIndex((int) map.getOrDefault(Page.CURRENTPAGEINDEX, 0));
+        page.setPageSize((int) map.getOrDefault(Page.PAGE_SIZE, 0));
 
-        CodeRe<DataOrder> codeRe = orderService.searchOrderByCondition(condition,page,(List) map.get("status"));
+        CodeRe<DataOrder> codeRe = orderService.searchOrderByCondition(condition, page, (List) map.get("status"));
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }
-        return ControllerStatus.ok((List) codeRe.getMessage(),page);
+        return ControllerStatus.ok((List) codeRe.getMessage(), page);
     }
 
 

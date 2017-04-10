@@ -14,12 +14,11 @@ import java.util.LinkedHashMap;
  * Created by admin5 on 17/2/10.
  */
 public abstract class AbstractOAuthRequest<T> {
-    Logger log = LoggerFactory.getLogger(AbstractOAuthRequest.class);
-
     protected String url;
     protected LinkedHashMap<String, String> params = new LinkedHashMap();
     protected LinkedHashMap<String, String> body = new LinkedHashMap<>();
     protected String suffix = null;
+    Logger log = LoggerFactory.getLogger(AbstractOAuthRequest.class);
 
     protected AbstractOAuthRequest(String url) {
         this.url = url;

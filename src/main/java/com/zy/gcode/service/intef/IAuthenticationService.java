@@ -17,7 +17,7 @@ public interface IAuthenticationService {
 
     String decrpt(String msg_signature, String timestamp, String nonce, String str);
 
-    WechatPublicServer getWechatPublic(String id);
+
 
     CodeRe<TokenConfig> getJsapiTicket();
 

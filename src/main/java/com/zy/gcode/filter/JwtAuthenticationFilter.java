@@ -70,7 +70,7 @@ public class JwtAuthenticationFilter extends AuthenticatingFilter {
                                      ServletRequest request, ServletResponse response) throws Exception {
         SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(request);
         if (savedRequest != null && savedRequest.getMethod().equals(AccessControlFilter.GET_METHOD)) {
-            response.getWriter().println("bearer "+JsonUtils.objAsString(ControllerStatus.ok()));
+            response.getWriter().println("bearer " + JsonUtils.objAsString(ControllerStatus.ok()));
             return false;
         }
 

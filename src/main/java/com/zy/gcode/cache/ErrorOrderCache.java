@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * Created by admin5 on 17/4/5.
  */
 @Component
-public class ErrorOrderCache extends RedisCache{
+public class ErrorOrderCache extends RedisCache {
     @Autowired
     public ErrorOrderCache(RedisOperations<?, ?> redisOperations) {
         super("errorList", "errorList".getBytes(), redisOperations, 1000);

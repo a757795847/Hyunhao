@@ -36,11 +36,11 @@ public class WechatService implements IWechatService {
 
         UserConfig userConfig = persistenceService.get(UserConfig.class, tappidEntry.getUserConfigId());
 
-        if(userConfig==null){
+        if (userConfig == null) {
             return CodeRe.error("error");
         }
 
-        DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class, "orderNumber", billno,"createUserId",userConfig.getUserId());
+        DataOrder dataOrder = persistenceService.getOneByColumn(DataOrder.class, "orderNumber", billno, "createUserId", userConfig.getUserId());
 
         if (dataOrder == null) {
             return CodeRe.error("订单不存在");

@@ -42,21 +42,21 @@ public class JwtSubjectFactory extends DefaultWebSubjectFactory {
         String host = request.getRemoteHost();
         String authorization;
         authorization = request.getHeader("authorization");
-        if(authorization==null){
-          authorization = request.getParameter("jwt");
+        if (authorization == null) {
+            authorization = request.getParameter("jwt");
         }
-        Map map = JwtUtils.deJwtWithTwo(authorization==null?null:authorization.substring("bearer ".length()));
+        Map map = JwtUtils.deJwtWithTwo(authorization == null ? null : authorization.substring("bearer ".length()));
         boolean sessionEnabled = false;
         if (map != null && map.containsKey(PublicClaims.SUBJECT)) {
             session.setAttributes(map);
             String userName = ((Claim) map.get(PublicClaims.SUBJECT)).asString();
             principals = new SimplePrincipalCollection(userName, ZyRealm.name);
             authenticated = true;
-            if(map.containsKey("authenticated")){
-                authenticated = (boolean)map.get("authenticated");
+            if (map.containsKey("authenticated")) {
+                authenticated = (boolean) map.get("authenticated");
             }
-            if(((Claim) map.get(PublicClaims.SUBJECT)).asString().startsWith("anonymous")){
-                authenticated=false;
+            if (((Claim) map.get(PublicClaims.SUBJECT)).asString().startsWith("anonymous")) {
+                authenticated = false;
             }
         }
         return new WebDelegatingSubject(principals, authenticated, host, session, sessionEnabled,

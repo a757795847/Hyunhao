@@ -8,16 +8,13 @@ import com.zy.gcode.utils.Constants;
 import com.zy.gcode.utils.SubjectUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.credential.PasswordService;
-import org.apache.shiro.authz.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
@@ -55,7 +52,7 @@ public class OperatorService implements IOperatorService {
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordService.encryptPassword(password));
-        user.setName("u"+username);
+        user.setName("u" + username);
         user.setRole("user");
         persistenceService.save(user);
         return CodeRe.correct("success");
@@ -87,14 +84,14 @@ public class OperatorService implements IOperatorService {
     @Override
     @Transactional
     public User get(String userName) {
-        return persistenceService.get(User.class,userName);
+        return persistenceService.get(User.class, userName);
     }
 
     @Override
-    public byte[] getUserHeadImage() throws IOException{
-        File file = new File(Constants.USER_HEAD_IMAGE_PATH+"/"+SubjectUtils.getUserName());
+    public byte[] getUserHeadImage() throws IOException {
+        File file = new File(Constants.USER_HEAD_IMAGE_PATH + "/" + SubjectUtils.getUserName());
 
-        if(!file.exists()||file.length()==0){
+        if (!file.exists() || file.length() == 0) {
             return null;
         }
 
@@ -125,10 +122,10 @@ public class OperatorService implements IOperatorService {
     @Transactional
     public void uploadHeadImage(MultipartFile multipartFile) {
         User user = SubjectUtils.getUser();
-        user.setHeadImage(Constants.USER_HEAD_IMAGE_PATH+"/"+SubjectUtils.getUserName());
+        user.setHeadImage(Constants.USER_HEAD_IMAGE_PATH + "/" + SubjectUtils.getUserName());
         persistenceService.update(user);
-        File file = new File(Constants.USER_HEAD_IMAGE_PATH+"/"+SubjectUtils.getUserName());
-        if(!file.getParentFile().exists()){
+        File file = new File(Constants.USER_HEAD_IMAGE_PATH + "/" + SubjectUtils.getUserName());
+        if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
         try {

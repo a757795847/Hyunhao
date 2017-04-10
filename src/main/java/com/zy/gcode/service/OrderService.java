@@ -5,12 +5,14 @@ import com.csvreader.CsvWriter;
 import com.zy.gcode.cache.ErrorOrderCache;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
-import com.zy.gcode.pojo.*;
+import com.zy.gcode.pojo.DataOrder;
+import com.zy.gcode.pojo.RedStatus;
+import com.zy.gcode.pojo.User;
+import com.zy.gcode.pojo.UserConfig;
 import com.zy.gcode.service.annocation.CsvPush;
 import com.zy.gcode.service.intef.IMultipartService;
 import com.zy.gcode.service.intef.IOrderService;
 import com.zy.gcode.utils.*;
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.shiro.SecurityUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -68,8 +70,8 @@ public class OrderService implements IOrderService {
     public List<DataOrder> searchOrderByCondition(List<Integer> status, Page page, String userId, Timestamp applyTime, Timestamp importTime) {
         DetachedCriteria criteria = DetachedCriteria.forClass(DataOrder.class);
         criteria.add(Restrictions.eq("createUserId", getWxOperator()));
-        if(status!=null&&!status.isEmpty())
-        criteria.add(Restrictions.in("giftState", status));
+        if (status != null && !status.isEmpty())
+            criteria.add(Restrictions.in("giftState", status));
         if (importTime != null) {
             criteria.add(Restrictions.sqlRestriction("DATE_FORMAT({alias}.create_date,'%Y%m%d')=?",
                     DateUtils.format(importTime, "yyyyMMdd"), new StringType()));
@@ -91,7 +93,7 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public CodeRe handleCsv(MultipartFile multipartFile,String label,int redSize) {
+    public CodeRe handleCsv(MultipartFile multipartFile, String label, int redSize) {
         if (multipartFile.isEmpty()) {
             return CodeRe.error("上传文件不能为空");
         }
@@ -136,12 +138,12 @@ public class OrderService implements IOrderService {
                     values[i] = str.substring(2, str.length() - 1);
                     orderNoList.add(values[i].trim());
                 }
-                if(titles[i].equals("联系手机")){
-                    if(!StringUtils.isEmpty(values[i]))
-                    values[i] = values[i].substring(1);
+                if (titles[i].equals("联系手机")) {
+                    if (!StringUtils.isEmpty(values[i]))
+                        values[i] = values[i].substring(1);
                 }
-                if(titles.equals("联系电话")){
-                    if(!StringUtils.isEmpty(values[i]))
+                if (titles.equals("联系电话")) {
+                    if (!StringUtils.isEmpty(values[i]))
                         values[i] = values[i].substring(1);
                 }
                 beanWrapper.setPropertyValue(title2Value.get(titles[i]), values[i]);
@@ -152,28 +154,28 @@ public class OrderService implements IOrderService {
         }
         timing.start();
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(DataOrder.class);
-        detachedCriteria.add(Restrictions.eq("createUserId",SubjectUtils.getUserName()))
+        detachedCriteria.add(Restrictions.eq("createUserId", SubjectUtils.getUserName()))
                 .add(Restrictions.in("orderNumber", orderNoList.toArray()));
         List<DataOrder> existDataOrderList = persistenceService.getList(detachedCriteria);
         dataOrderList.removeAll(existDataOrderList);
-        for(DataOrder order:dataOrderList){
+        for (DataOrder order : dataOrderList) {
             order.setLabel(label);
             order.setRedPackageSize(redSize);
             order.setCreateUserId(SubjectUtils.getUserName());
             order.setCreateDate(DateUtils.tNow());
             persistenceService.save(order);
         }
-        Map map = new HashMap(2,1.0f);
-        map.put("successCount",dataOrderList.size());
-        map.put("errorCount",existDataOrderList.size());
-        map.put("errorKey",saveError(existDataOrderList));
+        Map map = new HashMap(2, 1.0f);
+        map.put("successCount", dataOrderList.size());
+        map.put("errorCount", existDataOrderList.size());
+        map.put("errorKey", saveError(existDataOrderList));
         return CodeRe.correct(map);
     }
 
-    private String saveError(List<DataOrder> list){
+    private String saveError(List<DataOrder> list) {
         byte[] bytes = ordersAsCsv(list);
         String md5 = UniqueStringGenerator.getMd5(bytes);
-        errorOrderCache.put(md5,bytes);
+        errorOrderCache.put(md5, bytes);
         return md5;
     }
 
@@ -198,20 +200,20 @@ public class OrderService implements IOrderService {
             String[] values = new String[len];
             for (int i = 0; i < len; i++) {
                 String title = titles[i];
-                String value ="\"" +beanWrapper.getPropertyValue(title2Value.get(titles[i]))+"\"";
-                if(title.equals("联系手机")){
-                    if(!StringUtils.isEmpty(value))
-                        value ="'"+value;
+                String value = "\"" + beanWrapper.getPropertyValue(title2Value.get(titles[i])) + "\"";
+                if (title.equals("联系手机")) {
+                    if (!StringUtils.isEmpty(value))
+                        value = "'" + value;
                 }
-                if(title.equals("联系电话")){
-                    if(!StringUtils.isEmpty(value))
-                        value = "'"+value;
+                if (title.equals("联系电话")) {
+                    if (!StringUtils.isEmpty(value))
+                        value = "'" + value;
 
                 }
-                if(i==0){
-                    value="="+value;
+                if (i == 0) {
+                    value = "=" + value;
                 }
-                values[i] =value;
+                values[i] = value;
             }
             try {
                 writer.writeRecord(values);
@@ -306,15 +308,15 @@ public class OrderService implements IOrderService {
     public CodeRe redSend(String orderno) {
         User operator = SubjectUtils.getUser();
         if (operator == null) {
-           return CodeRe.error("操作超时,请重新登录!");
+            return CodeRe.error("操作超时,请重新登录!");
         }
-        UserConfig userConfig =  persistenceService.getOneByColumn(UserConfig.class,"userId",SubjectUtils.getUserName(),
-                  "appId",Constants.ZYAPPID);
-        if(userConfig==null){
+        UserConfig userConfig = persistenceService.getOneByColumn(UserConfig.class, "userId", SubjectUtils.getUserName(),
+                "appId", Constants.ZYAPPID);
+        if (userConfig == null) {
             return CodeRe.error("error");
         }
 
-        String tappid = TappidUtils.toTappid(userConfig.getId(),userConfig.getAppOpenTime().getTime());
+        String tappid = TappidUtils.toTappid(userConfig.getId(), userConfig.getAppOpenTime().getTime());
         DataOrder order = persistenceService.get(DataOrder.class, orderno);
         if (!operator.getUsername().equals(order.getCreateUserId()))
             return CodeRe.error("您无权操作次订单");
@@ -329,7 +331,7 @@ public class OrderService implements IOrderService {
             return CodeRe.error("订单未已提交状态!");
         }
         Map map = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/pay/send", "openid", order.getWeixinId(),
-                "count",String.valueOf(order.getRedPackageSize()), "tappid", tappid, "sign", "13468794sagag");
+                "count", String.valueOf(order.getRedPackageSize()), "tappid", tappid, "sign", "13468794sagag");
         if (map == null) {
             log.error("http请求错误");
             return CodeRe.error("红包发送失败");
@@ -377,21 +379,21 @@ public class OrderService implements IOrderService {
 
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(DataOrder.class);
 
-        if(status!=null&&!status.isEmpty())
+        if (status != null && !status.isEmpty())
             detachedCriteria.add(Restrictions.in("giftState", status));
 
         detachedCriteria.add(Restrictions.eq("createUserId", getWxOperator()));
 
-        detachedCriteria.add(Restrictions.or(Restrictions.like("label","%"+condition+"%"),Restrictions.eq("orderNumber",condition)));
+        detachedCriteria.add(Restrictions.or(Restrictions.like("label", "%" + condition + "%"), Restrictions.eq("orderNumber", condition)));
 
-        List order = persistenceService.getListAndSetCount(DataOrder.class,detachedCriteria,page);
+        List order = persistenceService.getListAndSetCount(DataOrder.class, detachedCriteria, page);
         return CodeRe.correct(order);
     }
 
     @Override
     public void downloadErrorOrders(HttpServletResponse response, String key) {
-      byte[] bytes = errorOrderCache.get(key,byte[].class);
-        response.addHeader("Content-Disposition", "attachment;filename="+key+"errorList.csv");
+        byte[] bytes = errorOrderCache.get(key, byte[].class);
+        response.addHeader("Content-Disposition", "attachment;filename=" + key + "errorList.csv");
         response.addHeader("Content-Length", "" + bytes.length);
         response.setContentType("application/octet-stream");
         try {

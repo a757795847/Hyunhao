@@ -3,7 +3,6 @@ package com.zy.gcode.controller;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.controller.delegate.ControllerStatus;
 import com.zy.gcode.pojo.UserConfig;
-import com.zy.gcode.pojo.WechatPublicServer;
 import com.zy.gcode.pojo.WechatUserInfo;
 import com.zy.gcode.service.intef.IAuthenticationService;
 import com.zy.gcode.service.intef.IWechatService;
@@ -38,30 +37,31 @@ public class WechatController {
     public String home(@PathVariable("tAppid") String tAppid, HttpServletRequest request) {
         HttpSession session = request.getSession(true);
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
-        TappidUtils.TappidEntry tappidEntry =  TappidUtils.deTappid(tAppid);
-        CodeRe<UserConfig> codeRe =   wechatService.getUserConfig(tappidEntry.getUserConfigId());
-        if(codeRe.isError()){
-            return  null;
+        TappidUtils.TappidEntry tappidEntry = TappidUtils.deTappid(tAppid);
+        CodeRe<UserConfig> codeRe = wechatService.getUserConfig(tappidEntry.getUserConfigId());
+        if (codeRe.isError()) {
+            return null;
         }
         UserConfig userConfig = codeRe.getMessage();
         if (wechatUserInfo != null) {
             Map<String, String> map = JsapiUtils.sign(authenticationService.getJsapiTicketByAppid(userConfig.getWechatOfficialId()).getMessage(),
                     request.getRequestURL().toString());
-            map.put("appid",userConfig.getWechatOfficialId());
+            map.put("appid", userConfig.getWechatOfficialId());
             request.setAttribute("jsonConfig", JsonUtils.objAsString(map));
             return "/views/wechat/submit.html";
         }
         return null;
     }
+
     @RequestMapping("submit/{tAppid}")
     @ResponseBody
     public Map submit(@RequestParam(required = false) String image1, @RequestParam(required = false) String image2,
-                      @RequestParam(required = false) String image3, @RequestParam String billno, HttpSession session,@PathVariable String tAppid) throws IOException {
+                      @RequestParam(required = false) String image3, @RequestParam String billno, HttpSession session, @PathVariable String tAppid) throws IOException {
         WechatUserInfo wechatUserInfo = (WechatUserInfo) session.getAttribute("c_user");
         if (wechatUserInfo == null) {
             return ControllerStatus.error("登录过期");
         }
-        CodeRe<String> codeRe = wechatService.sumbit(image1, image2, image3, billno, wechatUserInfo.getOpenId(), wechatUserInfo.getAppid(),wechatUserInfo.getNick(),tAppid);
+        CodeRe<String> codeRe = wechatService.sumbit(image1, image2, image3, billno, wechatUserInfo.getOpenId(), wechatUserInfo.getAppid(), wechatUserInfo.getNick(), tAppid);
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }

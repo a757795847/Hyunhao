@@ -1,23 +1,18 @@
 package com.zy.gcode.controller;
 
-import com.zy.gcode.controller.delegate.ControllerStatus;
-import com.zy.gcode.dao.PersistenceService;
-import com.zy.gcode.pojo.PayCredential;
-import com.zy.gcode.pojo.WechatQrPay;
 import com.zy.gcode.service.intef.IPayService;
 import com.zy.gcode.service.pay.WxXmlParser;
-import com.zy.gcode.utils.*;
+import com.zy.gcode.utils.Constants;
+import com.zy.gcode.utils.Du;
+import com.zy.gcode.utils.MzUtils;
+import com.zy.gcode.utils.UniqueStringGenerator;
 import com.zy.gcode.utils.wx.AesException;
 import com.zy.gcode.utils.wx.WXBizMsgCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -29,7 +24,6 @@ public class WechatMessageController {
     static WXBizMsgCrypt wxBizMsgCrypt = null;
 
 
-
     static {
         try {
             wxBizMsgCrypt = new WXBizMsgCrypt(Constants.properties.getProperty("platform.token"),
@@ -38,14 +32,17 @@ public class WechatMessageController {
             e.printStackTrace();
         }
     }
+
     @Autowired
     IPayService payService;
 
     @RequestMapping(value = "/wechatPayMessage/handler")
-    public @ResponseBody String wechatPayMessage(@RequestBody String body){
-        Du.pl("payMessage:"+body);
-        Map<String,String> map = WxXmlParser.Xml2Map(body);
-        if(payService.dealPayRecord(map).isError()){
+    public
+    @ResponseBody
+    String wechatPayMessage(@RequestBody String body) {
+        Du.pl("payMessage:" + body);
+        Map<String, String> map = WxXmlParser.Xml2Map(body);
+        if (payService.dealPayRecord(map).isError()) {
             return "error";
         }
 

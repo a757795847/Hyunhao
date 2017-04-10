@@ -13,7 +13,6 @@ import com.zy.gcode.service.pay.RedTimerTask;
 import com.zy.gcode.utils.Page;
 import com.zy.gcode.utils.SubjectUtils;
 import org.apache.http.HttpHeaders;
-import org.apache.http.client.methods.HttpHead;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -113,25 +112,25 @@ public class PayController {
 
     @RequestMapping("/qr")
     @ResponseBody
-    public Object begIndex(HttpServletRequest request, @RequestBody Map map){
-      CodeRe codeRe = payService.getWechatPayUrl((int)map.getOrDefault("count",10000),request.getRemoteAddr());
-      if(codeRe.isError()){
-          return ControllerStatus.error();
-      }
-      return ControllerStatus.ok(codeRe.getMessage());
+    public Object begIndex(HttpServletRequest request, @RequestBody Map map) {
+        CodeRe codeRe = payService.getWechatPayUrl((int) map.getOrDefault("count", 10000), request.getRemoteAddr());
+        if (codeRe.isError()) {
+            return ControllerStatus.error();
+        }
+        return ControllerStatus.ok(codeRe.getMessage());
     }
 
     @RequestMapping("/checkPayStatus")
     @ResponseBody
-    public Object checkPayStatus(@RequestBody Map<String,String> map){
-        if(!map.containsKey("billno")){
+    public Object checkPayStatus(@RequestBody Map<String, String> map) {
+        if (!map.containsKey("billno")) {
             SubjectUtils.getHttpServletResponse().setStatus(402);
             return ControllerStatus.error();
         }
 
-      CodeRe codeRe = payService.payStatus(map.get("billno"));
-        if(codeRe.isError()){
-            return  ControllerStatus.error();
+        CodeRe codeRe = payService.payStatus(map.get("billno"));
+        if (codeRe.isError()) {
+            return ControllerStatus.error();
         }
 
         return ControllerStatus.ok();
@@ -140,11 +139,11 @@ public class PayController {
 
     @RequestMapping("topUpRecord")
     @ResponseBody
-    public Object topUpList(@RequestBody Map map){
+    public Object topUpList(@RequestBody Map map) {
         Page page = new Page();
-        page.setCurrentPageIndex((int)map.getOrDefault(Page.CURRENTPAGEINDEX,1));
-        page.setPageSize((int)map.getOrDefault(Page.PAGE_SIZE,30));
-       return ControllerStatus.ok(payService.topUpRecord(page),page);
+        page.setCurrentPageIndex((int) map.getOrDefault(Page.CURRENTPAGEINDEX, 1));
+        page.setPageSize((int) map.getOrDefault(Page.PAGE_SIZE, 30));
+        return ControllerStatus.ok(payService.topUpRecord(page), page);
     }
 
 
@@ -153,16 +152,17 @@ public class PayController {
         TimeUnit.SECONDS.sleep(3);
         return null;
     }
+
     @RequestMapping("test")
-    public void qr(String value,HttpServletResponse response){
-        response.setHeader(HttpHeaders.CACHE_CONTROL,"no-cache");
-        response.setHeader(HttpHeaders.CONTENT_TYPE,"image/png");
+    public void qr(String value, HttpServletResponse response) {
+        response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache");
+        response.setHeader(HttpHeaders.CONTENT_TYPE, "image/png");
         try {
-            BitMatrix bitMatrix = new MultiFormatWriter().encode(value,BarcodeFormat.QR_CODE,200,200);
-            MatrixToImageWriter.writeToStream(bitMatrix,"png",response.getOutputStream());
+            BitMatrix bitMatrix = new MultiFormatWriter().encode(value, BarcodeFormat.QR_CODE, 200, 200);
+            MatrixToImageWriter.writeToStream(bitMatrix, "png", response.getOutputStream());
         } catch (WriterException e) {
             e.printStackTrace();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

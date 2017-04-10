@@ -15,10 +15,10 @@ public class Page {
     private int startIndex;
 
     public int getCurrentPageIndex() {
-          if(currentPageIndex<1){
+        if (currentPageIndex < 1) {
             return 1;
         }
-        if(currentPageIndex > pageCount){
+        if (currentPageIndex > pageCount) {
             return pageCount;
         }
         return currentPageIndex;
@@ -33,8 +33,8 @@ public class Page {
     }
 
     public void setPageSize(int pageSize) {
-        if(pageSize>0)
-        this.pageSize = pageSize>30?30:pageSize;
+        if (pageSize > 0)
+            this.pageSize = pageSize > 30 ? 30 : pageSize;
     }
 
     public int getCount() {

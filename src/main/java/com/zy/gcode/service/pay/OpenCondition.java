@@ -15,7 +15,7 @@ public class OpenCondition {
     private boolean isSetDaycount = true;
 
     public int getCount() {
-        if(isSetCount)
+        if (isSetCount)
             throw new IllegalArgumentException();
         return count;
     }
@@ -26,7 +26,7 @@ public class OpenCondition {
     }
 
     public int getDayCount() {
-        if(isSetDaycount)
+        if (isSetDaycount)
             throw new IllegalArgumentException();
         return dayCount;
     }

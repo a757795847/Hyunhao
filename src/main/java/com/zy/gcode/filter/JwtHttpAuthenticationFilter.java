@@ -43,13 +43,13 @@ public class JwtHttpAuthenticationFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         //因为前段在登录时有可能传入jwt
-     return super.isAccessAllowed(request, response, mappedValue)&&(!isLoginRequest(request, response));
+        return super.isAccessAllowed(request, response, mappedValue) && (!isLoginRequest(request, response));
 
 
     }
 
-    protected boolean isRefreshRequest(HttpServletRequest request){
-        return  WebUtils.getPathWithinApplication(request).equals("/auth/refresh");
+    protected boolean isRefreshRequest(HttpServletRequest request) {
+        return WebUtils.getPathWithinApplication(request).equals("/auth/refresh");
     }
 
     @Override
@@ -57,7 +57,7 @@ public class JwtHttpAuthenticationFilter extends BasicHttpAuthenticationFilter {
         Map<String, String> map;
         try {
             ServletInputStream inputStream = request.getInputStream();
-            if (inputStream.isFinished()||inputStream.available()==0) {
+            if (inputStream.isFinished() || inputStream.available() == 0) {
                 Du.dPl("错误!request content为空");
                 return null;
             }
@@ -92,16 +92,16 @@ public class JwtHttpAuthenticationFilter extends BasicHttpAuthenticationFilter {
             return false;
         }
         boolean flag = super.preHandle(request, response);
-        if(flag){
-            pre1PostHandle(request,response);
+        if (flag) {
+            pre1PostHandle(request, response);
         }
         return flag;
     }
 
     protected void pre1PostHandle(ServletRequest request, ServletResponse response) throws Exception {
         String username = (String) SecurityUtils.getSubject().getPrincipal();
-        if(username!=null){
-            JwtUtils.setResponseWithNoExpires(WebUtils.toHttp(response),(String) SecurityUtils.getSubject().getPrincipal());
+        if (username != null) {
+            JwtUtils.setResponseWithNoExpires(WebUtils.toHttp(response), (String) SecurityUtils.getSubject().getPrincipal());
         }
     }
 }

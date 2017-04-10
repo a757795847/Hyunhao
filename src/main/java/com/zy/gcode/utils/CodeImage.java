@@ -11,6 +11,7 @@ import java.util.Random;
  * Created by admin5 on 17/2/27.
  */
 public class CodeImage {
+    Random random = new Random();
     // 图片的宽度。
     private int width = 130;
     // 图片的高度。
@@ -23,7 +24,6 @@ public class CodeImage {
     private String code = null;
     // 验证码图片Buffer
     private BufferedImage buffImg = null;
-    Random random = new Random();
 
     public CodeImage() {
         creatImage();

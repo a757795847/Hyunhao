@@ -1,10 +1,5 @@
 package com.zy.gcode.service;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
 import com.zy.gcode.controller.delegate.BatchRe;
 import com.zy.gcode.controller.delegate.CodeRe;
 import com.zy.gcode.dao.PersistenceService;
@@ -16,7 +11,6 @@ import com.zy.gcode.service.pay.RedReqInfo;
 import com.zy.gcode.service.pay.WxXmlParser;
 import com.zy.gcode.utils.*;
 import org.apache.http.HttpResponse;
-import org.aspectj.apache.bcel.classfile.Code;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
@@ -27,8 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -51,9 +43,9 @@ public class PayService implements IPayService {
     @Override
     @Transactional
     public CodeRe pay(String id, int count, String tappid) {
-       // WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, tappid);
+        // WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, tappid);
         TappidUtils.TappidEntry tappidEntry = TappidUtils.deTappid(tappid);
-        UserConfig userConfig = persistenceService.getOneByColumn(UserConfig.class,"id",tappidEntry.getUserConfigId(),"appOpenTime",tappidEntry.getAppOpenTimeTimeStamp());
+        UserConfig userConfig = persistenceService.getOneByColumn(UserConfig.class, "id", tappidEntry.getUserConfigId(), "appOpenTime", tappidEntry.getAppOpenTimeTimeStamp());
         PayCredential payCredential = persistenceService.get(PayCredential.class, userConfig.getWechatOfficialId());
         if (payCredential == null) {
             return CodeRe.error("该微信公众号无商户!");
@@ -148,10 +140,9 @@ public class PayService implements IPayService {
     @Transactional
     public CodeRe<RedStatus> payInfo(String billno, String tappid) {
 
+        UserConfig userConfig = persistenceService.get(UserConfig.class,TappidUtils.deTappid(tappid).getUserConfigId());
 
-        WechatPublicServer wechatPublicServer = persistenceService.get(WechatPublicServer.class, tappid);
-
-        return redinfo(wechatPublicServer.getWxAppid(), billno);
+        return redinfo(userConfig.getWechatOfficialId(), billno);
     }
 
     private CodeRe redinfo(String wxappid, String billno) {
@@ -336,41 +327,40 @@ public class PayService implements IPayService {
 
     @Override
     @Transactional
-    public CodeRe getWechatPayUrl(int count,String addr) {
-     //  /wechatPayMessage/handler
+    public CodeRe getWechatPayUrl(int count, String addr) {
+        //  /wechatPayMessage/handler
 
-        PayCredential payCredential = persistenceService.get(PayCredential.class,"wx653d39223641bea7");
+        PayCredential payCredential = persistenceService.get(PayCredential.class, "wx653d39223641bea7");
         UnifyOrderRequest unifyOrderRequest = new UnifyOrderRequest();
-      //  unifyOrderRequest.setProductId("12235413214070356458");
-        unifyOrderRequest.init("wx653d39223641bea7",payCredential.getMchid(),"支付测试",10,addr,
-                "http://open.izhuiyou.com/wechatPayMessage/handler","NATIVE",payCredential.getCredentialPath(),payCredential.getKey());
+        //  unifyOrderRequest.setProductId("12235413214070356458");
+        unifyOrderRequest.init("wx653d39223641bea7", payCredential.getMchid(), "支付测试", 10, addr,
+                "http://open.izhuiyou.com/wechatPayMessage/handler", "NATIVE", payCredential.getCredentialPath(), payCredential.getKey());
         Map map = unifyOrderRequest.start();
-        if(!checkCodeUrl(map,payCredential.getKey())){
+        if (!checkCodeUrl(map, payCredential.getKey())) {
             return CodeRe.error("error");
         }
-        Map result = new HashMap(2,1.0f);
+        Map result = new HashMap(2, 1.0f);
         WechatQrPay wechatQrPay = new WechatQrPay();
         wechatQrPay.setOutTradeNo(unifyOrderRequest.getOutTradeNo());
         wechatQrPay.setUserId(SubjectUtils.getUserName());
         persistenceService.save(wechatQrPay);
-        result.put("codeUrl",map.get("code_url"));
-        result.put("billno",unifyOrderRequest.getOutTradeNo());
-        return  CodeRe.correct(result);
+        result.put("codeUrl", map.get("code_url"));
+        result.put("billno", unifyOrderRequest.getOutTradeNo());
+        return CodeRe.correct(result);
     }
 
 
-
     @Transactional
-    public CodeRe dealPayRecord(Map<String,String> map){
-        PayCredential payCredential = persistenceService.get(PayCredential.class,map.getOrDefault("appid",""));
-        if (payCredential==null){
-            return  CodeRe.error("");
+    public CodeRe dealPayRecord(Map<String, String> map) {
+        PayCredential payCredential = persistenceService.get(PayCredential.class, map.getOrDefault("appid", ""));
+        if (payCredential == null) {
+            return CodeRe.error("");
         }
-        if(!UniqueStringGenerator.checkSignature(map,payCredential.getKey())){
-            return  CodeRe.error("");
+        if (!UniqueStringGenerator.checkSignature(map, payCredential.getKey())) {
+            return CodeRe.error("");
         }
         WechatQrPay wechatQrPay;
-        if((wechatQrPay=persistenceService.getOneByColumn(WechatQrPay.class,"outTradeNo",map.get("out_trade_no")))==null){
+        if ((wechatQrPay = persistenceService.getOneByColumn(WechatQrPay.class, "outTradeNo", map.get("out_trade_no"))) == null) {
             return CodeRe.correct("exist");
         }
         wechatQrPay.setBankType(map.get("bank_type"));
@@ -386,29 +376,29 @@ public class PayService implements IPayService {
         wechatQrPay.setTradeType(map.get("trade_type"));
         wechatQrPay.setCashFee(Integer.valueOf(map.get("cash_fee")));
         try {
-            long time = DateUtils.parse(map.getOrDefault("time_end","19700000145542"),"yyyyMMddHHmmss").getTime();
+            long time = DateUtils.parse(map.getOrDefault("time_end", "19700000145542"), "yyyyMMddHHmmss").getTime();
             wechatQrPay.setTimeEnd(new Timestamp(time));
         } catch (ParseException e) {
             e.printStackTrace();
         }
         persistenceService.save(wechatQrPay);
-        User user =  persistenceService.get(User.class,wechatQrPay.getUserId());
-        user.setCash(user.getCash()+10000);
+        User user = persistenceService.get(User.class, wechatQrPay.getUserId());
+        user.setCash(user.getCash() + 10000);
         persistenceService.update(user);
         SubjectUtils.updateUser(user);
         return CodeRe.correct("ok");
     }
 
-    private boolean checkCodeUrl(Map map,String key){
+    private boolean checkCodeUrl(Map map, String key) {
         Object returnCode = map.get("return_code");
-        if(returnCode==null||!returnCode.equals("SUCCESS")){
+        if (returnCode == null || !returnCode.equals("SUCCESS")) {
             return false;
         }
         Object resultCode = map.get("result_code");
-        if(resultCode==null||!resultCode.equals("SUCCESS")){
+        if (resultCode == null || !resultCode.equals("SUCCESS")) {
             return false;
         }
-        if(!UniqueStringGenerator.checkSignature(map,key)){
+        if (!UniqueStringGenerator.checkSignature(map, key)) {
             return false;
         }
         return true;
@@ -417,25 +407,25 @@ public class PayService implements IPayService {
     @Override
     @Transactional
     public CodeRe payStatus(String orderNo) {
-       WechatQrPay wechatQrPay = persistenceService.getOneByColumn(WechatQrPay.class,"outTradeNo",orderNo);
+        WechatQrPay wechatQrPay = persistenceService.getOneByColumn(WechatQrPay.class, "outTradeNo", orderNo);
 
-       if(wechatQrPay==null||StringUtils.isEmpty(  wechatQrPay.getTransactionId())){
-          return CodeRe.error("error");
-       }
+        if (wechatQrPay == null || StringUtils.isEmpty(wechatQrPay.getTransactionId())) {
+            return CodeRe.error("error");
+        }
         return CodeRe.correct("ok");
     }
 
     @Override
     @Transactional
     public List topUpRecord(Page page) {
-      List<WechatQrPay> wechatQrPays =  persistenceService.getListByColumn(WechatQrPay.class,page,"userId",
-              SubjectUtils.getUserName());
+        List<WechatQrPay> wechatQrPays = persistenceService.getListByColumn(WechatQrPay.class, page, "userId",
+                SubjectUtils.getUserName());
         List result = new ArrayList();
-        wechatQrPays.forEach(v->{
-            Map map = new HashMap(3,1.0f);
-            map.put("date",v.getInsertTime());
-            map.put("type","微信充值");
-            map.put("count",v.getCashFee());
+        wechatQrPays.forEach(v -> {
+            Map map = new HashMap(3, 1.0f);
+            map.put("date", v.getInsertTime());
+            map.put("type", "微信充值");
+            map.put("count", v.getCashFee());
             result.add(map);
         });
 

@@ -29,10 +29,8 @@ import java.util.Arrays;
  */
 @Component
 public class CodeService implements ICodeService {
-    Logger log = LoggerFactory.getLogger(CodeService.class);
-
-
     public final static long CODE_EXPIRS = 100;
+    Logger log = LoggerFactory.getLogger(CodeService.class);
     @Autowired
     PersistenceService persistenceService;
 

@@ -13,7 +13,6 @@ import java.util.List;
 public class JwtFlashMapManager extends AbstractFlashMapManager {
 
 
-
     @Override
     protected List<FlashMap> retrieveFlashMaps(HttpServletRequest request) {
 

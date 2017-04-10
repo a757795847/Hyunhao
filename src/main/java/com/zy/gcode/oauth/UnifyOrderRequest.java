@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * Created by admin5 on 17/3/31.
  */
-public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
+public class UnifyOrderRequest extends AbstractOAuthRequest<Map> {
    /* 公众账号ID	appid	是	String(32)	wxd678efh567hg6787	微信支付分配的公众账号ID（企业号corpid即为此appId）
     商户号	mchId	是	String(32)	1230000109	微信支付分配的商户号
     设备号	device_info	否	String(32)	013467007045764	自定义参数，可以为终端设备号(门店号或收银设备ID)，PC网页或公众号内支付可以传"WEB"
@@ -38,9 +38,36 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
     用户标识	openid	否	String(128)	oUpF8uMuAJO_M2pxb1Q9zNjWeS6o	trade_type=JSAPI时（即公众号支付），此参数必传，此参数为微信用户在商户对应appid下的唯一标识。openid如何获取，可参考【获取openid】。企业号请使用【企业号OAuth2.0接口】获取企业号内成员userid，再调用【企业号userid转openid接口】进行转换
     */
 
-   private String path;
-   private String key;
-   public void init(String appid,String mchId,String body,int totalFee,String spbillCreateIp,String notifyUrl,String tradeType,String path,String key){
+    public static final String APPID = "appid";
+    public static final String MCH_ID = "mch_id";
+    public static final String DEVICE_INFO = "device_info";
+    public static final String NONCE_STR = "nonce_str";
+    public static final String SIGN = "sign";
+    public static final String SIGN_TYPE = "sign_type";
+    public static final String BODY = "body";
+    public static final String DETAIL = "detail";
+    public static final String ATTACH = "attach";
+    public static final String OUT_TRADE_NO = "out_trade_no";
+    public static final String FEE_TYPE = "fee_type";
+    public static final String TOTAL_FEE = "total_fee";
+    public static final String SPBILL_CREATE_IP = "spbill_create_ip";
+    public static final String TIME_START = "time_start";
+    public static final String TIME_EXPIRE = "time_expire";
+    public static final String GOODS_TAG = "goods_tag";
+    public static final String NOTIFY_URL = "notify_url";
+    public static final String TRADE_TYPE = "trade_type";
+    public static final String PRODUCT_ID = "product_id";
+    public static final String LIMIT_PAY = "limit_pay";
+    public static final String OPENID = "openid";
+    private String path;
+    private String key;
+    private Map map = new HashMap(20);
+
+    public UnifyOrderRequest() {
+        super("https://api.mch.weixin.qq.com/pay/unifiedorder");
+    }
+
+    public void init(String appid, String mchId, String body, int totalFee, String spbillCreateIp, String notifyUrl, String tradeType, String path, String key) {
         setAppid(appid);
         setMchId(mchId);
         setOutTradeNo(UniqueStringGenerator.wxbillno(mchId));
@@ -50,44 +77,15 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
         setNotifyUrl(notifyUrl);
         setTradeType(tradeType);
         this.path = path;
-        this.key=key;
+        this.key = key;
         this.init();
         this.sign();
-   }
-
-
-    public static final String APPID="appid";
-    public static final String MCH_ID="mch_id";
-    public static final String DEVICE_INFO="device_info";
-    public static final String NONCE_STR="nonce_str";
-    public static final String SIGN="sign";
-    public static final String SIGN_TYPE="sign_type";
-    public static final String BODY="body";
-    public static final String DETAIL="detail";
-    public static final String ATTACH="attach";
-    public static final String OUT_TRADE_NO="out_trade_no";
-    public static final String FEE_TYPE="fee_type";
-    public static final String TOTAL_FEE="total_fee";
-    public static final String SPBILL_CREATE_IP="spbill_create_ip";
-    public static final String TIME_START="time_start";
-    public static final String TIME_EXPIRE="time_expire";
-    public static final String GOODS_TAG="goods_tag";
-    public static final String NOTIFY_URL="notify_url";
-    public static final String TRADE_TYPE="trade_type";
-    public static final String PRODUCT_ID="product_id";
-    public static final String LIMIT_PAY="limit_pay";
-    public static final String OPENID="openid";
-
-    public UnifyOrderRequest(){
-        super("https://api.mch.weixin.qq.com/pay/unifiedorder");
     }
 
-
-
     @Override
-    public Map start(){
-       HttpResponse response = HttpClientUtils.postSend(this.url, WxXmlParser.map2xml(map));
-        if(response.getStatusLine().getStatusCode()!=200){
+    public Map start() {
+        HttpResponse response = HttpClientUtils.postSend(this.url, WxXmlParser.map2xml(map));
+        if (response.getStatusLine().getStatusCode() != 200) {
             try {
                 Du.pl(MzUtils.inputStreamToString(response.getEntity().getContent()));
             } catch (IOException e) {
@@ -102,18 +100,16 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
         return null;
     }
 
-    private Map map = new HashMap(20);
-
     public String getAppid() {
-        return (String)map.get(APPID);
+        return (String) map.get(APPID);
     }
 
     public void setAppid(String appid) {
-        map.put(APPID,appid);
+        map.put(APPID, appid);
     }
 
     public String getMchId() {
-        return (String)map.get(MCH_ID);
+        return (String) map.get(MCH_ID);
     }
 
     public void setMchId(String mchId) {
@@ -121,30 +117,30 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
     }
 
     public String getDeviceInfo() {
-        return (String)map.get(DEVICE_INFO);
+        return (String) map.get(DEVICE_INFO);
     }
 
     public void setDeviceInfo(String deviceInfo) {
-        map.put(DEVICE_INFO,deviceInfo);
+        map.put(DEVICE_INFO, deviceInfo);
     }
 
     public String getNonceStr() {
-        return (String)map.get(NONCE_STR);
+        return (String) map.get(NONCE_STR);
     }
 
     public void setNonceStr() {
-        map.put(NONCE_STR,UniqueStringGenerator.getUniqueCode());
+        map.put(NONCE_STR, UniqueStringGenerator.getUniqueCode());
     }
 
     public String getSign() {
-        return (String)map.get(SIGN);
+        return (String) map.get(SIGN);
     }
 
-    public void sign(){
-       Set<String> set =  map.keySet();
-       Object[] keys = set.toArray();
-       Arrays.sort(keys);
-       StringBuilder builder = new StringBuilder();
+    public void sign() {
+        Set<String> set = map.keySet();
+        Object[] keys = set.toArray();
+        Arrays.sort(keys);
+        StringBuilder builder = new StringBuilder();
         for (int i = 0; i < keys.length; i++) {
             builder.append(keys[i].toString()).append("=")
                     .append(map.get(keys[i])).append("&");
@@ -153,92 +149,92 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
         map.put(SIGN, UniqueStringGenerator.getMd5(builder.toString()).toUpperCase());
     }
 
-    private void init(){
+    private void init() {
         setSignType();
         setFeeType();
         setNonceStr();
-        setTimeExpire(System.currentTimeMillis()+360000);
+        setTimeExpire(System.currentTimeMillis() + 360000);
     }
 
     public String getSignType() {
-        return (String)map.get(SIGN_TYPE);
+        return (String) map.get(SIGN_TYPE);
     }
 
     private void setSignType() {
-        map.put(SIGN_TYPE,"MD5");
+        map.put(SIGN_TYPE, "MD5");
     }
 
     public String getBody() {
-        return (String)map.get(BODY);
+        return (String) map.get(BODY);
     }
 
     public void setBody(String body) {
-        map.put(BODY,body);
+        map.put(BODY, body);
     }
 
     public String getDetail() {
-        return (String)map.get(DETAIL);
+        return (String) map.get(DETAIL);
     }
 
     public void setDetail(String detail) {
-        map.put(DETAIL,detail);
+        map.put(DETAIL, detail);
     }
 
     public String getAttach() {
-        return (String)map.get(ATTACH);
+        return (String) map.get(ATTACH);
     }
 
     public void setAttach(String attach) {
-        map.put(ATTACH,attach);
+        map.put(ATTACH, attach);
     }
 
     public String getOutTradeNo() {
-        return (String)map.get(OUT_TRADE_NO);
+        return (String) map.get(OUT_TRADE_NO);
     }
 
     public void setOutTradeNo(String out_trade_no) {
-           map.put(OUT_TRADE_NO,out_trade_no);
+        map.put(OUT_TRADE_NO, out_trade_no);
     }
 
     public String getFeeType() {
-        return (String)map.get(FEE_TYPE);
+        return (String) map.get(FEE_TYPE);
     }
 
     public void setFeeType() {
-        map.put(FEE_TYPE,"CNY");
+        map.put(FEE_TYPE, "CNY");
     }
 
     public int getTotalFee() {
-        return (int)map.get(TOTAL_FEE);
+        return (int) map.get(TOTAL_FEE);
     }
 
     public void setTotalFee(int totalFee) {
-        map.put(TOTAL_FEE,totalFee);
+        map.put(TOTAL_FEE, totalFee);
     }
 
     public String getSpbillCreateIp() {
-        return (String)map.get(SPBILL_CREATE_IP);
+        return (String) map.get(SPBILL_CREATE_IP);
     }
 
     public void setSpbillCreateIp(String spbill_create_ip) {
-        map.put(SPBILL_CREATE_IP,spbill_create_ip);
+        map.put(SPBILL_CREATE_IP, spbill_create_ip);
     }
 
     public Date getTimeStart() {
         try {
-            return DateUtils.parse((String)map.get(TIME_START),"yyyyMMddHHmmss");
+            return DateUtils.parse((String) map.get(TIME_START), "yyyyMMddHHmmss");
         } catch (ParseException e) {
             throw new IllegalArgumentException();
         }
     }
 
     public void setTimeStart(long timeStart) {
-        map.put(TIME_START,DateUtils.format(new Date(timeStart),"yyyyMMddHHmmss"));
+        map.put(TIME_START, DateUtils.format(new Date(timeStart), "yyyyMMddHHmmss"));
     }
 
     public Date getTimeExpire() {
         try {
-            return DateUtils.parse((String)map.get(TIME_EXPIRE),"yyyyMMddHHmmss");
+            return DateUtils.parse((String) map.get(TIME_EXPIRE), "yyyyMMddHHmmss");
         } catch (ParseException e) {
             throw new IllegalArgumentException();
         }
@@ -246,54 +242,54 @@ public class UnifyOrderRequest extends AbstractOAuthRequest<Map>{
 
     public void setTimeExpire(long timeExpire) {
         //20091227091010
-        map.put(TIME_EXPIRE,DateUtils.format(new Date(timeExpire),"yyyyMMddHHmmss"));
+        map.put(TIME_EXPIRE, DateUtils.format(new Date(timeExpire), "yyyyMMddHHmmss"));
     }
 
     public String getGoodsTag() {
-        return (String)map.get(GOODS_TAG);
+        return (String) map.get(GOODS_TAG);
     }
 
     public void setGoodsTag(String goodsTag) {
-        map.put(GOODS_TAG,goodsTag);
+        map.put(GOODS_TAG, goodsTag);
     }
 
     public String getNotifyUrl() {
-        return (String)map.get(NOTIFY_URL);
+        return (String) map.get(NOTIFY_URL);
     }
 
     public void setNotifyUrl(String notifyUrl) {
-        map.put(NOTIFY_URL,notifyUrl);
+        map.put(NOTIFY_URL, notifyUrl);
     }
 
     public String getTradeType() {
-        return (String)map.get(TRADE_TYPE);
+        return (String) map.get(TRADE_TYPE);
     }
 
     public void setTradeType(String tradeType) {
-        map.put(TRADE_TYPE,tradeType);
+        map.put(TRADE_TYPE, tradeType);
     }
 
     public String getProductId() {
-        return (String)map.get(PRODUCT_ID);
+        return (String) map.get(PRODUCT_ID);
     }
 
     public void setProductId(String productId) {
-        map.put(PRODUCT_ID,productId);
+        map.put(PRODUCT_ID, productId);
     }
 
     public String getLimitPay() {
-        return (String)map.get(LIMIT_PAY);
+        return (String) map.get(LIMIT_PAY);
     }
 
     public void setLimitPay(String limitPay) {
-        map.put(LIMIT_PAY,limitPay);
+        map.put(LIMIT_PAY, limitPay);
     }
 
     public String getOpenid() {
-        return (String)map.get(OPENID);
+        return (String) map.get(OPENID);
     }
 
     public void setOpenid(String openid) {
-        map.put(OPENID,openid);
+        map.put(OPENID, openid);
     }
 }

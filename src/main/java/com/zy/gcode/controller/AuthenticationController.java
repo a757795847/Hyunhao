@@ -35,11 +35,11 @@ public class AuthenticationController {
     @Autowired
     IAuthenticationService authenticationService;
 
-    private Map<String,String> authCache = new ConcurrentHashMap<>();
-    private Map<String,String> authCacheFacade = new LinkedHashMap(){
+    private Map<String, String> authCache = new ConcurrentHashMap<>();
+    private Map<String, String> authCacheFacade = new LinkedHashMap() {
         @Override
         protected boolean removeEldestEntry(Map.Entry eldest) {
-            if(size()>100){
+            if (size() > 100) {
                 authCache.remove(eldest.getKey());
                 return true;
             }
@@ -56,7 +56,9 @@ public class AuthenticationController {
     }
 
     @RequestMapping("auth/index")
-    public @ResponseBody Object authAppid(@RequestParam String url, HttpServletRequest request) {
+    public
+    @ResponseBody
+    Object authAppid(@RequestParam String url, HttpServletRequest request) {
         CodeRe<TokenConfig> codeRe = authenticationService.componetToekn();
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
@@ -72,16 +74,15 @@ public class AuthenticationController {
         PublicLoginRequest loginRequest = new PublicLoginRequest();
         loginRequest.setParam(PublicLoginRequest.PRA_COMPONENT_APPID, Constants.properties.getProperty("platform.appid"))
                 .setParam(PublicLoginRequest.PRA_PRE_AUTH_CODE, preAuthCode.getPreAuthCode())
-                .setParam(PublicLoginRequest.PRA_REDIRECT_URI, "http://open.izhuiyou.com/auth2/code?username="+ SubjectUtils.getUserName());
-        authCache.put(SubjectUtils.getUserName(),authentication);
-        authCacheFacade.put(SubjectUtils.getUserName(),authentication+":"+url);
+                .setParam(PublicLoginRequest.PRA_REDIRECT_URI, "http://open.izhuiyou.com/auth2/code?username=" + SubjectUtils.getUserName());
+        authCache.put(SubjectUtils.getUserName(), authentication);
+        authCacheFacade.put(SubjectUtils.getUserName(), authentication + ":" + url);
         return ControllerStatus.ok(loginRequest.start());
 
     }
 
     @RequestMapping("auth2/code")
-    public
-    String serverCode(String auth_code, String expires_in,String username,HttpServletResponse response) {
+    public String serverCode(String auth_code, String expires_in, String username, HttpServletResponse response) {
         CodeRe<TokenConfig> componetTokenCodeRe = authenticationService.componetToekn();
         if (componetTokenCodeRe.isError()) {
             return componetTokenCodeRe.getErrorMessage();
@@ -96,10 +97,10 @@ public class AuthenticationController {
             return codeRe.getErrorMessage();
         }
 
-        String redirectInfo =  authCache.get(username);
+        String redirectInfo = authCache.get(username);
         String[] infos = redirectInfo.split(":");
-        response.setHeader(JwtUtils.AUTHORIZATION,infos[0]);
-        return "redirect:"+infos[1];
+        response.setHeader(JwtUtils.AUTHORIZATION, infos[0]);
+        return "redirect:" + infos[1];
 
     }
 
@@ -107,7 +108,7 @@ public class AuthenticationController {
     public
     @ResponseBody
     String index(String param) {
-        Jedis jedis = new  Jedis("localhost", 6379);
+        Jedis jedis = new Jedis("localhost", 6379);
         Du.pl(jedis.get("key"));
         return jedis.get(param);
     }

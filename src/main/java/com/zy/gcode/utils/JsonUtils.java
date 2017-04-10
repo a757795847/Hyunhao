@@ -34,7 +34,7 @@ public abstract class JsonUtils {
             return mapper.readValue(inputStream, clazz);
         } catch (IOException e) {
             e.printStackTrace();
-           return null;
+            return null;
         }
     }
 

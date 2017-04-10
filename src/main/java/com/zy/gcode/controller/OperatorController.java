@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Controller
 public class OperatorController {
 
-    Map<String,Map> mapCache = new ConcurrentHashMap<>();
+    Map<String, Map> mapCache = new ConcurrentHashMap<>();
 
 
     @Autowired
@@ -43,21 +43,23 @@ public class OperatorController {
 
 
     @RequestMapping("/auth/user")
-    public @ResponseBody Object user(){
-       String userName = (String)SecurityUtils.getSubject().getPrincipal();
-      return ControllerStatus.ok(operatorService.get(userName));
+    public
+    @ResponseBody
+    Object user() {
+        String userName = (String) SecurityUtils.getSubject().getPrincipal();
+        return ControllerStatus.ok(operatorService.get(userName));
     }
 
     @RequestMapping("/auth/refresh")
-    public void refresh(HttpServletResponse response){
-        JwtUtils.setResponse(response,(String)SecurityUtils.getSubject().getPrincipal());
+    public void refresh(HttpServletResponse response) {
+        JwtUtils.setResponse(response, (String) SecurityUtils.getSubject().getPrincipal());
     }
 
     @RequestMapping("/auth/logout")
-    public void logout(HttpServletResponse response){
+    public void logout(HttpServletResponse response) {
         JwtUtils.setAnonymousResponse(response);
         response.setStatus(401);
-        operatorCache.put(SecurityUtils.getSubject().getPrincipal(),UniqueStringGenerator.getUniqueCode());
+        operatorCache.put(SecurityUtils.getSubject().getPrincipal(), UniqueStringGenerator.getUniqueCode());
     }
 
 
@@ -80,7 +82,7 @@ public class OperatorController {
         if (verificationInfo.generationTime < (System.currentTimeMillis() - 120 * 1000)) {
             return ControllerStatus.error("短信验证码过期");
         }
-       // getSession().remove("verificationInfo");
+        // getSession().remove("verificationInfo");
 
 
         CodeRe codeRe = operatorService.registerOperator(map.get("phone").toString(), map.get("password").toString());
@@ -91,18 +93,18 @@ public class OperatorController {
         return ControllerStatus.ok((String) codeRe.getMessage());
     }
 
-    private Map getSession(){
-       return mapCache.get(SecurityUtils.getSubject().getPrincipal());
+    private Map getSession() {
+        return mapCache.get(SecurityUtils.getSubject().getPrincipal());
     }
 
 
-    private void sessionPut(Object key,Object value){
+    private void sessionPut(Object key, Object value) {
         Map map;
-       if((map =getSession())==null){
-           map = new HashMap();
-           mapCache.put((String)SecurityUtils.getSubject().getPrincipal(),map);
-       }
-       map.put(key,value);
+        if ((map = getSession()) == null) {
+            map = new HashMap();
+            mapCache.put((String) SecurityUtils.getSubject().getPrincipal(), map);
+        }
+        map.put(key, value);
     }
 
     @RequestMapping("checkUsername/{username}")
@@ -129,7 +131,7 @@ public class OperatorController {
         if ((!imageInfo.content.equals(code)) || imageInfo.createTime < (System.currentTimeMillis() - 120 * 1000)) {
             return ControllerStatus.error("验证码错误或过期!");
         }
-        VerificationInfo periousVerificationInfo = (VerificationInfo)  getSession().get("verificationInfo");
+        VerificationInfo periousVerificationInfo = (VerificationInfo) getSession().get("verificationInfo");
         if (periousVerificationInfo != null && periousVerificationInfo.generationTime > (System.currentTimeMillis() - 60 * 1000)) {
             return ControllerStatus.error("请60秒后再发送");
         }
@@ -157,7 +159,7 @@ public class OperatorController {
         response.setDateHeader("Expires", 0);
         ImageInfo imageInfo = new ImageInfo(codeImage.getCode(), System.currentTimeMillis());
         sessionPut("imageInfo", imageInfo);
-        Du.pl("获取验证码:"+imageInfo.content);
+        Du.pl("获取验证码:" + imageInfo.content);
         try {
             codeImage.write(response.getOutputStream());
         } catch (IOException e) {
@@ -243,12 +245,12 @@ public class OperatorController {
     }
 
     @RequestMapping("/user/headImage")
-    public void headImage(HttpServletResponse response){
+    public void headImage(HttpServletResponse response) {
         response.setContentType("image/png");
         byte[] bytes;
         try {
             bytes = operatorService.getUserHeadImage();
-            if(bytes==null){
+            if (bytes == null) {
                 response.setStatus(402);
                 return;
             }
@@ -261,7 +263,7 @@ public class OperatorController {
 
     @RequestMapping("/user/uploadHeadImage")
     @ResponseBody
-    public Object uploadImage(MultipartFile file){
+    public Object uploadImage(MultipartFile file) {
         operatorService.uploadHeadImage(file);
 
         return ControllerStatus.ok();
@@ -269,20 +271,19 @@ public class OperatorController {
 
     @RequestMapping("test")
     @ResponseBody
-    public Object test(){
-        return  "success";
+    public Object test() {
+        return "success";
     }
 
     public class VerificationInfo {
+        String verificationCode;
+        long generationTime;
+        String phone;
         public VerificationInfo(String verificationCode, long generationTime, String phone) {
             this.verificationCode = verificationCode;
             this.generationTime = generationTime;
             this.phone = phone;
         }
-
-        String verificationCode;
-        long generationTime;
-        String phone;
     }
 
     public class ImageInfo {

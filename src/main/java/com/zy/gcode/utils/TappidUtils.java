@@ -67,7 +67,24 @@ public class TappidUtils {
         return builder.reverse().toString();
     }
 
-    public static class TappidEntry{
+    public static void main(String[] args) throws Exception {
+        long i = 0;
+        while (true) {
+            Thread.sleep(10);
+            long time = i++;
+            Du.pl(time);
+            if (time != to10(transform(time))) {
+                Du.pl(transform(time));
+                Du.pl(to10(transform(time)));
+                throw new IllegalArgumentException(transform(time));
+            } else {
+                Du.pl(true);
+            }
+
+        }
+    }
+
+    public static class TappidEntry {
         long userConfigId;
         long appOpenTime;
 
@@ -83,26 +100,9 @@ public class TappidUtils {
         public long getAppOpenTime() {
             return appOpenTime;
         }
+
         public Timestamp getAppOpenTimeTimeStamp() {
             return new Timestamp(appOpenTime);
-        }
-    }
-
-
-    public static void main(String[] args) throws Exception {
-        long i = 0;
-        while (true) {
-            Thread.sleep(10);
-            long time = i++;
-            Du.pl(time);
-            if (time != to10(transform(time))) {
-                Du.pl(transform(time));
-                Du.pl(to10(transform(time)));
-                throw new IllegalArgumentException(transform(time));
-            } else {
-                Du.pl(true);
-            }
-
         }
     }
 

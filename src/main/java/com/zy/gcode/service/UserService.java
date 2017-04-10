@@ -50,7 +50,7 @@ public class UserService implements IUserService {
             return;
         }
         for (UserApp userApp : userApps) {
-            if(isOpened(userApp)){
+            if (isOpened(userApp)) {
                 authorityInfo.addStringPermission(userApp.getAppId());
             }
         }

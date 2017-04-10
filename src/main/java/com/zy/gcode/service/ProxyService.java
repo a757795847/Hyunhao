@@ -23,9 +23,9 @@ import java.util.*;
 @Service
 public class ProxyService implements IProxyService {
 
+    private final char[] numMap = {'7', '1', '2', '0', '8', '4', '3', '6', '5'};
     @Autowired
     PersistenceService persistenceService;
-
 
     @Override
     @Transactional
@@ -107,8 +107,6 @@ public class ProxyService implements IProxyService {
     public CodeRe topDown(String tappid, int count) {
         return null;
     }
-
-    private final char[] numMap = {'7', '1', '2', '0', '8', '4', '3', '6', '5'};
 
     private String disorderTo9(Integer num) {
         if (num > 531440) {//最大6位9进制

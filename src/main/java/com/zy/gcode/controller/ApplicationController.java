@@ -31,24 +31,24 @@ public class ApplicationController {
     }
 
     @RequestMapping("info")
-    public Object info(String id){
-       return ControllerStatus.ok(applicationService.info(id));
+    public Object info(String id) {
+        return ControllerStatus.ok(applicationService.info(id));
     }
 
     @RequestMapping("open")
-    public Object open(@RequestBody Map map){
+    public Object open(@RequestBody Map map) {
         OpenCondition condition = new OpenCondition();
-        if(map.containsKey(OpenCondition.COUNT)){
-            condition.setCount((int)map.get(OpenCondition.COUNT));
+        if (map.containsKey(OpenCondition.COUNT)) {
+            condition.setCount((int) map.get(OpenCondition.COUNT));
         }
-        if(map.containsKey(OpenCondition.DAYCOUNT)){
-            condition.setCount((int)map.get(OpenCondition.DAYCOUNT));
+        if (map.containsKey(OpenCondition.DAYCOUNT)) {
+            condition.setCount((int) map.get(OpenCondition.DAYCOUNT));
         }
-        if(!map.containsKey("id")){
+        if (!map.containsKey("id")) {
             return ControllerStatus.error("应用id不能为空");
         }
-      CodeRe codeRe = applicationService.openApp((String)map.get("id"),condition);
-        return codeRe.isError()?ControllerStatus.error(codeRe.getErrorMessage()):ControllerStatus.ok(codeRe.getMessage());
+        CodeRe codeRe = applicationService.openApp((String) map.get("id"), condition);
+        return codeRe.isError() ? ControllerStatus.error(codeRe.getErrorMessage()) : ControllerStatus.ok(codeRe.getMessage());
     }
 
     @RequestMapping("config/list/{appid}")

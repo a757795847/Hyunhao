@@ -19,10 +19,8 @@ import org.springframework.cache.ehcache.EhCacheCache;
  * Created by admin5 on 17/2/15.
  */
 public class ZyRealm extends AuthorizingRealm implements InitializingBean {
-    Logger log = LoggerFactory.getLogger(ZyRealm.class);
-
     public static String name;
-
+    Logger log = LoggerFactory.getLogger(ZyRealm.class);
     @Autowired
     @Qualifier("userCache")
     EhCacheCache userCache;

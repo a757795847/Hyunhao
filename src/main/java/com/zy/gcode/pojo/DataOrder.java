@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 /**
  * Created by admin5 on 17/2/14.
  */
-public class DataOrder implements Serializable{
+public class DataOrder implements Serializable {
     private String id;
     private String weixinId;
     private String mchNumber;

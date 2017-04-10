@@ -34,16 +34,6 @@ public class UserTokenOAuthRequest extends AbstractOAuthRequest<UserTokenOAuthRe
         );}*/
 
     public static class AccessToken {
-        /* "access_token":"ACCESS_TOKEN",
-                 "expires_in":7200,
-                 "refresh_token":"REFRESH_TOKEN",
-                 "openid":"OPENID",
-                 "scope":"SCOPE"
-                 {"errcode":40029,"errmsg":"invalid code"}*/
-        public AccessToken() {
-
-        }
-
         private String accessToken;
         private Integer expiresIn;
         private String refreshToken;
@@ -53,6 +43,15 @@ public class UserTokenOAuthRequest extends AbstractOAuthRequest<UserTokenOAuthRe
         private String errmsg;
         @JsonIgnore
         private boolean error;
+        /* "access_token":"ACCESS_TOKEN",
+                 "expires_in":7200,
+                 "refresh_token":"REFRESH_TOKEN",
+                 "openid":"OPENID",
+                 "scope":"SCOPE"
+                 {"errcode":40029,"errmsg":"invalid code"}*/
+        public AccessToken() {
+
+        }
 
         public String getAccessToken() {
             return accessToken;

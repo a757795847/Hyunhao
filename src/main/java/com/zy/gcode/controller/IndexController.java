@@ -14,8 +14,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 public class IndexController {
 
 
-
-
     @RequestMapping("/login")
     public String login() {
         User user = (User) RequestContextHolder.getRequestAttributes().getAttribute("operator", RequestAttributes.SCOPE_SESSION);

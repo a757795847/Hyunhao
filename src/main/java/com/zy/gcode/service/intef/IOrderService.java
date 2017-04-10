@@ -15,7 +15,7 @@ import java.util.List;
 public interface IOrderService {
     List<DataOrder> searchOrderByCondition(List<Integer> status, Page page, String userId, Timestamp applyTime, Timestamp importTime);
 
-    CodeRe handleCsv(MultipartFile multipartFile,String lable,int size);
+    CodeRe handleCsv(MultipartFile multipartFile, String lable, int size);
 
     CodeRe saveOrderList(List<DataOrder> orderList, String userId);
 
@@ -27,5 +27,5 @@ public interface IOrderService {
 
     CodeRe searchOrderByCondition(String orderNo, Page page, List<Integer> status);
 
-    void downloadErrorOrders(HttpServletResponse response,String key);
+    void downloadErrorOrders(HttpServletResponse response, String key);
 }

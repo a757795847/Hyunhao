@@ -16,9 +16,9 @@ public class ZySessionFactory implements SessionFactory {
 
     @Override
     public Session createSession(SessionContext initData) {
-        if(initData instanceof WebSessionContext){
-            WebSessionContext  webInitData = (WebSessionContext) initData;
-            String jwt =  webInitData.getServletRequest().getParameter("jwt");
+        if (initData instanceof WebSessionContext) {
+            WebSessionContext webInitData = (WebSessionContext) initData;
+            String jwt = webInitData.getServletRequest().getParameter("jwt");
             ZySession session = new ZySession();
             session.setId(jwt);
             session.setHost(webInitData.getServletRequest().getRemoteHost());
@@ -27,7 +27,7 @@ public class ZySessionFactory implements SessionFactory {
         throw new IllegalStateException("该应用仅支持web环境");
     }
 
-    private String getJwtFromHeader(HttpServletRequest request){
-      return request.getHeader(JWT);
+    private String getJwtFromHeader(HttpServletRequest request) {
+        return request.getHeader(JWT);
     }
 }

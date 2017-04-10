@@ -172,32 +172,32 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     @Override
     @Transactional(noRollbackFor = Exception.class)
-    public <T> int[] insertBatch(List<T> list,Class<T> clazz,String sql) {
+    public <T> int[] insertBatch(List<T> list, Class<T> clazz, String sql) {
         Field[] fields = clazz.getDeclaredFields();
-        for(Field field:fields){
+        for (Field field : fields) {
             field.setAccessible(true);
         }
         int len = fields.length;
-       return session().doReturningWork(connection -> {
-           System.out.println(connection.toString());
-          PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            for(Object t:list){
+        return session().doReturningWork(connection -> {
+            System.out.println(connection.toString());
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for (Object t : list) {
                 preparedStatement.setObject(1, UUID.randomUUID().toString());
-                for(int i = 2 ; i<=len ;i++){
+                for (int i = 2; i <= len; i++) {
                     Object value;
                     try {
-                        value = fields[i-1].get(t);
+                        value = fields[i - 1].get(t);
 
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                         Du.dPl("反射错误!");
                         break;
                     }
-                    preparedStatement.setObject(i,value);
+                    preparedStatement.setObject(i, value);
                 }
                 preparedStatement.addBatch();
             }
-          return preparedStatement.executeBatch();
+            return preparedStatement.executeBatch();
         });
     }
 }
