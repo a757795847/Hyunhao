@@ -202,12 +202,15 @@ public class OrderService implements IOrderService {
                 if(title.equals("联系电话")){
                     if(!StringUtils.isEmpty(value))
                         value = "'"+value;
-
                 }
+                if(title.equals("买家支付宝账号")){
+                    if(!StringUtils.isEmpty(value))
+                        value = "'"+value;
+                }
+                values[i] ="\""+value+"\"";
                 if(i==0){
                     value="="+value;
                 }
-                values[i] ="\""+value+"\"";
             }
             try {
                 writer.writeRecord(values);
