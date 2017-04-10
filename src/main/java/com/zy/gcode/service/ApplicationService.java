@@ -228,6 +228,7 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
+    @Transactional
     public List openedAppList() {
         List<UserApp> userAppList = persistenceService.getListByColumn(UserApp.class,"userId",SubjectUtils.getUserName());
 
