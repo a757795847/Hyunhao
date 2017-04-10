@@ -62,7 +62,7 @@ public class ApplicationController {
 
     @RequestMapping("close")
     public Object stopApp(String appid){
-       CodeRe codeRe =  applicationService.closeApp(Long.parseLong(appid));
+       CodeRe codeRe =  applicationService.closeApp(appid);
        if(codeRe.isError()){
            return ControllerStatus.error();
        }
