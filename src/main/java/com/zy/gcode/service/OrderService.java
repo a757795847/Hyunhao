@@ -136,7 +136,7 @@ public class OrderService implements IOrderService {
                 if (str.startsWith("=")) {
                     //因为csv订单号格式有问题，所以进行特别处理
                     values[i] = str.substring(2, str.length() - 1);
-                    orderNoList.add(str.trim());
+                    orderNoList.add(values[i]);
                 }
                 if (str.startsWith("'")) {
                     values[i] = str.substring(1);
