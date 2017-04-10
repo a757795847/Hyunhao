@@ -26,4 +26,6 @@ public interface IApplicationService {
     CodeRe configList(String appid);
 
     CodeRe closeApp(Serializable appid);
+
+    List openedAppList();
 }

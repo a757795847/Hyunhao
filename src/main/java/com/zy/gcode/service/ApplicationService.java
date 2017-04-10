@@ -14,10 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -55,9 +52,6 @@ public class ApplicationService implements IApplicationService {
         map.put("applicationInfo", applicationInfo);
         boolean flag = isOpened(applicationInfo);
         map.put("isOpened",flag );
-        if(flag){
-            map.put("userApp",persistenceService.getListByColumn(UserApp.class, "userId", SubjectUtils.getUserName(), "appId", applicationInfo.getId()));
-        }
         return map;
 
     }
@@ -231,5 +225,31 @@ public class ApplicationService implements IApplicationService {
            return CodeRe.error("不存在的key");
         }
         return CodeRe.correct("ok");
+    }
+
+    @Override
+    public List openedAppList() {
+        List<UserApp> userAppList = persistenceService.getListByColumn(UserApp.class,"userId",SubjectUtils.getUserName());
+
+        List<Map> result = new ArrayList<>();
+        for(UserApp userApp:userAppList){
+            if(isOpened(userApp)){
+                Map map = new LinkedHashMap();
+               ApplicationInfo applicationInfo =  persistenceService.get(ApplicationInfo.class,userApp.getAppId());
+               map.put("name",applicationInfo.getName());
+               map.put("id",userApp.getId());
+               map.put("beginTime",userApp.getBegTime());
+                result.add(map);
+            }
+        }
+        return result;
+    }
+    public boolean isOpened(UserApp userApp) {
+        if (userApp.getUseType() == UserApp.USE_BY_COUNT) {
+            return userApp.getTotalCount() > userApp.getResidueCount();
+        } else if (userApp.getUseType() == UserApp.USE_BY_TIME) {
+            return isExpires(userApp.getEndTime());
+        }
+        return false;
     }
 }

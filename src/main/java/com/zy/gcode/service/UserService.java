@@ -33,18 +33,6 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public List<ValidData> getValidDateList(String username) {
-        return persistenceService.getListByColumn(ValidData.class, "username", username);
-    }
-
-    @Override
-    @Transactional
-    public List<WechatPublicServer> getPublicServerList(String username) {
-        return persistenceService.getListByColumn(WechatPublicServer.class, "userId", username);
-    }
-
-    @Override
-    @Transactional
     public void setUserAuthority(SimpleAuthorizationInfo authorityInfo) {
         List<UserApp> userApps = persistenceService.getListByColumn(UserApp.class, "userId", SubjectUtils.getUserName());
         if (userApps.isEmpty()) {

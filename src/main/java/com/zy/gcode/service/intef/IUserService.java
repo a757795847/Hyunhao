@@ -13,10 +13,6 @@ import java.util.List;
 public interface IUserService {
     User getUser(String username);
 
-    List<ValidData> getValidDateList(String username);
-
-    List<WechatPublicServer> getPublicServerList(String username);
-
     void setUserAuthority(SimpleAuthorizationInfo authorityInfo);
 
     void setRole(SimpleAuthorizationInfo authorizationInfo);

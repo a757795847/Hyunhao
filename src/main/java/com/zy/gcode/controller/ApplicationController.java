@@ -69,4 +69,9 @@ public class ApplicationController {
        return ControllerStatus.ok();
     }
 
+    @RequestMapping("openedList")
+    public Object openedAppList(){
+     return   ControllerStatus.ok(applicationService.openedAppList());
+    }
+
 }

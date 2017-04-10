@@ -132,22 +132,14 @@ public class OrderService implements IOrderService {
             String[] values = csvValueList.get(j);
             log.debug("解析的订单:" + Arrays.toString(values));
             for (int i = 0; i < titles.length; i++) {
-                if (titles[i].equals("订单编号")) {
-                    String str = values[i];
-                    if(str.startsWith("=")){
-                        //因为csv订单号格式有问题，所以进行特别处理
-                        values[i] = str.substring(2, str.length() - 1);
-                        orderNoList.add(values[i].trim());
-                    }
-
+                String str = values[i];
+                if (str.startsWith("=")) {
+                    //因为csv订单号格式有问题，所以进行特别处理
+                    values[i] = str.substring(2, str.length() - 1);
+                    orderNoList.add(str.trim());
                 }
-                if (titles[i].equals("联系手机")) {
-                    if (values[i].startsWith("'"))
-                        values[i] = values[i].substring(1);
-                }
-                if (titles[i].equals("联系电话")) {
-                    if (values[i].startsWith("'"))
-                        values[i] = values[i].substring(1);
+                if (str.startsWith("'")) {
+                    values[i] = str.substring(1);
                 }
                 beanWrapper.setPropertyValue(title2Value.get(titles[i]), values[i]);
             }
@@ -192,7 +184,6 @@ public class OrderService implements IOrderService {
         writer.setUseTextQualifier(false);
         String[] titles = new String[len];
         tilteSet.toArray(titles);
-        byte[] omitBytes = "=".getBytes(charset);
         try {
             writer.writeRecord(titles);
         } catch (IOException e) {
@@ -202,8 +193,21 @@ public class OrderService implements IOrderService {
             BeanWrapper beanWrapper = new BeanWrapperImpl(dataOrder);
             String[] values = new String[len];
             for (int i = 0; i < len; i++) {
-                String value = "\"" + beanWrapper.getPropertyValue(title2Value.get(titles[i])) + "\"";
-                values[i] = value;
+                String title = titles[i];
+                String value =Optional.ofNullable((String)beanWrapper.getPropertyValue(title2Value.get(titles[i]))).orElseGet(()->"");
+                if(title.equals("联系手机")){
+                    if(!StringUtils.isEmpty(value))
+                        value ="'"+value;
+                }
+                if(title.equals("联系电话")){
+                    if(!StringUtils.isEmpty(value))
+                        value = "'"+value;
+
+                }
+                if(i==0){
+                    value="="+value;
+                }
+                values[i] ="\""+value+"\"";
             }
             try {
                 writer.writeRecord(values);
