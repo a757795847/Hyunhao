@@ -49,7 +49,7 @@ public class ZyRealm extends AuthorizingRealm implements InitializingBean {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         User user = userCache.get(token.getPrincipal().toString(),User.class);
         if(user==null){
-            userService.getUser(token.getPrincipal().toString());
+          user= userService.getUser(token.getPrincipal().toString());
         }
         if(user==null){
             throw new UnknownAccountException();
