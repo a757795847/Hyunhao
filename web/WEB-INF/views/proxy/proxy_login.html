@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>代理商后台登录</title>
+    <link rel="stylesheet" href="../../../styles/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../stylesheets/welcome.css">
+</head>
+<body>
+<div class="custom-panel">
+    <div class="custom-headers" style="text-align: center;">
+        <img src="../../../images/CCEFF53D5939DE7FA1D4249D63984B19.jpg" class="zhuiyou"/>
+    </div>
+    <p id="text_zy">追游科技</p>
+
+    <div class="mb-housite">
+        <input id="username" class="form-control account" type="text" maxlength="12" name="wechatUserInfo"
+               placeholder="请输入账号"/>
+        <input id="password" class="form-control" type="password" maxlength="10" name="password"
+               placeholder="请输入密码"/>
+    </div>
+    <p class="text-center">
+        <button class="btn btn-primary btn-lg btn-block" id="btn">立即登录</button>
+    </p>
+    <p class="text-right">
+        <a href="../../../wechatUserInfo/forget" class="text-muted">忘记密码?</a>
+    </p>
+    <p class="text-center">
+        <a href="/operator/registerHome" class="btn btn-default btn-lg btn-block">注册账号</a>
+    </p>
+
+
+</div>
+
+
+<div class="modal fade" id="lookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div>
+        <div class="sa-icon sa-error animateErrorIcon">
+      <span class="sa-x-mark animateXMark">
+        <span class="sa-line sa-left"></span>
+        <span class="sa-line sa-right"></span>
+      </span>
+        </div>
+
+        <h2>错误</h2>
+        <p style="display: block;" id="Prompt">请确认手机号！</p>
+        <button class="confirms" tabindex="1" data-dismiss="modal" style="display: inline-block; background-color: rgb(44, 162, 251); box-shadow: rgba(44, 162, 251, 0.8) 0px 0px 2px, rgba(0, 0, 0, 0.0470588) 0px 0px 0px 1px inset;">好的</button>
+
+    </div>
+</div>
+
+
+<script src="../../../documents/jquery-2.2.3.min.js"></script>
+<script src="../../../documents/bootstrap.min.js"></script>
+<script src="../../../javascripts/login.js"></script>
+
+
+</body>
+</html>

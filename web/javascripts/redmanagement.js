@@ -1,5 +1,6 @@
 
 //列表显示
+var index_i='';
 function indexAjax(){
     $.ajax({
         type:'get',
@@ -9,16 +10,19 @@ function indexAjax(){
         success:function (data) {
             console.log(data);
 
+
             var tbody='';
             $.each(data.list,function(i,order){
+                index_i=i;
                 if(order.id < 10){
                     order.id="0"+order.id;
                 }
-               tbody +='<tr><td>'+order.id+'</td><td>'+order.name+'</td><td>'+order.money/100+'</td>';
-               tbody +='<td><span class="label label-success edit" data-index="' + order.id + '">编辑</span>' +
-                   '<span class="label label-success detele">删除</span></td></tr>';
+                if(i < 10) {
+                    tbody += '<tr><td>' + order.id + '</td><td>' + order.name + '</td><td>' + order.money / 100 + '</td>';
+                    tbody += '<td><span class="label label-success edit" data-index="' + order.id + '">编辑</span>' +
+                        '<span class="label label-success detele">删除</span></td></tr>';
 
-
+                }
 
             });
             $("#Table").find("tbody").html(tbody);
@@ -37,6 +41,20 @@ function indexAjax(){
 }
 
     indexAjax();
+$("#addred").on("click",function () {
+    console.log(index_i);
+    if(index_i>9){
+
+        $('#myModal').on('show.bs.modal', function (e) {
+           e.preventDefault() // 阻止模态框的展示
+        })
+            $("#change_pass").modal("show");
+            $("#change_pass h2").html("最多新增10个红包!");
+            $(".sa-icon").css("display","block");
+
+    }
+
+})
 //编辑
 $("#Table").on("click",'.edit',function () {
     var orderIndex =$(this).data("index");
@@ -105,6 +123,7 @@ $("#Table").on("click",'.detele',function () {
 });
 //新增
 $("#confirm_add").on("click",function () {
+
 
     var add_name=$("#name").val();
     var add_nub=$("#nub").val();

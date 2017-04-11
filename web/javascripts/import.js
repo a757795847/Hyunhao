@@ -83,7 +83,9 @@ $("#click").on("click",function(){
         success: function (data) {
             // console.log(data.list[0].giftState);
             console.log(data);
-            $('#imports').modal('show');
+            $('#change_pass').modal('show');
+            $('#change_pass h2').html("上传成功");
+            $('.sa-icon').css('display',"block");
 
         },
         error: function (jqXHR) {
