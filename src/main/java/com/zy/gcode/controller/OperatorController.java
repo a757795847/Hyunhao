@@ -220,7 +220,7 @@ public class OperatorController {
 
     }
 
-    @RequestMapping("innerUpdatePassword")
+    @RequestMapping("/user/innerUpdatePassword")
     public
     @ResponseBody
     Object innerUpdatePassword(@RequestBody Map map) {
