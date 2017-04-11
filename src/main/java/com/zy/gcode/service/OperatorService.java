@@ -66,10 +66,8 @@ public class OperatorService implements IOperatorService {
     @Override
     @Transactional
     public CodeRe updatePassword(String username, String password) {
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
-        if (user == null) {
-            return CodeRe.error("重复的用户名");
-        }
+        User user = SubjectUtils.getUser();
+
         user.setPassword(passwordService.encryptPassword(password));
         persistenceService.update(user);
         return CodeRe.correct("success");
