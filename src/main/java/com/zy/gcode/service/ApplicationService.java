@@ -122,7 +122,12 @@ public class ApplicationService implements IApplicationService {
         userConfig.setAppId(userApp.getAppId());
         persistenceService.save(userConfig);
         userConfig.setWechatOfficialId(applicationInfo.getDefaultWechatId());
-        return CodeRe.correct("开通成功");
+        Map map = new LinkedHashMap();
+        map.put("name",applicationInfo.getName());
+        map.put("id",userApp.getId());
+        map.put("beginTime",userApp.getBegTime());
+        map.put("route",applicationInfo.getAbbreviation());
+        return CodeRe.correct(map);
     }
 
     public boolean isOpened(ApplicationInfo info) {
