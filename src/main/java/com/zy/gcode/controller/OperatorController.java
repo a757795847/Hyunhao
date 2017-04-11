@@ -224,7 +224,7 @@ public class OperatorController {
     public
     @ResponseBody
     Object innerUpdatePassword(@RequestBody Map map) {
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        User user =SubjectUtils.getUser();
         if (!map.containsKey("oldpassword")) {
             return ControllerStatus.error("旧密码不能为空");
         }
@@ -264,6 +264,9 @@ public class OperatorController {
     @RequestMapping("/user/uploadHeadImage")
     @ResponseBody
     public Object uploadImage(MultipartFile file) {
+        if(file.isEmpty()){
+            return ControllerStatus.error("头像为空!");
+        }
         operatorService.uploadHeadImage(file);
 
         return ControllerStatus.ok();

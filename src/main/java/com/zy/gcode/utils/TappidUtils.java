@@ -12,6 +12,7 @@ public class TappidUtils {
             '2', 'b', 'c', 'd', '8', '5', 'g', 'u', 'U', '9', 'j', 'y', 'L',
             'n', 'o', 'p', '3', '7', 's', 't', 'r', 'v', 'w', 'x', 'Y',
             '0', '1', 'a', 'q', '4', 'f', '6', 'h', 'R', 'k'};
+    private static final int PLAIN_SERCET=176999825;
 
     public static String toTappid(long id, long time) {
         return transform(id) + "z" + transform(time);
@@ -43,7 +44,7 @@ public class TappidUtils {
             j++;
             num += baseNum(len, i) * n;
         }
-        return num ^ 176999825;
+        return num ^ PLAIN_SERCET;
     }
 
     private static long baseNum(int len, int n) {
@@ -57,7 +58,7 @@ public class TappidUtils {
 
     private static String transform(long num) {
         int n = toTappidTable.length;
-        num ^= 176999825;
+        num ^= PLAIN_SERCET;
         StringBuilder builder = new StringBuilder();
         while (num != 0) {//当输入的数不为0时循环执行求余和赋值
             Long remainder = num % n;
@@ -66,24 +67,6 @@ public class TappidUtils {
         }
         return builder.reverse().toString();
     }
-
-    public static void main(String[] args) throws Exception {
-        long i = 0;
-        while (true) {
-            Thread.sleep(10);
-            long time = i++;
-            Du.pl(time);
-            if (time != to10(transform(time))) {
-                Du.pl(transform(time));
-                Du.pl(to10(transform(time)));
-                throw new IllegalArgumentException(transform(time));
-            } else {
-                Du.pl(true);
-            }
-
-        }
-    }
-
     public static class TappidEntry {
         long userConfigId;
         long appOpenTime;

@@ -253,4 +253,12 @@ public class ApplicationService implements IApplicationService {
         }
         return false;
     }
+    public static void main(String[] args){
+        Du.pl(TappidUtils.deTappid("AvwxkzchPAyOC").getUserConfigId());
+        Du.pl( 34^176999825);
+        Du.pl( 333^176999825);
+        Du.pl( 3333^176999825);
+        Du.pl( 33333^176999825);
+        Du.pl( 333333^176999825);
+    }
 }
