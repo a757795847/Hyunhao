@@ -21,7 +21,7 @@ public interface IOrderService {
 
     CodeRe passAuditing(String uuid);
 
-    CodeRe redSend(String orderno);
+    CodeRe redSend(String orderno,String token);
 
     CodeRe redInfo(String mchNumber);
 

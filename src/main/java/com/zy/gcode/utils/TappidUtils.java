@@ -12,7 +12,7 @@ public class TappidUtils {
             '2', 'b', 'c', 'd', '8', '5', 'g', 'u', 'U', '9', 'j', 'y', 'L',
             'n', 'o', 'p', '3', '7', 's', 't', 'r', 'v', 'w', 'x', 'Y',
             '0', '1', 'a', 'q', '4', 'f', '6', 'h', 'R', 'k'};
-    private static final int PLAIN_SERCET=176999825;
+    private static final int PLAIN_SECRET =176999825;
 
     public static String toTappid(long id, long time) {
         return transform(id) + "z" + transform(time);
@@ -30,7 +30,7 @@ public class TappidUtils {
                 return i;
             }
         }
-        return -1;
+        throw new IllegalArgumentException();
     }
 
     private static long to10(String str) {
@@ -44,7 +44,7 @@ public class TappidUtils {
             j++;
             num += baseNum(len, i) * n;
         }
-        return num ^ PLAIN_SERCET;
+        return num ^ PLAIN_SECRET;
     }
 
     private static long baseNum(int len, int n) {
@@ -58,7 +58,7 @@ public class TappidUtils {
 
     private static String transform(long num) {
         int n = toTappidTable.length;
-        num ^= PLAIN_SERCET;
+        num ^= PLAIN_SECRET;
         StringBuilder builder = new StringBuilder();
         while (num != 0) {//当输入的数不为0时循环执行求余和赋值
             Long remainder = num % n;

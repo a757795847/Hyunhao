@@ -303,18 +303,20 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public CodeRe redSend(String orderno) {
+    public CodeRe redSend(String orderno,String token) {
         User operator = SubjectUtils.getUser();
+
+        if(token ==null||token.length()==0){
+            return CodeRe.error("token不能为空");
+        }
         if (operator == null) {
             return CodeRe.error("操作超时,请重新登录!");
         }
-        UserConfig userConfig = persistenceService.getOneByColumn(UserConfig.class, "userId", SubjectUtils.getUserName(),
-                "appId", Constants.ZYAPPID);
+        UserConfig userConfig = persistenceService.get(UserConfig.class, TappidUtils.deTappid(token).getUserConfigId());
         if (userConfig == null) {
             return CodeRe.error("error");
         }
 
-        String tappid = TappidUtils.toTappid(userConfig.getId(), userConfig.getAppOpenTime().getTime());
         DataOrder order = persistenceService.get(DataOrder.class, orderno);
         if (!operator.getUsername().equals(order.getCreateUserId()))
             return CodeRe.error("您无权操作次订单");
@@ -329,7 +331,7 @@ public class OrderService implements IOrderService {
             return CodeRe.error("订单未已提交状态!");
         }
         Map map = HttpClientUtils.mapGetSend("http://open.izhuiyou.com/pay/send", "openid", order.getWeixinId(),
-                "count", String.valueOf(order.getRedPackageSize()), "tappid", tappid, "sign", "13468794sagag");
+                "count", String.valueOf(order.getRedPackageSize()), "tappid", token, "sign", "13468794sagag");
         if (map == null) {
             log.error("http请求错误");
             return CodeRe.error("红包发送失败");

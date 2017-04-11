@@ -182,7 +182,7 @@ public class OrderController {
         if (!map.containsKey("id")) {
             return ControllerStatus.error("请传入订单id");
         }
-        CodeRe codeRe = orderService.redSend(map.get("id").toString());
+        CodeRe codeRe = orderService.redSend(map.get("id").toString(),(String)map.get("token"));
         if (codeRe.isError()) {
             return ControllerStatus.error(codeRe.getErrorMessage());
         }
