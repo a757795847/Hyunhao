@@ -47,9 +47,18 @@ a, a:focus, a:hover {
     border: 0;
 
 }
+.zhuiyou{
+    height:230px;
+}
 #juta{
     margin-bottom:50px;
-    margin-top:-23px;
+    margin-top:-24px;
+    font-size:26px;
+    color:rgb(82,82,82);
+}
+#text_zy{
+    margin-bottom:50px;
+    margin-top:-41px;
     font-size:26px;
     color:rgb(82,82,82);
 }
@@ -87,7 +96,6 @@ img{
     color: #747982;
 
 }
-
 
 .panel-body img{
     border:2px solid black;

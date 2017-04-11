@@ -142,6 +142,10 @@ max-width:1300px;
     margin: 26px 5px 0 5px;
     cursor: pointer;
 }
+.is_good img{
+    width:100px;
+    margin:0 auto;
+}
 .is_good{
     margin-top: -170px;
     background-color: #fff;
@@ -158,4 +162,35 @@ max-width:1300px;
     margin-top: -200px;
     overflow: hidden;
     z-index: 99999;
+}
+#change_password .modal-content {
+    width: 350px;
+    text-align: center;
+    padding: 30px;
+    background-color: rgb(228, 236, 240);
+    border-radius: 7px;
+    margin: 0 auto;
+    margin-top: 200px;
+    padding-bottom: 0;
+}
+#change_password .modal-content img{
+    width:92px;
+}
+#change_password .modal-content h4 {
+    color: rgb(131, 131, 131);
+    margin: 19px;
+}
+#change_password .modal-content input {
+    margin-top: 12px;
+    border: none;
+    border-radius: 4px;
+}
+#change_password .modal-content button {
+    margin-right:13px;
+    float: right;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #333;
+    border-radius: 4px;
+    padding: 5px 14px;
 }

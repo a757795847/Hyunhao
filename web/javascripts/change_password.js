@@ -24,6 +24,9 @@ $("#send_confirm").on("click",function () {
                 console.log(data);
                 if (data.status == "1") {
                     $("#change_pass").modal("show");
+                    $("#change_pass h2").html("修改成功");
+                    $("#change_pass img").css("display", "block");
+                    $(".sa-icon").css("display", "none");
                 } else {
                     $("#change_pass").modal("show");
                     $(".sa-icon").css("display", "block");

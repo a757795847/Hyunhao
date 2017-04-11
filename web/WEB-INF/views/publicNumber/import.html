@@ -52,8 +52,8 @@
 
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <span class="label label-info" id="modify">
-                                    <a href="#">修改密码</a></span>
+                                    <span class="label label-info" id="modify" data-toggle="modal" data-target="#change_password">
+                                   修改密码</span>
                                 </div>
                                 <div class="pull-right">
                                     <span class="label label-info"><a href="#" >退出</a></span>
@@ -170,13 +170,42 @@
 
         </div>
 
-<div class="modal fade" id="imports" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="change_pass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="is_good">
+        <img src="../../../images/ok.jpg" alt="">
+        <div class="sa-icon sa-error animateErrorIcon">
+             <span class="sa-x-mark animateXMark">
+        <span class="sa-line sa-left"></span>
+        <span class="sa-line sa-right"></span>
+                </span>
+        </div>
+
+        <h2>修改成功</h2>
+        <button class="confirms" tabindex="1" data-dismiss="modal" style="display: inline-block; background-color: rgb(44, 162, 251); box-shadow: rgba(44, 162, 251, 0.8) 0px 0px 2px, rgba(0, 0, 0, 0.0470588) 0px 0px 0px 1px inset;">好的</button>
+
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="change_password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <h4>导入成功</h4>
-            <div class="modal-footer" style="border-top:2px solid #ddd;">
-                <button class="btn btn-success" data-dismiss="modal">确定</button>
+            <img src="../../../images/B3F0F1AD70377E062920F9BA53902227.jpg" alt="">
+            <h4>重置密码</h4>
+            <input class="form-control"type="password" maxlength="10" name="password"
+                   placeholder="请输入原密码" id="old_password">
+            <input class="form-control"type="password" maxlength="10" name="password"
+                   placeholder="请输入新密码" id="new_password">
+            <input class="form-control"type="password" maxlength="10" name="password"
+                   placeholder="请再次输入新密码" id="new_passwords">
+
+            <div class="modal-header">
+                <button class="btn btn-success" data-dismiss="modal" id="send_confirm" style="background-color:rgb(66,140,187);color:#fff;">确定</button>
+                <button class="btn btn-success" data-dismiss="modal" id="clear">关闭</button>
+
             </div>
+
         </div>
     </div>
 </div>
@@ -184,7 +213,9 @@
 <script src="../../../documents/bootstrap.min.js"></script>
 <script src="../../../documents/app.min.js"></script>
 <script src="../../../documents/icheck.min.js"></script>
+<script src="/javascripts/change_password.js"></script>
 <script src="../../../javascripts/import.js"></script>
+
 <script>
 
 
