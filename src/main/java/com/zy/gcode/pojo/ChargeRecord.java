@@ -7,8 +7,8 @@ import java.sql.Timestamp;
  */
 public class ChargeRecord {
 
-    public static final int BUY_ = 100;
-    public static final int SELL_ = 200;
+    public static final short BUY_WECHAT = 100;
+    public static final short SELL_WECHAT = 200;
 
     private long id;
     private Timestamp insertTime;

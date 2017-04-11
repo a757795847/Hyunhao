@@ -13,6 +13,7 @@ import com.zy.gcode.utils.*;
 import org.apache.http.HttpResponse;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -361,7 +362,7 @@ public class PayService implements IPayService {
         }
         WechatQrPay wechatQrPay;
         if ((wechatQrPay = persistenceService.getOneByColumn(WechatQrPay.class, "outTradeNo", map.get("out_trade_no"))) == null) {
-            return CodeRe.correct("exist");
+            return CodeRe.error("exist");
         }
         wechatQrPay.setBankType(map.get("bank_type"));
         wechatQrPay.setFeeType(map.get("fee_type"));
@@ -375,6 +376,10 @@ public class PayService implements IPayService {
         wechatQrPay.setWechatOfficalId(map.get("appid"));
         wechatQrPay.setTradeType(map.get("trade_type"));
         wechatQrPay.setCashFee(Integer.valueOf(map.get("cash_fee")));
+        ChargeRecord record = new ChargeRecord();
+        record.setChargeType(ChargeRecord.BUY_WECHAT);
+        record.setChargeCount(Integer.valueOf(map.get("cash_fee")));
+        persistenceService.save(record);
         try {
             long time = DateUtils.parse(map.getOrDefault("time_end", "19700000145542"), "yyyyMMddHHmmss").getTime();
             wechatQrPay.setTimeEnd(new Timestamp(time));
@@ -419,17 +424,25 @@ public class PayService implements IPayService {
     @Override
     @Transactional
     public List topUpRecord(Page page) {
-        List<WechatQrPay> wechatQrPays = persistenceService.getListByColumn(WechatQrPay.class, page, "userId",
-                SubjectUtils.getUserName());
+        DetachedCriteria criteria = DetachedCriteria.forClass(ChargeRecord.class);
+        criteria.add(Restrictions.eq("userId",SubjectUtils.getUserName()));
+        criteria.addOrder(Order.desc("insertTime"));
+        List<ChargeRecord> chargeRecords = persistenceService.getListAndSetCount(ChargeRecord.class,criteria,page);
         List result = new ArrayList();
-        wechatQrPays.forEach(v -> {
+        chargeRecords.forEach(v -> {
             Map map = new HashMap(3, 1.0f);
             map.put("date", v.getInsertTime());
-            map.put("type", "微信充值");
-            map.put("count", v.getCashFee());
+            map.put("type",chargeType(v));
+            map.put("count", v.getChargeCount());
             result.add(map);
         });
 
         return result;
+    }
+    private String chargeType(ChargeRecord chargeRecord){
+        if(chargeRecord.getChargeType()==ChargeRecord.BUY_WECHAT){
+            return "微信充值";
+        }
+        return "其他充值";
     }
 }
