@@ -124,9 +124,10 @@ public class ApplicationService implements IApplicationService {
         userConfig.setWechatOfficialId(applicationInfo.getDefaultWechatId());
         Map map = new LinkedHashMap();
         map.put("name",applicationInfo.getName());
-        map.put("id",userApp.getId());
+        map.put("appId",userApp.getId());
         map.put("beginTime",userApp.getBegTime());
-        map.put("route",applicationInfo.getAbbreviation());
+        map.put("abbreviation",applicationInfo.getAbbreviation());
+        map.put("id",applicationInfo.getId());
         return CodeRe.correct(map);
     }
 
