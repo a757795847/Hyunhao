@@ -379,6 +379,7 @@ public class PayService implements IPayService {
         ChargeRecord record = new ChargeRecord();
         record.setChargeType(ChargeRecord.BUY_WECHAT);
         record.setChargeCount(Integer.valueOf(map.get("cash_fee")));
+        record.setUserId(SubjectUtils.getUserName());
         persistenceService.save(record);
         try {
             long time = DateUtils.parse(map.getOrDefault("time_end", "19700000145542"), "yyyyMMddHHmmss").getTime();
