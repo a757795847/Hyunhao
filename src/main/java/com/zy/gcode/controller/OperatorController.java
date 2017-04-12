@@ -75,10 +75,9 @@ public class OperatorController {
         if (!(MzUtils.checkEntry(map, "phone") && MzUtils.checkEntry(map, "password"))) {
             return ControllerStatus.error("用户名密码不能为空");
         }
-        if (!verificationInfo.verificationCode.equals(map.get("verificationCode"))) {
+        if (!verificationInfo.phone.equals(map.get("phone").toString())||!verificationInfo.verificationCode.equals(map.get("verificationCode"))) {
             return ControllerStatus.error("短信验证码错误");
         }
-
         if (verificationInfo.generationTime < (System.currentTimeMillis() - 120 * 1000)) {
             return ControllerStatus.error("短信验证码过期");
         }

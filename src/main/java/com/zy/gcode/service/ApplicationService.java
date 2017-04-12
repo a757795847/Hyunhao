@@ -122,7 +122,13 @@ public class ApplicationService implements IApplicationService {
         userConfig.setAppId(userApp.getAppId());
         persistenceService.save(userConfig);
         userConfig.setWechatOfficialId(applicationInfo.getDefaultWechatId());
-        return CodeRe.correct("开通成功");
+        Map map = new LinkedHashMap();
+        map.put("name",applicationInfo.getName());
+        map.put("appId",userApp.getId());
+        map.put("beginTime",userApp.getBegTime());
+        map.put("abbreviation",applicationInfo.getAbbreviation());
+        map.put("id",applicationInfo.getId());
+        return CodeRe.correct(map);
     }
 
     public boolean isOpened(ApplicationInfo info) {
@@ -252,13 +258,5 @@ public class ApplicationService implements IApplicationService {
             return isExpires(userApp.getEndTime());
         }
         return false;
-    }
-    public static void main(String[] args){
-        Du.pl(TappidUtils.deTappid("AvwxkzchPAyOC").getUserConfigId());
-        Du.pl( 34^176999825);
-        Du.pl( 333^176999825);
-        Du.pl( 3333^176999825);
-        Du.pl( 33333^176999825);
-        Du.pl( 333333^176999825);
     }
 }
